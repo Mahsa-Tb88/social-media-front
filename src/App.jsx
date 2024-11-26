@@ -1,15 +1,16 @@
-import React from "react";
-import { CssBaseline, Stack } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
+import React, { useState } from "react";
+import { CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Initializer from "./Layouts/Initializer";
+import { useSelector } from "react-redux";
 
 export default function App() {
-  const initialized = 1;
+  const initialized = useSelector((state) => state.app.initialized);
+  console.log(initialized);
   return (
-    <ThemeProvider>
+    <Stack>
       <CssBaseline />
       {initialized ? <Outlet /> : <Initializer />}
-    </ThemeProvider>
+    </Stack>
   );
 }

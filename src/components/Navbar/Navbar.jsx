@@ -1,3 +1,4 @@
+import { DarkMode, LightMode } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -12,6 +13,7 @@ import { useSelector } from "react-redux";
 
 export default function Navbar() {
   const profile = useSelector((state) => state.user);
+  const theme = useSelector((state) => state.app.theme);
   return (
     <AppBar
       position="sticky"
@@ -20,13 +22,22 @@ export default function Navbar() {
       <Container fixed>
         <Toolbar>
           {profile?.user ? (
-            <Stack></Stack>
+            <></>
           ) : (
-            <Stack direction="row" spacing={1}>
-              <Typography variant="h4" component="h1" color="info" flexGrow={1}>
-                VibeLink
-              </Typography>
-              <Box>
+            <>
+              <Stack flexGrow={1}>
+                <Typography
+                  variant="h4"
+                  component="h1"
+                  color="info"
+                  fontWeight={600}
+                >
+                  VibeLink
+                </Typography>
+              </Stack>
+
+              <Stack direction="row" spacing={2}>
+                <Box>{theme == "light" ? <DarkMode /> : <LightMode />}</Box>
                 <Button
                   disableElevation
                   variant="outlined"
@@ -40,8 +51,8 @@ export default function Navbar() {
                 >
                   Join Us
                 </Button>
-              </Box>
-            </Stack>
+              </Stack>
+            </>
           )}
         </Toolbar>
       </Container>

@@ -1,8 +1,8 @@
 import { Box, Stack } from "@mui/material";
 import React from "react";
-import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar/Navbar";
 
 export default function PublicLayout() {
   return (
@@ -11,7 +11,7 @@ export default function PublicLayout() {
       <Box flexGrow={1}>
         <Outlet />
       </Box>
-      <Footer/>
+      <Footer />
     </Stack>
   );
 }

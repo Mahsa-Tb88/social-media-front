@@ -15,6 +15,7 @@ const appSlice = createSlice({
       state.isMobile = action.payload;
     },
     setTheme(state, action) {
+      localStorage.theme = action.payload;
       state.theme = action.payload;
     },
     setInitialized(state, action) {

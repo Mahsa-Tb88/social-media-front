@@ -13,7 +13,7 @@ export default function MyIconButton(props) {
       sx={{ ...sx, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}
       {...ps}
     >
-      MyIconButton
+      {props.children}
     </IconButton>
   );
 }

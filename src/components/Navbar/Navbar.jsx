@@ -26,13 +26,28 @@ import { useDispatch, useSelector } from "react-redux";
 import MyIconButton from "../Customized/MyIconButton";
 import { appActions } from "../../store/slices/appSlice";
 import NavbarMenu from "./NavbarMenu";
+import NavbarFriend from "./NavbarFriend";
+import NavbarNotofiication from "./NavbarNotofiication";
+import NavbarMsg from "./NavbarMsg";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const profile = useSelector((state) => state.user);
+  const isLoggedIn = useSelector((state) => state.app.isLoggedIn);
   const theme = useSelector((state) => state.app.theme);
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+
+  const [openMenu, setOpenMenu] = useState(false);
   const menuAnchor = useRef(null);
+
+  const [openAddFriend, setOpenAddFriend] = useState(false);
+  const addFriendAnchor = useRef(null);
+
+  const [openNotification, setopenNotification] = useState(false);
+  const notificationAnchor = useRef(null);
+
+  const [openMsg, setopenMsg] = useState(false);
+  const msgAnchor = useRef(null);
 
   function chageHandlerTheme() {
     if (theme == "light") {
@@ -70,7 +85,7 @@ export default function Navbar() {
                 <LightMode sx={{ color: "yellow" }} />
               )}
             </MyIconButton>
-            {!profile?.user ? (
+            {isLoggedIn ? (
               <Stack direction="row" spacing={3} alignItems="center">
                 <Badge
                   badgeContent={3}
@@ -79,8 +94,11 @@ export default function Navbar() {
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
                 >
-                  <MyIconButton sx={{ width: 30, height: 30 }}>
-                    <Notifications />
+                  <MyIconButton
+                    sx={{ width: 30, height: 30 }}
+                    onClick={() => setopenNotification(!openNotification)}
+                  >
+                    <Notifications ref={notificationAnchor} />
                   </MyIconButton>
                 </Badge>
 
@@ -91,8 +109,11 @@ export default function Navbar() {
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
                 >
-                  <MyIconButton sx={{ width: 30, height: 30 }}>
-                    <Message />
+                  <MyIconButton
+                    sx={{ width: 30, height: 30 }}
+                    onClick={() => setopenMsg(!openMsg)}
+                  >
+                    <Message ref={msgAnchor} />
                   </MyIconButton>
                 </Badge>
                 <Badge
@@ -102,14 +123,22 @@ export default function Navbar() {
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
                 >
-                  <MyIconButton sx={{ width: 30, height: 30 }}>
-                    <PersonAdd />
+                  <MyIconButton
+                    sx={{ width: 30, height: 30 }}
+                    onClick={() => setOpenAddFriend(!openAddFriend)}
+                  >
+                    <PersonAdd ref={addFriendAnchor} />
                   </MyIconButton>
                 </Badge>
 
-                <Box>
+                <Box
+                  onClick={() => {
+                    setOpenMenu(!openMenu);
+                  }}
+                  sx={{ cursor: "pointer" }}
+                >
                   <img
-                    src={noImage}
+                    src={profile?.img ? profile.img : noImage}
                     width={40}
                     height={40}
                     style={{ border: "var(--border)", borderRadius: "50%" }}
@@ -124,12 +153,16 @@ export default function Navbar() {
                     disableElevation
                     variant="outlined"
                     sx={{ fontSize: 15, fontWeight: "bold" }}
+                    component={NavLink}
+                    to="login"
                   >
                     Sign In
                   </Button>
                   <Button
                     disableElevation
                     sx={{ fontSize: 15, fontWeight: "bold" }}
+                    component={NavLink}
+                    to="register"
                   >
                     Join Us
                   </Button>
@@ -140,9 +173,24 @@ export default function Navbar() {
         </Toolbar>
       </Container>
       <NavbarMenu
-        open={open}
+        open={openMenu}
         anchorEl={menuAnchor.current}
-        handleClose={() => setOpen(false)}
+        handleClose={() => setOpenMenu(false)}
+      />
+      <NavbarFriend
+        open={openAddFriend}
+        anchorEl={addFriendAnchor.current}
+        handleClose={() => setOpenAddFriend(false)}
+      />
+      <NavbarMsg
+        open={openMsg}
+        anchorEl={msgAnchor.current}
+        handleClose={() => setopenMsg(false)}
+      />
+      <NavbarNotofiication
+        open={openNotification}
+        anchorEl={notificationAnchor.current}
+        handleClose={() => setopenNotification(false)}
       />
     </AppBar>
   );

@@ -12,12 +12,16 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export default function NavbarMenu({ open, anchorEl, handleClose }) {
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isAdmin = useSelector((state) => state.user.isAdmin);
 
   return (
-    <Menu open={open} anchorEl={anchorEl} onClick={handleClose}>
-      <List>
+    <Menu
+      open={open}
+      anchorEl={anchorEl}
+      onClick={handleClose}
+      MenuListProps={{ sx: { p: 0 } }}
+    >
+      <List disablePadding>
         {isAdmin ? (
           <>
             <ListItem>
@@ -36,7 +40,7 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
                 <ListItemIcon>
                   <EditRounded />
                 </ListItemIcon>
-                <ListItemText>Edit</ListItemText>
+                <ListItemText>Edit Profile</ListItemText>
               </ListItemButton>
             </ListItem>
           </>

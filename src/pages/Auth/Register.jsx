@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useRegister } from "../../utils/mutation";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const {
@@ -22,6 +24,19 @@ export default function Register() {
     watch,
     formState: { errors },
   } = useForm();
+
+  const navigate = useNavigate();
+  const { isPending, data, error, mutate } = useRegister();
+
+  function onSubmit(data) {
+    mutate(data, {
+      onSuccess(d) {
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      },
+    });
+  }
 
   return (
     <Container fixed maxWidth="sm">
@@ -34,7 +49,11 @@ export default function Register() {
           >
             Join Us
           </Typography>
-          <Paper component="form" sx={{ p: { xs: 2, sm: 3 }, mb: 10 }}>
+          <Paper
+            component="form"
+            sx={{ p: { xs: 2, sm: 3 }, mb: 10 }}
+            handleSubmit={onSubmit}
+          >
             <Stack spacing={3}>
               {/* <TextField
                 {...register("firstname", {

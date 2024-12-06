@@ -1,6 +1,7 @@
 import { AccountCircle, StayPrimaryLandscape } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
+  Alert,
   Checkbox,
   CircularProgress,
   Container,
@@ -29,11 +30,12 @@ export default function Register() {
   const { isPending, data, error, mutate } = useRegister();
 
   function onSubmit(data) {
+    console.log(data);
     mutate(data, {
-      onSuccess(d) {
+      onSuccess() {
         setTimeout(() => {
           navigate("/login");
-        }, 2000);
+        }, 3000);
       },
     });
   }
@@ -52,46 +54,16 @@ export default function Register() {
           <Paper
             component="form"
             sx={{ p: { xs: 2, sm: 3 }, mb: 10 }}
-            handleSubmit={onSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <Stack spacing={3}>
-              {/* <TextField
-                {...register("firstname", {
-                  required: "Please enter a firstname",
-                  minLength: {
-                    value: 3,
-                    message: "Firstname should be at least 3 characters.",
-                  },
-                })}
-                label="Firstname"
-                error={errors.firstname}
-                helperText={errors.firstname?.message}
-                variant="standard"
-                required
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AccountCircle />
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-              <TextField
-                {...register("lastname", {
-                  required: "Please enter a lastname",
-                  minLength: {
-                    value: 3,
-                    message: "Lastname should be at least 3 characters.",
-                  },
-                })}
-                label="Lastname"
-                error={errors.lastname}
-                helperText={errors.lastname?.message}
-                variant="standard"
-                required
-              /> */}
+              {data ? (
+                <Alert severity="success">{data.data.message}</Alert>
+              ) : error ? (
+                <Alert severity="error">{error.message}</Alert>
+              ) : (
+                <Alert severity="info">Please fill out all fileds!</Alert>
+              )}
               <TextField
                 {...register("username", {
                   required: "Please enter a username",
@@ -138,10 +110,10 @@ export default function Register() {
               <TextField
                 {...register("confirmedPassword", {
                   required: "Please enter a confirmedPassword",
-                  minLength: {
-                    value: 3,
-                    message:
-                      "Confirm Password should be at least 3 characters.",
+                  validate(value) {
+                    if (watch("password") !== value) {
+                      return "Confirm password is not as same as password!";
+                    }
                   },
                 })}
                 label="Confirm Password"
@@ -149,17 +121,18 @@ export default function Register() {
                 helperText={errors.confirmedPassword?.message}
                 variant="standard"
                 required
-                type="confirmedPassword"
+                type="password"
               />
 
               <FormControlLabel
                 control={<Checkbox {...register("policy")} />}
                 label="I accept the Terms of Use & Privacy Policy"
+                required
                 sx={{ userSelect: "none", mt: 20 }}
               />
 
               <LoadingButton
-                loading={false}
+                loading={isPending}
                 loadingIndicator={
                   <CircularProgress size={30} sx={{ color: "info.500" }} />
                 }

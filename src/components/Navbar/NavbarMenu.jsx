@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function NavbarMenu({ open, anchorEl, handleClose }) {
   const isAdmin = useSelector((state) => state.user.isAdmin);
@@ -45,7 +46,7 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
             </ListItem>
           </>
         )}
-        <ListItem>
+        <ListItem component={Link} to="/logout">
           <ListItemButton>
             <ListItemIcon>
               <Logout />

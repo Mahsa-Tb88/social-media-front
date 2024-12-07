@@ -1,3 +1,4 @@
+import { StarRateOutlined } from "@mui/icons-material";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -18,6 +19,11 @@ const userSlice = createSlice({
     },
     setProfile(state, action) {
       state.profile = action.payload;
+    },
+    setLogout(state) {
+      state.profile = {};
+      state.isLoggedIn = false;
+      state.isAdmin = false;
     },
   },
 });

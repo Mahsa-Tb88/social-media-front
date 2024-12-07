@@ -5,6 +5,7 @@ import PublicLayout from "../Layouts/PublicLayout";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Profile from "../pages/User/Profile";
+import LogOut from "../pages/Auth/LogOut";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
           { path: "login", element: <Login /> },
           { path: "register", element: <Register /> },
           { path: "profile/:id", element: <Profile /> },
+          { path: "logout", element: <LogOut /> },
         ],
       },
     ],

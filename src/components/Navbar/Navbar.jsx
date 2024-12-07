@@ -56,7 +56,6 @@ export default function Navbar() {
       dispatch(appActions.setTheme("light"));
     }
   }
-  console.log("app");
   return (
     <AppBar
       position="sticky"

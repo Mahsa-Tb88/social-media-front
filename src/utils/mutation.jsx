@@ -9,6 +9,6 @@ export function useRegister() {
 
 export function useLogin() {
   return useMutation({
-    mutationFn: (data) => Axios.post("/auth/login", data),
+    mutationFn: (data) => axios.post("/auth/login", data),
   });
 }

@@ -17,7 +17,7 @@ const userSlice = createSlice({
       state.isLoggedIn = action.payload;
     },
     setProfile(state, action) {
-      state.profile.username = action.payload.username;
+      state.profile = action.payload;
     },
   },
 });

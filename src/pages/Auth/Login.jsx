@@ -17,14 +17,44 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogin } from "../../utils/mutation";
+import { useDispatch } from "react-redux";
+import { userActions } from "../../store/slices/userSlice";
+// import { useRedurectIfIsLoggedIn } from "../../utils/customHooks";
 
 export default function Login() {
-  
+  const { isPending, error, mutate } = useLogin();
+
   const {
     register,
     formState: { errors },
+    handleSubmit,
   } = useForm();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  function onSubmit(data) {
+    console.log(data);
+    mutate(data, {
+      onSuccess(d) {
+        console.log(d.data.body.user);
+        const user = d.data.body.user;
+        dispatch(userActions.setIsLoggedIn(true));
+        dispatch(userActions.setIsAdmin(user.isAdmin));
+        dispatch(userActions.setProfile(user));
+        navigate("/profile/" + user._id);
+      },
+      onError(error) {},
+    });
+  }
+
+  // const isLoggedIn = useRedurectIfIsLoggedIn();
+
+  // if (isLoggedIn) {
+  //   return;
+  // }
   return (
     <Container fixed maxWidth="sm">
       <Grid2 container>
@@ -36,7 +66,11 @@ export default function Login() {
           >
             Login
           </Typography>
-          <Paper component="form" sx={{ p: { xs: 2, sm: 3 }, mb: 10 }}>
+          <Paper
+            component="form"
+            sx={{ p: { xs: 2, sm: 3 }, mb: 10 }}
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <Stack spacing={2}>
               {
                 <Alert severity="info">
@@ -95,7 +129,7 @@ export default function Login() {
               </Stack>
 
               <LoadingButton
-                loading={false}
+                loading={isPending}
                 loadingIndicator={
                   <CircularProgress size={30} sx={{ color: "info.500" }} />
                 }

@@ -33,7 +33,7 @@ import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const profile = useSelector((state) => state.user);
-  const isLoggedIn = useSelector((state) => state.app.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const theme = useSelector((state) => state.app.theme);
   const dispatch = useDispatch();
 
@@ -56,7 +56,7 @@ export default function Navbar() {
       dispatch(appActions.setTheme("light"));
     }
   }
-
+  console.log("app");
   return (
     <AppBar
       position="sticky"

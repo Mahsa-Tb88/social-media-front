@@ -30,7 +30,6 @@ export default function Register() {
   const { isPending, data, error, mutate } = useRegister();
 
   function onSubmit(data) {
-    console.log(data);
     mutate(data, {
       onSuccess() {
         setTimeout(() => {

@@ -50,8 +50,7 @@ export default function Login() {
 
   if (isLoggedIn) {
     console.log("loginn comp...", isLoggedIn);
-
-    // return;
+    return;
   }
   return (
     <Container fixed maxWidth="sm">

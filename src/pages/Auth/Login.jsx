@@ -35,21 +35,17 @@ export default function Login() {
   const dispatch = useDispatch();
 
   function onSubmit(data) {
-    console.log(data);
     mutate(data, {
       onSuccess(d) {
         const user = d.data.body.user;
         dispatch(userActions.setIsLoggedIn(true));
-        dispatch(userActions.setIsAdmin(user.isAdmin));
         dispatch(userActions.setProfile(user));
       },
     });
   }
-
   const isLoggedIn = useRedurectIfIsLoggedIn();
 
   if (isLoggedIn) {
-    console.log("loginn comp...", isLoggedIn);
     return;
   }
   return (

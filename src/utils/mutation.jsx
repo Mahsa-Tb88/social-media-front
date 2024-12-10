@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import axios, { Axios } from "axios";
+import axios from "axios";
 
 export function useRegister() {
   return useMutation({
@@ -15,6 +15,18 @@ export function useLogin() {
 
 export function useLogOut() {
   return useMutation({
-    mutationFn: () => axios.post("auth/logout"),
+    mutationFn: () => axios.post("/auth/logout"),
+  });
+}
+
+export function useUploadFile() {
+  return useMutation({
+    mutationFn: (formData) => axios.post("/misc/uploads", formData),
+  });
+}
+
+export function useChangeBackgorund() {
+  return useMutation({
+    mutationFn: (data) => axios.post("/user/background", data),
   });
 }

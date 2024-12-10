@@ -19,8 +19,10 @@ export default function Initializer() {
       dispatch(appActions.setInitialized(true));
 
       if (body?.user) {
+        dispatch(userActions.setIsLoggedIn(true));
         dispatch(userActions.setProfile(body.user));
       }
+      console.log("initia...", body);
     }
   }, [data]);
 

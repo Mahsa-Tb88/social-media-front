@@ -4,8 +4,8 @@ import HomePage from "../pages/HomePage";
 import PublicLayout from "../Layouts/PublicLayout";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
-import Profile from "../pages/User/Profile";
 import LogOut from "../pages/Auth/LogOut";
+import Profile from "../pages/User/Profile/Profile";
 
 const router = createBrowserRouter([
   {

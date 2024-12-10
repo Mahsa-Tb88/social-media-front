@@ -2,13 +2,8 @@ import {
   DarkMode,
   LightMode,
   Message,
-  NotificationImportant,
   Notifications,
-  Person2,
-  Person2Outlined,
-  Person3,
   PersonAdd,
-  PersonOffTwoTone,
 } from "@mui/icons-material";
 import {
   AppBar,
@@ -29,14 +24,14 @@ import NavbarMenu from "./NavbarMenu";
 import NavbarFriend from "./NavbarFriend";
 import NavbarNotofiication from "./NavbarNotofiication";
 import NavbarMsg from "./NavbarMsg";
-import { Link, NavLink } from "react-router-dom";
+import {  NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const profile = useSelector((state) => state.user);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const theme = useSelector((state) => state.app.theme);
   const dispatch = useDispatch();
-
+  console.log("navbar...", profile);
   const [openMenu, setOpenMenu] = useState(false);
   const menuAnchor = useRef(null);
 

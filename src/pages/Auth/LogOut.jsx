@@ -22,9 +22,16 @@ export default function LogOut() {
     );
   }, []);
   return (
-    <Stack>
-      <CircularProgress size={60} color="secondary" />
-      <Typography variant="h5" mt={3}>
+    <Stack
+      sx={{
+        justifyContent: "center",
+        alignItems: "center",
+        mt: 10,
+        flexDirection: "row",
+      }}
+    >
+      <CircularProgress size={25} color="info" />
+      <Typography variant="h5" sx={{ pl: 2 }}>
         Signing out....
       </Typography>
     </Stack>

@@ -13,7 +13,7 @@ export default function Profile() {
 
   const [backgroundOpen, setBackgroundOpen] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState(
-    user.profile?.backImg ? SERVER_URL + user.profile.backImg : backGround
+    user.profile?.backgroundImg ? SERVER_URL + user.profile.backgroundImg : backGround
   );
 
   return (

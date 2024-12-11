@@ -19,9 +19,13 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
   const user = useSelector((state) => state.user);
   const [isImageChanged, setIsIamgeChanged] = useState(false);
   const [selectedImage, setSelectedImage] = useState(
-    user.profile.backImg ? SERVER_URL + user.profile.backImg : background
+    user.profile?.backgroundImg
+      ? SERVER_URL + user.profile.backgroundImg
+      : background
   );
   const dispatch = useDispatch();
+  console.log("user", user);
+  console.log("img...", selectedImage);
 
   const {
     register,

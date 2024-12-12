@@ -41,6 +41,9 @@ export default function Login() {
         dispatch(userActions.setIsLoggedIn(true));
         dispatch(userActions.setProfile(user));
       },
+      onError(error) {
+        console.log(error);
+      },
     });
   }
   const isLoggedIn = useRedurectIfIsLoggedIn();
@@ -66,7 +69,7 @@ export default function Login() {
           >
             <Stack spacing={2}>
               {error ? (
-                <Alert severity="error">{error.message}</Alert>
+                <Alert severity="error">{error.response.data.message}</Alert>
               ) : (
                 <Alert severity="info">
                   Please Enter Username and Password!

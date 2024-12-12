@@ -1,4 +1,9 @@
-import { AdminPanelSettings, EditRounded, Logout } from "@mui/icons-material";
+import {
+  AdminPanelSettings,
+  EditRounded,
+  Logout,
+  Person,
+} from "@mui/icons-material";
 import {
   List,
   ListItem,
@@ -13,7 +18,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function NavbarMenu({ open, anchorEl, handleClose }) {
-  const isAdmin = useSelector((state) => state.user.profile.isAdmin);
+  const user = useSelector((state) => state.user.profile);
 
   return (
     <Menu
@@ -23,7 +28,19 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
       MenuListProps={{ sx: { p: 0 } }}
     >
       <List disablePadding>
-        {isAdmin ? (
+        <ListItem divider>
+          <ListItemButton
+            LinkComponent={Link}
+            to={`/profile/${user._id}`}
+            
+          >
+            <ListItemIcon>
+              <Person />
+            </ListItemIcon>
+            <ListItemText>Profile</ListItemText>
+          </ListItemButton>
+        </ListItem>
+        {user.isAdmin ? (
           <>
             <ListItem>
               <ListItemButton>
@@ -36,7 +53,7 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
           </>
         ) : (
           <>
-            <ListItem>
+            <ListItem divider>
               <ListItemButton>
                 <ListItemIcon>
                   <EditRounded />
@@ -46,8 +63,9 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
             </ListItem>
           </>
         )}
-        <ListItem component={Link} to="/logout">
-          <ListItemButton>
+
+        <ListItem >
+          <ListItemButton LinkComponent={Link} to="/logout">
             <ListItemIcon>
               <Logout />
             </ListItemIcon>

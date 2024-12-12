@@ -36,6 +36,9 @@ export default function Register() {
           navigate("/login");
         }, 3000);
       },
+      onError(error) {
+        console.log(error);
+      },
     });
   }
 
@@ -59,7 +62,7 @@ export default function Register() {
               {data ? (
                 <Alert severity="success">{data.data.message}</Alert>
               ) : error ? (
-                <Alert severity="error">{error.message}</Alert>
+                <Alert severity="error">{error.response.data.message}</Alert>
               ) : (
                 <Alert severity="info">Please fill out all fileds!</Alert>
               )}
@@ -76,6 +79,16 @@ export default function Register() {
                 helperText={errors.username?.message}
                 variant="standard"
                 required
+              />
+              <TextField
+                {...register("livesIn")}
+                label="Lives in"
+                variant="standard"
+              />
+              <TextField
+                {...register("work")}
+                label="Work"
+                variant="standard"
               />
               <TextField
                 {...register("email", {

@@ -30,3 +30,8 @@ export function useChangeBackgorund() {
     mutationFn: (data) => axios.post("/user/background", data),
   });
 }
+export function useProfileImgChange() {
+  return useMutation({
+    mutationFn: (data) => axios.post("/user/profileImg", data),
+  });
+}

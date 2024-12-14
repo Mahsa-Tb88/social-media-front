@@ -26,9 +26,10 @@ export default function Profile() {
   // );
 
   return (
-    <Container>
+    <Stack>
+    
       <ProfileHeader />
       <Content />
-    </Container>
+    </Stack>
   );
 }

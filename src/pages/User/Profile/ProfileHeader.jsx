@@ -1,4 +1,4 @@
-import { Box, Grid2, Stack, Typography } from "@mui/material";
+import { Box, Container, Grid2, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import BackgroundChange from "../BackgroundChange";
 import ProfileImgChange from "./ProfileImgChange";
@@ -10,7 +10,7 @@ import noImage from "../../../assets/images/user.png";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import HomeIcon from "@mui/icons-material/Home";
 import WorkIcon from "@mui/icons-material/Work";
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function ProfileHeader() {
   const user = useSelector((state) => state.user);
@@ -27,7 +27,7 @@ export default function ProfileHeader() {
     user.profile.profileImg ? SERVER_URL + user.profile.profileImg : noImage
   );
   return (
-    <Stack>
+    <Container>
       <Grid2 container>
         <Grid2 size={12} sx={{ mt: 3 }}>
           <Stack sx={{ height: "400px", position: "relative" }}>
@@ -133,6 +133,6 @@ export default function ProfileHeader() {
         onClose={() => setProfileImgOpen(false)}
         setProfileImg={setProfileImg}
       />
-    </Stack>
+    </Container>
   );
 }

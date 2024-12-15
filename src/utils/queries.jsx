@@ -10,3 +10,10 @@ export function useInitialize() {
     queryFn: () => axios.get("/misc/initialize"),
   });
 }
+
+export function useGetPostsUser(id) {
+  return useQuery({
+    queryKey: ["posts", id],
+    queryFn: () => axios.get("user/posts/" + id),
+  });
+}

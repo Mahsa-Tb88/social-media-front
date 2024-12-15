@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import noImage from "../../../assets/images/user.png";
@@ -8,7 +8,7 @@ export default function FriendSection() {
   const user = useSelector((state) => state.user);
 
   return (
-    <Stack>
+    <Paper sx={{ p: 1, height: "100vh" }}>
       <Typography sx={{ fontWeight: "Bold", fontSize: 20, mb: 1 }}>
         Friends
       </Typography>
@@ -43,6 +43,6 @@ export default function FriendSection() {
           </Stack>
         </Stack>
       )}
-    </Stack>
+    </Paper>
   );
 }

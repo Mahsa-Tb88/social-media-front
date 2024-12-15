@@ -25,7 +25,7 @@ export default function Content() {
       }}
     >
       <Container maxWidth="md">
-        <Grid2 container spacing={7}>
+        <Grid2 container spacing={2}>
           <Grid2 size={{ xs: 12, lg: 4 }}>
             <FriendSection />
           </Grid2>

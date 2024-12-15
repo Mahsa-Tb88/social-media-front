@@ -1,7 +1,7 @@
 import { Alert, AlertTitle, LinearProgress } from "@mui/material";
 import React from "react";
 
-export default function Loading() {
+export default function Loading({ message = "VibeLink" }) {
   return (
     <Alert
       color="info"
@@ -15,7 +15,7 @@ export default function Loading() {
       icon={false}
     >
       <AlertTitle sx={{ textAlign: "center", fontSize: 20, mb: 2 }}>
-        VibeLink
+        {message}
       </AlertTitle>
       <LinearProgress />
     </Alert>

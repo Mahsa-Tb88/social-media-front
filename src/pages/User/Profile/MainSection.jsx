@@ -52,7 +52,7 @@ export default function MainSection() {
           />
         </Stack>
       </Paper>
-      {data.data.body ? (
+      {data?.data.body ? (
         <Paper sx={{ p: 2, mt: 3, height: "100vh" }}>
           <Stack>
             {isPending ? (

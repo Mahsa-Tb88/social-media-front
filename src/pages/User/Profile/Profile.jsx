@@ -27,7 +27,6 @@ export default function Profile() {
 
   return (
     <Stack>
-    
       <ProfileHeader />
       <Content />
     </Stack>

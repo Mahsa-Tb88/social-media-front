@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Paper,
   Stack,
   Typography,
@@ -14,6 +15,9 @@ import PostProfile from "./PostProfile";
 import { useGetPostsUser } from "../../../utils/queries";
 import LoadingError from "../../../components/LoadingError";
 import Loading from "../../../components/Loading";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { autoBatchEnhancer } from "@reduxjs/toolkit";
 
 export default function MainSection() {
   const theme = useSelector((state) => state.app.theme);
@@ -21,6 +25,7 @@ export default function MainSection() {
 
   const [openCreatePost, setOpenCreatePost] = useState(false);
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
+  const [isLike, setIsLike] = useState(false);
   console.log(data);
 
   function getDate(dateString) {
@@ -61,7 +66,7 @@ export default function MainSection() {
         </Stack>
       </Paper>
       {data?.data.body ? (
-        <Paper sx={{ p: 2, mt: 3, height: "100vh" }}>
+        <Paper sx={{ p: 2, mt: 3, minHeight: "100vh" }}>
           <Stack>
             {isPending ? (
               <Loading message="Loading Post..." />
@@ -100,11 +105,35 @@ export default function MainSection() {
                       </Stack>
                       <Stack key={p} spacing={2}>
                         <Typography>{p.title}</Typography>
-                        <Box
-                          component="img"
-                          src={p.image ? SERVER_URL + p.image : ""}
-                        />
+                        <Stack
+                          sx={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box
+                            component="img"
+                            src={p.image ? SERVER_URL + p.image : ""}
+                            sx={{ maxWidth: "300px", maxHeight: "300px" }}
+                          />
+                        </Stack>
+
                         <Typography>{p.desc}</Typography>
+                      </Stack>
+                      <Divider sx={{ my: 1 }} />
+                      <Stack>
+                        {isLike ? (
+                          <Box onClick={() => setIsLike(!isLike)}>
+                            <FavoriteIcon
+                              sx={{ color: "#f50057", cursor: "pointer" }}
+                            />
+                          </Box>
+                        ) : (
+                          <Box onClick={() => setIsLike(!isLike)}>
+                            <FavoriteBorderIcon sx={{ cursor: "pointer" }} />
+                          </Box>
+                        )}
+                        <Box></Box>
                       </Stack>
                     </Stack>
                   );

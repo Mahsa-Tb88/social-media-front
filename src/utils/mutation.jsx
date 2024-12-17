@@ -35,3 +35,8 @@ export function useProfileImgChange() {
     mutationFn: (data) => axios.post("/user/profileImg", data),
   });
 }
+export function useCreateNewPost() {
+  return useMutation({
+    mutationFn: (data) => axios.post("/user/post", data),
+  });
+}

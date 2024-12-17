@@ -21,6 +21,14 @@ export default function MainSection() {
 
   const [openCreatePost, setOpenCreatePost] = useState(false);
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
+  console.log(data);
+
+  function getDate(dateString) {
+    const myDate = new Date(dateString);
+    const options = { month: "long", day: "2-digit", year: "numeric" };
+    const formattedDate = myDate.toLocaleDateString("en-GB", options);
+    return formattedDate;
+  }
 
   return (
     <Container>
@@ -62,7 +70,44 @@ export default function MainSection() {
             ) : data?.data.body ? (
               <Stack>
                 {data?.data.body.map((p) => {
-                  return <Stack key={p}></Stack>;
+                  return (
+                    <Stack>
+                      <Stack
+                        sx={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 2,
+                          mb: 3,
+                        }}
+                      >
+                        <Box
+                          component="img"
+                          src={
+                            profile.profileImg ? profile.profileImg : noImage
+                          }
+                          sx={{
+                            width: "40px",
+                            height: "40px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                        <Stack>
+                          <Typography>{profile.username}</Typography>
+                          <Typography sx={{ fontSize: 13 }}>
+                            {getDate(p.createdAt)}
+                          </Typography>
+                        </Stack>
+                      </Stack>
+                      <Stack key={p} spacing={2}>
+                        <Typography>{p.title}</Typography>
+                        <Box
+                          component="img"
+                          src={p.image ? SERVER_URL + p.image : ""}
+                        />
+                        <Typography>{p.desc}</Typography>
+                      </Stack>
+                    </Stack>
+                  );
                 })}
               </Stack>
             ) : (

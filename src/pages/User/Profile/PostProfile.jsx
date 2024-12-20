@@ -145,9 +145,7 @@ export default function PostProfile({ open, onClose }) {
             sx={{ height: "60px", width: "60px", borderRadius: "50%" }}
           />
           <Stack sx={{ alignItems: "center", gap: 1 }}>
-            <Typography sx={{ fontSize: 17 }}>
-              {profile.username[0].toUpperCase() + profile.username.slice(1)}
-            </Typography>
+            <Typography sx={{ fontSize: 17 }}>{profile.username}</Typography>
 
             <Select
               value={viewer}

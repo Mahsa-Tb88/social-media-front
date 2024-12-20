@@ -85,7 +85,7 @@ export default function UploadImage({ setOpenUploadImage, setImagePost }) {
         )}
       </Stack>
       <Button variant="outlined" onClick={() => removeImageHandler()}>
-        Remove{" "}
+        Remove
       </Button>
     </Stack>
   );

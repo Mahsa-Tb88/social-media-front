@@ -2,6 +2,7 @@ import {
   Alert,
   Box,
   Button,
+  colors,
   Container,
   Divider,
   Paper,
@@ -17,7 +18,13 @@ import LoadingError from "../../../components/LoadingError";
 import Loading from "../../../components/Loading";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { autoBatchEnhancer } from "@reduxjs/toolkit";
+import GroupIcon from "@mui/icons-material/Group";
+import ChatIcon from "@mui/icons-material/Chat";
+import IosShareIcon from "@mui/icons-material/IosShare";
+import FilterViewer from "./FilterViewer";
+import PublicIcon from "@mui/icons-material/Public";
+import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
+import Diversity1Icon from "@mui/icons-material/Diversity1";
 
 export default function MainSection() {
   const theme = useSelector((state) => state.app.theme);
@@ -26,7 +33,8 @@ export default function MainSection() {
   const [openCreatePost, setOpenCreatePost] = useState(false);
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
   const [isLike, setIsLike] = useState(false);
-  console.log(data);
+  const [openFilterViewer, setOpenFilterViewer] = useState(false);
+  const [viewer, setViewer] = useState("friends");
 
   function getDate(dateString) {
     const myDate = new Date(dateString);
@@ -97,10 +105,91 @@ export default function MainSection() {
                           }}
                         />
                         <Stack>
-                          <Typography>{profile.username}</Typography>
-                          <Typography sx={{ fontSize: 13 }}>
-                            {getDate(p.createdAt)}
+                          <Typography sx={{ fontSize: 18 }}>
+                            {profile.username}
                           </Typography>
+                          <Stack
+                            sx={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Typography sx={{ fontSize: 13 }}>
+                              {getDate(p.createdAt)}
+                            </Typography>
+
+                            {viewer == "friends" ? (
+                              <GroupIcon
+                                sx={{
+                                  fontSize: 16,
+                                  cursor: "pointer",
+                                  borderRadius: "50%",
+                                  
+                                  "&:hover": {
+                                    bgcolor:
+                                      theme === "dark"
+                                        ? "grey.800"
+                                        : "grey.200",
+                                  },
+                                }}
+                                onClick={() => setOpenFilterViewer(true)}
+                              />
+                            ) : viewer == "public" ? (
+                              <PublicIcon
+                                sx={{
+                                  fontSize: 16,
+                                  cursor: "pointer",
+                                  borderRadius: "50%",
+                                  
+                                  "&:hover": {
+                                    bgcolor:
+                                      theme === "dark"
+                                        ? "grey.800"
+                                        : "grey.200",
+                                  },
+                                }}
+                                onClick={() => setOpenFilterViewer(true)}
+                              />
+                            ) : viewer == "Frineds except" ? (
+                              <GroupRemoveIcon
+                                sx={{
+                                  fontSize: 16,
+                                  cursor: "pointer",
+                                  borderRadius: "50%",
+                                  
+                                  "&:hover": {
+                                    bgcolor:
+                                      theme === "dark"
+                                        ? "grey.800"
+                                        : "grey.200",
+                                  },
+                                }}
+                                onClick={() => setOpenFilterViewer(true)}
+                              />
+                            ) : (
+                              <Diversity1Icon
+                                sx={{
+                                  fontSize: 16,
+                                  cursor: "pointer",
+                                  borderRadius: "50%",
+                                  
+                                  "&:hover": {
+                                    bgcolor:
+                                      theme === "dark"
+                                        ? "grey.800"
+                                        : "grey.200",
+                                  },
+                                }}
+                                onClick={() => setOpenFilterViewer(true)}
+                              />
+                            )}
+                          </Stack>
+                          <FilterViewer
+                            open={openFilterViewer}
+                            onClose={() => setOpenFilterViewer(false)}
+                            setViewer={viewer}
+                          />
                         </Stack>
                       </Stack>
                       <Stack key={p} spacing={2}>
@@ -121,19 +210,51 @@ export default function MainSection() {
                         <Typography>{p.desc}</Typography>
                       </Stack>
                       <Divider sx={{ my: 1 }} />
-                      <Stack>
-                        {isLike ? (
-                          <Box onClick={() => setIsLike(!isLike)}>
-                            <FavoriteIcon
-                              sx={{ color: "#f50057", cursor: "pointer" }}
-                            />
-                          </Box>
-                        ) : (
-                          <Box onClick={() => setIsLike(!isLike)}>
-                            <FavoriteBorderIcon sx={{ cursor: "pointer" }} />
-                          </Box>
-                        )}
-                        <Box></Box>
+                      <Stack
+                        sx={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 5,
+                        }}
+                      >
+                        <Stack sx={{ flexDirection: "row", gap: 1 }}>
+                          {isLike ? (
+                            <Box onClick={() => setIsLike(!isLike)}>
+                              <FavoriteIcon
+                                sx={{ color: "#f50057", cursor: "pointer" }}
+                              />
+                            </Box>
+                          ) : (
+                            <Box onClick={() => setIsLike(!isLike)}>
+                              <FavoriteBorderIcon sx={{ cursor: "pointer" }} />
+                            </Box>
+                          )}
+                          <Box>54</Box>
+                        </Stack>
+                        <Stack
+                          sx={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 1,
+                            cursor: "pointer",
+                            "& :hover ": { color: "#0277bd" },
+                          }}
+                        >
+                          <ChatIcon />
+                          <Typography>Comments</Typography>
+                        </Stack>
+                        <Stack
+                          sx={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 1,
+                            cursor: "pointer",
+                            "& :hover ": { color: "#0277bd" },
+                          }}
+                        >
+                          <IosShareIcon />
+                          <Typography>Share</Typography>
+                        </Stack>
                       </Stack>
                     </Stack>
                   );

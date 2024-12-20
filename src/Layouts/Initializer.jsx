@@ -20,9 +20,10 @@ export default function Initializer() {
 
       if (body?.user) {
         dispatch(userActions.setIsLoggedIn(true));
+        body.user.username =
+          body.user.username[0].toUpperCase() + body.user.username.slice(1);
         dispatch(userActions.setProfile(body.user));
       }
-      console.log("initia...", body);
     }
   }, [data]);
 

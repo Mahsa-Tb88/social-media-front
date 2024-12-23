@@ -25,6 +25,7 @@ import FilterViewer from "./FilterViewer";
 import PublicIcon from "@mui/icons-material/Public";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
+import LockIcon from "@mui/icons-material/Lock";
 
 export default function MainSection() {
   const theme = useSelector((state) => state.app.theme);
@@ -125,7 +126,7 @@ export default function MainSection() {
                                   fontSize: 16,
                                   cursor: "pointer",
                                   borderRadius: "50%",
-                                  
+
                                   "&:hover": {
                                     bgcolor:
                                       theme === "dark"
@@ -141,7 +142,7 @@ export default function MainSection() {
                                   fontSize: 16,
                                   cursor: "pointer",
                                   borderRadius: "50%",
-                                  
+
                                   "&:hover": {
                                     bgcolor:
                                       theme === "dark"
@@ -151,13 +152,13 @@ export default function MainSection() {
                                 }}
                                 onClick={() => setOpenFilterViewer(true)}
                               />
-                            ) : viewer == "Frineds except" ? (
+                            ) : viewer == "except" ? (
                               <GroupRemoveIcon
                                 sx={{
                                   fontSize: 16,
                                   cursor: "pointer",
                                   borderRadius: "50%",
-                                  
+
                                   "&:hover": {
                                     bgcolor:
                                       theme === "dark"
@@ -168,12 +169,12 @@ export default function MainSection() {
                                 onClick={() => setOpenFilterViewer(true)}
                               />
                             ) : (
-                              <Diversity1Icon
+                              <LockIcon
                                 sx={{
                                   fontSize: 16,
                                   cursor: "pointer",
                                   borderRadius: "50%",
-                                  
+
                                   "&:hover": {
                                     bgcolor:
                                       theme === "dark"
@@ -188,7 +189,8 @@ export default function MainSection() {
                           <FilterViewer
                             open={openFilterViewer}
                             onClose={() => setOpenFilterViewer(false)}
-                            setViewer={viewer}
+                            setViewer={setViewer}
+                            viewer={viewer}
                           />
                         </Stack>
                       </Stack>

@@ -6,6 +6,7 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import LogOut from "../pages/Auth/LogOut";
 import Profile from "../pages/User/Profile/Profile";
+import EditUser from "../pages/User/EditUser";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
           { path: "register", element: <Register /> },
           { path: "profile/:id", element: <Profile /> },
           { path: "logout", element: <LogOut /> },
+          { path: "edit/user/:id", element: <EditUser /> },
         ],
       },
     ],

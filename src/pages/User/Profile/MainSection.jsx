@@ -7,6 +7,8 @@ import {
   Divider,
   Paper,
   Stack,
+  TextareaAutosize,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -36,6 +38,7 @@ export default function MainSection() {
   const [isLike, setIsLike] = useState(false);
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState("friends");
+  const [showComments, setShowComments] = useState(false);
 
   function getDate(dateString) {
     const myDate = new Date(dateString);
@@ -221,17 +224,35 @@ export default function MainSection() {
                       >
                         <Stack sx={{ flexDirection: "row", gap: 1 }}>
                           {isLike ? (
-                            <Box onClick={() => setIsLike(!isLike)}>
+                            <Box
+                              onClick={() => setIsLike(!isLike)}
+                              sx={{ "&:hover": { color: "blue" } }}
+                            >
                               <FavoriteIcon
-                                sx={{ color: "#f50057", cursor: "pointer" }}
+                                sx={{
+                                  color: "#f50057",
+                                  cursor: "pointer",
+                                }}
                               />
                             </Box>
                           ) : (
                             <Box onClick={() => setIsLike(!isLike)}>
-                              <FavoriteBorderIcon sx={{ cursor: "pointer" }} />
+                              <FavoriteBorderIcon
+                                sx={{
+                                  cursor: "pointer",
+                                  "&:hover": { color: "#f50057" },
+                                }}
+                              />
                             </Box>
                           )}
-                          <Box>54</Box>
+                          <Box
+                            sx={{
+                              cursor: "pointer",
+                              "&:hover": { fontWeight: "bold" },
+                            }}
+                          >
+                            54
+                          </Box>
                         </Stack>
                         <Stack
                           sx={{
@@ -239,11 +260,17 @@ export default function MainSection() {
                             alignItems: "center",
                             gap: 1,
                             cursor: "pointer",
-                            "& :hover ": { color: "#0277bd" },
+                            p: 1,
+                            borderRadius: "5px",
+                            "&:hover ": {
+                              bgcolor:
+                                theme === "dark" ? "grey.800" : "grey.200",
+                            },
                           }}
                         >
                           <ChatIcon />
                           <Typography>Comments</Typography>
+                          <Typography>6</Typography>
                         </Stack>
                         <Stack
                           sx={{
@@ -251,13 +278,41 @@ export default function MainSection() {
                             alignItems: "center",
                             gap: 1,
                             cursor: "pointer",
-                            "& :hover ": { color: "#0277bd" },
+                            p: 1,
+                            borderRadius: "5px",
+                            "&:hover ": {
+                              bgcolor:
+                                theme === "dark" ? "grey.800" : "grey.200",
+                            },
                           }}
                         >
                           <IosShareIcon />
                           <Typography>Share</Typography>
                         </Stack>
                       </Stack>
+                      <Divider sx={{ my: 1 }} />
+
+                      <Box
+                        component="textarea"
+                        placeholder="Write your comment"
+                        minRows={3}
+                        sx={{
+                          mt: 3,
+                          borderColor:
+                            theme === "dark" ? "grey.800" : "grey.200",
+                          bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                          fontSize: 15,
+                          borderRadius: "15px",
+                          px: 1,
+                          py: 2,
+                          resize: "none",
+                          "&:focus": {
+                            outline: "none",
+                            borderColor:
+                              theme === "dark" ? "grey.200" : "grey.800",
+                          },
+                        }}
+                      />
                     </Stack>
                   );
                 })}

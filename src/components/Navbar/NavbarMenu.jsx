@@ -29,11 +29,7 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
     >
       <List disablePadding>
         <ListItem divider>
-          <ListItemButton
-            LinkComponent={Link}
-            to={`/profile/${user._id}`}
-            
-          >
+          <ListItemButton LinkComponent={Link} to={`/profile/${user._id}`}>
             <ListItemIcon>
               <Person />
             </ListItemIcon>
@@ -54,7 +50,10 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
         ) : (
           <>
             <ListItem divider>
-              <ListItemButton>
+              <ListItemButton
+                LinkComponent={Link}
+                to={`/edit/user/${user._id}`}
+              >
                 <ListItemIcon>
                   <EditRounded />
                 </ListItemIcon>
@@ -64,7 +63,7 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
           </>
         )}
 
-        <ListItem >
+        <ListItem>
           <ListItemButton LinkComponent={Link} to="/logout">
             <ListItemIcon>
               <Logout />

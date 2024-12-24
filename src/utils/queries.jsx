@@ -17,3 +17,5 @@ export function useGetPostsUser(id) {
     queryFn: () => axios.get("user/posts/" + id),
   });
 }
+
+

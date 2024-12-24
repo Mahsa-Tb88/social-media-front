@@ -40,3 +40,9 @@ export function useCreateNewPost() {
     mutationFn: (data) => axios.post("/user/post", data),
   });
 }
+
+export function useEditUser() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/user/edit/${data.id}`, data),
+  });
+}

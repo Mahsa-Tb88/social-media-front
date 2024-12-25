@@ -12,7 +12,6 @@ export default function Initializer() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("data...", data);
     if (data) {
       const { body } = data.data;
       dispatch(appActions.setCategories(body.categories));

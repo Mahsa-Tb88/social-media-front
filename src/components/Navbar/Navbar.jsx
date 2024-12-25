@@ -1,5 +1,6 @@
 import {
   DarkMode,
+  Home,
   LightMode,
   Message,
   Notifications,
@@ -24,7 +25,7 @@ import NavbarMenu from "./NavbarMenu";
 import NavbarFriend from "./NavbarFriend";
 import NavbarNotofiication from "./NavbarNotofiication";
 import NavbarMsg from "./NavbarMsg";
-import {  NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const profile = useSelector((state) => state.user);
@@ -69,6 +70,9 @@ export default function Navbar() {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={3} alignItems="center">
+            <MyIconButton LinkComponent={Link} to="/">
+              <Home />
+            </MyIconButton>
             <MyIconButton
               onClick={chageHandlerTheme}
               sx={{ width: 30, height: 30 }}

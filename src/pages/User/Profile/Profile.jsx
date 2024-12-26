@@ -1,34 +1,41 @@
-import { Box, Container, Grid2, Stack, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import backGround from "../../../assets/images/back.jpg";
-import noImage from "../../../assets/images/user.png";
-import { Edit } from "@mui/icons-material";
-import MyIconButton from "../../../components/Customized/MyIconButton";
-import BackgroundChange from "../BackgroundChange";
-import ProfileImgChange from "./ProfileImgChange";
 import ProfileHeader from "./ProfileHeader";
 import Content from "./Content";
+import { useParams } from "react-router-dom";
+import { useGetUserById } from "../../../utils/queries";
+import Loading from "../../../components/Loading";
+import LoadingError from "../../../components/LoadingError";
 
 export default function Profile() {
-  // const user = useSelector((state) => state.user);
+  const userLogin = useSelector((state) => state.user.profile);
+  const id = useParams().id;
+  const [user, setUser] = useState(userLogin);
+  const { isPending, data, refetch, error } = useGetUserById(id);
 
-  // const [backgroundOpen, setBackgroundOpen] = useState(false);
-  // const [backgroundImg, setBackgroundImg] = useState(
-  //   user.profile?.backgroundImg
-  //     ? SERVER_URL + user.profile.backgroundImg
-  //     : backGround
-  // );
-
-  // const [profileImgOpen, setProfileImgOpen] = useState(false);
-  // const [profileImg, setProfileImg] = useState(
-  //   user.profile.profileImg ? SERVER_URL + user.profile.profileImg : noImage
-  // );
+  useEffect(() => {
+    if (data) {
+      if (data?.data?.body._id == userLogin._id) {
+        setUser(userLogin);
+      } else {
+        setUser(data.data.body);
+      }
+    }
+  }, [data]);
 
   return (
     <Stack>
-      <ProfileHeader />
-      <Content />
+      {isPending ? (
+        <Loading message="is loading..." />
+      ) : error ? (
+        <LoadingError handleAction={refetch} message={error.message} />
+      ) : (
+        <Stack>
+          <ProfileHeader user={user} />
+          <Content user={user} />
+        </Stack>
+      )}
     </Stack>
   );
 }

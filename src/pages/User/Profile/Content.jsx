@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import FriendSection from "./FriendSection";
 import MainSection from "./MainSection";
 
-export default function Content() {
+export default function Content({user}) {
   const theme = useSelector((state) => state.app.theme);
 
   return (

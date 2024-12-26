@@ -24,3 +24,10 @@ export function useGetAllUser() {
     queryFn: () => axios.get("/users/"),
   });
 }
+
+export function useGetUserById(id) {
+  return useQuery({
+    queryKey: ["user", id],
+    queryFn: () => axios.get("/user/" + id),
+  });
+}

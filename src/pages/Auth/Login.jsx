@@ -39,6 +39,7 @@ export default function Login() {
       onSuccess(d) {
         const user = d.data.body.user;
         dispatch(userActions.setIsLoggedIn(true));
+        user.username = user.username[0].toUpperCase() + user.username.slice(1);
         dispatch(userActions.setProfile(user));
       },
       onError(error) {

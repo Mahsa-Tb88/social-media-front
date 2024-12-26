@@ -1,5 +1,5 @@
 import { Box, Container, Grid2, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BackgroundChange from "../BackgroundChange";
 import ProfileImgChange from "./ProfileImgChange";
 import MyIconButton from "../../../components/Customized/MyIconButton";
@@ -11,20 +11,19 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import HomeIcon from "@mui/icons-material/Home";
 import WorkIcon from "@mui/icons-material/Work";
 import PersonIcon from "@mui/icons-material/Person";
+import { useParams } from "react-router-dom";
 
-export default function ProfileHeader() {
-  const user = useSelector((state) => state.user);
+export default function ProfileHeader({ user }) {
+  const userLogin = useSelector((state) => state.user.profile);
 
   const [backgroundOpen, setBackgroundOpen] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState(
-    user.profile?.backgroundImg
-      ? SERVER_URL + user.profile.backgroundImg
-      : backGround
+    user.backgroundImg ? SERVER_URL + user.backgroundImg : backGround
   );
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
-    user.profile.profileImg ? SERVER_URL + user.profile.profileImg : noImage
+    user.profileImg ? SERVER_URL + user.profileImg : noImage
   );
   return (
     <Container>
@@ -43,12 +42,14 @@ export default function ProfileHeader() {
                 }}
                 component="img"
               />
-              <MyIconButton
-                sx={{ position: "absolute", bottom: "10px", right: "10px" }}
-                onClick={() => setBackgroundOpen(true)}
-              >
-                <Edit />
-              </MyIconButton>
+              {userLogin.username == user.username && (
+                <MyIconButton
+                  sx={{ position: "absolute", bottom: "10px", right: "10px" }}
+                  onClick={() => setBackgroundOpen(true)}
+                >
+                  <Edit />
+                </MyIconButton>
+              )}
             </Stack>
             <Stack
               sx={{
@@ -68,12 +69,14 @@ export default function ProfileHeader() {
                     borderRadius: "50%",
                   }}
                 />
-                <MyIconButton
-                  sx={{ position: "absolute", bottom: "10px", right: "10px" }}
-                  onClick={() => setProfileImgOpen(true)}
-                >
-                  <Edit />
-                </MyIconButton>
+                {userLogin.username == user.username && (
+                  <MyIconButton
+                    sx={{ position: "absolute", bottom: "10px", right: "10px" }}
+                    onClick={() => setProfileImgOpen(true)}
+                  >
+                    <Edit />
+                  </MyIconButton>
+                )}
               </Stack>
               <Stack sx={{ textAlign: "center", mt: 3 }}>
                 <Box
@@ -87,7 +90,7 @@ export default function ProfileHeader() {
                 >
                   <PersonIcon />
                   <Typography sx={{ fontWeight: "bold", fontSize: 25 }}>
-                    {user.profile.username}
+                    {user.username}
                   </Typography>
                 </Box>
                 <Box
@@ -101,7 +104,7 @@ export default function ProfileHeader() {
                 >
                   <HomeIcon />
                   <Typography sx={{ fontWeight: "bold", fontSize: 25 }}>
-                    {user.profile.livesIn}
+                    {user.livesIn}
                   </Typography>
                 </Box>
                 <Box
@@ -115,7 +118,7 @@ export default function ProfileHeader() {
                 >
                   <WorkIcon />
                   <Typography sx={{ fontWeight: "bold", fontSize: 25 }}>
-                    {user.profile.work}
+                    {user.work}
                   </Typography>
                 </Box>
               </Stack>
@@ -123,16 +126,20 @@ export default function ProfileHeader() {
           </Stack>
         </Grid2>
       </Grid2>
-      <BackgroundChange
-        open={backgroundOpen}
-        onClose={() => setBackgroundOpen(false)}
-        setBackgroundImg={setBackgroundImg}
-      />
-      <ProfileImgChange
-        open={profileImgOpen}
-        onClose={() => setProfileImgOpen(false)}
-        setProfileImg={setProfileImg}
-      />
+      {userLogin.username == user.username && (
+        <BackgroundChange
+          open={backgroundOpen}
+          onClose={() => setBackgroundOpen(false)}
+          setBackgroundImg={setBackgroundImg}
+        />
+      )}
+      {userLogin.username == user.username && (
+        <ProfileImgChange
+          open={profileImgOpen}
+          onClose={() => setProfileImgOpen(false)}
+          setProfileImg={setProfileImg}
+        />
+      )}
     </Container>
   );
 }

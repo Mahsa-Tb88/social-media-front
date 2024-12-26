@@ -18,4 +18,9 @@ export function useGetPostsUser(id) {
   });
 }
 
-
+export function useGetAllUser() {
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/users/"),
+  });
+}

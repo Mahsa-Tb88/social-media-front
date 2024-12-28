@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRegister } from "../../utils/mutation";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,11 @@ export default function Register() {
     watch,
     formState: { errors },
   } = useForm();
+  
+  const cleaerSwitch = useRef(null);
+  useEffect(() => {
+    return () => clearTimeout(cleaerSwitch.current);
+  }, []);
 
   const navigate = useNavigate();
   const { isPending, data, error, mutate } = useRegister();
@@ -32,7 +37,8 @@ export default function Register() {
   function onSubmit(data) {
     mutate(data, {
       onSuccess() {
-        setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "instant" });
+        cleaerSwitch.current = setTimeout(() => {
           navigate("/login");
         }, 3000);
       },

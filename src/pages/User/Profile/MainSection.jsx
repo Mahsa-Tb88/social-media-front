@@ -29,9 +29,9 @@ import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
 import LockIcon from "@mui/icons-material/Lock";
 
-export default function MainSection() {
+export default function MainSection({ profile }) {
   const theme = useSelector((state) => state.app.theme);
-  const profile = useSelector((state) => state.user.profile);
+  console.log(profile);
 
   const [openCreatePost, setOpenCreatePost] = useState(false);
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);

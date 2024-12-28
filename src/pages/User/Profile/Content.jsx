@@ -13,8 +13,17 @@ import { useSelector } from "react-redux";
 import FriendSection from "./FriendSection";
 import MainSection from "./MainSection";
 
-export default function Content({user}) {
+export default function Content({ user }) {
   const theme = useSelector((state) => state.app.theme);
+  const userLogin = useSelector((state) => state.user.profile);
+
+  if (user.viewer == "private" && user._id != userLogin._id) {
+    return (
+      <Container sx={{ mt: 30 }}>
+        <Stack>This is Private</Stack>
+      </Container>
+    );
+  }
 
   return (
     <Stack
@@ -30,7 +39,7 @@ export default function Content({user}) {
             <FriendSection />
           </Grid2>
           <Grid2 size={{ xs: 12, lg: 8 }}>
-            <MainSection />
+            <MainSection profile={user} />
           </Grid2>
         </Grid2>
       </Container>

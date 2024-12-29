@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Grid2,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Container, Grid2, Stack, Typography } from "@mui/material";
 import React from "react";
 import { purple, red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
@@ -20,7 +12,18 @@ export default function Content({ user }) {
   if (user.viewer == "private" && user._id != userLogin._id) {
     return (
       <Container sx={{ mt: 30 }}>
-        <Stack>This is Private</Stack>
+        <Stack
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+            bgcolor: theme == "dark" ? "grey.800" : "grey.200",
+            borderRadius:"5px"
+          }}
+        >
+          <Typography sx={{ fontWeight: "bold", fontSize: 20, my: 3 }}>
+            This profile is private!
+          </Typography>
+        </Stack>
       </Container>
     );
   }

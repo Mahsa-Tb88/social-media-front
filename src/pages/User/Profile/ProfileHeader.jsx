@@ -1,20 +1,26 @@
-import { Box, Container, Grid2, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Grid2,
+  Stack,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
 import BackgroundChange from "../BackgroundChange";
 import ProfileImgChange from "./ProfileImgChange";
 import MyIconButton from "../../../components/Customized/MyIconButton";
-import { Edit, PersonPin } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import backGround from "../../../assets/images/back.jpg";
 import noImage from "../../../assets/images/user.png";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import HomeIcon from "@mui/icons-material/Home";
-import WorkIcon from "@mui/icons-material/Work";
-import PersonIcon from "@mui/icons-material/Person";
-import { useParams } from "react-router-dom";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import MessageIcon from "@mui/icons-material/Message";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function ProfileHeader({ user }) {
   const userLogin = useSelector((state) => state.user.profile);
+  const theme = useSelector((state) => state.app.theme);
 
   const [backgroundOpen, setBackgroundOpen] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState(
@@ -54,31 +60,94 @@ export default function ProfileHeader({ user }) {
             <Stack
               sx={{
                 position: "absolute",
-                bottom: "-50%",
+                top: "80%",
                 left: "10%",
-                heigh: "20%",
-                width: "20%",
+                width: "80%",
               }}
             >
-              <Stack sx={{ position: "relative" }}>
-                <Box
-                  component="img"
-                  src={profileImg}
+              <Stack
+                sx={{ flexDirection: "row", alignItems: "center", gap: 7 }}
+              >
+                <Stack sx={{ position: "relative" }}>
+                  <Box
+                    component="img"
+                    src={profileImg}
+                    sx={{
+                      border: "var(--border)",
+                      borderRadius: "50%",
+                      width: "200px",
+                      height: "200px",
+                    }}
+                  />
+                  {userLogin.username == user.username && (
+                    <MyIconButton
+                      sx={{
+                        position: "absolute",
+                        bottom: "10%",
+                        right: "0",
+                      }}
+                      onClick={() => setProfileImgOpen(true)}
+                    >
+                      <Edit />
+                    </MyIconButton>
+                  )}
+                </Stack>
+                <Stack
                   sx={{
-                    border: "var(--border)",
-                    borderRadius: "50%",
+                    width: "100%",
+                    flexDirection: "row",
+                    mt: 8,
+                    justifyContent: "space-between",
                   }}
-                />
-                {userLogin.username == user.username && (
-                  <MyIconButton
-                    sx={{ position: "absolute", bottom: "10px", right: "10px" }}
-                    onClick={() => setProfileImgOpen(true)}
-                  >
-                    <Edit />
-                  </MyIconButton>
-                )}
+                >
+                  <Stack>
+                    <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
+                      {user.username}
+                    </Typography>
+                    <Typography sx={{ fontSize: 17 }}>
+                      {user.friends.length ? user.friends + "friends" : " "}
+                      {user.mutual ? ", " + user.mutual + "mutual" : ""}
+                    </Typography>
+                  </Stack>
+                  <Stack sx={{ flexDirection: "row", gap: 2 }}>
+                    <Button
+                      startIcon={
+                        user._id != userLogin._id ? (
+                          <PersonAddAlt1Icon />
+                        ) : (
+                          <AddIcon />
+                        )
+                      }
+                      size="large"
+                      sx={{ fontSize: 17 }}
+                      disableElevation
+                    >
+                      {user._id != userLogin._id
+                        ? "Add friend"
+                        : "Add to story"}
+                    </Button>
+                    <Button
+                      size="large"
+                      sx={{
+                        fontSize: 17,
+                        bgcolor: theme == "light" ? "grey.200" : "grey.800",
+                        color: theme == "light" ? "grey.800" : "grey.200",
+                        "&:hover": {
+                          bgcolor: theme == "light" ? "grey.300" : "grey.900",
+                        },
+                      }}
+                      startIcon={
+                        user._id != userLogin._id ? <MessageIcon /> : <Edit />
+                      }
+                      disableElevation
+                    >
+                      {user._id != userLogin._id ? "Message" : "Edit profile"}
+                    </Button>
+                  </Stack>
+                </Stack>
               </Stack>
-              <Stack sx={{ textAlign: "center", mt: 3 }}>
+
+              {/*  <Stack sx={{ textAlign: "center" }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -121,7 +190,7 @@ export default function ProfileHeader({ user }) {
                     {user.work}
                   </Typography>
                 </Box>
-              </Stack>
+              </Stack> */}
             </Stack>
           </Stack>
         </Grid2>

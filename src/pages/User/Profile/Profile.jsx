@@ -1,12 +1,14 @@
-import { Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ProfileHeader from "./ProfileHeader";
-import Content from "./Content";
-import { useParams } from "react-router-dom";
+import Content from "./Post";
+import { Outlet, useParams } from "react-router-dom";
 import { useGetUserById } from "../../../utils/queries";
 import Loading from "../../../components/Loading";
 import LoadingError from "../../../components/LoadingError";
+import Navbar from "./Navbar";
+import ProfileInfo from "./ProfileInfo";
 
 export default function Profile() {
   const userLogin = useSelector((state) => state.user.profile);
@@ -33,7 +35,8 @@ export default function Profile() {
       ) : (
         <Stack>
           <ProfileHeader user={user} />
-          <Content user={user} />
+          <Navbar />
+          <Outlet />
         </Stack>
       )}
     </Stack>

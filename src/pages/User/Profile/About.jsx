@@ -1,8 +1,10 @@
 import {
-  Button,
   Container,
   Divider,
   Grid2,
+  ListItemText,
+  MenuItem,
+  MenuList,
   Paper,
   Stack,
   Typography,
@@ -11,7 +13,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
 import LoadingError from "../../../components/LoadingError";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 export default function About() {
   const theme = useSelector((state) => state.app.theme);
@@ -26,19 +28,69 @@ export default function About() {
                 About
               </Typography>
               <Divider orientation="vertical" flexItem />
-              <Button
-                disableElevation
-                sx={{
-                  width: "100%",
-                }}
-                LinkComponent={NavLink}
-                size="large"
-                variant="text"
-              >
-                Overview
-              </Button>
+              <MenuList>
+                <MenuItem LinkComponent={NavLink} to="overview" end>
+                  <ListItemText
+                    sx={{
+                      color: theme == "light" ? "grey.600" : "grey.200",
+                      fontSize: "20px",
+                      my: 1,
+                    }}
+                  >
+                    Overview
+                  </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemText
+                    sx={{
+                      color: theme == "light" ? "grey.600" : "grey.200",
+                      fontSize: "20px",
+                      my: 1,
+                    }}
+                    LinkComponent={NavLink}
+                    to="contact"
+                  >
+                    Contact and Basic Info
+                  </ListItemText>
+                </MenuItem>
+                <MenuItem LinkComponent={NavLink} to="work&education">
+                  <ListItemText
+                    sx={{
+                      color: theme == "light" ? "grey.600" : "grey.200",
+                      fontSize: "20px",
+                      my: 1,
+                    }}
+                  >
+                    Work and Education
+                  </ListItemText>
+                </MenuItem>
+                <MenuItem LinkComponent={NavLink} to="placeLived">
+                  <ListItemText
+                    sx={{
+                      color: theme == "light" ? "grey.600" : "grey.200",
+                      fontSize: "20px",
+                      my: 1,
+                    }}
+                  >
+                    Place Lived
+                  </ListItemText>
+                </MenuItem>
+                <MenuItem LinkComponent={NavLink} to="family">
+                  <ListItemText
+                    sx={{
+                      color: theme == "light" ? "grey.600" : "grey.200",
+                      fontSize: "20px",
+                      my: 1,
+                    }}
+                  >
+                    Family and Relationship
+                  </ListItemText>
+                </MenuItem>
+              </MenuList>
             </Grid2>
-            <Grid2 size={{ xs: 12, md: 8 }}></Grid2>
+            <Grid2 size={{ xs: 12, md: 8 }}>
+              <Outlet />
+            </Grid2>
           </Grid2>
         </Paper>
       </Container>

@@ -47,7 +47,7 @@ export default function Navbar() {
 
   function chageHandlerTheme() {
     if (theme == "light") {
-      dispatch(appActions.setTheme("dark"));
+      dispatch(appActions.set`Theme`("dark"));
     } else {
       dispatch(appActions.setTheme("light"));
     }

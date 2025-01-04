@@ -39,6 +39,7 @@ const router = createBrowserRouter([
                 element: <About />,
                 children: [
                   { index: true, element: <Overview /> },
+
                   { path: "family", element: <Family /> },
                   { path: "work&education", element: <WorkEducation /> },
                   { path: "placeLived", element: <PlaceLived /> },

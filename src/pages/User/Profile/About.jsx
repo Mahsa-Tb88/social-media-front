@@ -1,7 +1,11 @@
 import {
+  Button,
   Container,
   Divider,
   Grid2,
+  List,
+  ListItem,
+  ListItemButton,
   ListItemText,
   MenuItem,
   MenuList,
@@ -13,10 +17,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Loading from "../../../components/Loading";
 import LoadingError from "../../../components/LoadingError";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useParams } from "react-router-dom";
 
 export default function About() {
   const theme = useSelector((state) => state.app.theme);
+  const id = useParams().id;
   return (
     <Stack sx={{ py: 4, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>
       <Container maxWidth="md">
@@ -28,7 +33,7 @@ export default function About() {
                 About
               </Typography>
               <Divider orientation="vertical" flexItem />
-              <MenuList>
+              {/* <MenuList>
                 <MenuItem LinkComponent={NavLink} to="overview" end>
                   <ListItemText
                     sx={{
@@ -47,10 +52,10 @@ export default function About() {
                       fontSize: "20px",
                       my: 1,
                     }}
-                    LinkComponent={NavLink}
-                    to="contact"
                   >
-                    Contact and Basic Info
+                    <Typography LinkComponent={NavLink} to="contact">
+                      Contact and Basic Info
+                    </Typography>
                   </ListItemText>
                 </MenuItem>
                 <MenuItem LinkComponent={NavLink} to="work&education">
@@ -86,7 +91,45 @@ export default function About() {
                     Family and Relationship
                   </ListItemText>
                 </MenuItem>
-              </MenuList>
+              </MenuList> */}
+              <List
+                sx={{
+                  "& .active": {
+                    color: theme == "light" ? "#0064d1" : "grey.200",
+                    bgcolor: theme == "light" ? "#ebf5ff" : "grey.800",
+                  },
+                }}
+              >
+                <ListItem>
+                  <ListItemButton
+                    LinkComponent={NavLink}
+                    to={"/profile/" + id + "/about"}
+                    end
+                  >
+                    <ListItemText>Overview</ListItemText>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton LinkComponent={NavLink} to="contact">
+                    <ListItemText>Contact and base info</ListItemText>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton LinkComponent={NavLink} to="work&education">
+                    <ListItemText>Work and Education</ListItemText>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton LinkComponent={NavLink} to="family">
+                    <ListItemText>Family and Relationship</ListItemText>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton LinkComponent={NavLink} to="placeLived">
+                    <ListItemText>Place lived</ListItemText>
+                  </ListItemButton>
+                </ListItem>
+              </List>
             </Grid2>
             <Grid2 size={{ xs: 12, md: 8 }}>
               <Outlet />

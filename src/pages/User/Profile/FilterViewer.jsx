@@ -35,7 +35,7 @@ export default function FilterViewer({ open, onClose, setViewer, viewer }) {
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <Typography sx={{ fontSize: 18 }}>Who can see your post?</Typography>
+        <Typography sx={{ fontSize: 18 }}>Who can see?</Typography>
         <Stack
           sx={{
             mt: 4,

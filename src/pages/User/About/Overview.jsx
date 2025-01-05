@@ -8,37 +8,37 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import PublicIcon from "@mui/icons-material/Public";
 import LockIcon from "@mui/icons-material/Lock";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import Diversity1Icon from '@mui/icons-material/Diversity1';
+import Diversity1Icon from "@mui/icons-material/Diversity1";
+import OverviewItems from "./OverviewItems";
 export default function Overview() {
+  const Overview = [{ text: "study at..." }];
   return (
     <Stack sx={{ my: 10, mx: 5, gap: 4 }}>
-      <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        <SchoolIcon />
-        <Typography sx={{ fontSize: "18px" }}>
-          Studied at {"ye chizi"}
-        </Typography>
-        <Box></Box>
-      </Stack>
-      <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        <HomeIcon />
-        <Typography sx={{ fontSize: "18px" }}>Lives in {"ye chizi"}</Typography>
-      </Stack>
-      <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        <PlaceIcon />
-        <Typography sx={{ fontSize: "18px" }}>From {"ye chizi"}</Typography>
-      </Stack>
-      <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        <LoyaltyIcon />
-        <Typography sx={{ fontSize: "18px" }}>
-          Married to {"ye chizi"}
-        </Typography>
-      </Stack>
-      <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        <LocalPhoneIcon />
-        <Typography sx={{ fontSize: "18px" }}>
-          Phone number {"ye chizi"}
-        </Typography>
-      </Stack>
+      <OverviewItems
+        text="styudy ate ye chizi"
+        icon=<SchoolIcon />
+        myViewer="public"
+      />
+      <OverviewItems
+        text="Lives in ye chizi"
+        icon=<HomeIcon />
+        myViewer="public"
+      />
+      <OverviewItems
+        text="from ye chizi"
+        icon=<PlaceIcon />
+        myViewer="public"
+      />
+      <OverviewItems
+        text="Married to ye chizi"
+        icon=<LoyaltyIcon />
+        myViewer="public"
+      />
+      <OverviewItems
+        text="phone number ye chizi"
+        icon=<LocalPhoneIcon />
+        myViewer="public"
+      />
     </Stack>
   );
 }

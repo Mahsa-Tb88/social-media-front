@@ -1,5 +1,5 @@
-import { Box, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Stack, Tooltip, Typography } from "@mui/material";
+import React, { useRef, useState } from "react";
 import PublicIcon from "@mui/icons-material/Public";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
@@ -8,13 +8,22 @@ import { useSelector } from "react-redux";
 import MyIconButton from "../../../components/Customized/MyIconButton";
 import FilterViewer from "../Profile/FilterViewer";
 import GroupIcon from "@mui/icons-material/Group";
+import MenuOverview from "./MenuOverview";
 
-export default function OverviewItems({ icon, text, myViewer }) {
+export default function OverviewItems({
+  icon,
+  text,
+  subject,
+  value,
+  myViewer,
+}) {
   const theme = useSelector((state) => state.app.theme);
 
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(myViewer);
-  console.log(myViewer);
+  const [open, setOpen] = useState(false);
+  const menuOverviewAnchor = useRef(null);
+
   return (
     <Stack>
       <Stack
@@ -26,7 +35,7 @@ export default function OverviewItems({ icon, text, myViewer }) {
       >
         <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
           {icon}
-          <Typography sx={{ fontSize: "18px" }}>{text}</Typography>
+          <Typography sx={{ fontSize: "18px" }}>{text} {value}</Typography>
         </Stack>
         <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
           <Box>
@@ -133,9 +142,11 @@ export default function OverviewItems({ icon, text, myViewer }) {
             )}
           </Box>
           <Box>
-            <MyIconButton>
-              <MoreHorizIcon sx={{ fontSize: 15 }} />
-            </MyIconButton>
+            <Tooltip>
+              <MyIconButton onClick={() => setOpen(true)}>
+                <MoreHorizIcon sx={{ fontSize: 15 }} ref={menuOverviewAnchor} />
+              </MyIconButton>
+            </Tooltip>
           </Box>
         </Stack>
       </Stack>
@@ -145,6 +156,14 @@ export default function OverviewItems({ icon, text, myViewer }) {
           onClose={() => setOpenFilterViewer(false)}
           setViewer={setViewer}
           viewer={viewer}
+        />
+        <MenuOverview
+          open={open}
+          handleClose={() => setOpen(false)}
+          anchorEl={menuOverviewAnchor.current}
+          subject={subject}
+          text={text}
+          value={value}
         />
       </Box>
     </Stack>

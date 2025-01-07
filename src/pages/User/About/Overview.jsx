@@ -15,29 +15,39 @@ export default function Overview() {
   return (
     <Stack sx={{ my: 10, mx: 5, gap: 4 }}>
       <OverviewItems
-        text="styudy ate ye chizi"
+        text="study at"
+        value="ye chizi"
         icon=<SchoolIcon />
         myViewer="public"
+        subject="school"
       />
       <OverviewItems
-        text="Lives in ye chizi"
+        text="Lives in"
+        value="ye chizi"
         icon=<HomeIcon />
         myViewer="public"
+        subject="Lives in"
       />
       <OverviewItems
-        text="from ye chizi"
+        text="From"
+        value="ye chizi"
         icon=<PlaceIcon />
         myViewer="public"
+        subject="Hometown"
       />
       <OverviewItems
-        text="Married to ye chizi"
+        text="Married to"
+        value="ye chizi"
         icon=<LoyaltyIcon />
         myViewer="public"
+        subject="Status"
       />
       <OverviewItems
         text="phone number ye chizi"
+        value="ye chizi"
         icon=<LocalPhoneIcon />
         myViewer="public"
+        subject="Phone number"
       />
     </Stack>
   );

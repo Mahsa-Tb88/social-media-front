@@ -24,7 +24,7 @@ export default function MenuOverview({
     <Menu
       open={open}
       anchorEl={anchorEl}
-      onClick={handleClose}
+      onClose={handleClose}
       MenuListProps={{ sx: { p: 0 } }}
     >
       <List disablePadding>
@@ -49,6 +49,7 @@ export default function MenuOverview({
       <EditAbout
         openEdit={openEdit}
         onCloseEdit={() => setOpenEdit(false)}
+        handleClose={handleClose}
         subject={subject}
         text={text}
         value={value}

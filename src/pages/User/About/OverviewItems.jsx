@@ -16,6 +16,7 @@ export default function OverviewItems({
   subject,
   value,
   myViewer,
+  
 }) {
   const theme = useSelector((state) => state.app.theme);
 

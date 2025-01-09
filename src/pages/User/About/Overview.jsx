@@ -1,13 +1,14 @@
 import { Stack } from "@mui/material";
 import React, { useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
-import PlaceIcon from "@mui/icons-material/Place";
+import HomeIcon from "@mui/icons-material/Home";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
 import OverviewItems from "./OverviewItems";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 export default function Overview() {
-  const Overview = [
+  const listOverview = [
     {
       text: "Study at",
       value: "Isfahan University",
@@ -20,17 +21,17 @@ export default function Overview() {
       value: "Canada",
       myViewer: "friends",
       subject: "Location",
-      icon: <PlaceIcon />,
+      icon: <LocationOnIcon />,
     },
     {
       text: "From",
       value: "Tabriz",
       myViewer: "public",
       subject: "Hometown",
-      icon: <LoyaltyIcon />,
+      icon: <HomeIcon />,
     },
     {
-      text: "Satus",
+      text: "Status",
       value: "Married",
       myViewer: "public",
       subject: "status",
@@ -51,18 +52,21 @@ export default function Overview() {
       icon: <EmailIcon />,
     },
   ];
-
-  const [value, setValue] = useState();
+  const [overview, setOverview] = useState(listOverview);
+  console.log("comp...", overview);
   return (
     <Stack sx={{ my: 10, mx: 5, gap: 4 }}>
-      {Overview.map((p) => {
+      {overview.map((p) => {
         return (
           <OverviewItems
+            key={p.subject}
             text={p.text}
             value={p.value}
             myViewer={p.myViewer}
             subject={p.subject}
             icon={p.icon}
+            setOverview={setOverview}
+            overview={overview}
           />
         );
       })}

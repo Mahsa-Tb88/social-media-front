@@ -9,7 +9,7 @@ import {
   Menu,
 } from "@mui/material";
 import React, { useState } from "react";
-import EditAbout from "./EditAbout";
+import EditValueSubject from "./EditVelueSubject";
 
 export default function MenuOverview({
   open,
@@ -18,8 +18,29 @@ export default function MenuOverview({
   subject,
   text,
   value,
+  setOverview,
+  overview,
 }) {
   const [openEdit, setOpenEdit] = useState(false);
+
+  function deleteItem(value) {
+    console.log(overview);
+    handleClose();
+    const newOverview = overview.map((item) => {
+      if (item.value == value) {
+        return { ...item, value: "" };
+      } else {
+        return item;
+      }
+    });
+
+    setOverview(newOverview);
+  }
+
+  function onCloseEdit() {
+    setOpenEdit(false);
+    handleClose();
+  }
   return (
     <Menu
       open={open}
@@ -38,7 +59,7 @@ export default function MenuOverview({
         </ListItem>
         <Divider />
         <ListItem>
-          <ListItemButton>
+          <ListItemButton onClick={() => deleteItem(value)}>
             <ListItemIcon>
               <Delete />
             </ListItemIcon>
@@ -46,13 +67,15 @@ export default function MenuOverview({
           </ListItemButton>
         </ListItem>
       </List>
-      <EditAbout
+      <EditValueSubject
         openEdit={openEdit}
-        onCloseEdit={() => setOpenEdit(false)}
+        onCloseEdit={onCloseEdit}
         handleClose={handleClose}
         subject={subject}
         text={text}
         value={value}
+        overview={overview}
+        setOverview={setOverview}
       />
     </Menu>
   );

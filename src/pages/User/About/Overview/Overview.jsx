@@ -2,11 +2,12 @@ import { Stack } from "@mui/material";
 import React, { useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import HomeIcon from "@mui/icons-material/Home";
-import LoyaltyIcon from "@mui/icons-material/Loyalty";
+import HelpIcon from "@mui/icons-material/Help";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
-import OverviewItems from "./OverviewItems";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import OverviewItems from "./OverviewItems";
+
 export default function Overview() {
   const listOverview = [
     {
@@ -31,11 +32,11 @@ export default function Overview() {
       icon: <HomeIcon />,
     },
     {
-      text: "Status",
+      text: "I am",
       value: "Married",
       myViewer: "public",
-      subject: "status",
-      icon: <LoyaltyIcon />,
+      subject: "Status",
+      icon: <HelpIcon />,
     },
     {
       text: "Phone",
@@ -55,7 +56,7 @@ export default function Overview() {
   const [overview, setOverview] = useState(listOverview);
   console.log("comp...", overview);
   return (
-    <Stack sx={{ my: 10, mx: 5, gap: 4 }}>
+    <Stack sx={{ gap: 4 }}>
       {overview.map((p) => {
         return (
           <OverviewItems

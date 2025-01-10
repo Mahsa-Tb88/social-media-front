@@ -27,71 +27,12 @@ export default function About() {
       <Container maxWidth="md">
         {/* isPending ? <Loading message="Is loading..."/> :error ? <LoadingError handleAction={refetch} message={error.message}/> */}
         <Paper sx={{ p: 4 }}>
-          <Grid2 container>
+          <Typography sx={{ mb: 3}} variant="h5">
+            About
+          </Typography>
+          <Grid2 container spacing={5}>
             <Grid2 size={{ xs: 12, md: 4 }}>
-              <Typography sx={{ fontWeight: "bold", mb: 3, fontSize: "20px" }}>
-                About
-              </Typography>
               <Divider orientation="vertical" flexItem />
-              {/* <MenuList>
-                <MenuItem LinkComponent={NavLink} to="overview" end>
-                  <ListItemText
-                    sx={{
-                      color: theme == "light" ? "grey.600" : "grey.200",
-                      fontSize: "20px",
-                      my: 1,
-                    }}
-                  >
-                    Overview
-                  </ListItemText>
-                </MenuItem>
-                <MenuItem>
-                  <ListItemText
-                    sx={{
-                      color: theme == "light" ? "grey.600" : "grey.200",
-                      fontSize: "20px",
-                      my: 1,
-                    }}
-                  >
-                    <Typography LinkComponent={NavLink} to="contact">
-                      Contact and Basic Info
-                    </Typography>
-                  </ListItemText>
-                </MenuItem>
-                <MenuItem LinkComponent={NavLink} to="work&education">
-                  <ListItemText
-                    sx={{
-                      color: theme == "light" ? "grey.600" : "grey.200",
-                      fontSize: "20px",
-                      my: 1,
-                    }}
-                  >
-                    Work and Education
-                  </ListItemText>
-                </MenuItem>
-                <MenuItem LinkComponent={NavLink} to="placeLived">
-                  <ListItemText
-                    sx={{
-                      color: theme == "light" ? "grey.600" : "grey.200",
-                      fontSize: "20px",
-                      my: 1,
-                    }}
-                  >
-                    Place Lived
-                  </ListItemText>
-                </MenuItem>
-                <MenuItem LinkComponent={NavLink} to="family">
-                  <ListItemText
-                    sx={{
-                      color: theme == "light" ? "grey.600" : "grey.200",
-                      fontSize: "20px",
-                      my: 1,
-                    }}
-                  >
-                    Family and Relationship
-                  </ListItemText>
-                </MenuItem>
-              </MenuList> */}
               <List
                 sx={{
                   "& .active": {
@@ -103,7 +44,7 @@ export default function About() {
                 <ListItem>
                   <ListItemButton
                     LinkComponent={NavLink}
-                    to={"/profile/" + id + "/about"}
+                    to={"/profile/" + id + "/about/overview"}
                     end
                   >
                     <ListItemText>Overview</ListItemText>
@@ -131,7 +72,7 @@ export default function About() {
                 </ListItem>
               </List>
             </Grid2>
-            <Grid2 size={{ xs: 12, md: 8 }}>
+            <Grid2 size={{ xs: 12, md: 8 }} sx={{ bgcolor: "redn" }}>
               <Outlet />
             </Grid2>
           </Grid2>

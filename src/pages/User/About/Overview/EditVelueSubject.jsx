@@ -5,12 +5,16 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import MyIconButton from "../../../components/Customized/MyIconButton";
+import MyIconButton from "../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 
 export default function EditValueSubject({
@@ -23,9 +27,9 @@ export default function EditValueSubject({
   overview,
   setOverview,
 }) {
-  const [valueSub, setValueSub] = useState("");
-  function changeHandler() {
-    console.log(overview);
+  console.log(subject, value);
+  const [valueSub, setValueSub] = useState(value);
+  function saveChangeHandler() {
     const newOverview = overview.map((item) => {
       if (item.value == value) {
         return { ...item, value: valueSub };
@@ -56,20 +60,39 @@ export default function EditValueSubject({
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <Stack>
-          <Typography sx={{ fontSize: 18, fontWeight: "bold", mb: 2 }}>
-            {text}
-          </Typography>
-          <TextField
-            defaultValue={value}
-            label="New value"
-            onChange={(e) => setValueSub(e.target.value)}
-          />
-        </Stack>
+        {subject == "Status" ? (
+          <Stack>
+            <FormControl>
+              <InputLabel id="status">Status</InputLabel>
+              <Select
+                value={valueSub}
+                label={valueSub}
+                labelId="status"
+                defaultValue={valueSub}
+                onChange={(e) => setValueSub(e.target.value)}
+              >
+                <MenuItem value="Marrid">Marrid</MenuItem>
+                <MenuItem value="Single">Single</MenuItem>
+                <MenuItem value="In relationship">In relationship</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
+        ) : (
+          <Stack>
+            <Typography sx={{ fontSize: 18, fontWeight: "bold", mb: 2 }}>
+              {text}
+            </Typography>
+            <TextField
+              defaultValue={value}
+              label="New value"
+              onChange={(e) => setValueSub(e.target.value)}
+            />
+          </Stack>
+        )}
         <Button
           sx={{ mt: 4, fontWeight: "bold" }}
           size="large"
-          onClick={changeHandler}
+          onClick={saveChangeHandler}
         >
           Save
         </Button>

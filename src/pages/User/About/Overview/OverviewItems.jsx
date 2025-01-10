@@ -5,13 +5,14 @@ import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useSelector } from "react-redux";
-import MyIconButton from "../../../components/Customized/MyIconButton";
-import FilterViewer from "../Profile/FilterViewer";
+import MyIconButton from "../../../../components/Customized/MyIconButton";
+import FilterViewer from "../../Profile/FilterViewer";
 import GroupIcon from "@mui/icons-material/Group";
 import MenuOverview from "./MenuOverview";
 import PersonIcon from "@mui/icons-material/Person";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import EditValueSubject from "./EditVelueSubject";
+import LoyaltyIcon from "@mui/icons-material/Loyalty";
 
 export default function OverviewItems({
   icon,
@@ -29,11 +30,6 @@ export default function OverviewItems({
   const [open, setOpen] = useState(false);
   const [openAddSubject, setOpenAddSubject] = useState(false);
   const menuOverviewAnchor = useRef(null);
-  // const [itemValue, setItemValue] = useState(value);
-
-  // useEffect(() => {
-  //   setItemValue(value);
-  // }, [value]);
 
   return (
     <Stack>
@@ -44,12 +40,21 @@ export default function OverviewItems({
           justifyContent: "space-between",
         }}
       >
-        <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-          <Typography sx={{ color: "grey.600" }}>
+        <Stack sx={{ flexDirection: "row", gap: 1, alignItems: "center" }}>
+          <Typography
+            sx={{
+              color: "grey.600",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {value == "Single" ? (
               <PersonIcon />
             ) : value == "In relationship" ? (
               <FavoriteIcon />
+            ) : value == "Married" ? (
+              <LoyaltyIcon />
             ) : (
               icon
             )}

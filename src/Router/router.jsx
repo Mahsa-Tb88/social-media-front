@@ -11,11 +11,11 @@ import Post from "../pages/User/Profile/Post";
 import About from "../pages/User/Profile/About";
 import Galery from "../pages/User/Profile/Galery";
 import Friends from "../pages/User/Profile/Friends";
-import Overview from "../pages/User/About/Overview";
 import Family from "../pages/User/About/Family";
 import WorkEducation from "../pages/User/About/WorkEducation";
 import PlaceLived from "../pages/User/About/PlaceLived";
-import Contact from "../pages/User/About/Contact";
+import Contact from "../pages/User/About/Contact/Contact";
+import Overview from "../pages/User/About/Overview/Overview";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +39,7 @@ const router = createBrowserRouter([
                 element: <About />,
                 children: [
                   { index: true, element: <Overview /> },
+                  { path: "overview", element: <Overview /> },
 
                   { path: "family", element: <Family /> },
                   { path: "work&education", element: <WorkEducation /> },

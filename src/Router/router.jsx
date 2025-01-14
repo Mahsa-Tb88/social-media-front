@@ -11,9 +11,9 @@ import Post from "../pages/User/Profile/Post";
 import About from "../pages/User/Profile/About";
 import Galery from "../pages/User/Profile/Galery";
 import Friends from "../pages/User/Profile/Friends";
-import Family from "../pages/User/About/Family";
-import WorkEducation from "../pages/User/About/WorkEducation";
-import PlaceLived from "../pages/User/About/PlaceLived";
+import Family from "../pages/User/About/Family/Family";
+import WorkEducation from "../pages/User/About/WorkEducation/WorkEducation";
+import PlaceLived from "../pages/User/About/PlaceLived/PlaceLived";
 import Contact from "../pages/User/About/Contact/Contact";
 import Overview from "../pages/User/About/Overview/Overview";
 

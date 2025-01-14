@@ -15,7 +15,12 @@ import PeopleIcon from "@mui/icons-material/People";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
 
-export default function FilterViewer({ open, onClose, setViewer, viewer }) {
+export default function FilterViewer({
+  open,
+  onClose,
+  setViewer,
+  viewer,
+}) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle

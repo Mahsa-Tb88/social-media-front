@@ -24,21 +24,21 @@ export default function EditValueSubject({
   text,
   value,
   type,
-  overview,
-  setOverview,
+  list,
+  setList,
 }) {
-  console.log(subject, value);
   const [valueSub, setValueSub] = useState(value);
+
   function saveChangeHandler() {
-    const newOverview = overview.map((item) => {
-      if (item.value == value) {
+    const newList = list.map((item) => {
+      if (item.value == value && item.subject == subject) {
         return { ...item, value: valueSub };
       } else {
         return item;
       }
     });
     onCloseEdit();
-    setOverview(newOverview);
+    setList(newList);
   }
 
   return (

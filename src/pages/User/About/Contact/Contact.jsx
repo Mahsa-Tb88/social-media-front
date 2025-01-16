@@ -117,9 +117,9 @@ export default function Contact() {
             <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
               {i.title}
             </Typography>
-            <Stack spacing={1}>
+            <Stack >
               {i.items.map((j, index) => (
-                <Stack key={index}>
+                <Stack key={index}  >
                   <ItemAbout
                     myViewer={j.viewer}
                     list={i.items}
@@ -128,6 +128,7 @@ export default function Contact() {
                     subject={j.subject}
                     icon={j.icon}
                   >
+                
                     <Stack
                       sx={{
                         flexDirection: "row",

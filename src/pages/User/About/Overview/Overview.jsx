@@ -59,7 +59,6 @@ export default function Overview() {
   ];
   const theme = useSelector((state) => state.app.theme);
   const [list, setList] = useState(listOverview);
-  console.log(list);
 
   return (
     <Stack sx={{ gap: 4 }}>
@@ -119,16 +118,4 @@ export default function Overview() {
       })}
     </Stack>
   );
-}
-{
-  /* <OverviewItems
-          key={p.subject}
-          text={p.text}
-          value={p.value}
-          myViewer={p.myViewer}
-          subject={p.subject}
-          icon={p.icon}
-          setList={setList}
-          list={list}
-          /> */
 }

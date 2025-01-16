@@ -23,7 +23,6 @@ export default function ItemAbout({
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(myViewer);
   const [openAddSubject, setOpenAddSubject] = useState(false);
-
   return (
     <Stack
       sx={{
@@ -83,9 +82,18 @@ function Option({
   const [open, setOpen] = useState(false);
   const menuAnchor = useRef(null);
 
+  function checkValue(obj) {
+    for (let key in obj) {
+      if (obj[key] === "") {
+        return "";
+      }
+    }
+    return "no";
+  }
+
   return (
     <Stack>
-      {value && (
+      {(value || checkValue(value)) && (
         <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
           <Box>
             {viewer == "friends" ? (

@@ -24,16 +24,24 @@ export default function MenuItem({
   const [openEdit, setOpenEdit] = useState(false);
 
   function deleteItem(value) {
-    console.log("value", value);
+    // console.log("value", value);
+    console.log("list", list);
+    console.log("sub", subject);
     handleClose();
-    const newList = list.map((item) => {
+    let newList;
+
+    // if (subject == "Work" || subject == "Collage") {
+    //   const _value = item.value.position + " at " + item.value.place;
+    // }
+
+    newList = list.map((item) => {
       if (item.value == value) {
         return { ...item, value: "" };
       } else {
         return item;
       }
     });
-    console.log("newList", newList);
+    console.log("new List", newList);
     setList(newList);
   }
 

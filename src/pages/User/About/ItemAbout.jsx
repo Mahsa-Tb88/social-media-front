@@ -9,7 +9,6 @@ import MyIconButton from "../../../components/Customized/MyIconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useSelector } from "react-redux";
 import MenuItem from "./MenuItem";
-import EditValueSubject from "./Overview/EditVelueSubject";
 
 export default function ItemAbout({
   children,
@@ -19,9 +18,9 @@ export default function ItemAbout({
   value,
   subject,
   icon,
+  id,
+  type,
 }) {
-  const [openFilterViewer, setOpenFilterViewer] = useState(false);
-  const [viewer, setViewer] = useState(myViewer);
   const [openAddSubject, setOpenAddSubject] = useState(false);
   return (
     <Stack
@@ -47,38 +46,25 @@ export default function ItemAbout({
         <Stack>{children}</Stack>
       )}
       <Stack>
-        <Option
-          viewer={viewer}
-          setOpenFilterViewer={() => setOpenFilterViewer(true)}
+        <MenuItemAbout
+          myViewer={myViewer}
           list={list}
           setList={setList}
           value={value}
           subject={subject}
           openAddSubject={openAddSubject}
           setOpenAddSubject={setOpenAddSubject}
+          id={id}
+          type={type}
         />
       </Stack>
-      <FilterViewer
-        open={openFilterViewer}
-        onClose={() => setOpenFilterViewer(false)}
-        setViewer={setViewer}
-        viewer={viewer}
-        value={value}
-      />
     </Stack>
   );
 }
 
-function Option({
-  viewer,
-  setOpenFilterViewer,
-  list,
-  setList,
-  value,
-  subject,
-  openAddSubject,
-  setOpenAddSubject,
-}) {
+function MenuItemAbout({ myViewer, list, setList, value, subject, id, type }) {
+  const [openFilterViewer, setOpenFilterViewer] = useState(false);
+  const [viewer, setViewer] = useState(myViewer);
   const [open, setOpen] = useState(false);
   const menuAnchor = useRef(null);
 
@@ -123,6 +109,13 @@ function Option({
           </Box>
         </Stack>
       )}
+      <FilterViewer
+        open={openFilterViewer}
+        onClose={() => setOpenFilterViewer(false)}
+        setViewer={setViewer}
+        viewer={viewer}
+        value={value}
+      />
       <MenuItem
         open={open}
         handleClose={() => setOpen(false)}
@@ -131,14 +124,8 @@ function Option({
         value={value}
         list={list}
         setList={setList}
-      />
-      <EditValueSubject
-        subject={subject}
-        openEdit={openAddSubject}
-        onCloseEdit={() => setOpenAddSubject(false)}
-        value={value}
-        setList={setList}
-        list={list}
+        id={id}
+        type={type}
       />
     </Stack>
   );
@@ -164,4 +151,17 @@ function BoxIcon({ children, setOpenFilterViewer }) {
       {children}
     </Box>
   );
+}
+
+{
+  /* <EditValueSubject
+        subject={subject}
+        openEdit={openAddSubject}
+        onCloseEdit={() => setOpenAddSubject(false)}
+        value={value}
+        setList={setList}
+        list={list}
+        id={id}
+        type={type}
+      /> */
 }

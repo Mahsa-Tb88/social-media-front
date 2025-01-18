@@ -15,7 +15,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MyIconButton from "../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
@@ -25,10 +25,10 @@ export default function EditValueSubject({
   onCloseEdit,
   subject,
   text,
-  value,
-  type,
+  value = "",
   list,
   setList,
+  type = "new",
 }) {
   const [valueSub, setValueSub] = useState(value);
 
@@ -43,7 +43,7 @@ export default function EditValueSubject({
     onCloseEdit();
     setList(newList);
   }
-  console.log(subject);
+
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -55,7 +55,7 @@ export default function EditValueSubject({
       >
         <Box></Box>
         <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
-          {type} {subject}
+          type {subject}
         </Typography>
         <MyIconButton onClick={onCloseEdit}>
           <Close />
@@ -63,8 +63,14 @@ export default function EditValueSubject({
       </DialogTitle>
       <Divider />
       <DialogContent>
-        {subject == "Work" ? (
-          <WorkEducationEditValue value={value} />
+        {subject == "Work" || subject == "Education" ? (
+          <WorkEducationEditValue
+            value={value}
+            setList={setList}
+            list={list}
+            onCloseEdit={onCloseEdit}
+            type={type}
+          />
         ) : subject == "Status" ? (
           <Stack>
             <FormControl>
@@ -107,8 +113,9 @@ export default function EditValueSubject({
   );
 }
 
-function WorkEducationEditValue({ value }) {
+function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
   const [currentPosition, setCurrentPosition] = useState(!value.to);
+  console.log(value);
   const { register, handleSubmit } = useForm({
     defaultValues: {
       position: value.position,
@@ -120,8 +127,16 @@ function WorkEducationEditValue({ value }) {
   });
 
   function onSubmit(data) {
-    console.log(data);
-    
+    onCloseEdit();
+    if (type == "new") {
+      data._id = 6;
+      data.viewr = "public";
+      setList([...list, data]);
+    } else {
+      const newList = list.filter((l) => l._id != value._id);
+      data._id = value._id;
+      setList([...newList, data]);
+    }
   }
 
   return (

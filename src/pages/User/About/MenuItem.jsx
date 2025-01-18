@@ -8,6 +8,7 @@ import {
   ListItemText,
   Menu,
 } from "@mui/material";
+
 import React, { useState } from "react";
 import EditValueSubject from "./Overview/EditVelueSubject";
 
@@ -20,29 +21,29 @@ export default function MenuItem({
   value,
   setList,
   list,
+  id,
+  type 
 }) {
   const [openEdit, setOpenEdit] = useState(false);
 
   function deleteItem(value) {
-    // console.log("value", value);
+    console.log("value", id);
     console.log("list", list);
     console.log("sub", subject);
     handleClose();
     let newList;
 
-    // if (subject == "Work" || subject == "Collage") {
-    //   const _value = item.value.position + " at " + item.value.place;
-    // }
-
-    newList = list.map((item) => {
-      if (item.value == value) {
-        return { ...item, value: "" };
-      } else {
-        return item;
-      }
-    });
+    newList = list.filter((l) => l._id != id);
     console.log("new List", newList);
     setList(newList);
+    //   if (item.value == value) {
+    //     return { ...item, value: "" };
+    //   } else {
+    //     return item;
+    //   }
+    // });
+    // console.log("new List", newList);
+    // setList(newList);
   }
 
   function onCloseEdit() {
@@ -84,6 +85,7 @@ export default function MenuItem({
         value={value}
         list={list}
         setList={setList}
+        type={type}
       />
     </Menu>
   );

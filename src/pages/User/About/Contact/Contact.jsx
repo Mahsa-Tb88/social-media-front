@@ -8,151 +8,205 @@ import FaceIcon from "@mui/icons-material/Face";
 import SmsIcon from "@mui/icons-material/Sms";
 import CakeIcon from "@mui/icons-material/Cake";
 import ExplicitIcon from "@mui/icons-material/Explicit";
-import { Box, Button, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import FilterViewer from "../../Profile/FilterViewer";
+import { Box, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
 
 export default function Contact() {
-  const myContactInfo = [
+  const contact = [
     {
-      title: "Contact Info",
-      items: [
-        {
-          icon: <PhoneIcon />,
-          value: "2424242424",
-          viewer: "public",
-          subject: "Mobile",
-        },
-        {
-          icon: <EmailIcon />,
-          value: "mah@gmail.com",
-          viewer: "public",
-          subject: "Email",
-        },
-      ],
+      value: "2424242424",
+      viewer: "public",
+      subject: "Mobile",
     },
     {
-      title: "Websites and social links",
-      items: [
-        {
-          icon: <LanguageIcon />,
-          value: "https://web.com",
-          viewer: "public",
-          subject: "Website",
-        },
-        {
-          icon: <LinkedInIcon />,
-          value: "https://linkedin.com.ananan",
-          viewer: "public",
-          subject: "LinkedIn",
-        },
-        {
-          icon: <GitHubIcon />,
-          value: "https://github.com.ananan",
-          viewer: "public",
-          subject: "Github",
-        },
-      ],
-    },
-    {
-      title: "Basic info",
-      items: [
-        {
-          icon: <Face4Icon />,
-          value: "Female",
-          viewer: "public",
-          subject: "Gender",
-        },
-        {
-          icon: <SmsIcon />,
-          value: "She/Her",
-          viewer: "public",
-          subject: "Pronouns",
-        },
-        {
-          icon: <CakeIcon />,
-          value: "1988-25-Nov",
-          viewer: "public",
-          subject: "Birthday",
-        },
-        {
-          icon: <ExplicitIcon />,
-          value: "Persian English",
-          viewer: "public",
-          subject: "Language(s)",
-        },
-      ],
+      value: "mah@gmail.com",
+      viewer: "public",
+      subject: "Email",
     },
   ];
-  const [list, setList] = useState([]);
-  const [contactInfo, setContactInfo] = useState(myContactInfo);
 
-  useEffect(() => {
-    // found the object with the change
-    let findItem = [];
-    contactInfo.forEach((p) => {
-      p.items.forEach((element) => {
-        if (element?.subject == list[0]?.subject) {
-          findItem = { title: p.title, items: list };
-        }
-      });
-    });
-    // update contactInfo list
-    const newContactInfo = contactInfo.map((item) => {
-      if (item?.title == findItem?.title) {
-        return findItem;
-      } else {
-        return item;
-      }
-    });
-    setContactInfo(newContactInfo);
-  }, [list]);
+  const websites = [
+    {
+      value: "https://web.com",
+      viewer: "public",
+      subject: "Website",
+    },
+    {
+      value: "https://linkedin.com.ananan",
+      viewer: "public",
+      subject: "LinkedIn",
+    },
+    {
+      value: "https://github.com.ananan",
+      viewer: "public",
+      subject: "Github",
+    },
+  ];
+  const basicInfo = [
+    {
+      value: "Female",
+      viewer: "public",
+      subject: "Gender",
+    },
+    {
+      value: "She/Her",
+      viewer: "public",
+      subject: "Pronouns",
+    },
+    {
+      value: "1988-25-Nov",
+      viewer: "public",
+      subject: "Birthday",
+    },
+    {
+      value: "Persian English",
+      viewer: "public",
+      subject: "Language(s)",
+    },
+  ];
 
   return (
     <Stack>
       <Stack spacing={5}>
-        {contactInfo.map((i) => (
-          <Stack>
-            <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
-              {i.title}
-            </Typography>
-            <Stack >
-              {i.items.map((j, index) => (
-                <Stack key={index}  >
-                  <ItemAbout
-                    myViewer={j.viewer}
-                    list={i.items}
-                    setList={setList}
-                    value={j.value}
-                    subject={j.subject}
-                    icon={j.icon}
-                  >
-                
-                    <Stack
-                      sx={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <Box>{j.icon}</Box>
-                      <Stack>
-                        <Stack>
-                          <Typography>{j.value}</Typography>
-                          <Typography sx={{ fontSize: 10 }}>
-                            {j.subject}
-                          </Typography>
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  </ItemAbout>
-                </Stack>
-              ))}
-            </Stack>
-          </Stack>
-        ))}
+        <ContactInfo myContact={contact} />
+        <Websites myWebsites={websites} />
+        <BasicInfo myBasicInfo={basicInfo} />
       </Stack>
+    </Stack>
+  );
+}
+
+function ContactInfo({ myContact }) {
+  const [contact, setContact] = useState(myContact);
+  return (
+    <Stack>
+      <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
+        Contact
+      </Typography>
+      {myContact.map((j, index) => (
+        <Stack key={index}>
+          <ItemAbout
+            myViewer={j.viewer}
+            list={contact}
+            setList={setContact}
+            value={j.value}
+            subject={j.subject}
+          >
+            <Stack
+              sx={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Box>{j.subject == "Mobile" ? <PhoneIcon /> : <EmailIcon />}</Box>
+              <Stack>
+                <Stack>
+                  <Typography>{j.value}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{j.subject}</Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </ItemAbout>
+        </Stack>
+      ))}
+    </Stack>
+  );
+}
+
+function Websites({ myWebsites }) {
+  const [websites, setWebsites] = useState(myWebsites);
+
+  return (
+    <Stack>
+      <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
+        Website & Social Media
+      </Typography>
+      {myWebsites.map((j, index) => (
+        <Stack key={index}>
+          <ItemAbout
+            myViewer={j.viewer}
+            list={websites}
+            setList={setWebsites}
+            value={j.value}
+            subject={j.subject}
+          >
+            <Stack
+              sx={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Box>
+                {j.subject == "Website" ? (
+                  <LanguageIcon />
+                ) : j.subject == "LinkedIn" ? (
+                  <LinkedInIcon />
+                ) : (
+                  <GitHubIcon />
+                )}
+              </Box>
+              <Stack>
+                <Stack>
+                  <Typography>{j.value}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{j.subject}</Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </ItemAbout>
+        </Stack>
+      ))}
+    </Stack>
+  );
+}
+
+function BasicInfo({ myBasicInfo }) {
+  const [basicInfo, setBasicInfo] = useState(myBasicInfo);
+
+  return (
+    <Stack>
+      <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
+        Basic Info
+      </Typography>
+      {myBasicInfo.map((j, index) => (
+        <Stack key={index}>
+          <ItemAbout
+            myViewer={j.viewer}
+            list={basicInfo}
+            setList={setBasicInfo}
+            value={j.value}
+            subject={j.subject}
+          >
+            <Stack
+              sx={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Box>
+                {j.subject == "Gender" ? (
+                  <Face4Icon />
+                ) : j.subject == "Pronouns" ? (
+                  <SmsIcon />
+                ) : j.subject == "Birthday" ? (
+                  <CakeIcon />
+                ) : (
+                  <ExplicitIcon />
+                )}
+              </Box>
+              <Stack>
+                <Stack>
+                  <Typography>{j.value}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{j.subject}</Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </ItemAbout>
+        </Stack>
+      ))}
     </Stack>
   );
 }

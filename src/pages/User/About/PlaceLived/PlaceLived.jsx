@@ -60,41 +60,40 @@ export default function PlaceLived() {
                       <Typography sx={{ fontSize: 12 }}>{p.status}</Typography>
                     </Stack>
                   </Stack>
-                  {p.status == "used to live" && (
-                    <Stack
-                      sx={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <Box>
-                        <ShowIcon subject="Location" />
-                      </Box>
-                      <Button
-                        variant="text"
-                        sx={{ fontSize: 18 }}
-                        onClick={() => setOpenAddPlace(true)}
-                      >
-                        Add {p.status}
-                      </Button>
-                      <Box></Box>
-                      <EditValueSubject
-                        openEdit={openAddPlace}
-                        onCloseEdit={() => setOpenAddPlace(false)}
-                        value=""
-                        subject="used to live"
-                        setList={setPlaces}
-                        list={places}
-                        type="new"
-                      />
-                    </Stack>
-                  )}
                 </Stack>
               </ItemAbout>
             </Stack>
           );
         })}
+
+        <Stack
+          sx={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Box>
+            <ShowIcon subject="Location" />
+          </Box>
+          <Button
+            variant="text"
+            sx={{ fontSize: 18 }}
+            onClick={() => setOpenAddPlace(true)}
+          >
+            Add Used to live
+          </Button>
+          <Box></Box>
+          <EditValueSubject
+            openEdit={openAddPlace}
+            onCloseEdit={() => setOpenAddPlace(false)}
+            value=""
+            subject="used to live"
+            setList={setPlaces}
+            list={places}
+            type="new"
+          />
+        </Stack>
       </Stack>
     </Stack>
   );

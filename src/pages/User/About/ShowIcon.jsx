@@ -20,7 +20,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 
-
 export default function ShowIcon({ subject }) {
   return (
     <Stack>
@@ -59,6 +58,8 @@ export default function ShowIcon({ subject }) {
       ) : subject == "Married" ? (
         <LoyaltyIcon />
       ) : subject == "Hometown" ? (
+        <HomeIcon />
+      ) : subject == "Born in" ? (
         <HomeIcon />
       ) : subject == "Current city" || subject == "used to live" ? (
         <PlaceIcon />

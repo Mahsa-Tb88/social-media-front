@@ -36,20 +36,28 @@ export default function EditValueSubject({
     console.log("list", list);
     console.log("value", value);
     console.log("subject", subject);
+    console.log("newValueeeee", newValue);
 
     if (
       subject == "Hometown" ||
       subject == "Current city" ||
       subject == "used to live"
     ) {
-      newList = list.map((item) => {
-        if ( item.city == value && item.status == subject) {
-          return { ...item, city: newValue };
-        } else {
-          return item;
-        }
-      });
+      if (type == "edit") {
+        newList = list.map((item) => {
+          if (item.city == value && item.status == subject) {
+            return { ...item, city: newValue };
+          } else {
+            return item;
+          }
+        });
+      } else {
+        const newPlace = { city: newValue, status: subject, viewer: "public" };
+        newList = [...list, newPlace];
+      }
     } else {
+      console.log("....", newValue);
+
       newList = list.map((item) => {
         if (item.value == value && item.subject == subject) {
           return { ...item, value: newValue };
@@ -58,7 +66,7 @@ export default function EditValueSubject({
         }
       });
     }
-
+    console.log("newList", newList);
     onCloseEdit();
     setList(newList);
   }
@@ -106,6 +114,13 @@ export default function EditValueSubject({
                 <MenuItem value="In relationship">In relationship</MenuItem>
               </Select>
             </FormControl>
+            <Button
+              sx={{ mt: 4, fontWeight: "bold" }}
+              size="large"
+              onClick={saveChangeHandler}
+            >
+              Save
+            </Button>
           </Stack>
         ) : (
           <Stack>
@@ -146,12 +161,13 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
   function onSubmit(data) {
     onCloseEdit();
     if (type == "new") {
-      data._id = 6;
+      data.id = Date.now();
       data.viewr = "public";
+      console.log("rrrrrrrrrrr", [...list, data]);
       setList([...list, data]);
     } else {
-      const newList = list.filter((l) => l._id != value._id);
-      data._id = value._id;
+      const newList = list.filter((l) => l.id != value.id);
+      data.id = value.id;
       setList([...newList, data]);
     }
   }
@@ -210,10 +226,7 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
             <TextField
               label="From"
               type="number"
-              // value={value.from}
               defaultValue={value.from}
-              // onChange={handleChange}
-              inputProps={{ min: "1900", max: "2099", step: "1" }} // restrict the range of years
               fullWidth
               {...register("from")}
             />
@@ -222,8 +235,6 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
                 label="To"
                 type="number"
                 value={value.to}
-                // onChange={handleChange}
-                inputProps={{ min: "1900", max: "2099", step: "1" }} // restrict the range of years
                 fullWidth
                 {...register("to")}
               />

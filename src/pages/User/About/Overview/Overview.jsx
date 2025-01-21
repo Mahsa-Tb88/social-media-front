@@ -9,37 +9,37 @@ import ShowIcon from "../ShowIcon";
 export default function Overview() {
   const listOverview = [
     {
-      text: "Study at",
+      title: "Study at",
       value: "Isfahan University",
       myViewer: "public",
       subject: "School",
     },
     {
-      text: "Lives in",
+      title: "Lives in",
       value: "Canada",
       myViewer: "friends",
       subject: "Location",
     },
     {
-      text: "From",
+      title: "From",
       value: "Tabriz",
       myViewer: "public",
-      subject: "Hometown",
+      subject: "Born in",
     },
     {
-      text: "I am",
+      title: "I am",
       value: "Married",
       myViewer: "public",
       subject: "Status",
     },
     {
-      text: "Phone",
+      title: "Phone",
       value: "28282828",
       myViewer: "private",
       subject: "Phone",
     },
     {
-      text: "Email",
+      title: "Email",
       value: "mah@gmail.com",
       myViewer: "private",
       subject: "Email",
@@ -90,7 +90,7 @@ export default function Overview() {
                       fontSize: 18,
                     }}
                   >
-                    {p.text}
+                    {p.title}
                   </Typography>
                   <Typography sx={{ fontSize: 18 }}>{p.value}</Typography>
                 </Stack>

@@ -27,19 +27,35 @@ export default function MenuItem({
   function deleteItem(value) {
     handleClose();
     let newList;
+
     if (id) {
       newList = list.filter((l) => l.id != id);
-    } else {
+    }
+
+    if (list[0].hasOwnProperty("value")) {
       newList = list.map((l) => {
-        if (l.value && l.value == value) {
+        if (l.value == value) {
           return { ...l, value: "" };
-        } else if (l.city && l.city == value) {
-          return { ...l, city: "" };
         } else {
           return l;
         }
       });
     }
+    if (list[0].hasOwnProperty("city")) {
+      console.log("list is...", list);
+      console.log("value is...", value);
+      if (list.length <= 3) {
+        newList = list.map((l) => {
+          if (l.city == value) {
+            return { ...l, city: "" };
+          } else {
+            return l;
+          }
+        });
+      } else {
+      }
+    }
+
     console.log(newList);
     setList(newList);
   }

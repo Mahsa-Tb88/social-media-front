@@ -1,36 +1,31 @@
 import React, { useState } from "react";
-import PlaceIcon from "@mui/icons-material/Place";
-import { Stack, Typography } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
+
+import { Box, Button, Stack, Typography } from "@mui/material";
 import ItemAbout from "../ItemAbout";
+import ShowIcon from "../ShowIcon";
+import EditValueSubject from "../Overview/EditVelueSubject";
 
 export default function PlaceLived() {
-  const places = [
+  const myPlaces = [
     {
       city: "Tabriz",
       status: "Hometown",
-      data: "1988-1976",
       viewer: "public",
-      icon: <PlaceIcon />,
     },
     {
       city: "Chilliwack",
       status: "Current city",
-      data: "2023-now",
-
       viewer: "public",
-      icon: <PlaceIcon />,
     },
     {
       city: "Isfahan",
       status: "used to live",
-      data: "1976-2012",
       viewer: "public",
-      icon: <PlaceIcon />,
     },
   ];
 
-  const [list, setList] = useState(places);
+  const [places, setPlaces] = useState(myPlaces);
+  const [openAddPlace, setOpenAddPlace] = useState(false);
 
   return (
     <Stack>
@@ -38,21 +33,21 @@ export default function PlaceLived() {
         Places Lived
       </Typography>
       <Stack sx={{ gap: 4 }}>
-        {list.map((p, index) => {
+        {places.map((p, index) => {
           return (
             <Stack key={index}>
               <ItemAbout
                 myViewer={p.viewer}
-                list={list}
-                setList={setList}
+                list={places}
+                setList={setPlaces}
                 value={p.city}
                 subject={p.status}
-                icon={p.icon}
+                title="place"
               >
                 <Stack sx={{}}>
                   <Stack sx={{ flexDirection: "row", gap: 1 }}>
                     <Typography>
-                      {p.status == "Hometown" ? <HomeIcon /> : p.icon}
+                      <ShowIcon subject={p.status} />
                     </Typography>
                     <Stack>
                       <Typography
@@ -65,6 +60,36 @@ export default function PlaceLived() {
                       <Typography sx={{ fontSize: 12 }}>{p.status}</Typography>
                     </Stack>
                   </Stack>
+                  {p.status == "used to live" && (
+                    <Stack
+                      sx={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Box>
+                        <ShowIcon subject="Location" />
+                      </Box>
+                      <Button
+                        variant="text"
+                        sx={{ fontSize: 18 }}
+                        onClick={() => setOpenAddPlace(true)}
+                      >
+                        Add {p.status}
+                      </Button>
+                      <Box></Box>
+                      <EditValueSubject
+                        openEdit={openAddPlace}
+                        onCloseEdit={() => setOpenAddPlace(false)}
+                        value=""
+                        subject="used to live"
+                        setList={setPlaces}
+                        list={places}
+                        type="new"
+                      />
+                    </Stack>
+                  )}
                 </Stack>
               </ItemAbout>
             </Stack>

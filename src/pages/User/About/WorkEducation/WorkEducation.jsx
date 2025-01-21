@@ -4,8 +4,11 @@ import ItemAbout from "../ItemAbout";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import SchoolIcon from "@mui/icons-material/School";
 import EditValueSubject from "../Overview/EditVelueSubject";
+import ShowIcon from "../ShowIcon";
 
 export default function WorkEducation() {
+
+  
   const myEducation = [
     {
       position: "Bachlor",
@@ -14,7 +17,7 @@ export default function WorkEducation() {
       from: 2300,
       to: 2500,
       viewer: "public",
-      _id: 1,
+      id: 1,
     },
     {
       position: "Master",
@@ -23,7 +26,7 @@ export default function WorkEducation() {
       from: 2300,
       to: 2500,
       viewer: "public",
-      _id: 2,
+      id: 2,
     },
   ];
 
@@ -35,7 +38,7 @@ export default function WorkEducation() {
       from: 2020,
       to: "",
       viewer: "public",
-      _id: 3,
+      id: 3,
     },
     {
       position: "Frontend Developer",
@@ -44,7 +47,7 @@ export default function WorkEducation() {
       from: 2014,
       to: 2020,
       viewer: "public",
-      _id: 4,
+      id: 4,
     },
   ];
 
@@ -66,15 +69,14 @@ function WorkSection({ myWork }) {
         Work
       </Typography>
       {work.map((w) => (
-        <Stack key={w._id}>
+        <Stack key={w.id}>
           <ItemAbout
             myViewer={w.viewer}
             list={work}
             setList={setWork}
             value={w}
             subject={"Work"}
-            id={w._id}
-            icon={<HomeRepairServiceIcon />}
+            id={w.id}
             type="edit"
           >
             <Stack
@@ -151,15 +153,14 @@ function EducationSection({ myEducation }) {
         Education
       </Typography>
       {education.map((e) => (
-        <Stack key={e._id}>
+        <Stack key={e.id}>
           <ItemAbout
             myViewer={e.viewer}
             list={education}
             setList={setEducation}
             value={e}
             subject={"Education"}
-            id={e._id}
-            icon={<SchoolIcon />}
+            id={e.id}
           >
             <Stack
               sx={{
@@ -167,7 +168,7 @@ function EducationSection({ myEducation }) {
               }}
             >
               <Box sx={{ mr: 1 }}>
-                <SchoolIcon />
+                <ShowIcon subject={"education"} />
               </Box>
               <Stack sx={{ mb: 1 }}>
                 <Stack sx={{ flexDirection: "row", alignItems: "center" }}>

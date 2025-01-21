@@ -17,39 +17,38 @@ export default function MenuItem({
   anchorEl,
   handleClose,
   subject,
-  text,
   value,
   setList,
   list,
   id,
-  type 
 }) {
   const [openEdit, setOpenEdit] = useState(false);
 
   function deleteItem(value) {
-    console.log("value", id);
-    console.log("list", list);
-    console.log("sub", subject);
     handleClose();
     let newList;
-
-    newList = list.filter((l) => l._id != id);
-    console.log("new List", newList);
+    if (id) {
+      newList = list.filter((l) => l.id != id);
+    } else {
+      newList = list.map((l) => {
+        if (l.value && l.value == value) {
+          return { ...l, value: "" };
+        } else if (l.city && l.city == value) {
+          return { ...l, city: "" };
+        } else {
+          return l;
+        }
+      });
+    }
+    console.log(newList);
     setList(newList);
-    //   if (item.value == value) {
-    //     return { ...item, value: "" };
-    //   } else {
-    //     return item;
-    //   }
-    // });
-    // console.log("new List", newList);
-    // setList(newList);
   }
 
   function onCloseEdit() {
     setOpenEdit(false);
     handleClose();
   }
+
   return (
     <Menu
       open={open}
@@ -81,11 +80,10 @@ export default function MenuItem({
         onCloseEdit={onCloseEdit}
         handleClose={handleClose}
         subject={subject}
-        text={text}
         value={value}
         list={list}
         setList={setList}
-        type={type}
+        type="edit"
       />
     </Menu>
   );

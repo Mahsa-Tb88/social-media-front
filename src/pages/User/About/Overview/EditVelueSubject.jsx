@@ -24,22 +24,41 @@ export default function EditValueSubject({
   openEdit,
   onCloseEdit,
   subject,
-  text,
   value = "",
   list,
   setList,
   type = "new",
 }) {
-  const [valueSub, setValueSub] = useState(value);
+  const [newValue, setNewValue] = useState(value);
 
   function saveChangeHandler() {
-    const newList = list.map((item) => {
-      if (item.value == value && item.subject == subject) {
-        return { ...item, value: valueSub };
-      } else {
-        return item;
-      }
-    });
+    let newList;
+    console.log("list", list);
+    console.log("value", value);
+    console.log("subject", subject);
+
+    if (
+      subject == "Hometown" ||
+      subject == "Current city" ||
+      subject == "used to live"
+    ) {
+      newList = list.map((item) => {
+        if ( item.city == value && item.status == subject) {
+          return { ...item, city: newValue };
+        } else {
+          return item;
+        }
+      });
+    } else {
+      newList = list.map((item) => {
+        if (item.value == value && item.subject == subject) {
+          return { ...item, value: newValue };
+        } else {
+          return item;
+        }
+      });
+    }
+
     onCloseEdit();
     setList(newList);
   }
@@ -55,7 +74,7 @@ export default function EditValueSubject({
       >
         <Box></Box>
         <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
-          type {subject}
+          {type == "new" ? "Add" + " " + subject : "Edit" + " " + subject}
         </Typography>
         <MyIconButton onClick={onCloseEdit}>
           <Close />
@@ -76,11 +95,11 @@ export default function EditValueSubject({
             <FormControl>
               <InputLabel id="status">Status</InputLabel>
               <Select
-                value={valueSub}
-                label={valueSub}
+                value={newValue}
+                label={newValue}
                 labelId="status"
-                defaultValue={valueSub}
-                onChange={(e) => setValueSub(e.target.value)}
+                defaultValue={newValue}
+                onChange={(e) => setNewValue(e.target.value)}
               >
                 <MenuItem value="Marrid">Marrid</MenuItem>
                 <MenuItem value="Single">Single</MenuItem>
@@ -90,13 +109,11 @@ export default function EditValueSubject({
           </Stack>
         ) : (
           <Stack>
-            <Typography sx={{ fontSize: 18, fontWeight: "bold", mb: 2 }}>
-              {text}
-            </Typography>
             <TextField
               defaultValue={value}
               label="New value"
-              onChange={(e) => setValueSub(e.target.value)}
+              onChange={(e) => setNewValue(e.target.value)}
+              sx={{ mt: 5 }}
             />
             <Button
               sx={{ mt: 4, fontWeight: "bold" }}
@@ -149,7 +166,7 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
           size="small"
           defaultValue={value.position}
           label="New value"
-          onChange={(e) => setValueSub(e.target.value)}
+          onChange={(e) => setNewValue(e.target.value)}
           {...register("position")}
         />
       </Stack>
@@ -161,7 +178,7 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
           size="small"
           defaultValue={value.place}
           label="New value"
-          onChange={(e) => setValueSub(e.target.value)}
+          onChange={(e) => setNewValue(e.target.value)}
           {...register("company")}
         />
       </Stack>
@@ -173,7 +190,7 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
           size="small"
           defaultValue={value.city}
           label="New value"
-          onChange={(e) => setValueSub(e.target.value)}
+          onChange={(e) => setNewValue(e.target.value)}
           {...register("city")}
         />
       </Stack>

@@ -1,16 +1,7 @@
-import PhoneIcon from "@mui/icons-material/Phone";
-import EmailIcon from "@mui/icons-material/Email";
-import LanguageIcon from "@mui/icons-material/Language";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import Face4Icon from "@mui/icons-material/Face4";
-import FaceIcon from "@mui/icons-material/Face";
-import SmsIcon from "@mui/icons-material/Sms";
-import CakeIcon from "@mui/icons-material/Cake";
-import ExplicitIcon from "@mui/icons-material/Explicit";
 import { Box, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
+import ShowIcon from "../ShowIcon";
 
 export default function Contact() {
   const contact = [
@@ -43,6 +34,7 @@ export default function Contact() {
       subject: "Github",
     },
   ];
+  
   const basicInfo = [
     {
       value: "Female",
@@ -55,7 +47,7 @@ export default function Contact() {
       subject: "Pronouns",
     },
     {
-      value: "1988-25-Nov",
+      value: "1900-25-May",
       viewer: "public",
       subject: "Birthday",
     },
@@ -79,12 +71,13 @@ export default function Contact() {
 
 function ContactInfo({ myContact }) {
   const [contact, setContact] = useState(myContact);
+  console.log("contact", contact);
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Contact
       </Typography>
-      {myContact.map((j, index) => (
+      {contact.map((j, index) => (
         <Stack key={index}>
           <ItemAbout
             myViewer={j.viewer}
@@ -100,7 +93,9 @@ function ContactInfo({ myContact }) {
                 gap: 1,
               }}
             >
-              <Box>{j.subject == "Mobile" ? <PhoneIcon /> : <EmailIcon />}</Box>
+              <Box>
+                <ShowIcon subject={j.subject} />
+              </Box>
               <Stack>
                 <Stack>
                   <Typography>{j.value}</Typography>
@@ -123,7 +118,7 @@ function Websites({ myWebsites }) {
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Website & Social Media
       </Typography>
-      {myWebsites.map((j, index) => (
+      {websites.map((j, index) => (
         <Stack key={index}>
           <ItemAbout
             myViewer={j.viewer}
@@ -140,13 +135,7 @@ function Websites({ myWebsites }) {
               }}
             >
               <Box>
-                {j.subject == "Website" ? (
-                  <LanguageIcon />
-                ) : j.subject == "LinkedIn" ? (
-                  <LinkedInIcon />
-                ) : (
-                  <GitHubIcon />
-                )}
+                <ShowIcon subject={j.subject} />
               </Box>
               <Stack>
                 <Stack>
@@ -170,7 +159,7 @@ function BasicInfo({ myBasicInfo }) {
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Basic Info
       </Typography>
-      {myBasicInfo.map((j, index) => (
+      {basicInfo.map((j, index) => (
         <Stack key={index}>
           <ItemAbout
             myViewer={j.viewer}
@@ -187,15 +176,7 @@ function BasicInfo({ myBasicInfo }) {
               }}
             >
               <Box>
-                {j.subject == "Gender" ? (
-                  <Face4Icon />
-                ) : j.subject == "Pronouns" ? (
-                  <SmsIcon />
-                ) : j.subject == "Birthday" ? (
-                  <CakeIcon />
-                ) : (
-                  <ExplicitIcon />
-                )}
+                <ShowIcon subject={j.subject} />
               </Box>
               <Stack>
                 <Stack>

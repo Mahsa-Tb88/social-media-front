@@ -66,6 +66,8 @@ export default function ShowIcon({ subject }) {
         <PlaceIcon />
       ) : subject == "Family" ? (
         <Diversity1Icon />
+      ) : subject == "Relationship" ? (
+        <FavoriteIcon />
       ) : (
         <HomeRepairServiceIcon />
       )}

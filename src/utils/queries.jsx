@@ -14,7 +14,7 @@ export function useInitialize() {
 export function useGetPostsUser(id) {
   return useQuery({
     queryKey: ["posts", id],
-    queryFn: () => axios.get("user/posts/" + id),
+    queryFn: () => axios.get("profile/posts/" + id),
   });
 }
 
@@ -28,6 +28,13 @@ export function useGetAllUser() {
 export function useGetUserById(id) {
   return useQuery({
     queryKey: ["user", id],
-    queryFn: () => axios.get("/user/" + id),
+    queryFn: () => axios.get("/profile/" + id),
+  });
+}
+
+export function useGetOverview(id) {
+  return useQuery({
+    queryKey: ["overview", id],
+    queryFn: () => axios.get("/user/overview" + id),
   });
 }

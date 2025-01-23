@@ -34,7 +34,7 @@ export default function Contact() {
       subject: "Github",
     },
   ];
-  
+
   const basicInfo = [
     {
       value: "Female",
@@ -71,7 +71,6 @@ export default function Contact() {
 
 function ContactInfo({ myContact }) {
   const [contact, setContact] = useState(myContact);
-  console.log("contact", contact);
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>

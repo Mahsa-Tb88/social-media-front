@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import ItemAbout from "../ItemAbout";
 import ShowIcon from "../ShowIcon";
-import EditValueSubject from "../Overview/EditVelueSubject";
+import EditValueSubject from "../EditVelueSubject";
 
 export default function PlaceLived() {
   const myPlaces = [

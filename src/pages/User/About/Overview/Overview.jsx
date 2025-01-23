@@ -5,6 +5,9 @@ import ItemAbout from "../ItemAbout";
 
 import { useSelector } from "react-redux";
 import ShowIcon from "../ShowIcon";
+import { useGetOverview } from "../../../../utils/queries";
+import { useParams } from "react-router-dom";
+import { DataObject } from "@mui/icons-material";
 
 export default function Overview() {
   const listOverview = [
@@ -45,6 +48,9 @@ export default function Overview() {
       subject: "Email",
     },
   ];
+  const params = useParams();
+  const { isPending, data } = useGetOverview(params.is);
+  console.log("dataaaa", data);
   const theme = useSelector((state) => state.app.theme);
   const [list, setList] = useState(listOverview);
 

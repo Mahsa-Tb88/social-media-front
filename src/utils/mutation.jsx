@@ -27,22 +27,22 @@ export function useUploadFile() {
 
 export function useChangeBackgorund() {
   return useMutation({
-    mutationFn: (data) => axios.post("/user/background", data),
+    mutationFn: (data) => axios.post("/profile/background", data),
   });
 }
 export function useProfileImgChange() {
   return useMutation({
-    mutationFn: (data) => axios.post("/user/profileImg", data),
+    mutationFn: (data) => axios.post("/profile/profileImg", data),
   });
 }
 export function useCreateNewPost() {
   return useMutation({
-    mutationFn: (data) => axios.post("/user/post", data),
+    mutationFn: (data) => axios.post("/profile/post", data),
   });
 }
 
 export function useEditUser() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/edit/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/profile/edit/${data.id}`, data),
   });
 }

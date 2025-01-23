@@ -4,7 +4,7 @@ import FilterViewer from "../Profile/FilterViewer";
 import MenuItem from "./MenuItem";
 import ShowIcon from "./ShowIcon";
 import SetViewer from "./SetViewer";
-import EditValueSubject from "./Overview/EditVelueSubject";
+import EditValueSubject from "./EditVelueSubject";
 
 export default function ItemAbout({
   children,
@@ -26,7 +26,7 @@ export default function ItemAbout({
         alignItems: "center",
       }}
     >
-      {value == 0 ? (
+      {!value ? (
         <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
           <Box>
             <ShowIcon subject={subject} />

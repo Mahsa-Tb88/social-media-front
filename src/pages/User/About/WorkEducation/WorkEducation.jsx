@@ -3,12 +3,10 @@ import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import SchoolIcon from "@mui/icons-material/School";
-import EditValueSubject from "../Overview/EditVelueSubject";
+import EditValueSubject from "../EditVelueSubject";
 import ShowIcon from "../ShowIcon";
 
 export default function WorkEducation() {
-
-  
   const myEducation = [
     {
       position: "Bachlor",

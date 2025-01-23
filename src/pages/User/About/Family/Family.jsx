@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import noImage from "../../../../assets/images/user.png";
 import ItemAbout from "../ItemAbout";
 import ShowIcon from "../ShowIcon";
-import EditValueSubject from "../Overview/EditVelueSubject";
+import EditValueSubject from "../EditVelueSubject";
 
 export default function Family() {
   const user = [
@@ -12,6 +12,7 @@ export default function Family() {
       img: noImage,
       status: "Married",
       viewer: "public",
+      id: 45,
     },
   ];
   const myFamily = [
@@ -42,6 +43,7 @@ export default function Family() {
             value={relationship[0]}
             subject={"Relationship"}
             title="Relationship"
+            id={relationship[0]?.id}
           >
             <Stack sx={{ mb: 1 }}>
               <Stack
@@ -52,7 +54,7 @@ export default function Family() {
                 }}
               >
                 <img
-                  src={relationship[0].img}
+                  src={relationship[0]?.img}
                   height={50}
                   width={50}
                   style={{
@@ -61,8 +63,8 @@ export default function Family() {
                   }}
                 />
                 <Stack>
-                  <Typography>{relationship[0].username}</Typography>
-                  <Box sx={{ fontSize: 13 }}>{relationship[0].status}</Box>
+                  <Typography>{relationship[0]?.username}</Typography>
+                  <Box sx={{ fontSize: 13 }}>{relationship[0]?.status}</Box>
                 </Stack>
               </Stack>
             </Stack>

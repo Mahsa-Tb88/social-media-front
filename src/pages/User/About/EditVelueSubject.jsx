@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import MyIconButton from "../../../../components/Customized/MyIconButton";
+import MyIconButton from "../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 
@@ -274,7 +274,14 @@ function FamilyMember({ value, list, setList, type, onCloseEdit, title }) {
   function saveHandler() {
     let newList;
     if (type == "new") {
-      newList = user;
+      // newList = user;
+      newList = {
+        username: "Hossein88",
+        img: "noImage",
+        status: "Married",
+        viewer: "public",
+        id: 450,
+      };
       setList([...list, newList]);
     } else {
       newList = list.map((l) => {
@@ -298,10 +305,10 @@ function FamilyMember({ value, list, setList, type, onCloseEdit, title }) {
     <Stack spacing={3}>
       <TextField
         size="small"
-        placeholder="Search Family Member"
-        label="Family"
+        placeholder={"Serach username"}
+        label={title == "Family" ? "Family" : "Person"}
         onChange={findFamilyMember}
-        defaultValue={type == "edit" && value.username}
+        defaultValue={type == "edit" ? value.username : ""}
       />
       {title == "Family" ? (
         <FormControl fullWidth>

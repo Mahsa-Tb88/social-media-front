@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 
 import React, { useState } from "react";
-import EditValueSubject from "./Overview/EditVelueSubject";
-
+import EditValueSubject from "./EditVelueSubject";
 export default function MenuItem({
   open,
   anchorEl,
@@ -30,6 +29,10 @@ export default function MenuItem({
 
     if (id) {
       newList = list.filter((l) => l.id != id);
+      console.log("newList...", newList);
+      // if(title=="Relationship"){
+
+      // }
       setList(newList);
     } else if (list[0].hasOwnProperty("value")) {
       newList = list.map((l) => {

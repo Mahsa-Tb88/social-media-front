@@ -21,18 +21,17 @@ export default function MenuItem({
   setList,
   list,
   id,
+  title = "",
 }) {
   const [openEdit, setOpenEdit] = useState(false);
-
   function deleteItem(value) {
     handleClose();
     let newList;
 
     if (id) {
       newList = list.filter((l) => l.id != id);
-    }
-
-    if (list[0].hasOwnProperty("value")) {
+      setList(newList);
+    } else if (list[0].hasOwnProperty("value")) {
       newList = list.map((l) => {
         if (l.value == value) {
           return { ...l, value: "" };
@@ -40,24 +39,41 @@ export default function MenuItem({
           return l;
         }
       });
-    }
-    if (list[0].hasOwnProperty("city")) {
-      console.log("list is...", list);
-      console.log("value is...", value);
-      if (list.length <= 3) {
-        newList = list.map((l) => {
-          if (l.city == value) {
-            return { ...l, city: "" };
-          } else {
-            return l;
-          }
-        });
-      } else {
-      }
+      setList(newList);
     }
 
-    console.log(newList);
-    setList(newList);
+    if (title == "city") {
+      console.log(" city is...", list);
+      console.log("value is...", value);
+      if (list.length <= 3) {
+        if (subject == "used to live") {
+          newList = list.filter((l) => l.city != value);
+        } else {
+          newList = list.map((l) => {
+            if (l.city == value) {
+              return { ...l, city: "" };
+            } else {
+              return l;
+            }
+          });
+        }
+      } else {
+        console.log("subject", subject);
+        if (subject == "used to live") {
+          newList = list.filter((l) => l.city != value);
+        } else {
+          newList = list.map((l) => {
+            if (l.city == value) {
+              return { ...l, city: "" };
+            } else {
+              return l;
+            }
+          });
+        }
+      }
+
+      setList(newList);
+    }
   }
 
   function onCloseEdit() {
@@ -100,6 +116,7 @@ export default function MenuItem({
         list={list}
         setList={setList}
         type="edit"
+        title={title}
       />
     </Menu>
   );

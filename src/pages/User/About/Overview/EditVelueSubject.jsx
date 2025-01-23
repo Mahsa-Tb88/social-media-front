@@ -28,21 +28,13 @@ export default function EditValueSubject({
   list,
   setList,
   type = "new",
+  title = "",
 }) {
   const [newValue, setNewValue] = useState(value);
 
   function saveChangeHandler() {
     let newList;
-    console.log("list", list);
-    console.log("value", value);
-    console.log("subject", subject);
-    console.log("newValueeeee", newValue);
-
-    if (
-      subject == "Hometown" ||
-      subject == "Current city" ||
-      subject == "used to live"
-    ) {
+    if (title == "city") {
       if (type == "edit") {
         newList = list.map((item) => {
           if (item.city == value && item.status == subject) {
@@ -52,12 +44,26 @@ export default function EditValueSubject({
           }
         });
       } else {
-        const newPlace = { city: newValue, status: subject, viewer: "public" };
-        newList = [...list, newPlace];
+        if (subject == "used to live") {
+          const newPlace = {
+            city: newValue,
+            status: subject,
+            viewer: "public",
+          };
+          newList = [...list, newPlace];
+        } else {
+          newList = list.map((l) => {
+            if (l.city == "" && l.status == subject) {
+              return { ...l, city: newValue };
+            } else {
+              return l;
+            }
+          });
+        }
+
+        setList(newList);
       }
     } else {
-      console.log("....", newValue);
-
       newList = list.map((item) => {
         if (item.value == value && item.subject == subject) {
           return { ...item, value: newValue };
@@ -66,11 +72,9 @@ export default function EditValueSubject({
         }
       });
     }
-    console.log("newList", newList);
     onCloseEdit();
     setList(newList);
   }
-
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -90,7 +94,16 @@ export default function EditValueSubject({
       </DialogTitle>
       <Divider />
       <DialogContent>
-        {subject == "Work" || subject == "Education" ? (
+        {title == "Family" || title == "Relationship" ? (
+          <FamilyMember
+            value={value}
+            list={list}
+            setList={setList}
+            type={type}
+            onCloseEdit={onCloseEdit}
+            title={title}
+          />
+        ) : subject == "Work" || subject == "Education" ? (
           <WorkEducationEditValue
             value={value}
             setList={setList}
@@ -243,6 +256,86 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
         </Stack>
       </Stack>
       <Button type="submit" size="large">
+        Save
+      </Button>
+    </Stack>
+  );
+}
+
+function FamilyMember({ value, list, setList, type, onCloseEdit, title }) {
+  function findFamilyMember() {
+    "from backend and setUser from backed";
+  }
+  console.log("value", value);
+  const [relation, setRelation] = useState("");
+  const [status, setStatus] = useState(value.status);
+  const [user, setUser] = useState(value);
+
+  function saveHandler() {
+    let newList;
+    if (type == "new") {
+      newList = user;
+      setList([...list, newList]);
+    } else {
+      newList = list.map((l) => {
+        if (l.username == value.username) {
+          return {
+            username: user.username,
+            id: user.id,
+            img: user.img,
+            viewer: l.viewer,
+            status: title == "Family" ? relation : status,
+          };
+        } else {
+          return l;
+        }
+      });
+      setList(newList);
+      onCloseEdit();
+    }
+  }
+  return (
+    <Stack spacing={3}>
+      <TextField
+        size="small"
+        placeholder="Search Family Member"
+        label="Family"
+        onChange={findFamilyMember}
+        defaultValue={type == "edit" && value.username}
+      />
+      {title == "Family" ? (
+        <FormControl fullWidth>
+          <InputLabel id="relation">Relationship</InputLabel>
+          <Select
+            id="relation"
+            value={relation}
+            label="Relationship"
+            onChange={(e) => setRelation(e.target.value)}
+          >
+            <MenuItem value={"Mother"}>Mother</MenuItem>
+            <MenuItem value={"Father"}>Father</MenuItem>
+            <MenuItem value={"Sister"}>Sister</MenuItem>
+            <MenuItem value={"Brother"}>Brother</MenuItem>
+            <MenuItem value={"Cousin"}>Cousin</MenuItem>
+            <MenuItem value={"Aunt"}>Aunt</MenuItem>
+            <MenuItem value={"Uncle"}>Uncle</MenuItem>
+          </Select>
+        </FormControl>
+      ) : (
+        <FormControl fullWidth>
+          <InputLabel id="status">Status</InputLabel>
+          <Select
+            id="status"
+            value={status}
+            label="Status"
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <MenuItem value={"Marrid"}>Marrid</MenuItem>
+            <MenuItem value={"In realtionship"}>In relationship</MenuItem>
+          </Select>
+        </FormControl>
+      )}
+      <Button size="large" sx={{}} onClick={saveHandler}>
         Save
       </Button>
     </Stack>

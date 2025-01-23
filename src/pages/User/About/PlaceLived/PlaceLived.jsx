@@ -42,9 +42,9 @@ export default function PlaceLived() {
                 setList={setPlaces}
                 value={p.city}
                 subject={p.status}
-                title="place"
+                title="city"
               >
-                <Stack sx={{}}>
+                <Stack>
                   <Stack sx={{ flexDirection: "row", gap: 1 }}>
                     <Typography>
                       <ShowIcon subject={p.status} />
@@ -92,6 +92,7 @@ export default function PlaceLived() {
             setList={setPlaces}
             list={places}
             type="new"
+            title={"city"}
           />
         </Stack>
       </Stack>

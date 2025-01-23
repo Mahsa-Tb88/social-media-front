@@ -19,6 +19,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
+import Diversity1Icon from "@mui/icons-material/Diversity1";
 
 export default function ShowIcon({ subject }) {
   return (
@@ -63,6 +64,8 @@ export default function ShowIcon({ subject }) {
         <HomeIcon />
       ) : subject == "Current city" || subject == "used to live" ? (
         <PlaceIcon />
+      ) : subject == "Family" ? (
+        <Diversity1Icon />
       ) : (
         <HomeRepairServiceIcon />
       )}

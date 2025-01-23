@@ -18,7 +18,6 @@ export default function ItemAbout({
   title = "",
 }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);
-
   return (
     <Stack
       sx={{
@@ -48,6 +47,7 @@ export default function ItemAbout({
             list={list}
             setList={setList}
             title={title}
+            type="new"
           />
         </Stack>
       ) : (
@@ -63,7 +63,6 @@ export default function ItemAbout({
           openAddSubject={openAddSubject}
           setOpenAddSubject={setOpenAddSubject}
           id={id}
-          type={type}
           title={title}
         />
       </Stack>
@@ -71,7 +70,7 @@ export default function ItemAbout({
   );
 }
 
-function MenuItemAbout({ myViewer, list, setList, value, subject, id }) {
+function MenuItemAbout({ myViewer, list, setList, value, subject, id, title }) {
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(myViewer);
   const [open, setOpen] = useState(false);
@@ -103,6 +102,7 @@ function MenuItemAbout({ myViewer, list, setList, value, subject, id }) {
         list={list}
         setList={setList}
         id={id}
+        title={title}
       />
     </Stack>
   );

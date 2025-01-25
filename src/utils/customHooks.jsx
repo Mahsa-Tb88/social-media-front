@@ -6,7 +6,7 @@ export function useRedurectIfIsLoggedIn() {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   useEffect(() => {
-    navigate(user.isLoggedIn ? `/profile/${user.profile._id}` : "/login");
+    navigate(user.isLoggedIn ? `/profile/${user.profile.id}` : "/login");
   }, [user.isLoggedIn]);
 
   return user.isLoggedIn;

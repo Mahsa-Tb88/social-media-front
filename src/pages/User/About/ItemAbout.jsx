@@ -9,8 +9,8 @@ import EditValueSubject from "./EditVelueSubject";
 export default function ItemAbout({
   children,
   myViewer,
-  list,
-  setList,
+  list = [],
+  setList = [],
   value,
   subject,
   id,

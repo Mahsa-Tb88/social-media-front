@@ -7,7 +7,6 @@ import {
   Container,
   FormControlLabel,
   Grid2,
-  InputAdornment,
   Paper,
   Stack,
   TextField,
@@ -25,7 +24,7 @@ export default function Register() {
     watch,
     formState: { errors },
   } = useForm();
-  
+
   const cleaerSwitch = useRef(null);
   useEffect(() => {
     return () => clearTimeout(cleaerSwitch.current);
@@ -86,16 +85,7 @@ export default function Register() {
                 variant="standard"
                 required
               />
-              <TextField
-                {...register("livesIn")}
-                label="Lives in"
-                variant="standard"
-              />
-              <TextField
-                {...register("work")}
-                label="Work"
-                variant="standard"
-              />
+
               <TextField
                 {...register("email", {
                   required: "Please enter a email",

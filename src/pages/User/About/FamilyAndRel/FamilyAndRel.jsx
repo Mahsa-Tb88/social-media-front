@@ -4,8 +4,14 @@ import noImage from "../../../../assets/images/user.png";
 import ItemAbout from "../ItemAbout";
 import ShowIcon from "../ShowIcon";
 import EditValueSubject from "../EditVelueSubject";
+import { useSelector } from "react-redux";
 
-export default function Family() {
+export default function FamilyAndRel() {
+  const relationship = useSelector((state) => state.user.relationship);
+  const family = useSelector((state) => state.user.family);
+
+  // { username: "", profileImg: "", status: "", viewer: "private" }
+
   const user = [
     {
       username: "Hossein88",
@@ -25,8 +31,6 @@ export default function Family() {
     },
   ];
 
-  const [family, setFamily] = useState(myFamily);
-  const [relationship, setRealtionship] = useState(user);
   const [openAddFamily, setOpenAddFamily] = useState(false);
 
   return (
@@ -35,41 +39,68 @@ export default function Family() {
         <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
           Relationship
         </Typography>
-        <Stack>
-          <ItemAbout
-            myViewer={relationship.viewer}
-            list={relationship}
-            setList={setRealtionship}
-            value={relationship[0]}
-            subject={"Relationship"}
-            title="Relationship"
-            id={relationship[0]?.id}
-          >
-            <Stack sx={{ mb: 1 }}>
-              <Stack
-                sx={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 1,
-                }}
-              >
-                <img
-                  src={relationship[0]?.img}
-                  height={50}
-                  width={50}
-                  style={{
-                    border: "var(--border)",
-                    borderRadius: "50%",
+        {Object.keys(relationship).length != 0 ? (
+          <Stack>
+            <ItemAbout
+              myViewer={relationship.viewer}
+              value={relationship}
+              subject={"Relationship"}
+              title="Relationship"
+            >
+              <Stack sx={{ mb: 1 }}>
+                <Stack
+                  sx={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 1,
                   }}
-                />
-                <Stack>
-                  <Typography>{relationship[0]?.username}</Typography>
-                  <Box sx={{ fontSize: 13 }}>{relationship[0]?.status}</Box>
+                >
+                  <img
+                    src={relationship.profileImg}
+                    height={50}
+                    width={50}
+                    style={{
+                      border: "var(--border)",
+                      borderRadius: "50%",
+                    }}
+                  />
+                  <Stack>
+                    <Typography>{relationship.username}</Typography>
+                    <Box sx={{ fontSize: 13 }}>{relationship.status}</Box>
+                  </Stack>
                 </Stack>
               </Stack>
-            </Stack>
-          </ItemAbout>
-        </Stack>
+            </ItemAbout>
+          </Stack>
+        ) : (
+          <Stack
+            sx={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Box>
+              <ShowIcon subject="status" />
+            </Box>
+            <Button
+              variant="text"
+              sx={{ fontSize: 18 }}
+              onClick={() => setOpenAddFamily(true)}
+            >
+              Add Relationship
+            </Button>
+            <Box></Box>
+            <EditValueSubject
+              openEdit={openAddFamily}
+              onCloseEdit={() => setOpenAddFamily(false)}
+              value=""
+              subject="Relationship"
+              type="new"
+              title="Family"
+            />
+          </Stack>
+        )}
       </Stack>
       <Stack sx={{ mb: 4 }} spacing={1}>
         <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
@@ -82,8 +113,6 @@ export default function Family() {
                 <Stack key={j.id}>
                   <ItemAbout
                     myViewer={j.viewer}
-                    list={family}
-                    setList={setFamily}
                     value={j}
                     subject={"Family"}
                     id={j.id}
@@ -98,7 +127,7 @@ export default function Family() {
                         }}
                       >
                         <img
-                          src={j.img}
+                          src={j.profileImg}
                           height={50}
                           width={50}
                           style={{
@@ -141,8 +170,6 @@ export default function Family() {
             onCloseEdit={() => setOpenAddFamily(false)}
             value=""
             subject="Family"
-            setList={setFamily}
-            list={family}
             type="new"
             title="Family"
           />

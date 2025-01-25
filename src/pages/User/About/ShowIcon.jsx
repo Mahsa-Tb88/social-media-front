@@ -24,31 +24,31 @@ import Diversity1Icon from "@mui/icons-material/Diversity1";
 export default function ShowIcon({ subject }) {
   return (
     <Stack>
-      {subject == "Mobile" ? (
+      {subject == "cellphone" || subject == "mobile" ? (
         <PhoneIcon />
-      ) : subject == "Email" ? (
+      ) : subject == "email" ? (
         <EmailIcon />
-      ) : subject == "Website" ? (
+      ) : subject == "website" ? (
         <LanguageIcon />
-      ) : subject == "LinkedIn" ? (
+      ) : subject == "linkedIn" ? (
         <LinkedInIcon />
-      ) : subject == "Github" ? (
+      ) : subject == "github" ? (
         <GitHubIcon />
-      ) : subject == "education" || subject == "School" ? (
+      ) : subject == "education" || subject == "school" ? (
         <SchoolIcon />
-      ) : subject == "Gender" ? (
+      ) : subject == "gender" ? (
         <Face4Icon />
-      ) : subject == "Pronouns" ? (
+      ) : subject == "pronouns" ? (
         <SmsIcon />
-      ) : subject == "Birthday" ? (
+      ) : subject == "birthday" ? (
         <CakeIcon />
-      ) : subject == "Language(s)" ? (
+      ) : subject == "language" ? (
         <ExplicitIcon />
-      ) : subject == "Location" ? (
+      ) : subject == "Location" || subject == "current city" ? (
         <LocationOnIcon />
-      ) : subject == "Hometown" ? (
+      ) : subject == "hometown" ? (
         <HomeIcon />
-      ) : subject == "Status" ? (
+      ) : subject == "status" ? (
         <HelpIcon />
       ) : subject == "Phone" ? (
         <LocalPhoneIcon />
@@ -58,11 +58,11 @@ export default function ShowIcon({ subject }) {
         <FavoriteIcon />
       ) : subject == "Married" ? (
         <LoyaltyIcon />
-      ) : subject == "Hometown" ? (
+      ) : subject == "hometown" ? (
         <HomeIcon />
-      ) : subject == "Born in" ? (
+      ) : subject == "bornIn" ? (
         <HomeIcon />
-      ) : subject == "Current city" || subject == "used to live" ? (
+      ) : subject == "location" || subject == "used to live" ? (
         <PlaceIcon />
       ) : subject == "Family" ? (
         <Diversity1Icon />

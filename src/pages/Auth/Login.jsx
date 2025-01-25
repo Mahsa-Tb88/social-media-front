@@ -37,10 +37,29 @@ export default function Login() {
   function onSubmit(data) {
     mutate(data, {
       onSuccess(d) {
+        console.log(d);
         const user = d.data.body.user;
         dispatch(userActions.setIsLoggedIn(true));
         user.username = user.username[0].toUpperCase() + user.username.slice(1);
-        dispatch(userActions.setProfile(user));
+        dispatch(
+          userActions.setProfile({
+            username: user.username,
+            profileImg: user.profileImg,
+            backgroundImg: user.backgroundImg,
+            bio: user.bio,
+            viewer: user.viewer,
+            id:user._id
+          })
+        );
+        dispatch(userActions.setOverview(user.overView));
+        dispatch(userActions.setContact(user.contact));
+        dispatch(userActions.setRelationship(user.relationship));
+        dispatch(userActions.setWebsites(user.websites));
+        dispatch(userActions.setWork(user.work));
+        dispatch(userActions.setBaseInfo(user.baseInfo));
+        dispatch(userActions.setEducation(user.education));
+        dispatch(userActions.setPlaceLived(user.placeLived));
+        dispatch(userActions.setFamily(user.family));
       },
       onError(error) {
         console.log(error);

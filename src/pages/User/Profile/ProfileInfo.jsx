@@ -85,8 +85,8 @@ export default function ProfileInfo({ user }) {
                 {user.username}
               </Typography>
               <Typography sx={{ fontSize: 17 }}>
-                {user.friends.length ? user.friends + "friends" : " "}
-                {user.mutual ? ", " + user.mutual + "mutual" : ""}
+               {/*  {user?.friends.length ? user.friends + "friends" : " "}
+                {user?.mutual ? ", " + user.mutual + "mutual" : ""} */}
               </Typography>
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>

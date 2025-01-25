@@ -28,7 +28,7 @@ export function useGetAllUser() {
 export function useGetUserById(id) {
   return useQuery({
     queryKey: ["user", id],
-    queryFn: () => axios.get("/profile/" + id),
+    queryFn: () => axios.get("/user/" + id),
   });
 }
 

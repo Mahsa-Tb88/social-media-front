@@ -5,61 +5,33 @@ import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import SchoolIcon from "@mui/icons-material/School";
 import EditValueSubject from "../EditVelueSubject";
 import ShowIcon from "../ShowIcon";
+import { useSelector } from "react-redux";
 
 export default function WorkEducation() {
-  const myEducation = [
-    {
-      position: "Bachlor",
-      company: "Physics",
-      city: "university of Isfahan",
-      from: 2300,
-      to: 2500,
-      viewer: "public",
-      id: 1,
-    },
-    {
-      position: "Master",
-      company: "Physics",
-      city: "Babol Noshirvani",
-      from: 2300,
-      to: 2500,
-      viewer: "public",
-      id: 2,
-    },
-  ];
-
-  const myWork = [
-    {
-      position: "Web Developer",
-      company: "Orain",
-      city: "Chilliwack",
-      from: 2020,
-      to: "",
-      viewer: "public",
-      id: 3,
-    },
-    {
-      position: "Frontend Developer",
-      company: "Andishe",
-      city: "Tabriz",
-      from: 2014,
-      to: 2020,
-      viewer: "public",
-      id: 4,
-    },
-  ];
-
   return (
     <Stack spacing={4}>
-      <WorkSection myWork={myWork} />
-      <EducationSection myEducation={myEducation} />
+      <WorkSection />
+      <EducationSection />
     </Stack>
   );
 }
 
 function WorkSection({ myWork }) {
-  const [work, setWork] = useState(myWork);
+  // const [work, setWork] = useState(myWork);
+  const workk = useSelector((state) => state.user.work);
   const [openAddWork, setOpenAddWork] = useState(false);
+  const work = [
+    // {
+    //   position: "",
+    //   company: "",
+    //   startYear: "",
+    //   endYear: "",
+    //   isCurrently: false,
+    //   city: "",
+    //   viewer: "private",
+    //   id: "1",
+    // },
+  ];
 
   return (
     <Stack>
@@ -70,10 +42,8 @@ function WorkSection({ myWork }) {
         <Stack key={w.id}>
           <ItemAbout
             myViewer={w.viewer}
-            list={work}
-            setList={setWork}
             value={w}
-            subject={"Work"}
+            subject={"work"}
             id={w.id}
             type="edit"
           >
@@ -101,10 +71,10 @@ function WorkSection({ myWork }) {
                         alignItems: "center",
                       }}
                     >
-                      <Box>{w.from}</Box>
+                      <Box>{w.startYear}</Box>
                       <Typography sx={{ mx: 1 }}>-</Typography>
-                      {w.to ? (
-                        <Box>{w.to}</Box>
+                      {w.endYear ? (
+                        <Box>{w.endYear}</Box>
                       ) : (
                         <Typography>Currently</Typography>
                       )}
@@ -134,16 +104,26 @@ function WorkSection({ myWork }) {
         openEdit={openAddWork}
         onCloseEdit={() => setOpenAddWork(false)}
         type="new"
-        setList={setWork}
-        list={work}
       />
     </Stack>
   );
 }
 
 function EducationSection({ myEducation }) {
-  const [education, setEducation] = useState(myEducation);
   const [openAddEducation, setOpenAddEducation] = useState(false);
+  const educationn = useSelector((state) => state.user.education);
+
+  const education = [
+    // {
+    //   degree: "",
+    //   field: "",
+    //   university: "",
+    //   startYear: "",
+    //   endYear: "",
+    //   isCurrently: false,
+    //   viewer: "private",
+    // },
+  ];
 
   return (
     <Stack>
@@ -154,8 +134,6 @@ function EducationSection({ myEducation }) {
         <Stack key={e.id}>
           <ItemAbout
             myViewer={e.viewer}
-            list={education}
-            setList={setEducation}
             value={e}
             subject={"Education"}
             id={e.id}
@@ -184,10 +162,10 @@ function EducationSection({ myEducation }) {
                         alignItems: "center",
                       }}
                     >
-                      <Box>{e.from}</Box>
+                      <Box>{e.startYear}</Box>
                       <Typography sx={{ mx: 1 }}>-</Typography>
-                      {e.to ? (
-                        <Box>{e.to}</Box>
+                      {e.endYear ? (
+                        <Box>{e.endYear}</Box>
                       ) : (
                         <Typography>Currently</Typography>
                       )}
@@ -217,8 +195,6 @@ function EducationSection({ myEducation }) {
         openEdit={openAddEducation}
         onCloseEdit={() => setOpenAddEducation(false)}
         value=""
-        setList={setEducation}
-        list={education}
       />
     </Stack>
   );

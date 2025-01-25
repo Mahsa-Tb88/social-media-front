@@ -4,6 +4,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoggedIn: false,
   profile: {},
+  overview: [],
+  contact: [],
+  education: [],
+  placeLived: [],
+  work: [],
+  relationship: {},
+  family: [],
+  websites: [],
+  baseInfo: [],
 };
 
 const userSlice = createSlice({
@@ -15,6 +24,33 @@ const userSlice = createSlice({
     },
     setProfile(state, action) {
       state.profile = action.payload;
+    },
+    setOverview(state, action) {
+      state.overview = action.overview;
+    },
+    setContact(state, action) {
+      state.contact = action.contact;
+    },
+    setRelationship(state, action) {
+      state.relationship = action.relationship;
+    },
+    setWebsites(state, action) {
+      state.websites = action.websites;
+    },
+    setBaseInfo(state, action) {
+      state.baseInfo = action.baseInfo;
+    },
+    setEducation(state, action) {
+      state.education = action.education;
+    },
+    setPlaceLived(state, action) {
+      state.placeLived = action.placeLived;
+    },
+    setWork(state, action) {
+      state.work = action.work;
+    },
+    setFamily(state, action) {
+      state.family = action.family;
     },
     setLogout(state) {
       state.profile = {};

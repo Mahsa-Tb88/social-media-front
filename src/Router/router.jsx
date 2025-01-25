@@ -11,7 +11,7 @@ import Post from "../pages/User/Profile/Post";
 import About from "../pages/User/Profile/About";
 import Galery from "../pages/User/Profile/Galery";
 import Friends from "../pages/User/Profile/Friends";
-import Family from "../pages/User/About/Family/Family";
+import FamilyAndRel from "../pages/User/About/FamilyAndRel/FamilyAndRel";
 import WorkEducation from "../pages/User/About/WorkEducation/WorkEducation";
 import PlaceLived from "../pages/User/About/PlaceLived/PlaceLived";
 import Contact from "../pages/User/About/Contact/Contact";
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
                   { index: true, element: <Overview /> },
                   { path: "overview", element: <Overview /> },
 
-                  { path: "family", element: <Family /> },
+                  { path: "family", element: <FamilyAndRel /> },
                   { path: "work&education", element: <WorkEducation /> },
                   { path: "placeLived", element: <PlaceLived /> },
                   { path: "contact", element: <Contact /> },

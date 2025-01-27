@@ -9,8 +9,6 @@ import EditValueSubject from "./EditVelueSubject";
 export default function ItemAbout({
   children,
   myViewer,
-  list = [],
-  setList = [],
   value,
   subject,
   id,
@@ -56,21 +54,18 @@ export default function ItemAbout({
       <Stack>
         <MenuItemAbout
           myViewer={myViewer}
-          list={list}
-          setList={setList}
           value={value}
           subject={subject}
           openAddSubject={openAddSubject}
           setOpenAddSubject={setOpenAddSubject}
           id={id}
-          title={title}
         />
       </Stack>
     </Stack>
   );
 }
 
-function MenuItemAbout({ myViewer, list, setList, value, subject, id, title }) {
+function MenuItemAbout({ myViewer, value, subject, id }) {
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(myViewer);
   const [open, setOpen] = useState(false);
@@ -78,14 +73,14 @@ function MenuItemAbout({ myViewer, list, setList, value, subject, id, title }) {
 
   return (
     <Stack>
-      {value && (
+      {
         <SetViewer
           viewer={viewer}
           setOpenFilterViewer={setOpenFilterViewer}
           menuAnchor={menuAnchor}
           setOpen={setOpen}
         />
-      )}
+      }
       <FilterViewer
         open={openFilterViewer}
         onClose={() => setOpenFilterViewer(false)}
@@ -99,10 +94,7 @@ function MenuItemAbout({ myViewer, list, setList, value, subject, id, title }) {
         anchorEl={menuAnchor.current}
         subject={subject}
         value={value}
-        list={list}
-        setList={setList}
         id={id}
-        title={title}
       />
     </Stack>
   );

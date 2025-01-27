@@ -26,7 +26,8 @@ const userSlice = createSlice({
       state.profile = action.payload;
     },
     setOverview(state, action) {
-      state.overview = action.overview;
+      console.log("action", action);
+      state.overview = action.payload;
     },
     setContact(state, action) {
       state.contact = action.contact;

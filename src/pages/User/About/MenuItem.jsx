@@ -17,66 +17,12 @@ export default function MenuItem({
   handleClose,
   subject,
   value,
-  setList,
-  list,
   id,
-  title = "",
 }) {
   const [openEdit, setOpenEdit] = useState(false);
   function deleteItem(value) {
     handleClose();
     let newList;
-
-    if (id) {
-      newList = list.filter((l) => l.id != id);
-      console.log("newList...", newList);
-      // if(title=="Relationship"){
-
-      // }
-      setList(newList);
-    } else if (list[0].hasOwnProperty("value")) {
-      newList = list.map((l) => {
-        if (l.value == value) {
-          return { ...l, value: "" };
-        } else {
-          return l;
-        }
-      });
-      setList(newList);
-    }
-
-    if (title == "city") {
-      console.log(" city is...", list);
-      console.log("value is...", value);
-      if (list.length <= 3) {
-        if (subject == "used to live") {
-          newList = list.filter((l) => l.city != value);
-        } else {
-          newList = list.map((l) => {
-            if (l.city == value) {
-              return { ...l, city: "" };
-            } else {
-              return l;
-            }
-          });
-        }
-      } else {
-        console.log("subject", subject);
-        if (subject == "used to live") {
-          newList = list.filter((l) => l.city != value);
-        } else {
-          newList = list.map((l) => {
-            if (l.city == value) {
-              return { ...l, city: "" };
-            } else {
-              return l;
-            }
-          });
-        }
-      }
-
-      setList(newList);
-    }
   }
 
   function onCloseEdit() {
@@ -116,10 +62,7 @@ export default function MenuItem({
         handleClose={handleClose}
         subject={subject}
         value={value}
-        list={list}
-        setList={setList}
         type="edit"
-        title={title}
       />
     </Menu>
   );

@@ -19,61 +19,29 @@ import React, { useState } from "react";
 import MyIconButton from "../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../../../store/slices/userSlice";
 
 export default function EditValueSubject({
   openEdit,
   onCloseEdit,
   subject,
   value = "",
-  list,
-  setList,
   type = "new",
-  title = "",
 }) {
   const [newValue, setNewValue] = useState(value);
+  const dispatch = useDispatch();
+  const overview = useSelector((state) => state.user.overview);
 
   function saveChangeHandler() {
-    let newList;
-    if (title == "city") {
-      if (type == "edit") {
-        newList = list.map((item) => {
-          if (item.city == value && item.status == subject) {
-            return { ...item, city: newValue };
-          } else {
-            return item;
-          }
-        });
-      } else {
-        if (subject == "used to live") {
-          const newPlace = {
-            city: newValue,
-            status: subject,
-            viewer: "public",
-          };
-          newList = [...list, newPlace];
-        } else {
-          newList = list.map((l) => {
-            if (l.city == "" && l.status == subject) {
-              return { ...l, city: newValue };
-            } else {
-              return l;
-            }
-          });
-        }
-
-        setList(newList);
-      }
-    } else {
-      newList = list.map((item) => {
-        if (item.value == value && item.subject == subject) {
-          return { ...item, value: newValue };
-        } else {
-          return item;
-        }
-      });
-    }
-    onCloseEdit();
-    setList(newList);
+    console.log("data", newValue, subject);
+    console.log([...overview, { subject, value: newValue, viewer: "friends" }]);
+    dispatch(
+      userActions.setOverview([
+        ...overview,
+        { subject, value: newValue, viewer: "friends" },
+      ])
+    );
   }
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
@@ -94,14 +62,13 @@ export default function EditValueSubject({
       </DialogTitle>
       <Divider />
       <DialogContent>
-        {title == "Family" || title == "Relationship" ? (
+        {subject == "Family" ? (
           <FamilyMember
             value={value}
             list={list}
             setList={setList}
             type={type}
             onCloseEdit={onCloseEdit}
-            title={title}
           />
         ) : subject == "Work" || subject == "Education" ? (
           <WorkEducationEditValue
@@ -262,7 +229,7 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
   );
 }
 
-function FamilyMember({ value, list, setList, type, onCloseEdit, title }) {
+function FamilyMember({ value, list, setList, type, onCloseEdit }) {
   function findFamilyMember() {
     "from backend and setUser from backed";
   }
@@ -291,7 +258,6 @@ function FamilyMember({ value, list, setList, type, onCloseEdit, title }) {
             id: user.id,
             img: user.img,
             viewer: l.viewer,
-            status: title == "Family" ? relation : status,
           };
         } else {
           return l;
@@ -306,11 +272,11 @@ function FamilyMember({ value, list, setList, type, onCloseEdit, title }) {
       <TextField
         size="small"
         placeholder={"Serach username"}
-        label={title == "Family" ? "Family" : "Person"}
+        // label={title == "Family" ? "Family" : "Person"}
         onChange={findFamilyMember}
         defaultValue={type == "edit" ? value.username : ""}
       />
-      {title == "Family" ? (
+      {subject == "Family" ? (
         <FormControl fullWidth>
           <InputLabel id="relation">Relationship</InputLabel>
           <Select

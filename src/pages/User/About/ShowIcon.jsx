@@ -24,31 +24,31 @@ import Diversity1Icon from "@mui/icons-material/Diversity1";
 export default function ShowIcon({ subject }) {
   return (
     <Stack>
-      {subject == "cellphone" || subject == "mobile" ? (
+      {subject == "Phone" ? (
         <PhoneIcon />
-      ) : subject == "email" ? (
+      ) : subject == "Email" ? (
         <EmailIcon />
-      ) : subject == "website" ? (
+      ) : subject == "Website" ? (
         <LanguageIcon />
-      ) : subject == "linkedIn" ? (
+      ) : subject == "LinkedIn" ? (
         <LinkedInIcon />
-      ) : subject == "github" ? (
+      ) : subject == "Github" ? (
         <GitHubIcon />
-      ) : subject == "education" || subject == "school" ? (
+      ) : subject == "Education" || subject == "School" ? (
         <SchoolIcon />
-      ) : subject == "gender" ? (
+      ) : subject == "Gender" ? (
         <Face4Icon />
-      ) : subject == "pronouns" ? (
+      ) : subject == "Pronouns" ? (
         <SmsIcon />
-      ) : subject == "birthday" ? (
+      ) : subject == "Birthday" ? (
         <CakeIcon />
-      ) : subject == "language" ? (
+      ) : subject == "Language" ? (
         <ExplicitIcon />
       ) : subject == "Location" || subject == "current city" ? (
         <LocationOnIcon />
-      ) : subject == "hometown" ? (
+      ) : subject == "Hometown" ? (
         <HomeIcon />
-      ) : subject == "status" ? (
+      ) : subject == "Status" ? (
         <HelpIcon />
       ) : subject == "Phone" ? (
         <LocalPhoneIcon />
@@ -58,11 +58,11 @@ export default function ShowIcon({ subject }) {
         <FavoriteIcon />
       ) : subject == "Married" ? (
         <LoyaltyIcon />
-      ) : subject == "hometown" ? (
+      ) : subject == "Hometown" ? (
         <HomeIcon />
-      ) : subject == "bornIn" ? (
+      ) : subject == "BornIn" ? (
         <HomeIcon />
-      ) : subject == "location" || subject == "used to live" ? (
+      ) : subject == "Location" || subject == "Used to live" ? (
         <PlaceIcon />
       ) : subject == "Family" ? (
         <Diversity1Icon />

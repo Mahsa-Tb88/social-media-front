@@ -1,90 +1,103 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ItemAbout from "../ItemAbout";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ShowIcon from "../ShowIcon";
-import { useGetOverview } from "../../../../utils/queries";
+import { useGetUserInfo } from "../../../../utils/queries";
 import { useParams } from "react-router-dom";
-import { DataObject } from "@mui/icons-material";
 import EditValueSubject from "../EditVelueSubject";
+import LoadingError from "../../../../components/LoadingError";
+import Loading from "../../../../components/Loading";
+import { userInfoActions } from "../../../../store/slices/userInfoSlice";
 
 export default function Overview() {
-  const overview = useSelector((state) => state.user.overview);
-  console.log("overview", overview);
+  const id = useParams().id;
+  const { isPending, data, error, refetch } = useGetUserInfo(id);
+  const dispatch = useDispatch();
+  const overview = useSelector((state) => state.userInfo.overview);
 
-  const theme = useSelector((state) => state.app.theme);
+  useEffect(() => {
+    if (data) {
+      dispatch(userInfoActions.setOverview(data.data.body.overview));
+    }
+  }, [data]);
 
   function findSubject(subject) {
     const item = overview.find((item) => item.subject == subject);
-    console.log("heeey", item);
-
     return item;
   }
-  // [{status:"School",value:"yechizi" , viewer:"public"}]
 
   return (
-    <Stack sx={{ gap: 4 }}>
-      {findSubject("School") ? (
-        <Item
-          subject="School"
-          text="Study at"
-          value={findSubject("School").value}
-          viewer={findSubject("School").viewer}
-        />
+    <Stack>
+      {isPending ? (
+        <Loading message="is loading..." />
+      ) : error ? (
+        <LoadingError handleAction={refetch} message={error.message} />
       ) : (
-        <AddSubject subject="School" />
-      )}
-      {findSubject("Location") ? (
-        <Item
-          subject="Location"
-          text="Livs in"
-          value={findSubject("Location").value}
-          viewer={findSubject("Location").viewer}
-        />
-      ) : (
-        <AddSubject subject="Location" />
-      )}
-      {findSubject("Hometown") ? (
-        <Item
-          subject="Hometown"
-          text="From"
-          value={findSubject("Hometown").value}
-          viewer={findSubject("Hometown").viewer}
-        />
-      ) : (
-        <AddSubject subject="Hometown" />
-      )}
-      {findSubject("Status") ? (
-        <Item
-          subject="Status"
-          text="I am"
-          value={findSubject("Status").value}
-          viewer={findSubject("Status").viewer}
-        />
-      ) : (
-        <AddSubject subject="Status" />
-      )}
-      {findSubject("Phone") ? (
-        <Item
-          subject="Phone"
-          text="Phone"
-          value={findSubject("Phone").value}
-          viewer={findSubject("Phone").viewer}
-        />
-      ) : (
-        <AddSubject subject="Phone" />
-      )}
-      {findSubject("Email") ? (
-        <Item
-          subject="Email"
-          text="Email"
-          value={findSubject("Email").value}
-          viewer={findSubject("Email").viewer}
-        />
-      ) : (
-        <AddSubject subject="Email" />
+        <Stack sx={{ gap: 4 }}>
+          {findSubject("School") ? (
+            <Item
+              subject="School"
+              text="Study at"
+              value={findSubject("School").value}
+              viewer={findSubject("School").viewer}
+            />
+          ) : (
+            <AddSubject subject="School" />
+          )}
+          {findSubject("Location") ? (
+            <Item
+              subject="Location"
+              text="Livs in"
+              value={findSubject("Location").value}
+              viewer={findSubject("Location").viewer}
+            />
+          ) : (
+            <AddSubject subject="Location" />
+          )}
+          {findSubject("Hometown") ? (
+            <Item
+              subject="Hometown"
+              text="From"
+              value={findSubject("Hometown").value}
+              viewer={findSubject("Hometown").viewer}
+            />
+          ) : (
+            <AddSubject subject="Hometown" />
+          )}
+          {findSubject("Status") ? (
+            <Item
+              subject="Status"
+              text="I am"
+              value={findSubject("Status").value}
+              viewer={findSubject("Status").viewer}
+            />
+          ) : (
+            <AddSubject subject="Status" />
+          )}
+          {findSubject("Phone") ? (
+            <Item
+              subject="Phone"
+              text="Phone"
+              value={findSubject("Phone").value}
+              viewer={findSubject("Phone").viewer}
+            />
+          ) : (
+            <AddSubject subject="Phone" />
+          )}
+          {findSubject("Email") ? (
+            <Item
+              subject="Email"
+              text="Email"
+              value={findSubject("Email").value}
+              viewer={findSubject("Email").viewer}
+            />
+          ) : (
+            <AddSubject subject="Email" />
+          )}
+        </Stack>
       )}
     </Stack>
   );
@@ -92,7 +105,13 @@ export default function Overview() {
 
 function Item({ subject, text, value, viewer }) {
   return (
-    <ItemAbout subject={subject} text={text} value={value} viewer={viewer}>
+    <ItemAbout
+      subject={subject}
+      text={text}
+      value={value}
+      myViewer={viewer}
+      title="overview"
+    >
       <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
         <ShowIcon subject="school" sx={{ mr: 1 }} />
         <Typography>Study at</Typography>
@@ -122,6 +141,7 @@ function AddSubject({ subject }) {
         onCloseEdit={() => setOpenAddSubject(false)}
         subject={subject}
         type="new"
+        title="overview"
       />
     </Stack>
   );

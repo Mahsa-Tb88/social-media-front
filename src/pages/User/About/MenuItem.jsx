@@ -11,16 +11,28 @@ import {
 
 import React, { useState } from "react";
 import EditValueSubject from "./EditVelueSubject";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../../../store/slices/userSlice";
+import { userInfoActions } from "../../../store/slices/userInfoSlice";
 export default function MenuItem({
   open,
   anchorEl,
   handleClose,
   subject,
   value,
+  title,
   id,
 }) {
   const [openEdit, setOpenEdit] = useState(false);
+  const dispatch = useDispatch();
+  const overview = useSelector((state) => state.userInfo.overview);
+
   function deleteItem(value) {
+    if (title == "overview") {
+      const filterArray = overview.filter((item) => item.subject != subject);
+      dispatch(userInfoActions.setOverview(filterArray));
+    }
+
     handleClose();
     let newList;
   }
@@ -62,6 +74,7 @@ export default function MenuItem({
         handleClose={handleClose}
         subject={subject}
         value={value}
+        title={title}
         type="edit"
       />
     </Menu>

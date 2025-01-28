@@ -46,3 +46,11 @@ export function useEditUser() {
     mutationFn: (data) => axios.put(`/profile/edit/${data.id}`, data),
   });
 }
+
+export function useEditUserInfo() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/user/editOverview/${data.id}`, data),
+  });
+}
+
+//

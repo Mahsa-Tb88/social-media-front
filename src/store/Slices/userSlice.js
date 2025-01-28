@@ -3,16 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoggedIn: false,
-  profile: {},
-  overview: [],
-  contact: [],
-  education: [],
-  placeLived: [],
-  work: [],
-  relationship: {},
-  family: [],
-  websites: [],
-  baseInfo: [],
+  isAdmin: false,
+  profile: {
+    email: "",
+    username: "",
+    id: "",
+    profileImg: "",
+    backgroundImg: "",
+    bio: "",
+    viewer: "",
+  },
 };
 
 const userSlice = createSlice({
@@ -25,33 +25,8 @@ const userSlice = createSlice({
     setProfile(state, action) {
       state.profile = action.payload;
     },
-    setOverview(state, action) {
-      console.log("action", action);
-      state.overview = action.payload;
-    },
-    setContact(state, action) {
-      state.contact = action.contact;
-    },
-    setRelationship(state, action) {
-      state.relationship = action.relationship;
-    },
-    setWebsites(state, action) {
-      state.websites = action.websites;
-    },
-    setBaseInfo(state, action) {
-      state.baseInfo = action.baseInfo;
-    },
-    setEducation(state, action) {
-      state.education = action.education;
-    },
-    setPlaceLived(state, action) {
-      state.placeLived = action.placeLived;
-    },
-    setWork(state, action) {
-      state.work = action.work;
-    },
-    setFamily(state, action) {
-      state.family = action.family;
+    setIsAdmin(state, action) {
+      state.profile = action.payload;
     },
     setLogout(state) {
       state.profile = {};

@@ -1,10 +1,8 @@
-import { Box, Button, Stack, Tooltip } from "@mui/material";
+import { Stack } from "@mui/material";
 import React, { useRef, useState } from "react";
 import FilterViewer from "../Profile/FilterViewer";
 import MenuItem from "./MenuItem";
-import ShowIcon from "./ShowIcon";
 import SetViewer from "./SetViewer";
-import EditValueSubject from "./EditVelueSubject";
 
 export default function ItemAbout({
   children,
@@ -12,10 +10,13 @@ export default function ItemAbout({
   value,
   subject,
   id,
-  type,
-  title = "",
+  title,
 }) {
-  const [openAddSubject, setOpenAddSubject] = useState(false);
+  const [openFilterViewer, setOpenFilterViewer] = useState(false);
+  const [viewer, setViewer] = useState(myViewer);
+  const [open, setOpen] = useState(false);
+  const menuAnchor = useRef(null);
+
   return (
     <Stack
       sx={{
@@ -24,78 +25,32 @@ export default function ItemAbout({
         alignItems: "center",
       }}
     >
-      {!value ? (
-        <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-          <Box>
-            <ShowIcon subject={subject} />
-          </Box>
-          <Button
-            variant="text"
-            sx={{ fontSize: 18 }}
-            onClick={() => setOpenAddSubject(true)}
-          >
-            Add {subject}
-          </Button>
-          <Box></Box>
-          <EditValueSubject
-            openEdit={openAddSubject}
-            onCloseEdit={() => setOpenAddSubject(false)}
-            subject={subject}
-            value={value}
-            list={list}
-            setList={setList}
-            title={title}
-            type="new"
-          />
-        </Stack>
-      ) : (
-        <Stack>{children}</Stack>
-      )}
+      {<Stack>{children}</Stack>}
       <Stack>
-        <MenuItemAbout
-          myViewer={myViewer}
-          value={value}
-          subject={subject}
-          openAddSubject={openAddSubject}
-          setOpenAddSubject={setOpenAddSubject}
-          id={id}
-        />
-      </Stack>
-    </Stack>
-  );
-}
-
-function MenuItemAbout({ myViewer, value, subject, id }) {
-  const [openFilterViewer, setOpenFilterViewer] = useState(false);
-  const [viewer, setViewer] = useState(myViewer);
-  const [open, setOpen] = useState(false);
-  const menuAnchor = useRef(null);
-
-  return (
-    <Stack>
-      {
         <SetViewer
           viewer={viewer}
           setOpenFilterViewer={setOpenFilterViewer}
           menuAnchor={menuAnchor}
           setOpen={setOpen}
         />
-      }
-      <FilterViewer
-        open={openFilterViewer}
-        onClose={() => setOpenFilterViewer(false)}
-        setViewer={setViewer}
-        viewer={viewer}
-        value={value}
-      />
-      <MenuItem
-        open={open}
-        handleClose={() => setOpen(false)}
-        anchorEl={menuAnchor.current}
-        subject={subject}
-        value={value}
-        id={id}
-      />
+
+        <FilterViewer
+          open={openFilterViewer}
+          onClose={() => setOpenFilterViewer(false)}
+          setViewer={setViewer}
+          viewer={viewer}
+          value={value}
+        />
+        <MenuItem
+          open={open}
+          handleClose={() => setOpen(false)}
+          anchorEl={menuAnchor.current}
+          subject={subject}
+          value={value}
+          title={title}
+          id={id}
+        />
+      </Stack>
     </Stack>
   );
 }

@@ -20,7 +20,9 @@ import MyIconButton from "../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../../store/slices/userSlice";
+import { userInfoActions } from "../../../store/slices/userInfoSlice";
+import { useEditUserInfo } from "../../../utils/mutation";
+import { useParams } from "react-router-dom";
 
 export default function EditValueSubject({
   openEdit,
@@ -28,20 +30,40 @@ export default function EditValueSubject({
   subject,
   value = "",
   type = "new",
+  title,
 }) {
   const [newValue, setNewValue] = useState(value);
   const dispatch = useDispatch();
-  const overview = useSelector((state) => state.user.overview);
-
+  const overview = useSelector((state) => state.userInfo.overview);
+  const user = useSelector((state) => state.user.profile);
+  console.log("usereee", user);
+  const mutation = useEditUserInfo();
   function saveChangeHandler() {
     console.log("data", newValue, subject);
-    console.log([...overview, { subject, value: newValue, viewer: "friends" }]);
-    dispatch(
-      userActions.setOverview([
-        ...overview,
-        { subject, value: newValue, viewer: "friends" },
-      ])
-    );
+    if (title == "overview") {
+      if (type == "new") {
+        dispatch(
+          userInfoActions.setOverview([
+            ...overview,
+            { subject, value: newValue, viewer: "friends" },
+          ])
+        );
+      } else {
+        const updatedOverview = overview.map((item) => {
+          if (item.subject == subject) {
+            return { ...item, value: newValue };
+          } else {
+            item;
+          }
+        });
+        dispatch(userInfoActions.setOverview(updatedOverview));
+      }
+      const data = { subject, value: newValue, viewer: "friends", id: user._id };
+      console.log(data);
+      mutation.mutate(data, { onSuccess(d) {}, onError(error) {} });
+    }
+
+    onCloseEdit();
   }
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>

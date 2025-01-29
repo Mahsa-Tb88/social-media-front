@@ -36,31 +36,41 @@ export default function EditValueSubject({
   const dispatch = useDispatch();
   const overview = useSelector((state) => state.userInfo.overview);
   const user = useSelector((state) => state.user.profile);
-  console.log("usereee", user);
+
   const mutation = useEditUserInfo();
   function saveChangeHandler() {
-    console.log("data", newValue, subject);
     if (title == "overview") {
-      if (type == "new") {
-        dispatch(
-          userInfoActions.setOverview([
-            ...overview,
-            { subject, value: newValue, viewer: "friends" },
-          ])
-        );
-      } else {
-        const updatedOverview = overview.map((item) => {
-          if (item.subject == subject) {
-            return { ...item, value: newValue };
-          } else {
-            item;
-          }
-        });
-        dispatch(userInfoActions.setOverview(updatedOverview));
-      }
-      const data = { subject, value: newValue, viewer: "friends", id: user._id };
-      console.log(data);
-      mutation.mutate(data, { onSuccess(d) {}, onError(error) {} });
+      // if (type == "new") {
+      //   dispatch(
+      //     userInfoActions.setOverview([
+      //       ...overview,
+      //       { subject, value: newValue, viewer: "friends" },
+      //     ])
+      //   );
+      // } else {
+      //   const updatedOverview = overview.map((item) => {
+      //     if (item.subject == subject) {
+      //       return { ...item, value: newValue };
+      //     } else {
+      //       item;
+      //     }
+      //   });
+      //   dispatch(userInfoActions.setOverview(updatedOverview));
+      // }
+      const data = {
+        subject,
+        value: newValue,
+        viewer: "friends",
+        id: user._id,
+      };
+      mutation.mutate(data, {
+        onSuccess(d) {
+          console.log("response back", d);
+        },
+        onError(error) {
+          console, log(error);
+        },
+      });
     }
 
     onCloseEdit();

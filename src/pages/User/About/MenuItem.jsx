@@ -12,8 +12,8 @@ import {
 import React, { useState } from "react";
 import EditValueSubject from "./EditVelueSubject";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../../store/slices/userSlice";
 import { userInfoActions } from "../../../store/slices/userInfoSlice";
+import { useDeleteOverview } from "../../../utils/mutation";
 export default function MenuItem({
   open,
   anchorEl,
@@ -26,11 +26,26 @@ export default function MenuItem({
   const [openEdit, setOpenEdit] = useState(false);
   const dispatch = useDispatch();
   const overview = useSelector((state) => state.userInfo.overview);
+  const userId = useSelector((state) => state.user.profile._id);
 
-  function deleteItem(value) {
+  const mutation = useDeleteOverview();
+
+  function deleteItem() {
     if (title == "overview") {
       const filterArray = overview.filter((item) => item.subject != subject);
       dispatch(userInfoActions.setOverview(filterArray));
+
+      const data = { id: userId, subject };
+      console.log("data is", data);
+
+      mutation.mutate(data, {
+        onSuccess(d) {
+          console.log("delete overview", d);
+        },
+        onError(e) {
+          console.log(e);
+        },
+      });
     }
 
     handleClose();

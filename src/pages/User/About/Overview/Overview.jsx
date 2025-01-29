@@ -15,19 +15,23 @@ import { userInfoActions } from "../../../../store/slices/userInfoSlice";
 export default function Overview() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetUserInfo(id);
-  const dispatch = useDispatch();
-  const overview = useSelector((state) => state.userInfo.overview);
+  // const dispatch = useDispatch();
+  // const overview = useSelector((state) => state.userInfo.overview);
 
-  useEffect(() => {
-    if (data) {
-      dispatch(userInfoActions.setOverview(data.data.body.overview));
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     dispatch(userInfoActions.setOverview(data.data.body.overview));
+  //   }
+  // }, [data]);
 
   function findSubject(subject) {
-    const item = overview.find((item) => item.subject == subject);
+    const item = data?.data.body.overview.find(
+      (item) => item.subject == subject
+    );
     return item;
   }
+
+  // console.log("over view is", overview);
 
   return (
     <Stack>
@@ -47,6 +51,7 @@ export default function Overview() {
           ) : (
             <AddSubject subject="School" />
           )}
+
           {findSubject("Location") ? (
             <Item
               subject="Location"
@@ -113,8 +118,8 @@ function Item({ subject, text, value, viewer }) {
       title="overview"
     >
       <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        <ShowIcon subject="school" sx={{ mr: 1 }} />
-        <Typography>Study at</Typography>
+        <ShowIcon subject={subject} sx={{ mr: 1 }} />
+        <Typography>{text}</Typography>
         <Typography>{value}</Typography>
       </Stack>
     </ItemAbout>

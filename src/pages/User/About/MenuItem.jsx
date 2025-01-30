@@ -14,6 +14,7 @@ import EditValueSubject from "./EditVelueSubject";
 import { useDispatch, useSelector } from "react-redux";
 import { userInfoActions } from "../../../store/slices/userInfoSlice";
 import { useDeleteOverview } from "../../../utils/mutation";
+import { useQueryClient } from "@tanstack/react-query";
 export default function MenuItem({
   open,
   anchorEl,
@@ -24,23 +25,20 @@ export default function MenuItem({
   id,
 }) {
   const [openEdit, setOpenEdit] = useState(false);
-  const dispatch = useDispatch();
-  const overview = useSelector((state) => state.userInfo.overview);
   const userId = useSelector((state) => state.user.profile._id);
 
   const mutation = useDeleteOverview();
+  const querryClient = useQueryClient();
 
   function deleteItem() {
     if (title == "overview") {
-      const filterArray = overview.filter((item) => item.subject != subject);
-      dispatch(userInfoActions.setOverview(filterArray));
-
       const data = { id: userId, subject };
-      console.log("data is", data);
 
       mutation.mutate(data, {
         onSuccess(d) {
-          console.log("delete overview", d);
+          querryClient.invalidateQueries({
+            queryKey: ["overview"],
+          });
         },
         onError(e) {
           console.log(e);

@@ -1,93 +1,51 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
 import ShowIcon from "../ShowIcon";
-import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import Loading from "../../../../components/Loading";
+import LoadingError from "../../../../components/LoadingError";
+import { useGetContactBaseInfo } from "../../../../utils/queries";
+import EditValueSubject from "../EditVelueSubject";
 
 export default function Contact() {
-  // const contactff = [
-  //   {
-  //     value: "2424242424",
-  //     viewer: "public",
-  //     subject: "Mobile",
-  //   },
-  //   {
-  //     value: "mah@gmail.com",
-  //     viewer: "public",
-  //     subject: "Email",
-  //   },
-  // ];
+  const id = useParams().id;
 
-  // const websites = [
-  //   {
-  //     value: "https://web.com",
-  //     viewer: "public",
-  //     subject: "Website",
-  //   },
-  //   {
-  //     value: "https://linkedin.com.ananan",
-  //     viewer: "public",
-  //     subject: "LinkedIn",
-  //   },
-  //   {
-  //     value: "https://github.com.ananan",
-  //     viewer: "public",
-  //     subject: "Github",
-  //   },
-  // ];
-
-  // const basicInfo = [
-  //   {
-  //     value: "Female",
-  //     viewer: "public",
-  //     subject: "Gender",
-  //   },
-  //   {
-  //     value: "She/Her",
-  //     viewer: "public",
-  //     subject: "Pronouns",
-  //   },
-  //   {
-  //     value: "1900-25-May",
-  //     viewer: "public",
-  //     subject: "Birthday",
-  //   },
-  //   {
-  //     value: "Persian English",
-  //     viewer: "public",
-  //     subject: "Language(s)",
-  //   },
-  // ];
-
+  const { isPending, data, error, refetch } = useGetContactBaseInfo(id);
+  const myData = data?.data.body || [];
+  console.log("dataaa", data);
   return (
     <Stack>
-      <Stack spacing={5}>
-        <ContactInfo />
-        <Websites />
-        <BasicInfo />
-      </Stack>
+      {isPending ? (
+        <Loading message="is loading..." />
+      ) : error ? (
+        <LoadingError handleAction={refetch} message={error.message} />
+      ) : (
+        <Stack spacing={5}>
+          <ContactInfo data={myData} />
+          <Websites data={myData} />
+          <BasicInfo data={myData} />
+        </Stack>
+      )}
     </Stack>
   );
 }
 
-function ContactInfo({}) {
-  const contactt = useSelector((state) => state.user.contact);
-
-  const contact = [
-    { mobile: "", viewer: "private" },
-    { email: "", viewer: "private" },
-  ];
+function ContactInfo({ data }) {
+  const mobile = data.Mobile;
+  const email = data.Email;
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Contact
       </Typography>
-      {contact.map((c, index) => (
-        <Stack key={index}>
+
+      <Stack>
+        {mobile ? (
           <ItemAbout
-            myViewer={c.viewer}
-            value={Object.values(c)[0]}
-            subject={Object.keys(c)[0]}
+            myViewer={mobile.viewer}
+            value={mobile.value}
+            subject={"Mobile"}
           >
             <Stack
               sx={{
@@ -97,44 +55,67 @@ function ContactInfo({}) {
               }}
             >
               <Box>
-                <ShowIcon subject={Object.keys(c)[0]} />
+                <ShowIcon subject={"Mobile"} />
               </Box>
               <Stack>
                 <Stack>
-                  <Typography>{Object.values(c)[0]}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>
-                    {Object.keys(c)[0]}
-                  </Typography>
+                  <Typography>{mobile.value}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{subject}</Typography>
                 </Stack>
               </Stack>
             </Stack>
           </ItemAbout>
-        </Stack>
-      ))}
+        ) : (
+          <AddSubject subject={"Mobile"} />
+        )}
+        {email ? (
+          <ItemAbout
+            myViewer={email.viewer}
+            value={email.value}
+            subject={"Email"}
+          >
+            <Stack
+              sx={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Box>
+                <ShowIcon subject={"Email"} />
+              </Box>
+              <Stack>
+                <Stack>
+                  <Typography>{email.value}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{subject}</Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </ItemAbout>
+        ) : (
+          <AddSubject subject={"Email"} />
+        )}
+      </Stack>
     </Stack>
   );
 }
 
-function Websites() {
-  const websites = useSelector((state) => state.user.websites);
-
-  const website = [
-    { website: "", viewer: "private" },
-    { linkedIn: "", viewer: "private" },
-    { github: "", viewer: "private" },
-  ];
-
+function Websites({ data }) {
+  const website = data.Website;
+  const linkedIn = data.LinkedIn;
+  const github = data.Githab;
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Website & Social Media
       </Typography>
-      {website.map((w, index) => (
-        <Stack key={index}>
+
+      <Stack>
+        {website ? (
           <ItemAbout
-            myViewer={w.viewer}
-            value={Object.values(w)[0]}
-            subject={Object.keys(w)[0]}
+            myViewer={website.viewer}
+            value={website.value}
+            subject={"Website"}
           >
             <Stack
               sx={{
@@ -144,66 +125,157 @@ function Websites() {
               }}
             >
               <Box>
-                <ShowIcon subject={Object.keys(w)[0]} />
+                <ShowIcon subject={"Website"} />
               </Box>
               <Stack>
                 <Stack>
-                  <Typography>{Object.values(w)[0]}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>
-                    {Object.keys(w)[0]}
-                  </Typography>
+                  <Typography>{website.value}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{"Website"}</Typography>
                 </Stack>
               </Stack>
             </Stack>
           </ItemAbout>
-        </Stack>
-      ))}
+        ) : (
+          <AddSubject subject={"Website"} />
+        )}
+        {linkedIn ? (
+          <ItemAbout
+            myViewer={linkedIn.viewer}
+            value={linkedIn.value}
+            subject={"LinkedIn"}
+          >
+            <Stack
+              sx={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Box>
+                <ShowIcon subject={"LinkedIn"} />
+              </Box>
+              <Stack>
+                <Stack>
+                  <Typography>{linkedIn.value}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{"LinkedIn"}</Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </ItemAbout>
+        ) : (
+          <AddSubject subject={"Linkedin"} />
+        )}
+        {github ? (
+          <ItemAbout
+            myViewer={github.viewer}
+            value={github.value}
+            subject={"Github"}
+          >
+            <Stack
+              sx={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Box>
+                <ShowIcon subject={"Github"} />
+              </Box>
+              <Stack>
+                <Stack>
+                  <Typography>{github.value}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{"Github"}</Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </ItemAbout>
+        ) : (
+          <AddSubject subject={"Github"} />
+        )}
+      </Stack>
     </Stack>
   );
 }
 
-function BasicInfo() {
-  const basicInfoo = useSelector((state) => state.user.baseInfo);
-  const baseInfo = [
-    { gender: "", viewer: "private" },
-    { pronouns: "", viewer: "private" },
-    { birthday: "", viewer: "private" },
-    { language: "", viewer: "private" },
-  ];
+function BasicInfo({ data }) {
+  const gender = data.Gender;
+  const pronouns = data.Pronouns;
+  const birthday = data.Birthday;
+  const language = data.Language;
+
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Basic Info
       </Typography>
-      {baseInfo.map((b, index) => (
-        <Stack key={index}>
-          <ItemAbout
-            myViewer={b.viewer}
-            value={Object.values(b)[0]}
-            subject={Object.keys(b)[0]}
-          >
-            <Stack
-              sx={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Box>
-                <ShowIcon subject={Object.keys(b)[0]} />
-              </Box>
-              <Stack>
-                <Stack>
-                  <Typography>{Object.values(b)[0]}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>
-                    {Object.keys(b)[0]}
-                  </Typography>
-                </Stack>
-              </Stack>
-            </Stack>
-          </ItemAbout>
+      <Stack>
+        {gender ? (
+          <Item item={gender} subject="Gender" />
+        ) : (
+          <AddSubject subject={"Gender"} />
+        )}
+        {pronouns ? (
+          <Item item={pronouns} subject="Pronouns" />
+        ) : (
+          <AddSubject subject={"Pronouns"} />
+        )}
+        {birthday ? (
+          <Item item={birthday} subject="Birthday" />
+        ) : (
+          <AddSubject subject={"Birthday"} />
+        )}
+        {language ? (
+          <Item item={language} subject="Language" />
+        ) : (
+          <AddSubject subject={"Language"} />
+        )}
+      </Stack>
+    </Stack>
+  );
+}
+function Item({ item, subject }) {
+  <ItemAbout myViewer={item.viewer} value={item.value} subject={item}>
+    <Stack
+      sx={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 1,
+      }}
+    >
+      <Box>
+        <ShowIcon subject={subject} />
+      </Box>
+      <Stack>
+        <Stack>
+          <Typography>{item.value}</Typography>
+          <Typography sx={{ fontSize: 10 }}>{subject}</Typography>
         </Stack>
-      ))}
+      </Stack>
+    </Stack>
+  </ItemAbout>;
+}
+function AddSubject({ subject }) {
+  const [openAddSubject, setOpenAddSubject] = useState(false);
+  return (
+    <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
+      <Box>
+        <ShowIcon subject={subject} />
+      </Box>
+      <Button
+        variant="text"
+        sx={{ fontSize: 18 }}
+        onClick={() => setOpenAddSubject(true)}
+      >
+        Add {subject}
+      </Button>
+      <Box></Box>
+      <EditValueSubject
+        openEdit={openAddSubject}
+        onCloseEdit={() => setOpenAddSubject(false)}
+        subject={subject}
+        type="new"
+        title="conatctBaseInfo"
+      />
     </Stack>
   );
 }

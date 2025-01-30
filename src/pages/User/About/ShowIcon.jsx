@@ -50,7 +50,7 @@ export default function ShowIcon({ subject }) {
         <HomeIcon />
       ) : subject == "Status" ? (
         <HelpIcon />
-      ) : subject == "Phone" ? (
+      ) : subject == "Phone" || subject == "Mobile" ? (
         <LocalPhoneIcon />
       ) : subject == "Single" ? (
         <PersonIcon />

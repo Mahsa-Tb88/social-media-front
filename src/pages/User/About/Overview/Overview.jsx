@@ -5,7 +5,7 @@ import ItemAbout from "../ItemAbout";
 
 import { useDispatch, useSelector } from "react-redux";
 import ShowIcon from "../ShowIcon";
-import { useGetUserInfo } from "../../../../utils/queries";
+import { useGetOverview } from "../../../../utils/queries";
 import { useParams } from "react-router-dom";
 import EditValueSubject from "../EditVelueSubject";
 import LoadingError from "../../../../components/LoadingError";
@@ -14,24 +14,20 @@ import { userInfoActions } from "../../../../store/slices/userInfoSlice";
 
 export default function Overview() {
   const id = useParams().id;
-  const { isPending, data, error, refetch } = useGetUserInfo(id);
-  // const dispatch = useDispatch();
-  // const overview = useSelector((state) => state.userInfo.overview);
+  const { isPending, data, error, refetch } = useGetOverview(id);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     dispatch(userInfoActions.setOverview(data.data.body.overview));
-  //   }
-  // }, [data]);
+  console.log("....", data?.data.body);
+  const overview = data?.data.body || {};
+  const overtt = [
+    { school: { value: "ys", viewer: "public" } },
+    { Location: { value: "ys", viewer: "public" } },
+  ];
 
-  function findSubject(subject) {
-    const item = data?.data.body.overview.find(
-      (item) => item.subject == subject
-    );
-    return item;
+  function findObject(subject) {
+    const obj = overview.find((item) => item.hasOwnProperty(subject) == true);
+
+    return obj;
   }
-
-  // console.log("over view is", overview);
 
   return (
     <Stack>
@@ -41,63 +37,63 @@ export default function Overview() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack sx={{ gap: 4 }}>
-          {findSubject("School") ? (
+          {overview["School"]?.value ? (
             <Item
               subject="School"
               text="Study at"
-              value={findSubject("School").value}
-              viewer={findSubject("School").viewer}
+              value={overview["School"].value}
+              viewer={overview["School"].viewer}
             />
           ) : (
             <AddSubject subject="School" />
           )}
 
-          {findSubject("Location") ? (
+          {overview["Location"]?.value ? (
             <Item
               subject="Location"
               text="Livs in"
-              value={findSubject("Location").value}
-              viewer={findSubject("Location").viewer}
+              value={overview["Location"].value}
+              viewer={overview["Location"].viewer}
             />
           ) : (
             <AddSubject subject="Location" />
           )}
-          {findSubject("Hometown") ? (
+          {overview["Hometown"]?.value ? (
             <Item
               subject="Hometown"
               text="From"
-              value={findSubject("Hometown").value}
-              viewer={findSubject("Hometown").viewer}
+              value={overview["Hometown"].value}
+              viewer={overview["Hometown"].viewer}
             />
           ) : (
             <AddSubject subject="Hometown" />
           )}
-          {findSubject("Status") ? (
+          {overview["Status"]?.value ? (
             <Item
               subject="Status"
               text="I am"
-              value={findSubject("Status").value}
-              viewer={findSubject("Status").viewer}
+              value={overview["Status"].value}
+              viewer={overview["Status"].viewer}
             />
           ) : (
             <AddSubject subject="Status" />
           )}
-          {findSubject("Phone") ? (
+          {overview["Phone"]?.value ? (
             <Item
               subject="Phone"
               text="Phone"
-              value={findSubject("Phone").value}
-              viewer={findSubject("Phone").viewer}
+              value={overview["Phone"].value}
+              viewer={overview["Phone"].viewer}
             />
           ) : (
             <AddSubject subject="Phone" />
           )}
-          {findSubject("Email") ? (
+          {overview["Email"]?.value ? (
             <Item
               subject="Email"
               text="Email"
-              value={findSubject("Email").value}
-              viewer={findSubject("Email").viewer}
+              value={overview["Email"].value}
+              viewer={overview["Email"].viewer}
             />
           ) : (
             <AddSubject subject="Email" />
@@ -118,7 +114,15 @@ function Item({ subject, text, value, viewer }) {
       title="overview"
     >
       <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        <ShowIcon subject={subject} sx={{ mr: 1 }} />
+        {subject == "Status" && value == "Married" ? (
+          <ShowIcon subject={value} sx={{ mr: 1 }} />
+        ) : subject == "Status" && value == "In relationship" ? (
+          <ShowIcon subject={value} sx={{ mr: 1 }} />
+        ) : subject == "Status" && value == "Single" ? (
+          <ShowIcon subject={value} sx={{ mr: 1 }} />
+        ) : (
+          <ShowIcon subject={subject} sx={{ mr: 1 }} />
+        )}
         <Typography>{text}</Typography>
         <Typography>{value}</Typography>
       </Stack>

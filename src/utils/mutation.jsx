@@ -47,7 +47,7 @@ export function useEditUser() {
   });
 }
 
-export function useEditUserInfo() {
+export function useEditOverview() {
   return useMutation({
     mutationFn: (data) => axios.put(`/user/editOverview/${data.id}`, data),
   });
@@ -58,4 +58,4 @@ export function useDeleteOverview() {
   });
 }
 
-//
+

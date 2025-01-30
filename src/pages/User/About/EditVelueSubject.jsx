@@ -19,10 +19,9 @@ import React, { useState } from "react";
 import MyIconButton from "../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { userInfoActions } from "../../../store/slices/userInfoSlice";
-import { useEditUserInfo } from "../../../utils/mutation";
-import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEditOverview } from "../../../utils/mutation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function EditValueSubject({
   openEdit,
@@ -33,39 +32,27 @@ export default function EditValueSubject({
   title,
 }) {
   const [newValue, setNewValue] = useState(value);
-  const dispatch = useDispatch();
-  const overview = useSelector((state) => state.userInfo.overview);
   const user = useSelector((state) => state.user.profile);
+  console.log(user);
 
-  const mutation = useEditUserInfo();
+  const mutation = useEditOverview();
+  const querryClient = useQueryClient();
   function saveChangeHandler() {
     if (title == "overview") {
-      // if (type == "new") {
-      //   dispatch(
-      //     userInfoActions.setOverview([
-      //       ...overview,
-      //       { subject, value: newValue, viewer: "friends" },
-      //     ])
-      //   );
-      // } else {
-      //   const updatedOverview = overview.map((item) => {
-      //     if (item.subject == subject) {
-      //       return { ...item, value: newValue };
-      //     } else {
-      //       item;
-      //     }
-      //   });
-      //   dispatch(userInfoActions.setOverview(updatedOverview));
-      // }
+      console.log("saveee");
+
       const data = {
         subject,
         value: newValue,
         viewer: "friends",
         id: user._id,
       };
+      console.log("newvalue", newValue);
       mutation.mutate(data, {
-        onSuccess(d) {
-          console.log("response back", d);
+        onSuccess() {
+          querryClient.invalidateQueries({
+            queryKey: ["overview"],
+          });
         },
         onError(error) {
           console, log(error);
@@ -75,6 +62,7 @@ export default function EditValueSubject({
 
     onCloseEdit();
   }
+
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -111,29 +99,11 @@ export default function EditValueSubject({
             type={type}
           />
         ) : subject == "Status" ? (
-          <Stack>
-            <FormControl>
-              <InputLabel id="status">Status</InputLabel>
-              <Select
-                value={newValue}
-                label={newValue}
-                labelId="status"
-                defaultValue={newValue}
-                onChange={(e) => setNewValue(e.target.value)}
-              >
-                <MenuItem value="Marrid">Marrid</MenuItem>
-                <MenuItem value="Single">Single</MenuItem>
-                <MenuItem value="In relationship">In relationship</MenuItem>
-              </Select>
-            </FormControl>
-            <Button
-              sx={{ mt: 4, fontWeight: "bold" }}
-              size="large"
-              onClick={saveChangeHandler}
-            >
-              Save
-            </Button>
-          </Stack>
+          <Status
+            newValue={newValue}
+            setNewValue={setNewValue}
+            saveChangeHandler={saveChangeHandler}
+          />
         ) : (
           <Stack>
             <TextField
@@ -341,6 +311,34 @@ function FamilyMember({ value, list, setList, type, onCloseEdit }) {
         </FormControl>
       )}
       <Button size="large" sx={{}} onClick={saveHandler}>
+        Save
+      </Button>
+    </Stack>
+  );
+}
+
+function Status({ newValue, setNewValue, saveChangeHandler }) {
+  return (
+    <Stack>
+      <FormControl>
+        <InputLabel id="status">Status</InputLabel>
+        <Select
+          value={newValue}
+          label={newValue}
+          labelId="status"
+          defaultValue={newValue}
+          onChange={(e) => setNewValue(e.target.value)}
+        >
+          <MenuItem value="Married">Married</MenuItem>
+          <MenuItem value="Single">Single</MenuItem>
+          <MenuItem value="In relationship">In relationship</MenuItem>
+        </Select>
+      </FormControl>
+      <Button
+        sx={{ mt: 4, fontWeight: "bold" }}
+        size="large"
+        onClick={saveChangeHandler}
+      >
         Save
       </Button>
     </Stack>

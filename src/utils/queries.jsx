@@ -32,9 +32,16 @@ export function useGetUserById(id) {
   });
 }
 
-export function useGetUserInfo(id) {
+export function useGetOverview(id) {
   return useQuery({
-    queryKey: ["userInfo", id],
-    queryFn: () => axios.get("/user/about/" + id),
+    queryKey: ["overview", id],
+    queryFn: () => axios.get("/user/overview/" + id),
+  });
+}
+
+export function useGetContactBaseInfo(id) {
+  return useQuery({
+    queryKey: ["contactBaseInfo", id],
+    queryFn: () => axios.get("/user/contactBaseInfo/" + id),
   });
 }

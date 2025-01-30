@@ -58,4 +58,9 @@ export function useDeleteOverview() {
   });
 }
 
-
+export function useEditContactBaseInfo() {
+  return useMutation({
+    mutationFn: (data) =>
+      axios.put(`/user/editContactBaseInfo/${data.id}`, data),
+  });
+}

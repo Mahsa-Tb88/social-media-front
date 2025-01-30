@@ -13,7 +13,7 @@ export default function Contact() {
 
   const { isPending, data, error, refetch } = useGetContactBaseInfo(id);
   const myData = data?.data.body || [];
-  console.log("dataaa", data);
+  console.log("dataaa", myData);
   return (
     <Stack>
       {isPending ? (
@@ -40,7 +40,7 @@ function ContactInfo({ data }) {
         Contact
       </Typography>
 
-      <Stack>
+      <Stack spacing={1}>
         {mobile ? (
           <ItemAbout
             myViewer={mobile.viewer}
@@ -60,7 +60,7 @@ function ContactInfo({ data }) {
               <Stack>
                 <Stack>
                   <Typography>{mobile.value}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>{subject}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{"Mobile"}</Typography>
                 </Stack>
               </Stack>
             </Stack>
@@ -87,7 +87,7 @@ function ContactInfo({ data }) {
               <Stack>
                 <Stack>
                   <Typography>{email.value}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>{subject}</Typography>
+                  <Typography sx={{ fontSize: 10 }}>{"Email"}</Typography>
                 </Stack>
               </Stack>
             </Stack>
@@ -101,16 +101,18 @@ function ContactInfo({ data }) {
 }
 
 function Websites({ data }) {
+  console.log("datalii",data)
   const website = data.Website;
-  const linkedIn = data.LinkedIn;
-  const github = data.Githab;
+  const linkedIn = data.Linkedin;
+  const github = data.Github;
+  console.log("liink", linkedIn);
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Website & Social Media
       </Typography>
 
-      <Stack>
+      <Stack spacing={1}>
         {website ? (
           <ItemAbout
             myViewer={website.viewer}
@@ -208,7 +210,7 @@ function BasicInfo({ data }) {
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Basic Info
       </Typography>
-      <Stack>
+      <Stack spacing={1}>
         {gender ? (
           <Item item={gender} subject="Gender" />
         ) : (
@@ -234,25 +236,27 @@ function BasicInfo({ data }) {
   );
 }
 function Item({ item, subject }) {
-  <ItemAbout myViewer={item.viewer} value={item.value} subject={item}>
-    <Stack
-      sx={{
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 1,
-      }}
-    >
-      <Box>
-        <ShowIcon subject={subject} />
-      </Box>
-      <Stack>
+  return (
+    <ItemAbout myViewer={item.viewer} value={item.value} subject={item}>
+      <Stack
+        sx={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 1,
+        }}
+      >
+        <Box>
+          <ShowIcon subject={subject} />
+        </Box>
         <Stack>
-          <Typography>{item.value}</Typography>
-          <Typography sx={{ fontSize: 10 }}>{subject}</Typography>
+          <Stack>
+            <Typography>{item.value}</Typography>
+            <Typography sx={{ fontSize: 10 }}>{subject}</Typography>
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
-  </ItemAbout>;
+    </ItemAbout>
+  );
 }
 function AddSubject({ subject }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);
@@ -274,7 +278,7 @@ function AddSubject({ subject }) {
         onCloseEdit={() => setOpenAddSubject(false)}
         subject={subject}
         type="new"
-        title="conatctBaseInfo"
+        title="contactBaseInfo"
       />
     </Stack>
   );

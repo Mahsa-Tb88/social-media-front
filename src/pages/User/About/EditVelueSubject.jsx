@@ -20,7 +20,10 @@ import MyIconButton from "../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useEditOverview } from "../../../utils/mutation";
+import {
+  useEditContactBaseInfo,
+  useEditOverview,
+} from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function EditValueSubject({
@@ -33,14 +36,13 @@ export default function EditValueSubject({
 }) {
   const [newValue, setNewValue] = useState(value);
   const user = useSelector((state) => state.user.profile);
-  console.log(user);
 
-  const mutation = useEditOverview();
   const querryClient = useQueryClient();
+  const mutationOverview = useEditOverview();
+  const mutationContactBaseInfo = useEditContactBaseInfo();
+
   function saveChangeHandler() {
     if (title == "overview") {
-      console.log("saveee");
-
       const data = {
         subject,
         value: newValue,
@@ -48,7 +50,7 @@ export default function EditValueSubject({
         id: user._id,
       };
       console.log("newvalue", newValue);
-      mutation.mutate(data, {
+      mutationOverview.mutate(data, {
         onSuccess() {
           querryClient.invalidateQueries({
             queryKey: ["overview"],
@@ -56,6 +58,26 @@ export default function EditValueSubject({
         },
         onError(error) {
           console, log(error);
+        },
+      });
+    }
+
+    if (title == "contactBaseInfo") {
+      const data = {
+        subject,
+        value: newValue,
+        viewer: "friends",
+        id: user._id,
+      };
+      console.log("datais", data);
+      mutationContactBaseInfo.mutate(data, {
+        onSuccess() {
+          querryClient.invalidateQueries({
+            queryKey: ["contactBaseInfo"],
+          });
+        },
+        onError(error) {
+          console.log("error is ", error);
         },
       });
     }

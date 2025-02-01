@@ -49,7 +49,6 @@ export default function EditValueSubject({
         viewer: "friends",
         id: user._id,
       };
-      console.log("newvalue", newValue);
       mutationOverview.mutate(data, {
         onSuccess() {
           querryClient.invalidateQueries({
@@ -69,7 +68,6 @@ export default function EditValueSubject({
         viewer: "friends",
         id: user._id,
       };
-      console.log("datais", data);
       mutationContactBaseInfo.mutate(data, {
         onSuccess() {
           querryClient.invalidateQueries({
@@ -107,16 +105,13 @@ export default function EditValueSubject({
         {subject == "Family" ? (
           <FamilyMember
             value={value}
-            list={list}
-            setList={setList}
+           
             type={type}
             onCloseEdit={onCloseEdit}
           />
         ) : subject == "Work" || subject == "Education" ? (
           <WorkEducationEditValue
             value={value}
-            setList={setList}
-            list={list}
             onCloseEdit={onCloseEdit}
             type={type}
           />
@@ -149,9 +144,8 @@ export default function EditValueSubject({
   );
 }
 
-function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
+function WorkEducationEditValue({ value,  onCloseEdit, type }) {
   const [currentPosition, setCurrentPosition] = useState(!value.to);
-  console.log(value);
   const { register, handleSubmit } = useForm({
     defaultValues: {
       position: value.position,
@@ -165,14 +159,6 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
   function onSubmit(data) {
     onCloseEdit();
     if (type == "new") {
-      data.id = Date.now();
-      data.viewr = "public";
-      console.log("rrrrrrrrrrr", [...list, data]);
-      setList([...list, data]);
-    } else {
-      const newList = list.filter((l) => l.id != value.id);
-      data.id = value.id;
-      setList([...newList, data]);
     }
   }
 
@@ -253,11 +239,10 @@ function WorkEducationEditValue({ value, setList, list, onCloseEdit, type }) {
   );
 }
 
-function FamilyMember({ value, list, setList, type, onCloseEdit }) {
+function FamilyMember({ value, type, onCloseEdit }) {
   function findFamilyMember() {
     "from backend and setUser from backed";
   }
-  console.log("value", value);
   const [relation, setRelation] = useState("");
   const [status, setStatus] = useState(value.status);
   const [user, setUser] = useState(value);
@@ -273,7 +258,7 @@ function FamilyMember({ value, list, setList, type, onCloseEdit }) {
         viewer: "public",
         id: 450,
       };
-      setList([...list, newList]);
+     
     } else {
       newList = list.map((l) => {
         if (l.username == value.username) {
@@ -287,7 +272,7 @@ function FamilyMember({ value, list, setList, type, onCloseEdit }) {
           return l;
         }
       });
-      setList(newList);
+      
       onCloseEdit();
     }
   }

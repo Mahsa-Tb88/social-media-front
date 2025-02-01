@@ -45,3 +45,17 @@ export function useGetContactBaseInfo(id) {
     queryFn: () => axios.get("/user/contactBaseInfo/" + id),
   });
 }
+
+export function useGetWork(id) {
+  return useQuery({
+    queryKey: ["work", id],
+    queryFn: () => axios.get("/user/work/" + id),
+  });
+}
+
+export function useGetEducation(id) {
+  return useQuery({
+    queryKey: ["education", id],
+    queryFn: () => axios.get("/user/education/" + id),
+  });
+}

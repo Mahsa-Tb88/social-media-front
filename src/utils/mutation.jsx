@@ -64,3 +64,34 @@ export function useEditContactBaseInfo() {
       axios.put(`/user/editContactBaseInfo/${data.id}`, data),
   });
 }
+
+export function useDeleteContactBaseInfo() {
+  return useMutation({
+    mutationFn: (data) =>
+      axios.put(`/user/deleteContactBaseInfo/${data.id}`, data),
+  });
+}
+
+export function useEditWork() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/user/editWork/${data.id}`, data),
+  });
+}
+
+export function useDeleteWork() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/user/deleteWork/${data.id}`, data),
+  });
+}
+
+export function useEditEducation() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/user/editEducation/${data.id}`, data),
+  });
+}
+
+export function useDeleteEducation() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/user/deleteEducation/${data.id}`, data),
+  });
+}

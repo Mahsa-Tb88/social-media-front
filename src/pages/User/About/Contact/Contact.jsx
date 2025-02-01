@@ -8,12 +8,12 @@ import LoadingError from "../../../../components/LoadingError";
 import { useGetContactBaseInfo } from "../../../../utils/queries";
 import EditValueSubject from "../EditVelueSubject";
 
+
 export default function Contact() {
   const id = useParams().id;
 
   const { isPending, data, error, refetch } = useGetContactBaseInfo(id);
   const myData = data?.data.body || [];
-  console.log("dataaa", myData);
   return (
     <Stack>
       {isPending ? (
@@ -41,11 +41,12 @@ function ContactInfo({ data }) {
       </Typography>
 
       <Stack spacing={1}>
-        {mobile ? (
+        {mobile?.value ? (
           <ItemAbout
             myViewer={mobile.viewer}
             value={mobile.value}
             subject={"Mobile"}
+            title={"contactBaseInfo"}
           >
             <Stack
               sx={{
@@ -68,11 +69,12 @@ function ContactInfo({ data }) {
         ) : (
           <AddSubject subject={"Mobile"} />
         )}
-        {email ? (
+        {email?.value ? (
           <ItemAbout
             myViewer={email.viewer}
             value={email.value}
             subject={"Email"}
+            title={"contactBaseInfo"}
           >
             <Stack
               sx={{
@@ -101,11 +103,9 @@ function ContactInfo({ data }) {
 }
 
 function Websites({ data }) {
-  console.log("datalii",data)
   const website = data.Website;
-  const linkedIn = data.Linkedin;
+  const linkedIn = data.LinkedIn;
   const github = data.Github;
-  console.log("liink", linkedIn);
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
@@ -113,11 +113,12 @@ function Websites({ data }) {
       </Typography>
 
       <Stack spacing={1}>
-        {website ? (
+        {website?.value ? (
           <ItemAbout
             myViewer={website.viewer}
             value={website.value}
             subject={"Website"}
+            title={"contactBaseInfo"}
           >
             <Stack
               sx={{
@@ -140,11 +141,12 @@ function Websites({ data }) {
         ) : (
           <AddSubject subject={"Website"} />
         )}
-        {linkedIn ? (
+        {linkedIn?.value ? (
           <ItemAbout
             myViewer={linkedIn.viewer}
             value={linkedIn.value}
             subject={"LinkedIn"}
+            title={"contactBaseInfo"}
           >
             <Stack
               sx={{
@@ -165,13 +167,14 @@ function Websites({ data }) {
             </Stack>
           </ItemAbout>
         ) : (
-          <AddSubject subject={"Linkedin"} />
+          <AddSubject subject={"LinkedIn"} />
         )}
-        {github ? (
+        {github?.value ? (
           <ItemAbout
             myViewer={github.viewer}
             value={github.value}
             subject={"Github"}
+            title="contactBaseInfo"
           >
             <Stack
               sx={{
@@ -211,22 +214,22 @@ function BasicInfo({ data }) {
         Basic Info
       </Typography>
       <Stack spacing={1}>
-        {gender ? (
+        {gender?.value ? (
           <Item item={gender} subject="Gender" />
         ) : (
           <AddSubject subject={"Gender"} />
         )}
-        {pronouns ? (
+        {pronouns?.value ? (
           <Item item={pronouns} subject="Pronouns" />
         ) : (
           <AddSubject subject={"Pronouns"} />
         )}
-        {birthday ? (
+        {birthday?.value ? (
           <Item item={birthday} subject="Birthday" />
         ) : (
           <AddSubject subject={"Birthday"} />
         )}
-        {language ? (
+        {language?.value ? (
           <Item item={language} subject="Language" />
         ) : (
           <AddSubject subject={"Language"} />
@@ -237,7 +240,12 @@ function BasicInfo({ data }) {
 }
 function Item({ item, subject }) {
   return (
-    <ItemAbout myViewer={item.viewer} value={item.value} subject={item}>
+    <ItemAbout
+      myViewer={item.viewer}
+      value={item.value}
+      subject={subject}
+      title="contactBaseInfo"
+    >
       <Stack
         sx={{
           flexDirection: "row",

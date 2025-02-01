@@ -11,9 +11,11 @@ import {
 
 import React, { useState } from "react";
 import EditValueSubject from "./EditVelueSubject";
-import { useDispatch, useSelector } from "react-redux";
-import { userInfoActions } from "../../../store/slices/userInfoSlice";
-import { useDeleteOverview } from "../../../utils/mutation";
+import { useSelector } from "react-redux";
+import {
+  useDeleteContactBaseInfo,
+  useDeleteOverview,
+} from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
 export default function MenuItem({
   open,
@@ -27,14 +29,16 @@ export default function MenuItem({
   const [openEdit, setOpenEdit] = useState(false);
   const userId = useSelector((state) => state.user.profile._id);
 
-  const mutation = useDeleteOverview();
+  const mutationOverview = useDeleteOverview();
   const querryClient = useQueryClient();
+
+  const mutationContactBaseInfo = useDeleteContactBaseInfo();
 
   function deleteItem() {
     if (title == "overview") {
       const data = { id: userId, subject };
 
-      mutation.mutate(data, {
+      mutationOverview.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({
             queryKey: ["overview"],
@@ -46,8 +50,21 @@ export default function MenuItem({
       });
     }
 
+    if (title == "contactBaseInfo") {
+      const data = { id: userId, subject };
+      mutationContactBaseInfo.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({
+            queryKey: ["contactBaseInfo"],
+          });
+        },
+        onError(e) {
+          console.log(e);
+        },
+      });
+    }
+
     handleClose();
-    let newList;
   }
 
   function onCloseEdit() {

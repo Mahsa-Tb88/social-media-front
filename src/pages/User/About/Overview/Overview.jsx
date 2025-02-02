@@ -10,7 +10,6 @@ import { useParams } from "react-router-dom";
 import EditValueSubject from "../EditVelueSubject";
 import LoadingError from "../../../../components/LoadingError";
 import Loading from "../../../../components/Loading";
-import { userInfoActions } from "../../../../store/slices/userInfoSlice";
 
 export default function Overview() {
   const id = useParams().id;

@@ -5,11 +5,10 @@ import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import SchoolIcon from "@mui/icons-material/School";
 import EditValueSubject from "../EditVelueSubject";
 import ShowIcon from "../ShowIcon";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useGetWorkEducation } from "../../../../utils/queries";
 import LoadingError from "../../../../components/LoadingError";
 import Loading from "../../../../components/Loading";
+import { useGetWork, useGetEducation } from "../../../../utils/queries";
 
 export default function WorkEducation() {
   return (
@@ -22,24 +21,11 @@ export default function WorkEducation() {
 
 function WorkSection() {
   const id = useParams().id;
-  const { isPending, data, error, refetch } = useGetWorkEducation(id);
-  console.log("data work", data);
-  const myData = data.data.body || [];
+  const { isPending, data, error, refetch } = useGetWork(id);
+  // console.log("data work", data?.data.body);
+  const work = data?.data.body || [];
 
   const [openAddWork, setOpenAddWork] = useState(false);
-
-  const work = [
-    // {
-    //   position: "",
-    //   company: "",
-    //   startYear: "",
-    //   endYear: "",
-    //   isCurrently: false,
-    //   city: "",
-    //   viewer: "private",
-    //   id: "1",
-    // },
-  ];
 
   return (
     <Stack>
@@ -127,9 +113,9 @@ function WorkSection() {
 
 function EducationSection() {
   const id = useParams().id;
-  const { isPending, data, error, refetch } = useGetWorkEducation(id);
-  console.log("data woedu", data);
-  const myData = data.data.body || [];
+  const { isPending, data, error, refetch } = useGetEducation(id);
+  console.log("data education", data?.data.body);
+  const myData2 = data?.data.body || [];
   const [openAddEducation, setOpenAddEducation] = useState(false);
 
   const education = [

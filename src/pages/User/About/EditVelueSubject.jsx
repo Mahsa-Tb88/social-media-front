@@ -23,8 +23,11 @@ import { useSelector } from "react-redux";
 import {
   useEditContactBaseInfo,
   useEditOverview,
+  useAddWork,
+  useEditWork,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 export default function EditValueSubject({
   openEdit,
@@ -103,12 +106,7 @@ export default function EditValueSubject({
       <Divider />
       <DialogContent>
         {subject == "Family" ? (
-          <FamilyMember
-            value={value}
-           
-            type={type}
-            onCloseEdit={onCloseEdit}
-          />
+          <FamilyMember value={value} type={type} onCloseEdit={onCloseEdit} />
         ) : subject == "Work" || subject == "Education" ? (
           <WorkEducationEditValue
             value={value}
@@ -144,21 +142,40 @@ export default function EditValueSubject({
   );
 }
 
-function WorkEducationEditValue({ value,  onCloseEdit, type }) {
+function WorkEducationEditValue({ value, onCloseEdit, type }) {
+  const id = useParams().id;
+  console.log("id", id);
   const [currentPosition, setCurrentPosition] = useState(!value.to);
   const { register, handleSubmit } = useForm({
     defaultValues: {
       position: value.position,
       company: value.company,
       city: value.city,
-      from: value.from,
-      to: value.to,
+      startYear: value.startYear,
+      endYear: value.endYear,
     },
   });
+  const mutationNewWork = useAddWork(id);
+  const querryClient = useQueryClient();
+  const mutationEditWork = useEditWork(id);
 
   function onSubmit(data) {
+    data.id = id;
+    !data.endYear ? (data.isCurrently = true) : "";
+    console.log("data submitted", data);
+
     onCloseEdit();
     if (type == "new") {
+      mutationNewWork.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({
+            queryKey: ["work"],
+          });
+        },
+        onError(error) {
+          console.log("error is", error);
+        },
+      });
     }
   }
 
@@ -216,17 +233,17 @@ function WorkEducationEditValue({ value,  onCloseEdit, type }) {
             <TextField
               label="From"
               type="number"
-              defaultValue={value.from}
+              defaultValue={value.startYear}
               fullWidth
-              {...register("from")}
+              {...register("startYear")}
             />
             {!currentPosition && (
               <TextField
                 label="To"
                 type="number"
-                value={value.to}
+                value={value.endYear}
                 fullWidth
-                {...register("to")}
+                {...register("endYear")}
               />
             )}
           </Stack>
@@ -258,7 +275,6 @@ function FamilyMember({ value, type, onCloseEdit }) {
         viewer: "public",
         id: 450,
       };
-     
     } else {
       newList = list.map((l) => {
         if (l.username == value.username) {
@@ -272,7 +288,7 @@ function FamilyMember({ value, type, onCloseEdit }) {
           return l;
         }
       });
-      
+
       onCloseEdit();
     }
   }

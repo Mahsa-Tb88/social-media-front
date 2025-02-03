@@ -71,7 +71,11 @@ export function useDeleteContactBaseInfo() {
       axios.put(`/user/deleteContactBaseInfo/${data.id}`, data),
   });
 }
-
+export function useAddWork() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/user/newWork/${data.id}`, data),
+  });
+}
 export function useEditWork() {
   return useMutation({
     mutationFn: (data) => axios.put(`/user/editWork/${data.id}`, data),

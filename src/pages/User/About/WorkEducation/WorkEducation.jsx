@@ -39,7 +39,7 @@ function WorkSection() {
             Work
           </Typography>
           {work.map((w) => (
-            <Stack key={w.id}>
+            <Stack key={w.id} sx={{mb:2}}>
               <ItemAbout
                 myViewer={w.viewer}
                 value={w}

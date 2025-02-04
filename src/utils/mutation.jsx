@@ -49,36 +49,36 @@ export function useEditUser() {
 
 export function useEditOverview() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/editOverview/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/users/editOverview/${data.id}`, data),
   });
 }
 export function useDeleteOverview() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/deleteOverview/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/users/deleteOverview/${data.id}`, data),
   });
 }
 
 export function useEditContactBaseInfo() {
   return useMutation({
     mutationFn: (data) =>
-      axios.put(`/user/editContactBaseInfo/${data.id}`, data),
+      axios.put(`/users/editContactBaseInfo/${data.id}`, data),
   });
 }
 
 export function useDeleteContactBaseInfo() {
   return useMutation({
     mutationFn: (data) =>
-      axios.put(`/user/deleteContactBaseInfo/${data.id}`, data),
+      axios.put(`/users/deleteContactBaseInfo/${data.id}`, data),
   });
 }
 export function useAddWork() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/newWork/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/users/newWork/${data.id}`, data),
   });
 }
 export function useEditWork() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/editWork/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/users/editWork/${data.id}`, data),
   });
 }
 
@@ -90,26 +90,18 @@ export function useDeleteWork() {
 
 export function useAddEducation() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/newEducation/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/users/newEducation/${data.id}`, data),
   });
 }
 export function useEditEducation() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/editEducation/${data.userId}`, data),
+    mutationFn: (data) =>
+      axios.put(`/users/editEducation/${data.userId}`, data),
   });
 }
 
 export function useDeleteEducation() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/deleteEducation/${data.id}`, data),
-  });
-}
-
-export function useSearchPerson() {
-  return useMutation({
-    mutationFn: (data) =>
-      axios.get(`/user/search`, {
-        params: { serach: data.search },
-      }),
+    mutationFn: (data) => axios.put(`/users/deleteEducation/${data.id}`, data),
   });
 }

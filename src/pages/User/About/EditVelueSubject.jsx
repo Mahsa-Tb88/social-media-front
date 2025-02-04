@@ -27,10 +27,10 @@ import {
   useEditWork,
   useAddEducation,
   useEditEducation,
-  useSearchPerson,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import { useSearchPerson } from "../../../utils/queries";
 
 export default function EditValueSubject({
   openEdit,
@@ -416,22 +416,19 @@ function EducationEdit({ value, onCloseEdit, type, id }) {
 
 function Relationship({ value, type, onCloseEdit }) {
   const [status, setStatus] = useState(value.status);
+  const [user, setUser] = useState("");
   const [search, setSearch] = useState("");
-  function findPerson() {}
-  const mutation = useSearchPerson();
+
+  const { data, error } = useSearchPerson(user);
+  console.log("finduserrr", data?.data.body);
+  const userfounded = data?.data.body || [];
+
   useEffect(() => {
-    const data = { search };
-    const timeOut = setTimeout(
-      mutation.mutate(data, {
-        onSuccess(d) {},
-        onError(error) {
-          console.log("error is", error);
-        },
-      }),
-      2000
-    );
+    const timeOut = setTimeout(setUser(search), 0);
     return () => clearTimeout(timeOut);
   }, [search]);
+
+  console.log("errr", error);
   function saveHandler() {}
   return (
     <Stack spacing={3}>

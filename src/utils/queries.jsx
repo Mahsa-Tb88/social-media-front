@@ -28,42 +28,48 @@ export function useGetAllUser() {
 export function useGetUserById(id) {
   return useQuery({
     queryKey: ["user", id],
-    queryFn: () => axios.get("/user/" + id),
+    queryFn: () => axios.get("/users/" + id),
   });
 }
 
 export function useGetOverview(id) {
   return useQuery({
     queryKey: ["overview", id],
-    queryFn: () => axios.get("/user/overview/" + id),
+    queryFn: () => axios.get("/users/overview/" + id),
   });
 }
 
 export function useGetContactBaseInfo(id) {
   return useQuery({
     queryKey: ["contactBaseInfo", id],
-    queryFn: () => axios.get("/user/contactBaseInfo/" + id),
+    queryFn: () => axios.get("/users/contactBaseInfo/" + id),
   });
 }
 
 export function useGetWork(id) {
   return useQuery({
     queryKey: ["work", id],
-    queryFn: () => axios.get("/user/work/" + id),
+    queryFn: () => axios.get("/users/work/" + id),
   });
 }
 
 export function useGetEducation(id) {
   return useQuery({
     queryKey: ["education", id],
-    queryFn: () => axios.get("/user/education/" + id),
+    queryFn: () => axios.get("/users/education/" + id),
   });
 }
-
 
 export function useGetFamilyRelationship(id) {
   return useQuery({
     queryKey: ["familyRel", id],
-    queryFn: () => axios.get("/user/familyRel/" + id),
+    queryFn: () => axios.get("/users/familyRel/" + id),
+  });
+}
+
+export function useSearchPerson(user) {
+  return useQuery({
+    queryKey: ["findUser", user],
+    queryFn: () => axios.get("/users/search/findUser/", { params: { user } }),
   });
 }

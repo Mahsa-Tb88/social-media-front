@@ -59,3 +59,11 @@ export function useGetEducation(id) {
     queryFn: () => axios.get("/user/education/" + id),
   });
 }
+
+
+export function useGetFamilyRelationship(id) {
+  return useQuery({
+    queryKey: ["familyRel", id],
+    queryFn: () => axios.get("/user/familyRel/" + id),
+  });
+}

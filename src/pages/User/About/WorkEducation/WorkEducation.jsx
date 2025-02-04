@@ -2,7 +2,6 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
-import SchoolIcon from "@mui/icons-material/School";
 import EditValueSubject from "../EditVelueSubject";
 import ShowIcon from "../ShowIcon";
 import { useParams } from "react-router-dom";
@@ -22,7 +21,6 @@ export default function WorkEducation() {
 function WorkSection() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetWork(id);
-  // console.log("data work", data?.data.body);
   const work = data?.data.body || [];
 
   const [openAddWork, setOpenAddWork] = useState(false);
@@ -39,13 +37,14 @@ function WorkSection() {
             Work
           </Typography>
           {work.map((w) => (
-            <Stack key={w.id} sx={{mb:2}}>
+            <Stack key={w._id} sx={{ mb: 2 }}>
               <ItemAbout
                 myViewer={w.viewer}
                 value={w}
-                subject={"work"}
-                id={w.id}
+                subject={"Work"}
+                id={w._id}
                 type="edit"
+                title="Work"
               >
                 <Stack
                   sx={{
@@ -58,25 +57,46 @@ function WorkSection() {
                   <Stack sx={{ mb: 1 }}>
                     <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
                       <Typography>{w.position}</Typography>
-                      <Typography sx={{ mx: 1 }}>{" at "}</Typography>
-                      <Typography>{w.company}</Typography>
+                      {w.company && (
+                        <Stack
+                          sx={{ flexDirection: "row", alignItems: "center" }}
+                        >
+                          <Typography sx={{ mx: 1 }}>{" at "}</Typography>
+                          <Typography>{w.company}</Typography>
+                        </Stack>
+                      )}
                     </Stack>
                     <Stack>
                       <Stack sx={{ flexDirection: "row" }}>
-                        <Box>{w.city}</Box>
-                        <Typography sx={{ mx: 1 }}>{"|"}</Typography>
+                        {w.city && (
+                          <>
+                            <Typography>{w.city}</Typography>
+                            <Typography sx={{ mx: 1 }}>
+                              {w.city && "|"}
+                            </Typography>{" "}
+                          </>
+                        )}
                         <Stack
                           sx={{
                             flexDirection: "row",
                             alignItems: "center",
                           }}
                         >
-                          <Box>{w.startYear}</Box>
-                          <Typography sx={{ mx: 1 }}>-</Typography>
-                          {w.endYear ? (
-                            <Box>{w.endYear}</Box>
+                          <Typography>{w.startYear}</Typography>
+                          {w.startYear && w.isCurrently ? (
+                            <Typography sx={{ mx: 1 }}>-</Typography>
+                          ) : w.startYear && w.endYear ? (
+                            <Typography sx={{ mx: 1 }}>-</Typography>
                           ) : (
+                            ""
+                          )}
+
+                          {w.endYear ? (
+                            <Typography> {w.endYear}</Typography>
+                          ) : w.isCurrently ? (
                             <Typography>Currently</Typography>
+                          ) : (
+                            ""
                           )}
                         </Stack>
                       </Stack>
@@ -114,93 +134,111 @@ function WorkSection() {
 function EducationSection() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetEducation(id);
-  console.log("data education", data?.data.body);
-  const myData2 = data?.data.body || [];
+  const education = data?.data.body || [];
   const [openAddEducation, setOpenAddEducation] = useState(false);
-
-  const education = [
-    // {
-    //   degree: "",
-    //   field: "",
-    //   university: "",
-    //   startYear: "",
-    //   endYear: "",
-    //   isCurrently: false,
-    //   viewer: "private",
-    // },
-  ];
 
   return (
     <Stack>
-      <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
-        Education
-      </Typography>
-      {education.map((e) => (
-        <Stack key={e.id}>
-          <ItemAbout
-            myViewer={e.viewer}
-            value={e}
-            subject={"Education"}
-            id={e.id}
-          >
-            <Stack
-              sx={{
-                flexDirection: "row",
-              }}
-            >
-              <Box sx={{ mr: 1 }}>
-                <ShowIcon subject={"education"} />
-              </Box>
-              <Stack sx={{ mb: 1 }}>
-                <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-                  <Typography>{e.position}</Typography>
-                  <Typography sx={{ mx: 1 }}>{" at "}</Typography>
-                  <Typography>{e.company}</Typography>
-                </Stack>
-                <Stack>
-                  <Stack sx={{ flexDirection: "row" }}>
-                    <Box>{e.city}</Box>
-                    <Typography sx={{ mx: 1 }}>{"|"}</Typography>
-                    <Stack
-                      sx={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box>{e.startYear}</Box>
-                      <Typography sx={{ mx: 1 }}>-</Typography>
-                      {e.endYear ? (
-                        <Box>{e.endYear}</Box>
-                      ) : (
-                        <Typography>Currently</Typography>
+      {isPending ? (
+        <Loading message="is loading..." />
+      ) : error ? (
+        <LoadingError handleAction={refetch} message={error.message} />
+      ) : (
+        <Stack>
+          <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
+            Education
+          </Typography>
+          {education.map((e) => (
+            <Stack key={e._id} sx={{ mb: 2 }}>
+              <ItemAbout
+                myViewer={e.viewer}
+                value={e}
+                subject={"Education"}
+                id={e._id}
+                type="edit"
+                title="Education"
+              >
+                <Stack
+                  sx={{
+                    flexDirection: "row",
+                  }}
+                >
+                  <Box sx={{ mr: 1 }}>
+                    <ShowIcon subject="Education" />
+                  </Box>
+                  <Stack sx={{ mb: 1 }}>
+                    <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+                      <Typography>{e.field}</Typography>
+                      {e.univrsity && (
+                        <Stack
+                          sx={{ flexDirection: "row", alignItems: "center" }}
+                        >
+                          <Typography sx={{ mx: 1 }}>{" at "}</Typography>
+                          <Typography>{e.univrsity}</Typography>
+                        </Stack>
                       )}
+                    </Stack>
+                    <Stack>
+                      <Stack sx={{ flexDirection: "row" }}>
+                        {e.degree && (
+                          <>
+                            <Typography>{e.degree}</Typography>
+                            <Typography sx={{ mx: 1 }}>
+                              {e.degree && "|"}
+                            </Typography>{" "}
+                          </>
+                        )}
+                        <Stack
+                          sx={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography>{e.startYear}</Typography>
+                          {e.startYear && e.isCurrently ? (
+                            <Typography sx={{ mx: 1 }}>-</Typography>
+                          ) : e.startYear && e.endYear ? (
+                            <Typography sx={{ mx: 1 }}>-</Typography>
+                          ) : (
+                            ""
+                          )}
+
+                          {e.endYear ? (
+                            <Typography> {e.endYear}</Typography>
+                          ) : e.isCurrently ? (
+                            <Typography>Currently</Typography>
+                          ) : (
+                            ""
+                          )}
+                        </Stack>
+                      </Stack>
                     </Stack>
                   </Stack>
                 </Stack>
-              </Stack>
+              </ItemAbout>
             </Stack>
-          </ItemAbout>
+          ))}
+          <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
+            <Box>
+              <ShowIcon subject="Education" />
+            </Box>
+            <Button
+              variant="text"
+              sx={{ fontSize: 18 }}
+              onClick={() => setOpenAddEducation(true)}
+            >
+              Add Education
+            </Button>
+            <Box></Box>
+          </Stack>
+          <EditValueSubject
+            subject={"Education"}
+            openEdit={openAddEducation}
+            onCloseEdit={() => setOpenAddEducation(false)}
+            type="new"
+          />
         </Stack>
-      ))}
-      <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        <Box>
-          <SchoolIcon />
-        </Box>
-        <Button
-          variant="text"
-          sx={{ fontSize: 18 }}
-          onClick={() => setOpenAddEducation(true)}
-        >
-          Add Education
-        </Button>
-        <Box></Box>
-      </Stack>
-      <EditValueSubject
-        subject={"Education"}
-        openEdit={openAddEducation}
-        onCloseEdit={() => setOpenAddEducation(false)}
-        value=""
-      />
+      )}
     </Stack>
   );
 }

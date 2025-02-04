@@ -84,18 +84,32 @@ export function useEditWork() {
 
 export function useDeleteWork() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/deleteWork/${data.id}`, data),
+    mutationFn: (data) => axios.delete(`/user/deleteWork/${data.id}`),
   });
 }
 
+export function useAddEducation() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/user/newEducation/${data.id}`, data),
+  });
+}
 export function useEditEducation() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/user/editEducation/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/user/editEducation/${data.userId}`, data),
   });
 }
 
 export function useDeleteEducation() {
   return useMutation({
     mutationFn: (data) => axios.put(`/user/deleteEducation/${data.id}`, data),
+  });
+}
+
+export function useSearchPerson() {
+  return useMutation({
+    mutationFn: (data) =>
+      axios.get(`/user/search`, {
+        params: { serach: data.search },
+      }),
   });
 }

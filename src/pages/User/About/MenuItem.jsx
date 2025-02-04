@@ -14,9 +14,12 @@ import EditValueSubject from "./EditVelueSubject";
 import { useSelector } from "react-redux";
 import {
   useDeleteContactBaseInfo,
+  useDeleteEducation,
   useDeleteOverview,
+  useDeleteWork,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 export default function MenuItem({
   open,
   anchorEl,
@@ -27,13 +30,13 @@ export default function MenuItem({
   id,
 }) {
   const [openEdit, setOpenEdit] = useState(false);
-  const userId = useSelector((state) => state.user.profile._id);
 
   const mutationOverview = useDeleteOverview();
+  const mutationWork = useDeleteWork();
+  const mutationEducation = useDeleteEducation();
   const querryClient = useQueryClient();
-
-  const mutationContactBaseInfo = useDeleteContactBaseInfo();
-
+  const userId = useParams().id;
+  console.log("rirleee", title);
   function deleteItem() {
     if (title == "overview") {
       const data = { id: userId, subject };
@@ -51,8 +54,10 @@ export default function MenuItem({
     }
 
     if (title == "contactBaseInfo") {
+      const mutation = useDeleteContactBaseInfo();
+
       const data = { id: userId, subject };
-      mutationContactBaseInfo.mutate(data, {
+      mutation.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({
             queryKey: ["contactBaseInfo"],
@@ -60,6 +65,31 @@ export default function MenuItem({
         },
         onError(e) {
           console.log(e);
+        },
+      });
+    }
+
+    if (title == "Work") {
+      const data = { id, userId };
+      mutationWork.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({ queryKey: ["work"] });
+        },
+        onError(error) {
+          console.log("error is", error);
+        },
+      });
+    }
+    if (title == "Education") {
+      const data = { id, userId };
+      console.log("delete work", data);
+
+      mutationEducation.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({ queryKey: ["education"] });
+        },
+        onError(error) {
+          console.log("error is", error);
         },
       });
     }
@@ -105,6 +135,7 @@ export default function MenuItem({
         subject={subject}
         value={value}
         title={title}
+        id={id}
         type="edit"
       />
     </Menu>

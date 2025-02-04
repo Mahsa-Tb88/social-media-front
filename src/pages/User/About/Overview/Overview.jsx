@@ -15,18 +15,7 @@ export default function Overview() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetOverview(id);
 
-  console.log("....", data?.data.body);
   const overview = data?.data.body || {};
-  const overtt = [
-    { school: { value: "ys", viewer: "public" } },
-    { Location: { value: "ys", viewer: "public" } },
-  ];
-
-  function findObject(subject) {
-    const obj = overview.find((item) => item.hasOwnProperty(subject) == true);
-
-    return obj;
-  }
 
   return (
     <Stack>

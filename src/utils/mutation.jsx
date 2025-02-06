@@ -105,3 +105,14 @@ export function useDeleteEducation() {
     mutationFn: (data) => axios.put(`/users/deleteEducation/${data.id}`, data),
   });
 }
+
+export function useUpdatedRelationship() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/users/relationship/${data.id}`, data),
+  });
+}
+export function useUpdatedFamily() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/users/family/${data.id}`, data),
+  });
+}

@@ -7,6 +7,7 @@ import { useGetFamilyRelationship } from "../../../../utils/queries";
 import { useParams } from "react-router-dom";
 import Loading from "../../../../components/Loading";
 import LoadingError from "../../../../components/LoadingError";
+import noImage from "../../../../assets/images/user.png";
 
 export default function FamilyAndRel() {
   const id = useParams().id;
@@ -48,7 +49,11 @@ export default function FamilyAndRel() {
                       }}
                     >
                       <img
-                        src={relationship.profileImg}
+                        src={
+                          relationship.profileImg
+                            ? SERVERUrrl + relationship.profileImg
+                            : noImage
+                        }
                         height={50}
                         width={50}
                         style={{

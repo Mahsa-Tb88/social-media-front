@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Checkbox,
@@ -9,6 +10,10 @@ import {
   FormControl,
   FormControlLabel,
   InputLabel,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   MenuItem,
   Select,
   Stack,
@@ -27,10 +32,12 @@ import {
   useEditWork,
   useAddEducation,
   useEditEducation,
+  useUpdateFamilyRel,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useSearchPerson } from "../../../utils/queries";
+import noImage from "../../../assets/images/user.png";
 
 export default function EditValueSubject({
   openEdit,
@@ -415,21 +422,53 @@ function EducationEdit({ value, onCloseEdit, type, id }) {
 }
 
 function Relationship({ value, type, onCloseEdit }) {
+  const theme = useSelector((state) => state.app.theme);
+  const userId = useParams().id;
+
   const [status, setStatus] = useState(value.status);
   const [user, setUser] = useState("");
   const [search, setSearch] = useState("");
 
   const { data, error } = useSearchPerson(user);
-  console.log("finduserrr", data?.data.body);
   const userfounded = data?.data.body || [];
 
   useEffect(() => {
-    const timeOut = setTimeout(setUser(search), 0);
-    return () => clearTimeout(timeOut);
+    if (search) {
+      const timeOut = setTimeout(setUser(search), 0);
+      return () => clearTimeout(timeOut);
+    }
   }, [search]);
 
+  function selectUser(l) {
+    setUser(l);
+    setSearch("");
+  }
+
   console.log("errr", error);
-  function saveHandler() {}
+  const mutationRel = useUpdatedRelationship();
+  const querryClient = useQueryClient();
+  function saveHandler() {
+    const data = {
+      id: userId,
+      relationship: {
+        profileImg: user.profileImg,
+        username: user.username,
+        id: user._id,
+        status,
+        viewer: "friends",
+      },
+    };
+    console.log(data);
+    mutationRel.mutate(data, {
+      onSuccess(d) {
+        querryClient.invalidateQueries({ queryKey: ["familyRel"] });
+        onCloseEdit;
+      },
+      onError(error) {
+        console.log("error is", error);
+      },
+    });
+  }
   return (
     <Stack spacing={3}>
       <TextField
@@ -437,7 +476,35 @@ function Relationship({ value, type, onCloseEdit }) {
         placeholder={"Serach username"}
         defaultValue={type == "edit" ? value.username : ""}
         onChange={(e) => setSearch(e.target.value)}
+        value={user.username}
       />
+
+      {search && (
+        <Stack>
+          {userfounded.map((l) => (
+            <List>
+              <ListItem
+                sx={{
+                  cursor: "pointer",
+                  borderRadius: 1,
+                  "&:hover": {
+                    bgcolor: theme == "light" ? "#ebf5ff" : "grey.800",
+                  },
+                }}
+                onClick={() => selectUser(l)}
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    alt="User Image"
+                    src={l.profileImg ? l.profileImg : noImage}
+                  />
+                </ListItemAvatar>
+                <ListItemText>{l.username}</ListItemText>
+              </ListItem>
+            </List>
+          ))}
+        </Stack>
+      )}
 
       <FormControl fullWidth>
         <InputLabel id="status">Status</InputLabel>
@@ -447,7 +514,7 @@ function Relationship({ value, type, onCloseEdit }) {
           label="Status"
           onChange={(e) => setStatus(e.target.value)}
         >
-          <MenuItem value={"Marrid"}>Marrid</MenuItem>
+          <MenuItem value={"Married"}>Married</MenuItem>
           <MenuItem value={"In realtionship"}>In relationship</MenuItem>
         </Select>
       </FormControl>

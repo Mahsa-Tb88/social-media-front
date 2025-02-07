@@ -32,7 +32,7 @@ import {
   useEditWork,
   useAddEducation,
   useEditEducation,
-  useUpdateFamilyRel,
+  useUpdatedRelationship,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -424,9 +424,8 @@ function EducationEdit({ value, onCloseEdit, type, id }) {
 function Relationship({ value, type, onCloseEdit }) {
   const theme = useSelector((state) => state.app.theme);
   const userId = useParams().id;
-
   const [status, setStatus] = useState(value.status);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(value ? value : "");
   const [search, setSearch] = useState("");
 
   const { data, error } = useSearchPerson(user);
@@ -444,7 +443,6 @@ function Relationship({ value, type, onCloseEdit }) {
     setSearch("");
   }
 
-  console.log("errr", error);
   const mutationRel = useUpdatedRelationship();
   const querryClient = useQueryClient();
   function saveHandler() {
@@ -458,11 +456,10 @@ function Relationship({ value, type, onCloseEdit }) {
         viewer: "friends",
       },
     };
-    console.log(data);
     mutationRel.mutate(data, {
       onSuccess(d) {
         querryClient.invalidateQueries({ queryKey: ["familyRel"] });
-        onCloseEdit;
+        onCloseEdit();
       },
       onError(error) {
         console.log("error is", error);

@@ -111,6 +111,11 @@ export function useUpdatedRelationship() {
     mutationFn: (data) => axios.put(`/users/relationship/${data.id}`, data),
   });
 }
+export function useDeleteRelationship() {
+  return useMutation({
+    mutationFn: (data) => axios.delete(`/users/relationship/${data.id}`),
+  });
+}
 export function useUpdatedFamily() {
   return useMutation({
     mutationFn: (data) => axios.put(`/users/family/${data.id}`, data),

@@ -16,6 +16,7 @@ import {
   useDeleteContactBaseInfo,
   useDeleteEducation,
   useDeleteOverview,
+  useDeleteRelationship,
   useDeleteWork,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -34,6 +35,7 @@ export default function MenuItem({
   const mutationOverview = useDeleteOverview();
   const mutationWork = useDeleteWork();
   const mutationEducation = useDeleteEducation();
+  const mutationRel = useDeleteRelationship();
   const querryClient = useQueryClient();
   const userId = useParams().id;
   console.log("rirleee", title);
@@ -82,7 +84,6 @@ export default function MenuItem({
     }
     if (title == "Education") {
       const data = { id, userId };
-      console.log("delete work", data);
 
       mutationEducation.mutate(data, {
         onSuccess(d) {
@@ -93,7 +94,17 @@ export default function MenuItem({
         },
       });
     }
-
+    if (title == "Relationship") {
+      const data = { id: userId };
+      mutationRel.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({ queryKey: ["familyRel"] });
+        },
+        onError(error) {
+          console.log("error", error);
+        },
+      });
+    }
     handleClose();
   }
 

@@ -12,7 +12,6 @@ import noImage from "../../../../assets/images/user.png";
 export default function FamilyAndRel() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetFamilyRelationship(id);
-  // { username: "", profileImg: "", status: "", viewer: "private" }
   console.log(data);
   const family = data?.data?.body?.family || [];
   const relationship = data?.data?.body?.relationship || {};
@@ -124,7 +123,7 @@ export default function FamilyAndRel() {
                             }}
                           >
                             <img
-                              src={j.profileImg}
+                              src={j.profileImg ? j.profileImg : noImage}
                               height={50}
                               width={50}
                               style={{

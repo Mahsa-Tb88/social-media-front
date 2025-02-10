@@ -121,3 +121,8 @@ export function useUpdatedFamily() {
     mutationFn: (data) => axios.put(`/users/family/${data.id}`, data),
   });
 }
+export function useDeleteFamilyMember() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/users/familyMember/${data.id}`, data),
+  });
+}

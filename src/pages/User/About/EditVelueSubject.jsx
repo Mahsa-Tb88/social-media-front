@@ -33,6 +33,7 @@ import {
   useAddEducation,
   useEditEducation,
   useUpdatedRelationship,
+  useUpdatedFamily,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -524,57 +525,97 @@ function Relationship({ value, type, onCloseEdit }) {
 }
 
 function FamilyMember({ value, type, onCloseEdit }) {
-  function findFamilyMember() {
-    "from backend and setUser from backed";
-  }
+  const theme = useSelector((state) => state.app.theme);
+
   const [relation, setRelation] = useState("");
   const [status, setStatus] = useState(value.status);
-  const [user, setUser] = useState(value);
+  const [search, setSearch] = useState("");
+  const [user, setUser] = useState(value ? value : "");
+  const userId = useParams().id;
 
-  function saveHandler() {
-    let newList;
-    if (type == "new") {
-      newList = {
-        username: "Hossein88",
-        img: "noImage",
-        status: "Married",
-        viewer: "public",
-        id: 450,
-      };
-    } else {
-      newList = list.map((l) => {
-        if (l.username == value.username) {
-          return {
-            username: user.username,
-            id: user.id,
-            img: user.img,
-            viewer: l.viewer,
-          };
-        } else {
-          return l;
-        }
-      });
+  const { data, error } = useSearchPerson(user);
+  const userfounded = data?.data.body || [];
 
-      onCloseEdit();
+  useEffect(() => {
+    if (search) {
+      const timeOut = setTimeout(setUser(search), 0);
+      return () => clearTimeout(timeOut);
     }
+  }, [search]);
+
+  function selectUser(l) {
+    setUser(l);
+    setSearch("");
+  }
+  const mutation = useUpdatedFamily();
+  const querryClient = useQueryClient();
+  function saveHandler() {
+    const data = {
+      id: userId,
+      family: {
+        profileImg: user.profileImg,
+        username: user.username,
+        id: user.id,
+        status,
+        viewer: "friends",
+      },
+    };
+    console.log("userrr", user);
+
+    console.log("family data", data);
+    mutation.mutate(data, {
+      onSuccess(d) {
+        querryClient.invalidateQueries({ queryKey: ["familyRel"] });
+        onCloseEdit();
+      },
+      onError(error) {
+        console.log("error is", error);
+      },
+    });
   }
   return (
     <Stack spacing={3}>
       <TextField
         size="small"
         placeholder={"Serach username"}
-        // label={title == "Family" ? "Family" : "Person"}
-        onChange={findFamilyMember}
         defaultValue={type == "edit" ? value.username : ""}
+        onChange={(e) => setSearch(e.target.value)}
+        value={user.username}
+        disabled={type == "edit" ? true : false}
       />
-
+      {search && (
+        <Stack>
+          {userfounded.map((l) => (
+            <List>
+              <ListItem
+                sx={{
+                  cursor: "pointer",
+                  borderRadius: 1,
+                  "&:hover": {
+                    bgcolor: theme == "light" ? "#ebf5ff" : "grey.800",
+                  },
+                }}
+                onClick={() => selectUser(l)}
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    alt="User Image"
+                    src={l.profileImg ? l.profileImg : noImage}
+                  />
+                </ListItemAvatar>
+                <ListItemText>{l.username}</ListItemText>
+              </ListItem>
+            </List>
+          ))}
+        </Stack>
+      )}
       <FormControl fullWidth>
         <InputLabel id="relation">Relationship</InputLabel>
         <Select
           id="relation"
-          value={relation}
+          value={status}
           label="Relationship"
-          onChange={(e) => setRelation(e.target.value)}
+          onChange={(e) => setStatus(e.target.value)}
         >
           <MenuItem value={"Mother"}>Mother</MenuItem>
           <MenuItem value={"Father"}>Father</MenuItem>

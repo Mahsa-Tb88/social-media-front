@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import {
   useDeleteContactBaseInfo,
   useDeleteEducation,
+  useDeleteFamilyMember,
   useDeleteOverview,
   useDeleteRelationship,
   useDeleteWork,
@@ -36,7 +37,9 @@ export default function MenuItem({
   const mutationWork = useDeleteWork();
   const mutationEducation = useDeleteEducation();
   const mutationRel = useDeleteRelationship();
+  const mutationFamily = useDeleteFamilyMember();
   const querryClient = useQueryClient();
+
   const userId = useParams().id;
   console.log("rirleee", title);
   function deleteItem() {
@@ -97,6 +100,18 @@ export default function MenuItem({
     if (title == "Relationship") {
       const data = { id: userId };
       mutationRel.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({ queryKey: ["familyRel"] });
+        },
+        onError(error) {
+          console.log("error", error);
+        },
+      });
+    }
+    if (title == "Family") {
+      const data = { id: userId, userId: id };
+      console.log("familymembr", data);
+      mutationFamily.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["familyRel"] });
         },

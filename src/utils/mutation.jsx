@@ -108,21 +108,38 @@ export function useDeleteEducation() {
 
 export function useUpdatedRelationship() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/users/relationship/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/users/editRelationship/${data.id}`, data),
   });
 }
 export function useDeleteRelationship() {
   return useMutation({
-    mutationFn: (data) => axios.delete(`/users/relationship/${data.id}`),
+    mutationFn: (data) => axios.delete(`/users/deleteRelationship/${data.id}`),
   });
 }
 export function useUpdatedFamily() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/users/family/${data.id}`, data),
+    mutationFn: (data) => axios.put(`/users/editFamily/${data.id}`, data),
+  });
+}
+export function useAddFamily() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/users/addFamily/${data.id}`, data),
   });
 }
 export function useDeleteFamilyMember() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/users/familyMember/${data.id}`, data),
+    mutationFn: (data) =>
+      axios.put(`/users/deleteFamilyMember/${data.id}`, data),
+  });
+}
+
+export function useAddPlace() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/users/addPlace/${data.id}`, data),
+  });
+}
+export function useDeletePlace() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/users/deletePlace/${data.id}`, data),
   });
 }

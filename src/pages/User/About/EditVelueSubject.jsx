@@ -34,9 +34,11 @@ import {
   useEditEducation,
   useUpdatedRelationship,
   useUpdatedFamily,
+  useAddFamily,
+  useAddPlace,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import { useSearchPerson } from "../../../utils/queries";
 import noImage from "../../../assets/images/user.png";
 
@@ -51,12 +53,15 @@ export default function EditValueSubject({
 }) {
   const [newValue, setNewValue] = useState(value);
   const user = useSelector((state) => state.user.profile);
-
+  const userId = useParams().id;
   const querryClient = useQueryClient();
   const mutationOverview = useEditOverview();
   const mutationContactBaseInfo = useEditContactBaseInfo();
+  const mutationAddPlace = useAddPlace();
+  
 
   function saveChangeHandler() {
+    console.log("saveeee", title);
     if (title == "overview") {
       const data = {
         subject,
@@ -94,10 +99,30 @@ export default function EditValueSubject({
         },
       });
     }
+    if (
+      title == "hometown" ||
+      title == "currentCity" ||
+      title == "usedToLiveCity"
+    ) {
+      const data = {
+        id: userId,
+        [title]: { value: newValue, viewer: "friends", id: Date.now() },
+      };
+      console.log("home", data);
+
+      mutationAddPlace.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({ queryKey: ["placeLived"] });
+        },
+        onError(error) {
+          console.log(error);
+        },
+      });
+    }
 
     onCloseEdit();
   }
-
+  console.log("edit", subject);
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -527,7 +552,6 @@ function Relationship({ value, type, onCloseEdit }) {
 function FamilyMember({ value, type, onCloseEdit }) {
   const theme = useSelector((state) => state.app.theme);
 
-  const [relation, setRelation] = useState("");
   const [status, setStatus] = useState(value.status);
   const [search, setSearch] = useState("");
   const [user, setUser] = useState(value ? value : "");
@@ -547,31 +571,47 @@ function FamilyMember({ value, type, onCloseEdit }) {
     setUser(l);
     setSearch("");
   }
-  const mutation = useUpdatedFamily();
+  const mutationEditFamilyMember = useUpdatedFamily();
+  const mutationAddFamily = useAddFamily();
   const querryClient = useQueryClient();
   function saveHandler() {
-    const data = {
-      id: userId,
-      family: {
-        profileImg: user.profileImg,
-        username: user.username,
-        id: user.id,
+    if (type == "new") {
+      const data = {
+        id: userId,
+        family: {
+          profileImg: user.profileImg,
+          username: user.username,
+          id: user._id,
+          status,
+          viewer: "friends",
+        },
+      };
+      console.log("add family", data);
+      mutationAddFamily.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({ queryKey: ["familyRel"] });
+          onCloseEdit();
+        },
+        onError(error) {
+          console.log("error is", error);
+        },
+      });
+    } else {
+      const data = {
+        id: userId,
+        userUpdatedId: user.id,
         status,
-        viewer: "friends",
-      },
-    };
-    console.log("userrr", user);
-
-    console.log("family data", data);
-    mutation.mutate(data, {
-      onSuccess(d) {
-        querryClient.invalidateQueries({ queryKey: ["familyRel"] });
-        onCloseEdit();
-      },
-      onError(error) {
-        console.log("error is", error);
-      },
-    });
+      };
+      mutationEditFamilyMember.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({ queryKey: ["familyRel"] });
+          onCloseEdit();
+        },
+        onError(error) {
+          console.log("error is", error);
+        },
+      });
+    }
   }
   return (
     <Stack spacing={3}>

@@ -12,7 +12,6 @@ import noImage from "../../../../assets/images/user.png";
 export default function FamilyAndRel() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetFamilyRelationship(id);
-  console.log(data);
   const family = data?.data?.body?.family || [];
   const relationship = data?.data?.body?.relationship || {};
 
@@ -102,47 +101,47 @@ export default function FamilyAndRel() {
             <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
               Family
             </Typography>
-            {
-              <Stack spacing={1}>
-                {family.map((j) => {
-                  return (
-                    <Stack key={j.id}>
-                      <ItemAbout
-                        myViewer={j.viewer}
-                        value={j}
-                        subject={"Family"}
-                        id={j.id}
-                        title="Family"
-                      >
-                        <Stack sx={{ mb: 1 }}>
-                          <Stack
-                            sx={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                              gap: 1,
+
+            <Stack spacing={1}>
+              {family.map((j) => {
+                return (
+                  <Stack key={j.id}>
+                    <ItemAbout
+                      myViewer={j.viewer}
+                      value={j}
+                      subject={"Family"}
+                      id={j.id}
+                      title="Family"
+                    >
+                      <Stack sx={{ mb: 1 }}>
+                        <Stack
+                          sx={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
+                        >
+                          <img
+                            src={j.profileImg ? j.profileImg : noImage}
+                            height={50}
+                            width={50}
+                            style={{
+                              border: "var(--border)",
+                              borderRadius: "50%",
                             }}
-                          >
-                            <img
-                              src={j.profileImg ? j.profileImg : noImage}
-                              height={50}
-                              width={50}
-                              style={{
-                                border: "var(--border)",
-                                borderRadius: "50%",
-                              }}
-                            />
-                            <Stack>
-                              <Typography>{j.username}</Typography>
-                              <Box sx={{ fontSize: 13 }}>{j.status}</Box>
-                            </Stack>
+                          />
+                          <Stack>
+                            <Typography>{j.username}</Typography>
+                            <Box sx={{ fontSize: 13 }}>{j.status}</Box>
                           </Stack>
                         </Stack>
-                      </ItemAbout>
-                    </Stack>
-                  );
-                })}
-              </Stack>
-            }
+                      </Stack>
+                    </ItemAbout>
+                  </Stack>
+                );
+              })}
+            </Stack>
+
             <Stack
               sx={{
                 flexDirection: "row",

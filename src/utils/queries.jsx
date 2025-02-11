@@ -73,3 +73,9 @@ export function useSearchPerson(user) {
     queryFn: () => axios.get("/users/search/findUser/", { params: { user } }),
   });
 }
+export function usePlaceLived(id) {
+  return useQuery({
+    queryKey: ["placeLived", id],
+    queryFn: () => axios.get("/users/userPlaces/" + id),
+  });
+}

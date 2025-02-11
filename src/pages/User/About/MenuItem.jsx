@@ -17,6 +17,7 @@ import {
   useDeleteEducation,
   useDeleteFamilyMember,
   useDeleteOverview,
+  useDeletePlace,
   useDeleteRelationship,
   useDeleteWork,
 } from "../../../utils/mutation";
@@ -38,10 +39,10 @@ export default function MenuItem({
   const mutationEducation = useDeleteEducation();
   const mutationRel = useDeleteRelationship();
   const mutationFamily = useDeleteFamilyMember();
+  const mutationPlace = useDeletePlace();
   const querryClient = useQueryClient();
-
   const userId = useParams().id;
-  console.log("rirleee", title);
+  console.log("title", title);
   function deleteItem() {
     if (title == "overview") {
       const data = { id: userId, subject };
@@ -109,7 +110,7 @@ export default function MenuItem({
       });
     }
     if (title == "Family") {
-      const data = { id: userId, userId: id };
+      const data = { id: userId, userDeleteId: id };
       console.log("familymembr", data);
       mutationFamily.mutate(data, {
         onSuccess(d) {
@@ -117,6 +118,22 @@ export default function MenuItem({
         },
         onError(error) {
           console.log("error", error);
+        },
+      });
+    }
+    if (
+      title == "hometown" ||
+      title == "currentCity" ||
+      title == "usedToLiveCity"
+    ) {
+      console.log("iddd", id);
+      const data = { id: userId, titleId: id, title };
+      mutationPlace.mutate(data, {
+        onSuccess(d) {
+          querryClient.invalidateQueries({ queryKey: ["placeLived"] });
+        },
+        onError(error) {
+          console.log(error);
         },
       });
     }

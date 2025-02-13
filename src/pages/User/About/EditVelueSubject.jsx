@@ -36,9 +36,10 @@ import {
   useUpdatedFamily,
   useAddFamily,
   useAddPlace,
+  useEditPlace,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
-import { data, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSearchPerson } from "../../../utils/queries";
 import noImage from "../../../assets/images/user.png";
 
@@ -58,7 +59,7 @@ export default function EditValueSubject({
   const mutationOverview = useEditOverview();
   const mutationContactBaseInfo = useEditContactBaseInfo();
   const mutationAddPlace = useAddPlace();
-  
+  const mutationEditPlace = useEditPlace();
 
   function saveChangeHandler() {
     console.log("saveeee", title);
@@ -104,25 +105,36 @@ export default function EditValueSubject({
       title == "currentCity" ||
       title == "usedToLiveCity"
     ) {
-      const data = {
-        id: userId,
-        [title]: { value: newValue, viewer: "friends", id: Date.now() },
-      };
-      console.log("home", data);
+      if (type == "new") {
+        const data = {
+          id: userId,
+          [title]: { value: newValue, viewer: "friends", id: Date.now() },
+        };
 
-      mutationAddPlace.mutate(data, {
-        onSuccess(d) {
-          querryClient.invalidateQueries({ queryKey: ["placeLived"] });
-        },
-        onError(error) {
-          console.log(error);
-        },
-      });
+        mutationAddPlace.mutate(data, {
+          onSuccess(d) {
+            querryClient.invalidateQueries({ queryKey: ["placeLived"] });
+          },
+          onError(error) {
+            console.log(error);
+          },
+        });
+      } else {
+        const data = { id: userId, [title]: { value: newValue, id } };
+        mutationEditPlace.mutate(data, {
+          onSuccess(d) {
+            querryClient.invalidateQueries({ queryKey: ["placeLived"] });
+          },
+          onError(error) {
+            console.log(error);
+          },
+        });
+      }
     }
 
     onCloseEdit();
   }
-  console.log("edit", subject);
+  console.log("value is", value);
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
       <DialogTitle

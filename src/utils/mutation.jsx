@@ -138,6 +138,11 @@ export function useAddPlace() {
     mutationFn: (data) => axios.put(`/users/addPlace/${data.id}`, data),
   });
 }
+export function useEditPlace() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/users/editPlace/${data.id}`, data),
+  });
+}
 export function useDeletePlace() {
   return useMutation({
     mutationFn: (data) => axios.put(`/users/deletePlace/${data.id}`, data),

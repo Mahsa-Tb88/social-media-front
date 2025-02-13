@@ -12,8 +12,8 @@ import LoadingError from "../../../../components/LoadingError";
 
 export default function PlaceLived() {
   const id = useParams().id;
+  const theme = useSelector((state) => state.app.theme);
   const { isPending, data, error, refetch } = usePlaceLived(id);
-  console.log("dataa", data);
   const hometown = data?.data?.body?.hometown || {};
   const currentCity = data?.data?.body?.currentCity || {};
   const usedToLiveCity = data?.data?.body?.usedToLiveCity || [];
@@ -30,9 +30,9 @@ export default function PlaceLived() {
             Places Lived
           </Typography>
           <Stack spacing={3}>
-            <Hometown hometown={hometown} />
-            <CurrentCity currentCity={currentCity} />
-            <UsedToLiveCity usedToLiveCity={usedToLiveCity} />
+            <Hometown hometown={hometown} theme={theme} />
+            <CurrentCity currentCity={currentCity} theme={theme} />
+            <UsedToLiveCity usedToLiveCity={usedToLiveCity} theme={theme} />
           </Stack>
         </Stack>
       )}
@@ -40,7 +40,7 @@ export default function PlaceLived() {
   );
 }
 
-function Hometown({ hometown }) {
+function Hometown({ hometown, theme }) {
   const [openAddHometown, setOpenAddHometown] = useState(false);
 
   return (
@@ -49,7 +49,7 @@ function Hometown({ hometown }) {
         <Stack>
           <ItemAbout
             myViewer={hometown.viewer}
-            value={hometown}
+            value={hometown.value}
             subject={"Hometown"}
             title="hometown"
           >
@@ -65,7 +65,21 @@ function Hometown({ hometown }) {
                   sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}
                 >
                   <ShowIcon subject={"Hometown"} />
-                  <Typography>{hometown.value}</Typography>
+                  <Stack>
+                    <Typography
+                      sx={{ color: theme == "light" ? "grey.900" : "grey.100" }}
+                    >
+                      {hometown.value}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 12,
+                        color: theme == "dark" && "grey.300",
+                      }}
+                    >
+                      Hometown
+                    </Typography>
+                  </Stack>
                 </Stack>
               </Stack>
             </Stack>
@@ -103,7 +117,7 @@ function Hometown({ hometown }) {
   );
 }
 
-function CurrentCity({ currentCity }) {
+function CurrentCity({ currentCity, theme }) {
   const [openAddCurrentCity, setOpenAddCurrentCity] = useState(false);
 
   return (
@@ -112,7 +126,7 @@ function CurrentCity({ currentCity }) {
         <Stack>
           <ItemAbout
             myViewer={currentCity.viewer}
-            value={currentCity}
+            value={currentCity.value}
             subject={"Current city"}
             title="currentCity"
           >
@@ -128,7 +142,21 @@ function CurrentCity({ currentCity }) {
                   sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}
                 >
                   <ShowIcon subject={"Location"} />
-                  <Typography>{currentCity.value}</Typography>
+                  <Stack>
+                    <Typography
+                      sx={{ color: theme == "light" ? "grey.900" : "grey.100" }}
+                    >
+                      {currentCity.value}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 12,
+                        color: theme == "dark" && "grey.300",
+                      }}
+                    >
+                      Current city
+                    </Typography>
+                  </Stack>
                 </Stack>
               </Stack>
             </Stack>
@@ -166,19 +194,19 @@ function CurrentCity({ currentCity }) {
   );
 }
 
-function UsedToLiveCity({ usedToLiveCity }) {
+function UsedToLiveCity({ usedToLiveCity, theme }) {
   const [openAddPlace, setOpenAddPlace] = useState(false);
 
   return (
-    <Stack>
-      <Stack spacing={2}>
+    <Stack spacing={usedToLiveCity.length ? 3 : ""}>
+      <Stack spacing={3}>
         {usedToLiveCity.length > 0 &&
           usedToLiveCity.map((j) => {
             return (
               <Stack key={j}>
                 <ItemAbout
                   myViewer={j.viewer}
-                  value={j}
+                  value={j.value}
                   subject={"Used to live"}
                   id={j.id}
                   title="usedToLiveCity"

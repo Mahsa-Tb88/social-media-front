@@ -39,9 +39,9 @@ export default function Login() {
       onSuccess(d) {
         console.log(d);
         const user = d.data.body.user;
+        const friends = d.data.body.friends;
         dispatch(userActions.setIsLoggedIn(true));
         dispatch(userActions.setIsAdmin(user.isAdmin));
-        console.log(user);
         dispatch(
           userActions.setProfile({
             email: user.emailRegister,
@@ -51,6 +51,7 @@ export default function Login() {
             backgroundImg: user.backgroundImg,
             bio: user.bio,
             viewer: user.viewerProfile,
+            friends: friends,
           })
         );
       },

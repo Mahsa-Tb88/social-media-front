@@ -12,6 +12,7 @@ const initialState = {
     backgroundImg: "",
     bio: "",
     viewer: "",
+    friends: [],
   },
 };
 
@@ -27,6 +28,9 @@ const userSlice = createSlice({
     },
     setIsAdmin(state, action) {
       state.profile = action.payload;
+    },
+    setFriends(state, action) {
+      state.friends = action.payload;
     },
     setLogout(state) {
       state.profile = {};

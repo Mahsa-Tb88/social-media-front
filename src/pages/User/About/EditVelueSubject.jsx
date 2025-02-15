@@ -134,7 +134,6 @@ export default function EditValueSubject({
 
     onCloseEdit();
   }
-  console.log("value is", value);
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
       <DialogTitle

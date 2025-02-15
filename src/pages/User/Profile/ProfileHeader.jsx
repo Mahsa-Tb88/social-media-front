@@ -15,9 +15,7 @@ import { Edit } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import backGround from "../../../assets/images/back.jpg";
 import noImage from "../../../assets/images/user.png";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import MessageIcon from "@mui/icons-material/Message";
-import AddIcon from "@mui/icons-material/Add";
+
 import ProfileInfo from "./ProfileInfo";
 
 export default function ProfileHeader({ user }) {

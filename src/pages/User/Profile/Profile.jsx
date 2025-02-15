@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ProfileHeader from "./ProfileHeader";
@@ -12,18 +12,27 @@ export default function Profile() {
   const userLogin = useSelector((state) => state.user.profile);
   const id = useParams().id;
   const [user, setUser] = useState(userLogin);
+  const [isPrivate, setIsPrivate] = useState(false);
   const { isPending, data, refetch, error } = useGetUserById(id);
 
   useEffect(() => {
     if (data) {
-      if (data?.data?.body._id == userLogin.id) {
+      if (data?.data?.body._id == userLogin._id) {
         setUser(userLogin);
       } else {
         setUser(data.data.body);
+        const findFriend = user.friends?.find(
+          (l) => l._id == data.data.body._id
+        );
+        if (!findFriend) {
+          setIsPrivate(true);
+        }
       }
     }
   }, [data]);
 
+  console.log("user...", user);
+  console.log("private...", isPrivate);
   return (
     <Stack>
       {isPending ? (
@@ -33,8 +42,26 @@ export default function Profile() {
       ) : (
         <Stack>
           <ProfileHeader user={user} />
-          <Navbar />
-          <Outlet />
+
+          {isPrivate ? (
+            <Stack
+              sx={{
+                mt: 25,
+                mb: 10,
+                textAlign: "center",
+              }}
+            >
+              <Divider />
+              <Typography component={"h3"} variant="h5" sx={{ pt: 2 }}>
+                This profile is private
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack>
+              <Navbar />
+              <Outlet />
+            </Stack>
+          )}
         </Stack>
       )}
     </Stack>

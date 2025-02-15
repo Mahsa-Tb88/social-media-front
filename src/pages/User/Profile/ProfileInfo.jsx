@@ -13,6 +13,8 @@ import MyIconButton from "../../../components/Customized/MyIconButton";
 import { Edit } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import ProfileImgChange from "./ProfileImgChange";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import MessageIcon from "@mui/icons-material/Message";
 
 export default function ProfileInfo({ user }) {
   const theme = useSelector((state) => state.app.theme);
@@ -85,7 +87,7 @@ export default function ProfileInfo({ user }) {
                 {user.username}
               </Typography>
               <Typography sx={{ fontSize: 17 }}>
-               {/*  {user?.friends.length ? user.friends + "friends" : " "}
+                {/*  {user?.friends.length ? user.friends + "friends" : " "}
                 {user?.mutual ? ", " + user.mutual + "mutual" : ""} */}
               </Typography>
             </Stack>

@@ -13,12 +13,15 @@ export default function Profile() {
   const id = useParams().id;
   const [user, setUser] = useState(userLogin);
   const [isPrivate, setIsPrivate] = useState(false);
+  const [isFriend, setIsFriend] = useState(false);
   const { isPending, data, refetch, error } = useGetUserById(id);
 
   useEffect(() => {
     if (data) {
       if (data?.data?.body._id == userLogin._id) {
         setUser(userLogin);
+        setIsPrivate(false);
+        setIsFriend(true);
       } else {
         setUser(data.data.body);
         const findFriend = user.friends?.find(
@@ -26,13 +29,15 @@ export default function Profile() {
         );
         if (!findFriend) {
           setIsPrivate(true);
+          setIsFriend(false);
+        } else {
+          setIsFriend(true);
+          setIsPrivate(false);
         }
       }
     }
   }, [data]);
 
-  console.log("user...", user);
-  console.log("private...", isPrivate);
   return (
     <Stack>
       {isPending ? (
@@ -41,7 +46,7 @@ export default function Profile() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack>
-          <ProfileHeader user={user} />
+          <ProfileHeader user={user} isFriend={isFriend} />
 
           {isPrivate ? (
             <Stack

@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import noImage from "../../../assets/images/user.png";
 import MyIconButton from "../../../components/Customized/MyIconButton";
@@ -15,14 +15,24 @@ import AddIcon from "@mui/icons-material/Add";
 import ProfileImgChange from "./ProfileImgChange";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import MessageIcon from "@mui/icons-material/Message";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import { useAddFriend } from "../../../utils/mutation";
 
-export default function ProfileInfo({ user }) {
+export default function ProfileInfo({ user, isFriend }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const [profileImg, setProfileImg] = useState(
     user.profileImg ? SERVER_URL + user.profileImg : noImage
   );
   const [profileImgOpen, setProfileImgOpen] = useState(false);
+  const addFriendMutation = useAddFriend();
+
+  function addFriend() {
+    const data={userId:userLogin._id,id:user._id,username:user.username,profileImg:user.profileImg}
+    addFriendMutation.mutate(data, { onSuccess(d) {}, onError(e) {} });
+  }
+
+  
 
   return (
     <Container
@@ -92,20 +102,36 @@ export default function ProfileInfo({ user }) {
               </Typography>
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>
-              <Button
-                startIcon={
-                  user._id != userLogin._id ? (
-                    <PersonAddAlt1Icon />
-                  ) : (
-                    <AddIcon />
-                  )
-                }
-                size="large"
-                sx={{ fontSize: 17 }}
-                disableElevation
-              >
-                {user._id != userLogin._id ? "Add friend" : "Add to story"}
-              </Button>
+              {user._id != userLogin._id && !isFriend ? (
+                <Button
+                  startIcon={<PersonAddAlt1Icon />}
+                  size="large"
+                  sx={{ fontSize: 17 }}
+                  disableElevation
+                  onClick={addFriend}
+                >
+                  Add friend
+                </Button>
+              ) : user._id != userLogin._id && !isFriend && isFriend ? (
+                <Button
+                  startIcon={<PersonRemoveIcon />}
+                  size="large"
+                  sx={{ fontSize: 17 }}
+                  disableElevation
+                >
+                  Remove Friend
+                </Button>
+              ) : (
+                <Button
+                  startIcon={<AddIcon />}
+                  size="large"
+                  sx={{ fontSize: 17 }}
+                  disableElevation
+                >
+                  Add to story
+                </Button>
+              )}
+
               <Button
                 size="large"
                 sx={{

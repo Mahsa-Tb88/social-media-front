@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import noImage from "../../../assets/images/user.png";
 import MyIconButton from "../../../components/Customized/MyIconButton";
 import { Edit } from "@mui/icons-material";
@@ -17,22 +17,65 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import MessageIcon from "@mui/icons-material/Message";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { useAddFriend } from "../../../utils/mutation";
+import { userActions } from "../../../store/slices/userSlice";
 
-export default function ProfileInfo({ user, isFriend }) {
+export default function ProfileInfo({ user }) {
   const theme = useSelector((state) => state.app.theme);
+  const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.user.profile);
   const [profileImg, setProfileImg] = useState(
     user.profileImg ? SERVER_URL + user.profileImg : noImage
   );
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const addFriendMutation = useAddFriend();
+  console.log("...userlogin", userLogin);
+  console.log("...user", user);
 
-  function addFriend() {
-    const data={userId:userLogin._id,id:user._id,username:user.username,profileImg:user.profileImg}
-    addFriendMutation.mutate(data, { onSuccess(d) {}, onError(e) {} });
+  function findFriend() {
+    const findFriend = userLogin?.friends.listFriend?.find(
+      (f) => f.id == user._id
+    );
+    console.log("!!!", findFriend);
+    if (findFriend) {
+      return { status: findFriend.status };
+    } else {
+      return false;
+    }
   }
+  console.log("findfriend", findFriend());
+  function addFriend() {
+    const data = {
+      userId: userLogin.id,
+      id: user._id,
+      username: user.username,
+      profileImg: user.profileImg,
+      status: "pending",
+    };
+    addFriendMutation.mutate(data, {
+      onSuccess(d) {
+        console.log("success,,,,", userLogin?.friends?.listFriend);
 
-  
+        const updatedListFriends = [
+          ...userLogin?.friends?.listFriend,
+          {
+            id: user._id,
+            username: user.username,
+            profileImg: user.profileImg,
+            status: "pending",
+          },
+        ];
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+          })
+        );
+      },
+      onError(e) {
+        console.log("eeror is", e);
+      },
+    });
+  }
 
   return (
     <Container
@@ -70,7 +113,7 @@ export default function ProfileInfo({ user, isFriend }) {
                 height: "200px",
               }}
             />
-            {userLogin.username == user.username && (
+            {userLogin?.username == user?.username && (
               <MyIconButton
                 sx={{
                   position: "absolute",
@@ -102,7 +145,7 @@ export default function ProfileInfo({ user, isFriend }) {
               </Typography>
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>
-              {user._id != userLogin._id && !isFriend ? (
+              {!findFriend() && userLogin.id != user._id ? (
                 <Button
                   startIcon={<PersonAddAlt1Icon />}
                   size="large"
@@ -112,7 +155,16 @@ export default function ProfileInfo({ user, isFriend }) {
                 >
                   Add friend
                 </Button>
-              ) : user._id != userLogin._id && !isFriend && isFriend ? (
+              ) : findFriend().status == "pending" ? (
+                <Button
+                  startIcon={<PersonRemoveIcon />}
+                  size="large"
+                  sx={{ fontSize: 17 }}
+                  disableElevation
+                >
+                  Cancel Request
+                </Button>
+              ) : findFriend().status == "accept" ? (
                 <Button
                   startIcon={<PersonRemoveIcon />}
                   size="large"
@@ -122,14 +174,7 @@ export default function ProfileInfo({ user, isFriend }) {
                   Remove Friend
                 </Button>
               ) : (
-                <Button
-                  startIcon={<AddIcon />}
-                  size="large"
-                  sx={{ fontSize: 17 }}
-                  disableElevation
-                >
-                  Add to story
-                </Button>
+                "error"
               )}
 
               <Button

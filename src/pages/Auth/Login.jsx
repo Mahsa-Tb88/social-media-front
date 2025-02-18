@@ -37,7 +37,6 @@ export default function Login() {
   function onSubmit(data) {
     mutate(data, {
       onSuccess(d) {
-        console.log(d);
         const user = d.data.body.user;
         const friends = d.data.body.friends;
         dispatch(userActions.setIsLoggedIn(true));

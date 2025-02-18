@@ -151,6 +151,6 @@ export function useDeletePlace() {
 
 export function useAddFriend() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/addFriend/${data.userId}`, data),
+    mutationFn: (data) => axios.put(`/users/addFriend/${data.userId}`, data),
   });
 }

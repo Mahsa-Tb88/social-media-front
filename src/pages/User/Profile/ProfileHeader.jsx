@@ -18,7 +18,7 @@ import noImage from "../../../assets/images/user.png";
 
 import ProfileInfo from "./ProfileInfo";
 
-export default function ProfileHeader({ user, isFriend }) {
+export default function ProfileHeader({ user }) {
   const userLogin = useSelector((state) => state.user.profile);
 
   const [backgroundOpen, setBackgroundOpen] = useState(false);
@@ -55,7 +55,7 @@ export default function ProfileHeader({ user, isFriend }) {
           </Stack>
         </Grid2>
       </Grid2>
-      <ProfileInfo user={user} isFriend={isFriend} />
+      <ProfileInfo user={user}  />
       {userLogin.username == user.username && (
         <BackgroundChange
           open={backgroundOpen}

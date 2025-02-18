@@ -18,10 +18,21 @@ export default function Initializer() {
       dispatch(appActions.setInitialized(true));
 
       if (body?.user) {
+        const { user, friends } = body;
         dispatch(userActions.setIsLoggedIn(true));
-        body.user.username =
-          body.user.username[0].toUpperCase() + body.user.username.slice(1);
-        dispatch(userActions.setProfile(body.user));
+
+        dispatch(
+          userActions.setProfile({
+            email: user.emailRegister,
+            username: user.username[0].toUpperCase() + user.username.slice(1),
+            id: user._id,
+            profileImg: user.profileImg,
+            backgroundImg: user.backgroundImg,
+            bio: user.bio,
+            viewer: user.viewerProfile,
+            friends: friends,
+          })
+        );
       }
     }
   }, [data]);

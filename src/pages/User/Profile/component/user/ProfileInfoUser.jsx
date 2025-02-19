@@ -1,48 +1,35 @@
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Stack,
-  Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import noImage from "../../../assets/images/user.png";
-import MyIconButton from "../../../components/Customized/MyIconButton";
-import { Edit } from "@mui/icons-material";
-import AddIcon from "@mui/icons-material/Add";
-import ProfileImgChange from "./ProfileImgChange";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
+import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import { useAddFriend } from "../../../utils/mutation";
-import { userActions } from "../../../store/slices/userSlice";
+import noImage from "../../../../../assets/images/user.png";
+import { useDispatch, useSelector } from "react-redux";
+import { useAddFriend } from "../../../../../utils/mutation";
+import { userActions } from "../../../../../store/slices/userSlice";
 
-export default function ProfileInfo({ user }) {
+export default function ProfileInfoUser({ user }) {
   const theme = useSelector((state) => state.app.theme);
-  const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.user.profile);
+  const dispatch = useDispatch();
   const [profileImg, setProfileImg] = useState(
     user.profileImg ? SERVER_URL + user.profileImg : noImage
   );
-  const [profileImgOpen, setProfileImgOpen] = useState(false);
+
   const addFriendMutation = useAddFriend();
-  console.log("...userlogin", userLogin);
-  console.log("...user", user);
 
   function findFriend() {
     const findFriend = userLogin?.friends.listFriend?.find(
       (f) => f.id == user._id
     );
-    console.log("!!!", findFriend);
     if (findFriend) {
       return { status: findFriend.status };
     } else {
       return false;
     }
   }
-  console.log("findfriend", findFriend());
+
   function addFriend() {
     const data = {
       userId: userLogin.id,
@@ -53,8 +40,6 @@ export default function ProfileInfo({ user }) {
     };
     addFriendMutation.mutate(data, {
       onSuccess(d) {
-        console.log("success,,,,", userLogin?.friends?.listFriend);
-
         const updatedListFriends = [
           ...userLogin?.friends?.listFriend,
           {
@@ -76,7 +61,6 @@ export default function ProfileInfo({ user }) {
       },
     });
   }
-
   return (
     <Container
       fixed
@@ -113,18 +97,6 @@ export default function ProfileInfo({ user }) {
                 height: "200px",
               }}
             />
-            {userLogin?.username == user?.username && (
-              <MyIconButton
-                sx={{
-                  position: "absolute",
-                  bottom: "10%",
-                  right: "0",
-                }}
-                onClick={() => setProfileImgOpen(true)}
-              >
-                <Edit />
-              </MyIconButton>
-            )}
           </Stack>
 
           <Stack
@@ -141,11 +113,11 @@ export default function ProfileInfo({ user }) {
               </Typography>
               <Typography sx={{ fontSize: 17 }}>
                 {/*  {user?.friends.length ? user.friends + "friends" : " "}
-                {user?.mutual ? ", " + user.mutual + "mutual" : ""} */}
+        {user?.mutual ? ", " + user.mutual + "mutual" : ""} */}
               </Typography>
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>
-              {!findFriend() && userLogin.id != user._id ? (
+              {!findFriend() ? (
                 <Button
                   startIcon={<PersonAddAlt1Icon />}
                   size="large"
@@ -153,28 +125,28 @@ export default function ProfileInfo({ user }) {
                   disableElevation
                   onClick={addFriend}
                 >
-                  Add friend
+                  Add Friend
                 </Button>
-              ) : findFriend().status == "pending" ? (
+              ) : findFriend()?.status == "pending" ? (
                 <Button
-                  startIcon={<PersonRemoveIcon />}
+                  startIcon={<PersonIcon />}
                   size="large"
                   sx={{ fontSize: 17 }}
                   disableElevation
+                  onClick={addFriend}
                 >
                   Cancel Request
                 </Button>
-              ) : findFriend().status == "accept" ? (
+              ) : (
                 <Button
                   startIcon={<PersonRemoveIcon />}
                   size="large"
                   sx={{ fontSize: 17 }}
                   disableElevation
+                  onClick={addFriend}
                 >
                   Remove Friend
                 </Button>
-              ) : (
-                "error"
               )}
 
               <Button
@@ -187,55 +159,15 @@ export default function ProfileInfo({ user }) {
                     bgcolor: theme == "light" ? "grey.300" : "grey.900",
                   },
                 }}
-                startIcon={
-                  user._id != userLogin._id ? <MessageIcon /> : <Edit />
-                }
+                startIcon={<MessageIcon />}
                 disableElevation
               >
-                {user._id != userLogin._id ? "Message" : "Edit profile"}
+                Message
               </Button>
             </Stack>
           </Stack>
         </Stack>
-        {userLogin.username == user.username && (
-          <ProfileImgChange
-            open={profileImgOpen}
-            onClose={() => setProfileImgOpen(false)}
-            setProfileImg={setProfileImg}
-          />
-        )}
       </Stack>
     </Container>
   );
 }
-
-// export default function ProfileHeader({ user }) {
-//   const [backgroundImg, setBackgroundImg] = useState(
-//     user.backgroundImg ? SERVER_URL + user.backgroundImg : backGround
-//   );
-
-//   return (
-//     <Container>
-//       <Grid2 container>
-//         <Grid2 size={12} sx={{ mt: 3 }}>
-//           <Stack sx={{ height: "300px", position: "relative" }}>
-//             <Stack sx={{ width: "100%", height: "100%" }}>
-//               <Box
-//                 src={backgroundImg}
-//                 sx={{
-//                   objectFit: "cover",
-//                   objectPosition: "center",
-//                   width: "100%",
-//                   height: "100%",
-//                   borderRadius: "5px",
-//                 }}
-//                 component="img"
-//               />
-//             </Stack>
-//           </Stack>
-//         </Grid2>
-//       </Grid2>
-//       <ProfileInfoUser user={user} />
-//     </Container>
-//   );
-// }

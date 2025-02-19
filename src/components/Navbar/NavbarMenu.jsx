@@ -19,7 +19,6 @@ import { Link } from "react-router-dom";
 
 export default function NavbarMenu({ open, anchorEl, handleClose }) {
   const user = useSelector((state) => state.user.profile);
-
   return (
     <Menu
       open={open}
@@ -29,7 +28,7 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
     >
       <List disablePadding>
         <ListItem divider>
-          <ListItemButton LinkComponent={Link} to={`/profile/${user._id}`}>
+          <ListItemButton LinkComponent={Link} to={`/profile/${user.id}`}>
             <ListItemIcon>
               <Person />
             </ListItemIcon>

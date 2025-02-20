@@ -35,35 +35,35 @@ export function useGetUserById(id) {
 export function useGetOverview(id) {
   return useQuery({
     queryKey: ["overview", id],
-    queryFn: () => axios.get("/users/overview/" + id),
+    queryFn: () => axios.get("/overviews/" + id),
   });
 }
 
 export function useGetContactBaseInfo(id) {
   return useQuery({
     queryKey: ["contactBaseInfo", id],
-    queryFn: () => axios.get("/users/contactBaseInfo/" + id),
+    queryFn: () => axios.get("/infos/" + id),
   });
 }
 
 export function useGetWork(id) {
   return useQuery({
     queryKey: ["work", id],
-    queryFn: () => axios.get("/users/work/" + id),
+    queryFn: () => axios.get("/works/" + id),
   });
 }
 
 export function useGetEducation(id) {
   return useQuery({
     queryKey: ["education", id],
-    queryFn: () => axios.get("/users/education/" + id),
+    queryFn: () => axios.get("/educations/" + id),
   });
 }
 
 export function useGetFamilyRelationship(id) {
   return useQuery({
     queryKey: ["familyRel", id],
-    queryFn: () => axios.get("/users/familyRel/" + id),
+    queryFn: () => axios.get("/relationships/" + id),
   });
 }
 
@@ -76,6 +76,6 @@ export function useSearchPerson(user) {
 export function usePlaceLived(id) {
   return useQuery({
     queryKey: ["placeLived", id],
-    queryFn: () => axios.get("/users/userPlaces/" + id),
+    queryFn: () => axios.get("/places/" + id),
   });
 }

@@ -1,12 +1,12 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import noImage from "../../../../../assets/images/user.png";
 import { useDispatch, useSelector } from "react-redux";
-import { useAddFriend } from "../../../../../utils/mutation";
+import { useAddFriend, useRemoveFriend } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
 
 export default function ProfileInfoUser({ user }) {
@@ -18,6 +18,7 @@ export default function ProfileInfoUser({ user }) {
   );
 
   const addFriendMutation = useAddFriend();
+  const removeFriendMutation = useRemoveFriend();
 
   function findFriend() {
     const findFriend = userLogin?.friends.listFriend?.find(
@@ -30,9 +31,34 @@ export default function ProfileInfoUser({ user }) {
     }
   }
 
+  function RemoveFriend() {
+    const data = {
+      userId: userLogin.id,
+      id: user._id,
+    };
+    removeFriendMutation.mutate(data, {
+      onSuccess(d) {
+        const updatedListFriends = userLogin?.friends?.listFriend.filter(
+          (f) => f.id != user._id
+        );
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+          })
+        );
+      },
+      onError(e) {
+        console.log("eeror is", e);
+      },
+    });
+  }
+
   function addFriend() {
     const data = {
       userId: userLogin.id,
+      userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",
+      userUsername: userLogin.username,
       id: user._id,
       username: user.username,
       profileImg: user.profileImg,
@@ -133,7 +159,7 @@ export default function ProfileInfoUser({ user }) {
                   size="large"
                   sx={{ fontSize: 17 }}
                   disableElevation
-                  onClick={addFriend}
+                  onClick={RemoveFriend}
                 >
                   Cancel Request
                 </Button>
@@ -143,7 +169,7 @@ export default function ProfileInfoUser({ user }) {
                   size="large"
                   sx={{ fontSize: 17 }}
                   disableElevation
-                  onClick={addFriend}
+                  onClick={RemoveFriend}
                 >
                   Remove Friend
                 </Button>

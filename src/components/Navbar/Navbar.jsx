@@ -99,7 +99,6 @@ export default function Navbar() {
                     <Notifications ref={notificationAnchor} />
                   </MyIconButton>
                 </Badge>
-
                 <Badge
                   badgeContent={3}
                   invisible={""}
@@ -115,8 +114,10 @@ export default function Navbar() {
                   </MyIconButton>
                 </Badge>
                 <Badge
-                  badgeContent={2}
-                  invisible={""}
+                  badgeContent={
+                    profile.profile.friends.friendRequestList.length
+                  }
+                  // invisible={""}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
@@ -179,6 +180,7 @@ export default function Navbar() {
         open={openAddFriend}
         anchorEl={addFriendAnchor.current}
         handleClose={() => setOpenAddFriend(false)}
+        requestList={profile.profile.friends.friendRequestList}
       />
       <NavbarMsg
         open={openMsg}

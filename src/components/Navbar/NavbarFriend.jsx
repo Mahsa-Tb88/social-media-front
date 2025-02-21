@@ -1,5 +1,6 @@
 import { Person } from "@mui/icons-material";
 import {
+  Box,
   Divider,
   List,
   ListItem,
@@ -10,7 +11,14 @@ import {
 } from "@mui/material";
 import React from "react";
 
-export default function NavbarFriend({ open, anchorEl, handleClose }) {
+import noImage from "../../assets/images/user.png";
+
+export default function NavbarFriend({
+  open,
+  anchorEl,
+  handleClose,
+  requestList,
+}) {
   const friendListRequested = ["Mahsa Tabesh", "Nasim Tabesh"];
   return (
     <Menu
@@ -20,14 +28,24 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
       MenuListProps={{ sx: { p: 0 } }}
     >
       <List disablePadding>
-        {friendListRequested.map((friend) => {
+        {requestList.map((friend) => {
           return (
-            <ListItem key={friend} divider disablePadding>
+            <ListItem key={friend.id} divider disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  <Person />
+                  <Box
+                    component="img"
+                    src={
+                      friend.profileImg
+                        ? SERVER_URL + friend.profileImg
+                        : noImage
+                    }
+                    height={25}
+                    width={25}
+                    sx={{ borderRadius: 50 }}
+                  />
                 </ListItemIcon>
-                <ListItemText>{friend}</ListItemText>
+                <ListItemText>{friend.username}</ListItemText>
               </ListItemButton>
             </ListItem>
           );

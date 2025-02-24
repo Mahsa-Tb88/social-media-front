@@ -4,7 +4,6 @@ import {
   AvatarGroup,
   Box,
   Button,
-  Divider,
   List,
   ListItem,
   ListItemButton,
@@ -19,26 +18,45 @@ import React from "react";
 import noImage from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useConfirmFriend } from "../../utils/mutation";
 
 export default function NavbarFriend({
   open,
   anchorEl,
   handleClose,
-  requestList,
+  requestList = [],
 }) {
-  const userFriends = useSelector(
-    (state) => state.user.profile.friends.listFriend
-  );
-
+  const userLogin = useSelector((state) => state.user.profile);
+  console.log("userlogin....", userLogin);
   function mutualFriends(id) {
-    return userFriends.filter((f) => f.id == id);
+    return userLogin.friends.listFriend.filter((f) => f.id == id);
   }
 
   const theme = useSelector((state) => state.app.theme);
   const navigate = useNavigate();
-  function confirm(event) {
+
+  const confirmMutation = useConfirmFriend();
+
+  function confirmHandler(event, friend) {
     event.stopPropagation();
-    console.log("confirmmm");
+    const data = {
+      id: friend.id,
+      profileImg: friend.profileImg,
+      username: friend.username,
+      userId: userLogin.id,
+    };
+    confirmMutation.mutate(data, {
+      onSuccess(d) {
+        console.log("success");
+      },
+      onError(e) {
+        console.log("error is ", e);
+      },
+    });
+  }
+
+  function deleteHandler(event, id) {
+    event.stopPropagation();
   }
 
   function gotoProfile(id) {
@@ -98,7 +116,11 @@ export default function NavbarFriend({
                     ""
                   )}
                   <Stack sx={{ flexDirection: "row", mt: 1, gap: 2 }}>
-                    <Button size="small" disableElevation onClick={confirm}>
+                    <Button
+                      size="small"
+                      disableElevation
+                      onClick={(event) => confirmHandler(event, friend)}
+                    >
                       Confirm
                     </Button>
                     <Button
@@ -108,6 +130,7 @@ export default function NavbarFriend({
                         color: theme == "light" ? "grey.800" : "grey.300",
                       }}
                       disableElevation
+                      onClick={() => deleteHandler(friend.id)}
                     >
                       Delete
                     </Button>

@@ -157,6 +157,12 @@ export function useAddFriend() {
   });
 }
 
+export function useConfirmFriend() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/friends/confirm/${data.userId}`, data),
+  });
+}
+
 export function useRemoveFriend() {
   return useMutation({
     mutationFn: (data) => axios.put(`/friends/delete/${data.userId}`, data),

@@ -16,6 +16,7 @@ export default function Initializer() {
       const { body } = data.data;
       dispatch(appActions.setCategories(body.categories));
       dispatch(appActions.setInitialized(true));
+      console.log("dataaa body", body);
 
       if (body?.user) {
         const { user, friends } = body;

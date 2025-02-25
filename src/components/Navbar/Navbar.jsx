@@ -115,6 +115,7 @@ export default function Navbar() {
                 </Badge>
                 <Badge
                   badgeContent={
+                    profile.profile.friends?.friendRequestList &&
                     profile.profile.friends.friendRequestList.length
                   }
                   // invisible={""}
@@ -180,7 +181,7 @@ export default function Navbar() {
         open={openAddFriend}
         anchorEl={addFriendAnchor.current}
         handleClose={() => setOpenAddFriend(false)}
-        requestList={profile.profile.friends.friendRequestList}
+        requestList={profile.profile.friends?.friendRequestList}
       />
       <NavbarMsg
         open={openMsg}

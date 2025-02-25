@@ -94,7 +94,7 @@ export default function NavbarFriend({
                   <Typography component="h6" variant="h6">
                     {friend.username}
                   </Typography>
-                  {mutualFriends(friend.id).length ? (
+                  {mutualFriends(friend.id).length > 1 ? (
                     <Stack>
                       <Typography component="h6" variant="h6">
                         {mutualFriends(friend.id).length} friends

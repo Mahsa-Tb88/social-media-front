@@ -31,6 +31,16 @@ export default function ProfileInfoUser({ user }) {
     }
   }
 
+  function findUserInRequestList() {
+    const findUserInRequestList = userLogin.friends.friendRequestList;
+    const findUser = findUserInRequestList.find((f) => f.id == user._id);
+    if (findUser) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   function RemoveFriend() {
     const data = {
       userId: userLogin.id,
@@ -64,6 +74,7 @@ export default function ProfileInfoUser({ user }) {
       profileImg: user.profileImg,
       status: "pending",
     };
+    console.log("dataaa", data);
     addFriendMutation.mutate(data, {
       onSuccess(d) {
         const updatedListFriends = [
@@ -75,12 +86,14 @@ export default function ProfileInfoUser({ user }) {
             status: "pending",
           },
         ];
+        console.log("updatedListFriends", updatedListFriends);
         dispatch(
           userActions.setProfile({
             ...userLogin,
-            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+            friends: { ...userLogin?.friends, listFriend: updatedListFriends },
           })
         );
+        console.log("rr");
       },
       onError(e) {
         console.log("eeror is", e);
@@ -143,7 +156,17 @@ export default function ProfileInfoUser({ user }) {
               </Typography>
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>
-              {!findFriend() ? (
+              {findUserInRequestList() ? (
+                <Button
+                  startIcon={<PersonIcon />}
+                  size="large"
+                  sx={{ fontSize: 17 }}
+                  disableElevation
+                  onClick={""}
+                >
+                  Sent request
+                </Button>
+              ) : !findFriend() ? (
                 <Button
                   startIcon={<PersonAddAlt1Icon />}
                   size="large"

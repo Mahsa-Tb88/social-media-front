@@ -12,7 +12,13 @@ const initialState = {
     backgroundImg: "",
     bio: "",
     viewer: "",
-    friends: {},
+    friends: {
+      // listFriend: [
+      //   { id: 1, username: "mah", profileImag: "" },
+      //   { id: "2", username: "gol", profileImg: "" },
+      // ],
+      // listFriendRequest:[{ id: "3", username: "gfhf", profileImg: "" },]
+    },
   },
 };
 

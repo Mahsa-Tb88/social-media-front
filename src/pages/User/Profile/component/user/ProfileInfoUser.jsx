@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import React, { useReducer, useState } from "react";
+import React, { useRef, useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -8,6 +8,7 @@ import noImage from "../../../../../assets/images/user.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useAddFriend, useRemoveFriend } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
+import NavbarFriendRequest from "./NavbarFriendRequest";
 
 export default function ProfileInfoUser({ user }) {
   const theme = useSelector((state) => state.app.theme);
@@ -16,12 +17,14 @@ export default function ProfileInfoUser({ user }) {
   const [profileImg, setProfileImg] = useState(
     user.profileImg ? SERVER_URL + user.profileImg : noImage
   );
+  const [openRequest, setOpenRequest] = useState(false);
+  const requestAnchor = useRef();
 
   const addFriendMutation = useAddFriend();
   const removeFriendMutation = useRemoveFriend();
 
   function findFriend() {
-    const findFriend = userLogin?.friends.listFriend?.find(
+    const findFriend = userLogin?.friends?.listFriend?.find(
       (f) => f.id == user._id
     );
     if (findFriend) {
@@ -32,7 +35,7 @@ export default function ProfileInfoUser({ user }) {
   }
 
   function findUserInRequestList() {
-    const findUserInRequestList = userLogin.friends.friendRequestList;
+    const findUserInRequestList = userLogin?.friends?.friendRequestList || [];
     const findUser = findUserInRequestList.find((f) => f.id == user._id);
     if (findUser) {
       return true;
@@ -74,25 +77,49 @@ export default function ProfileInfoUser({ user }) {
       profileImg: user.profileImg,
       status: "pending",
     };
-    console.log("dataaa", data);
     addFriendMutation.mutate(data, {
       onSuccess(d) {
-        const updatedListFriends = [
-          ...userLogin?.friends?.listFriend,
-          {
+        const newFriends = [...userLogin?.friends];
+        let updatedListFriends = [];
+        if (newFriends.listFriend) {
+          updatedListFriends = newFriends.listFriend.push({
             id: user._id,
             username: user.username,
             profileImg: user.profileImg,
             status: "pending",
-          },
-        ];
-        console.log("updatedListFriends", updatedListFriends);
+          });
+        } else {
+          newFriends.listFriend = [
+            {
+              id: user._id,
+              username: user.username,
+              profileImg: user.profileImg,
+              status: "pending",
+            },
+          ];
+        }
         dispatch(
           userActions.setProfile({
             ...userLogin,
-            friends: { ...userLogin?.friends, listFriend: updatedListFriends },
+            friends: newFriends,
           })
         );
+
+        // const updatedListFriends = [
+        //   ...userLogin?.friends?.listFriend,
+        //   {
+        //     id: user._id,
+        //     username: user.username,
+        //     profileImg: user.profileImg,
+        //     status: "pending",
+        //   },
+        // ];
+        // dispatch(
+        //   userActions.setProfile({
+        //     ...userLogin,
+        //     friends: { ...userLogin?.friends, listFriend: updatedListFriends },
+        //   })
+        // );
         console.log("rr");
       },
       onError(e) {
@@ -162,7 +189,8 @@ export default function ProfileInfoUser({ user }) {
                   size="large"
                   sx={{ fontSize: 17 }}
                   disableElevation
-                  onClick={""}
+                  onClick={() => setOpenRequest(true)}
+                  ref={requestAnchor}
                 >
                   Sent request
                 </Button>
@@ -213,6 +241,12 @@ export default function ProfileInfoUser({ user }) {
               >
                 Message
               </Button>
+              <NavbarFriendRequest
+                open={openRequest}
+                anchorEl={requestAnchor.current}
+                handleClose={() => setOpenRequest(false)}
+                user={user}
+              />
             </Stack>
           </Stack>
         </Stack>
@@ -220,3 +254,7 @@ export default function ProfileInfoUser({ user }) {
     </Container>
   );
 }
+
+
+
+

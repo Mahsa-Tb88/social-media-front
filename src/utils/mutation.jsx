@@ -163,6 +163,13 @@ export function useConfirmFriend() {
   });
 }
 
+export function useRemoveRequestFriend() {
+  return useMutation({
+    mutationFn: (data) =>
+      axios.put(`/friends/delete/request/${data.userId}`, data),
+  });
+}
+
 export function useRemoveFriend() {
   return useMutation({
     mutationFn: (data) => axios.put(`/friends/delete/${data.userId}`, data),

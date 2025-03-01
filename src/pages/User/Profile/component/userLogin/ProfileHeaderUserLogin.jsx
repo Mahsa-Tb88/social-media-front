@@ -8,10 +8,11 @@ import backGround from "../../../../../assets/images/back.jpg";
 
 import ProfileInfoUserLogin from "./ProfileInfoUserLogin";
 
-export default function ProfileHeaderUserLogin({ user }) {
+export default function ProfileHeaderUserLogin() {
+  const userLogin = useSelector((state) => state.user.profile);
   const [backgroundOpen, setBackgroundOpen] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState(
-    user.backgroundImg ? SERVER_URL + user.backgroundImg : backGround
+    userLogin.backgroundImg ? SERVER_URL + userLogin.backgroundImg : backGround
   );
 
   return (
@@ -42,7 +43,7 @@ export default function ProfileHeaderUserLogin({ user }) {
           </Stack>
         </Grid2>
       </Grid2>
-      <ProfileInfoUserLogin user={user} />
+      <ProfileInfoUserLogin />
 
       <BackgroundChange
         open={backgroundOpen}

@@ -10,12 +10,12 @@ import { useParams } from "react-router-dom";
 
 export default function Profile() {
   const userLogin = useSelector((state) => state.user.profile);
-  const [user, setUser] = useState(userLogin);
+  const [user, setUser] = useState({});
   const id = useParams().id;
 
   const { isPending, data, refetch, error } = useGetUserById(id);
 
-  const userId = data?.data?.body._id;
+  // const userId = data?.data?.body._id;
 
   useEffect(() => {
     if (data) {
@@ -31,8 +31,8 @@ export default function Profile() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack>
-          {userId == userLogin.id ? (
-            <UserLoginProfile user={user} />
+          {id == userLogin.id ? (
+            <UserLoginProfile />
           ) : (
             <UserProfile user={user} />
           )}

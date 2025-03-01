@@ -8,15 +8,17 @@ import noImage from "../../../../../assets/images/user.png";
 import { Edit } from "@mui/icons-material";
 import ProfileImgChange from "../../ProfileImgChange";
 
-export default function ProfileInfoUserLogin({ user }) {
+export default function ProfileInfoUserLogin() {
   const theme = useSelector((state) => state.app.theme);
+  const userLogin = useSelector((state) => state.user.profile);
+
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
-    user.profileImg ? SERVER_URL + user.profileImg : noImage
+    userLogin.profileImg ? SERVER_URL + userLogin.profileImg : noImage
   );
 
-  console.log("user login", user);
-  function addFriend() {}
+  console.log("user login", userLogin);
+  function addStory() {}
 
   return (
     <Container
@@ -77,7 +79,7 @@ export default function ProfileInfoUserLogin({ user }) {
           >
             <Stack>
               <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
-                {user.username}
+                {userLogin.username}
               </Typography>
               <Typography sx={{ fontSize: 17 }}>
                 {/*  {user?.friends.length ? user.friends + "friends" : " "}
@@ -90,7 +92,7 @@ export default function ProfileInfoUserLogin({ user }) {
                 size="large"
                 sx={{ fontSize: 17 }}
                 disableElevation
-                onClick={addFriend}
+                onClick={addStory}
               >
                 Add story
               </Button>

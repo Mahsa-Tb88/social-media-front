@@ -4,10 +4,10 @@ import ProfileHeaderUserLogin from "../component/userLogin/ProfileHeaderUserLogi
 import Navbar from "../Navbar";
 import { Outlet } from "react-router-dom";
 
-export default function userLoginProfile({ user }) {
+export default function userLoginProfile() {
   return (
     <Stack>
-      <ProfileHeaderUserLogin user={user} />
+      <ProfileHeaderUserLogin />
       <Stack>
         <Navbar />
         <Outlet />

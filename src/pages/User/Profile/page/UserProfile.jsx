@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 import ProfileHeaderUser from "../component/user/ProfileHeaderUser";
 
 export default function UserProfile({ user }) {
-  console.log("user profile", user);
+  console.log("user not login", user);
   const userLogin = useSelector((state) => state.user.profile);
   function isPrivate() {
-    const findFriend = userLogin?.friends.listFriend?.find(
+    const findFriend = userLogin.friends.listFriend.find(
       (f) => f.id == user._id
     );
     if (findFriend) {

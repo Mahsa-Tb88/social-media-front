@@ -3,12 +3,16 @@ import React, { useRef, useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import noImage from "../../../../../assets/images/user.png";
 import { useDispatch, useSelector } from "react-redux";
-import { useAddFriend, useRemoveFriend } from "../../../../../utils/mutation";
+import {
+  useAddFriend,
+  useRemoveRequestFriend,
+} from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
 import NavbarFriendRequest from "./NavbarFriendRequest";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import NavbarHandleFriend from "./NavbarHandleFriend";
 
 export default function ProfileInfoUser({ user }) {
   const theme = useSelector((state) => state.app.theme);
@@ -18,10 +22,11 @@ export default function ProfileInfoUser({ user }) {
     user.profileImg ? SERVER_URL + user.profileImg : noImage
   );
   const [openRequest, setOpenRequest] = useState(false);
+  const [openHandleFriend, setOpenHandleFriend] = useState(false);
   const requestAnchor = useRef();
+  const HandleFriendAnchor = useRef();
 
   const addFriendMutation = useAddFriend();
-  const removeFriendMutation = useRemoveFriend();
 
   function findFriend() {
     const findFriend = userLogin?.friends?.listFriend?.find(
@@ -44,12 +49,49 @@ export default function ProfileInfoUser({ user }) {
     }
   }
 
-  function RemoveFriend() {
+  function addFriend() {
+    const data = {
+      userId: userLogin.id,
+      userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",
+      userUsername: userLogin.username,
+      id: user._id,
+      username: user.username,
+      profileImg: user.profileImg,
+      status: "pending",
+    };
+    addFriendMutation.mutate(data, {
+      onSuccess(d) {
+        const updatedListFriends = [
+          ...userLogin.friends.listFriend,
+          {
+            id: user._id,
+            username: user.username,
+            profileImg: user.profileImg,
+            status: "pending",
+          },
+        ];
+
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+          })
+        );
+      },
+      onError(e) {
+        console.log("eeror is", e);
+      },
+    });
+  }
+
+  const removeRequestMutation = useRemoveRequestFriend();
+
+  function cancelRequest() {
     const data = {
       userId: userLogin.id,
       id: user._id,
     };
-    removeFriendMutation.mutate(data, {
+    removeRequestMutation.mutate(data, {
       onSuccess(d) {
         const updatedListFriends = userLogin?.friends?.listFriend.filter(
           (f) => f.id != user._id
@@ -67,66 +109,6 @@ export default function ProfileInfoUser({ user }) {
     });
   }
 
-  function addFriend() {
-    const data = {
-      userId: userLogin.id,
-      userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",
-      userUsername: userLogin.username,
-      id: user._id,
-      username: user.username,
-      profileImg: user.profileImg,
-      status: "pending",
-    };
-    addFriendMutation.mutate(data, {
-      onSuccess(d) {
-        const newFriends = [...userLogin?.friends];
-        let updatedListFriends = [];
-        if (newFriends.listFriend) {
-          updatedListFriends = newFriends.listFriend.push({
-            id: user._id,
-            username: user.username,
-            profileImg: user.profileImg,
-            status: "pending",
-          });
-        } else {
-          newFriends.listFriend = [
-            {
-              id: user._id,
-              username: user.username,
-              profileImg: user.profileImg,
-              status: "pending",
-            },
-          ];
-        }
-        dispatch(
-          userActions.setProfile({
-            ...userLogin,
-            friends: newFriends,
-          })
-        );
-
-        // const updatedListFriends = [
-        //   ...userLogin?.friends?.listFriend,
-        //   {
-        //     id: user._id,
-        //     username: user.username,
-        //     profileImg: user.profileImg,
-        //     status: "pending",
-        //   },
-        // ];
-        // dispatch(
-        //   userActions.setProfile({
-        //     ...userLogin,
-        //     friends: { ...userLogin?.friends, listFriend: updatedListFriends },
-        //   })
-        // );
-        console.log("rr");
-      },
-      onError(e) {
-        console.log("eeror is", e);
-      },
-    });
-  }
   return (
     <Container
       fixed
@@ -210,19 +192,20 @@ export default function ProfileInfoUser({ user }) {
                   size="large"
                   sx={{ fontSize: 17 }}
                   disableElevation
-                  onClick={RemoveFriend}
+                  onClick={cancelRequest}
                 >
                   Cancel Request
                 </Button>
               ) : (
                 <Button
-                  startIcon={<PersonRemoveIcon />}
+                  startIcon={<CheckCircleOutlineIcon />}
                   size="large"
                   sx={{ fontSize: 17 }}
                   disableElevation
-                  onClick={RemoveFriend}
+                  onClick={() => setOpenHandleFriend(true)}
+                  ref={HandleFriendAnchor}
                 >
-                  Remove Friend
+                  Your friend
                 </Button>
               )}
 
@@ -247,6 +230,13 @@ export default function ProfileInfoUser({ user }) {
                 handleClose={() => setOpenRequest(false)}
                 user={user}
               />
+              <NavbarHandleFriend
+                open={openHandleFriend}
+                anchorEl={HandleFriendAnchor.current}
+                handleClose={() => setOpenHandleFriend(false)}
+                user={user}
+                deleteFriend={cancelRequest}
+              />
             </Stack>
           </Stack>
         </Stack>
@@ -254,7 +244,3 @@ export default function ProfileInfoUser({ user }) {
     </Container>
   );
 }
-
-
-
-

@@ -32,7 +32,6 @@ export default function Navbar() {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const theme = useSelector((state) => state.app.theme);
   const dispatch = useDispatch();
-  console.log("navbar...", profile);
   const [openMenu, setOpenMenu] = useState(false);
   const menuAnchor = useRef(null);
 
@@ -50,6 +49,15 @@ export default function Navbar() {
       dispatch(appActions.setTheme("dark"));
     } else {
       dispatch(appActions.setTheme("light"));
+    }
+  }
+
+  function handleOpenListRequest() {
+    console.log("nnnn");
+
+    if (profile.profile.friends.friendRequestList?.length) {
+      console.log("pppp");
+      setOpenAddFriend(!openAddFriend);
     }
   }
   return (
@@ -118,17 +126,17 @@ export default function Navbar() {
                     profile.profile.friends?.friendRequestList &&
                     profile.profile.friends.friendRequestList.length
                   }
-                  // invisible={""}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
                 >
                   <MyIconButton
                     sx={{ width: 30, height: 30 }}
-                    onClick={() => setOpenAddFriend(!openAddFriend)}
+                    onClick={handleOpenListRequest}
                   >
                     <PersonAdd ref={addFriendAnchor} />
                   </MyIconButton>
+                  )
                 </Badge>
 
                 <Box
@@ -181,7 +189,6 @@ export default function Navbar() {
         open={openAddFriend}
         anchorEl={addFriendAnchor.current}
         handleClose={() => setOpenAddFriend(false)}
-        requestList={profile.profile.friends?.friendRequestList}
       />
       <NavbarMsg
         open={openMsg}

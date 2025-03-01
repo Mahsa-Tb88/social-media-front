@@ -38,7 +38,8 @@ export default function Login() {
     mutate(data, {
       onSuccess(d) {
         const user = d.data.body.user;
-        const friends = d.data.body.friends ;
+        const friends = d.data.body.friends;
+        console.log("friends....", friends);
 
         dispatch(userActions.setIsLoggedIn(true));
         dispatch(userActions.setIsAdmin(user.isAdmin));

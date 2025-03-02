@@ -53,12 +53,17 @@ export default function Navbar() {
   }
 
   function handleOpenListRequest() {
-    console.log("nnnn");
-
     if (profile.profile.friends.friendRequestList?.length) {
       console.log("pppp");
       setOpenAddFriend(!openAddFriend);
     }
+  }
+
+  function numOfFriendrequest() {
+    const list = profile?.profile?.friends?.friendRequestList?.filter(
+      (f) => f.status == undefined
+    );
+    return list.length;
   }
   return (
     <AppBar
@@ -124,7 +129,8 @@ export default function Navbar() {
                 <Badge
                   badgeContent={
                     profile.profile.friends?.friendRequestList &&
-                    profile.profile.friends.friendRequestList.length
+                    numOfFriendrequest()
+                    // profile.profile.friends.friendRequestList.length
                   }
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}

@@ -8,19 +8,132 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useGetAllUser } from "../utils/queries";
 import Loading from "../components/Loading";
 import LoadingError from "../components/LoadingError";
 import noImage from "../../src/assets/images/user.png";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useAddFriend, useRemoveRequestFriend } from "../utils/mutation";
+import { userActions } from "../store/slices/userSlice";
 
 export default function HomePage() {
   const { isPending, data, error, refetch } = useGetAllUser();
+  const userLogin = useSelector((state) => state.user.profile);
   const theme = useSelector((state) => state.app.theme);
-  console.log(data);
+  const dispatch = useDispatch();
+  const [users, setUsers] = useState([]);
 
+  useEffect(() => {
+    if (data) {
+      // filter users to show only users that not friends or in friend request
+      filterUsers();
+    }
+  }, [data]);
+
+  function filterUsers() {
+    let updatedUserList = data.data.body;
+    const friends = userLogin.friends?.listFriend || [];
+    const userRequestList = userLogin.friends?.friendRequestList || [];
+    friends.forEach((element) => {
+      updatedUserList = updatedUserList.filter((f) => f._id != element.id);
+    });
+    userRequestList.forEach((element) => {
+      updatedUserList = updatedUserList.filter((f) => f._id != element.id);
+    });
+    setUsers(updatedUserList);
+  }
+
+  const addFriendMutation = useAddFriend();
+  function handleAddFriend(user) {
+    const data = {
+      userId: userLogin.id,
+      userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",
+      userUsername: userLogin.username,
+      id: user._id,
+      username: user.username,
+      profileImg: user.profileImg,
+      status: "pending",
+    };
+    addFriendMutation.mutate(data, {
+      onSuccess(d) {
+        const updatedListFriends = [
+          ...userLogin.friends.listFriend,
+          {
+            id: user._id,
+            username: user.username,
+            profileImg: user.profileImg,
+            status: "pending",
+          },
+        ];
+
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+          })
+        );
+
+        const updatedUsers = users.map((u) => {
+          if (u._id == user._id) {
+            return {
+              _id: user._id,
+              username: user.username,
+              profileImg: user.profileImg,
+              status: "pending",
+            };
+          } else {
+            return u;
+          }
+        });
+        setUsers(updatedUsers);
+      },
+      onError(e) {
+        console.log("eeror is", e);
+      },
+    });
+  }
+
+  const removeRequestMutation = useRemoveRequestFriend();
+  function handleCancelRequest(user) {
+    const data = {
+      userId: userLogin.id,
+      id: user._id,
+    };
+    removeRequestMutation.mutate(data, {
+      onSuccess(d) {
+        const updatedListFriends = userLogin?.friends?.listFriend.filter(
+          (f) => f.id != user._id
+        );
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+          })
+        );
+
+        const updatedUsers = users.map((u) => {
+          if (u._id == user._id) {
+            return {
+              _id: user.id,
+              username: user.username,
+              profileImg: user.profileImg,
+              status: "",
+            };
+          } else {
+            return u;
+          }
+        });
+        setUsers(updatedUsers);
+      },
+      onError(e) {
+        console.log("eeror is", e);
+      },
+    });
+  }
+
+  
   return (
     <Container fixed sx={{ mt: 5 }}>
       <Grid2 container>
@@ -38,7 +151,7 @@ export default function HomePage() {
             ) : error ? (
               <LoadingError handleAction={refetch} message={error.message} />
             ) : (
-              data.data.body.map((user) => {
+              users.map((user) => {
                 return (
                   <Stack
                     key={user._id}
@@ -96,7 +209,15 @@ export default function HomePage() {
                         alignItems: "center",
                       }}
                     >
-                      <Button>Add frined</Button>
+                      {user?.status == "pending" ? (
+                        <Button onClick={() => handleCancelRequest(user)}>
+                          Cancel Request
+                        </Button>
+                      ) : (
+                        <Button onClick={() => handleAddFriend(user)}>
+                          Add friend
+                        </Button>
+                      )}
                     </Box>
                   </Stack>
                 );

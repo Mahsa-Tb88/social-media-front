@@ -23,7 +23,11 @@ import { userActions } from "../../store/slices/userSlice";
 
 export default function NavbarFriend({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
-  const [requestList, setRequestList] = useState([]);
+  const [requestList, setRequestList] = useState(
+    userLogin.friends?.friendRequestList || []
+  );
+  console.log("userlogin....", userLogin);
+  console.log("requestList....", requestList);
   useEffect(() => {
     if (userLogin.friends?.friendRequestList?.length) {
       setRequestList(userLogin.friends?.friendRequestList);
@@ -60,8 +64,14 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
             username: friend.username,
           },
         ];
-        const updateRequestList = userLogin.friends.friendRequestList.filter(
-          (f) => f.id != friend.id
+        const updateRequestList = userLogin.friends.friendRequestList.map(
+          (f) => {
+            if (f.id == friend.id) {
+              return { ...f, status: "accept" };
+            } else {
+              return f;
+            }
+          }
         );
         dispatch(
           userActions.setProfile({
@@ -74,16 +84,17 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
           })
         );
 
-        //update request List
+        // //update request List
 
-        const updatedRequestList = requestList.map((f) => {
-          if (f.id == friend.id) {
-            return { id: f.id, username: "" };
-          } else {
-            return f;
-          }
-        });
-        setRequestList(updatedRequestList);
+        // const updatedRequestList = requestList.map((f) => {
+        //   if (f.id == friend.id) {
+        //     return { ...f, status: "accept" };
+        //   } else {
+        //     return f;
+        //   }
+        // });
+        // console.log("updatedRequestList....", updatedRequestList);
+        // setRequestList(updatedRequestList);
       },
       onError(e) {
         console.log("error is ", e);
@@ -123,8 +134,6 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
     navigate(`/profile/${id}`);
   }
 
-  console.log("userlogin....", userLogin);
-
   return (
     <Menu
       open={open}
@@ -135,15 +144,15 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
       <List disablePadding>
         {requestList.map((friend) => {
           return (
-            <ListItem key={friend.id} disablePadding sx={{ p: 1 }} Divider>
-              {friend.username == "" ? (
+            <ListItem key={friend.id} disablePadding sx={{ p: 1 }} divider>
+              {friend.status == "accept" ? (
                 <ListItemButton
                   onClick={() => gotoProfile(friend.id)}
                   sx={{ gap: 4, borderRadius: "3px" }}
                 >
                   <ListItemText>
                     <Typography>
-                      You make new friend, go to their profile
+                      {friend.username} is your new friend
                     </Typography>
                   </ListItemText>
                 </ListItemButton>

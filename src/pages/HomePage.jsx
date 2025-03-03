@@ -47,6 +47,7 @@ export default function HomePage() {
 
   const addFriendMutation = useAddFriend();
   function handleAddFriend(user) {
+    console.log("userrrr22", user);
     const data = {
       userId: userLogin.id,
       userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",
@@ -116,7 +117,7 @@ export default function HomePage() {
         const updatedUsers = users.map((u) => {
           if (u._id == user._id) {
             return {
-              _id: user.id,
+              _id: user._id,
               username: user.username,
               profileImg: user.profileImg,
               status: "",
@@ -133,7 +134,6 @@ export default function HomePage() {
     });
   }
 
-  
   return (
     <Container fixed sx={{ mt: 5 }}>
       <Grid2 container>

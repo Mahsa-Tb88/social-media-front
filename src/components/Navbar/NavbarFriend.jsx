@@ -83,18 +83,6 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
             },
           })
         );
-
-        // //update request List
-
-        // const updatedRequestList = requestList.map((f) => {
-        //   if (f.id == friend.id) {
-        //     return { ...f, status: "accept" };
-        //   } else {
-        //     return f;
-        //   }
-        // });
-        // console.log("updatedRequestList....", updatedRequestList);
-        // setRequestList(updatedRequestList);
       },
       onError(e) {
         console.log("error is ", e);
@@ -103,17 +91,25 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
   }
 
   const removeRequestMutation = useRemoveRequestFriend();
-  function deleteHandler(event, id) {
+  function deleteHandler(event, user) {
     event.stopPropagation();
 
     const data = {
-      userId: id,
+      userId: user.id,
       id: userLogin.id,
     };
+    console.log("---------", data);
     removeRequestMutation.mutate(data, {
       onSuccess(d) {
         const updatedFriendRequestList =
-          userLogin?.friends?.friendRequestList.filter((f) => f.id != user._id);
+          userLogin.friends.friendRequestList.map((f) => {
+            if (f.id == user.id) {
+              return { ...f, status: "reject" };
+            } else {
+              return f;
+            }
+          });
+
         dispatch(
           userActions.setProfile({
             ...userLogin,
@@ -148,11 +144,26 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
               {friend.status == "accept" ? (
                 <ListItemButton
                   onClick={() => gotoProfile(friend.id)}
-                  sx={{ gap: 4, borderRadius: "3px" }}
+                  sx={{ gap: 4, borderRadius: "3px", bgcolor: "#e0f2f1" }}
                 >
                   <ListItemText>
                     <Typography>
                       {friend.username} is your new friend
+                    </Typography>
+                  </ListItemText>
+                </ListItemButton>
+              ) : friend.status == "reject" ? (
+                <ListItemButton
+                  onClick={() => gotoProfile(friend.id)}
+                  sx={{
+                    gap: 4,
+                    borderRadius: "3px",
+                    bgcolor: "#ff8a80",
+                  }}
+                >
+                  <ListItemText>
+                    <Typography>
+                      you rejected {friend.username} friends's request
                     </Typography>
                   </ListItemText>
                 </ListItemButton>
@@ -214,7 +225,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                           color: theme == "light" ? "grey.800" : "grey.300",
                         }}
                         disableElevation
-                        onClick={() => deleteHandler(friend.id)}
+                        onClick={(event) => deleteHandler(event, friend)}
                       >
                         Delete
                       </Button>

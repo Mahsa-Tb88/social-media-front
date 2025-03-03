@@ -42,7 +42,8 @@ export default function ProfileInfoUser({ user }) {
   function findUserInRequestList() {
     const findUserInRequestList = userLogin?.friends?.friendRequestList || [];
     const findUser = findUserInRequestList.find((f) => f.id == user._id);
-    if (findUser) {
+    console.log("findUser---->", findUser);
+    if (findUser && findUser.status != "accept") {
       return true;
     } else {
       return false;

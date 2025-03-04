@@ -1,5 +1,5 @@
 import { Box, Container, Grid2, Paper, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import noImage from "../../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
@@ -8,10 +8,14 @@ export default function Friends() {
   const userLogin = useSelector((state) => state.user.profile);
   const theme = useSelector((state) => state.app.theme);
   const navigate = useNavigate();
-  const listFriend = userLogin.friends.listFriend.filter(
-    (f) => f.status == "accepted"
-  );
-  console.log("...", listFriend);
+  const [listFriend, setListFriend] = useState(userLogin.friends.listFriend);
+
+  useEffect(() => {
+    const filterList = userLogin.friends.listFriend.filter(
+      (f) => f.status == "accepted"
+    );
+    setListFriend(filterList);
+  }, [userLogin?.friends?.listFriend]);
 
   return (
     <Stack sx={{ py: 4, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>

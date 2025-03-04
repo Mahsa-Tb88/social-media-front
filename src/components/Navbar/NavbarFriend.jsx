@@ -62,6 +62,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
             id: friend.id,
             profileImg: friend.profileImg,
             username: friend.username,
+            status: "accepted",
           },
         ];
         const updateRequestList = userLogin.friends.friendRequestList.map(

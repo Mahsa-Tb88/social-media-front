@@ -60,15 +60,13 @@ export default function EditValueSubject({
   const mutationContactBaseInfo = useEditContactBaseInfo();
   const mutationAddPlace = useAddPlace();
   const mutationEditPlace = useEditPlace();
-
   function saveChangeHandler() {
-    console.log("saveeee", title);
     if (title == "overview") {
       const data = {
         subject,
         value: newValue,
         viewer: "friends",
-        id: user._id,
+        id: user.id,
       };
       mutationOverview.mutate(data, {
         onSuccess() {
@@ -87,7 +85,7 @@ export default function EditValueSubject({
         subject,
         value: newValue,
         viewer: "friends",
-        id: user._id,
+        id: user.id,
       };
       mutationContactBaseInfo.mutate(data, {
         onSuccess() {
@@ -459,18 +457,28 @@ function EducationEdit({ value, onCloseEdit, type, id }) {
 }
 
 function Relationship({ value, type, onCloseEdit }) {
+  console.log("valueee", value);
   const theme = useSelector((state) => state.app.theme);
   const userId = useParams().id;
   const [status, setStatus] = useState(value.status);
   const [user, setUser] = useState(value ? value : "");
+  const [userList, setUserList] = useState([]);
   const [search, setSearch] = useState("");
 
-  const { data, error } = useSearchPerson(user);
-  const userfounded = data?.data.body || [];
+  // const { data, error } = useSearchPerson(user);
+  // const userfounded = data?.data.body || [];
+
+  const listFriend = useSelector((state) =>
+    state.user.profile.friends.listFriend.filter((f) => f.status == "accepted")
+  );
+  console.log("userrr rel", listFriend);
 
   useEffect(() => {
     if (search) {
-      const timeOut = setTimeout(setUser(search), 0);
+      const findUser = listFriend.filter((f) =>
+        f.username.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+      );
+      const timeOut = setTimeout(setUserList(findUser), 0);
       return () => clearTimeout(timeOut);
     }
   }, [search]);
@@ -483,12 +491,13 @@ function Relationship({ value, type, onCloseEdit }) {
   const mutationRel = useUpdatedRelationship();
   const querryClient = useQueryClient();
   function saveHandler() {
+    console.log("user====", user);
     const data = {
       id: userId,
       relationship: {
         profileImg: user.profileImg,
         username: user.username,
-        id: user._id,
+        id: user.id,
         status,
         viewer: "friends",
       },
@@ -515,7 +524,7 @@ function Relationship({ value, type, onCloseEdit }) {
 
       {search && (
         <Stack>
-          {userfounded.map((l) => (
+          {userList.map((l) => (
             <List>
               <ListItem
                 sx={{

@@ -219,7 +219,17 @@ function UsedToLiveCity({ usedToLiveCity, theme }) {
                     }}
                   >
                     <ShowIcon subject={"Location"} />
-                    <Typography>{j.value}</Typography>
+                    <Stack>
+                      <Typography>{j.value}</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 12,
+                          color: theme == "dark" && "grey.300",
+                        }}
+                      >
+                        Used to live
+                      </Typography>
+                    </Stack>
                   </Stack>
                 </ItemAbout>
               </Stack>

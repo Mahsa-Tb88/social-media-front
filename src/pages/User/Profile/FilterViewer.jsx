@@ -8,19 +8,39 @@ import {
   Box,
   Radio,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import MyIconButton from "../../../components/Customized/MyIconButton";
 import { Close, Public } from "@mui/icons-material";
 import PeopleIcon from "@mui/icons-material/People";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
+import { useFilterViewer } from "../../../utils/mutation";
+import { useParams } from "react-router-dom";
 
 export default function FilterViewer({
   open,
   onClose,
   setViewer,
   viewer,
+  subject,
 }) {
+  console.log("subjecttt", subject);
+  const id = useParams().id;
+  console.log("iddd", id);
+  const mutationViewer = useFilterViewer();
+
+  useEffect(() => {
+    const data = { subject, viewer, id };
+    mutationViewer.mutate(data, {
+      onSuccess(d) {
+        console.log("yyyes");
+      },
+      onError(e) {
+        console.log("error filter viewe", e);
+      },
+    });
+  }, [viewer]);
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle

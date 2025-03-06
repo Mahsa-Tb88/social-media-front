@@ -16,6 +16,7 @@ export default function Overview() {
   const { isPending, data, error, refetch } = useGetOverview(id);
 
   const overview = data?.data.body || {};
+  console.log("overviewwwwwwwwwwwwwwwww", overview);
 
   return (
     <Stack>

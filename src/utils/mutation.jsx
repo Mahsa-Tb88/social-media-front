@@ -57,6 +57,11 @@ export function useDeleteOverview() {
     mutationFn: (data) => axios.put(`/overviews/delete/${data.id}`, data),
   });
 }
+export function useFilterViewer() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/overviews/viewer/${data.id}`, data),
+  });
+}
 
 //info
 export function useEditContactBaseInfo() {

@@ -39,7 +39,7 @@ export default function ItemAbout({
           onClose={() => setOpenFilterViewer(false)}
           setViewer={setViewer}
           viewer={viewer}
-          value={value}
+          subject={subject}
         />
         <MenuItem
           open={open}

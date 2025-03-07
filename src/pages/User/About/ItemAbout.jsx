@@ -40,6 +40,7 @@ export default function ItemAbout({
           setViewer={setViewer}
           viewer={viewer}
           subject={subject}
+          title={title}
         />
         <MenuItem
           open={open}

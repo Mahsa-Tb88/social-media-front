@@ -57,7 +57,7 @@ export function useDeleteOverview() {
     mutationFn: (data) => axios.put(`/overviews/delete/${data.id}`, data),
   });
 }
-export function useFilterViewer() {
+export function useFilterOverviewsViewer() {
   return useMutation({
     mutationFn: (data) => axios.put(`/overviews/viewer/${data.id}`, data),
   });
@@ -72,6 +72,11 @@ export function useEditContactBaseInfo() {
 export function useDeleteContactBaseInfo() {
   return useMutation({
     mutationFn: (data) => axios.put(`/infos/delete/${data.id}`, data),
+  });
+}
+export function useFilterInfosViewer() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/infos/viewer/${data.id}`, data),
   });
 }
 
@@ -91,6 +96,11 @@ export function useDeleteWork() {
     mutationFn: (data) => axios.delete(`/works/delete/${data.id}`),
   });
 }
+export function useFilterWorkViewer() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/works/viewer/${data.id}`, data),
+  });
+}
 
 //education
 export function useAddEducation() {
@@ -106,6 +116,11 @@ export function useEditEducation() {
 export function useDeleteEducation() {
   return useMutation({
     mutationFn: (data) => axios.put(`/educations/delete/${data.id}`, data),
+  });
+}
+export function useFilterEducationViewer() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/educations/viewer/${data.id}`, data),
   });
 }
 

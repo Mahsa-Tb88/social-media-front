@@ -14,7 +14,10 @@ import { Close, Public } from "@mui/icons-material";
 import PeopleIcon from "@mui/icons-material/People";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
-import { useFilterViewer } from "../../../utils/mutation";
+import {
+  useFilterInfosViewer,
+  useFilterOverviewsViewer,
+} from "../../../utils/mutation";
 import { useParams } from "react-router-dom";
 
 export default function FilterViewer({
@@ -23,23 +26,49 @@ export default function FilterViewer({
   setViewer,
   viewer,
   subject,
+  title,
 }) {
   console.log("subjecttt", subject);
   const id = useParams().id;
   console.log("iddd", id);
-  const mutationViewer = useFilterViewer();
 
-  useEffect(() => {
-    const data = { subject, viewer, id };
-    mutationViewer.mutate(data, {
-      onSuccess(d) {
-        console.log("yyyes");
-      },
-      onError(e) {
-        console.log("error filter viewe", e);
-      },
-    });
-  }, [viewer]);
+  const mutationOverviewViewer = useFilterOverviewsViewer();
+  const mutationInfosViewer = useFilterInfosViewer();
+  const
+
+  function saveHandler(e) {
+    console.log("hooo------------------------------------------");
+    const data = { subject, viewer: e.target.value, id };
+    if (title == "overview") {
+      mutationOverviewViewer.mutate(data, {
+        onSuccess(d) {
+          setViewer(e.target.value);
+        },
+        onError(e) {
+          console.log("error filter viewer", e);
+        },
+      });
+    } else if (title == "contactBaseInfo") {
+      mutationInfosViewer.mutate(data, {
+        onSuccess(d) {
+          setViewer(e.target.value);
+        },
+        onError(e) {
+          console.log("error filter viewer", e);
+        },
+      });
+    } else if (title == "Work") {
+      mutationInfosViewer.mutate(data, {
+        onSuccess(d) {
+          setViewer(e.target.value);
+        },
+        onError(e) {
+          console.log("error filter viewer", e);
+        },
+      });
+    } else if (title == "education") {
+    }
+  }
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -81,7 +110,7 @@ export default function FilterViewer({
           <Box>
             <Radio
               value="public"
-              onChange={(e) => setViewer(e.target.value)}
+              onChange={(e) => saveHandler(e)}
               checked={viewer == "public"}
             />
           </Box>
@@ -106,7 +135,7 @@ export default function FilterViewer({
           <Box>
             <Radio
               value="friends"
-              onChange={(e) => setViewer(e.target.value)}
+              onChange={(e) => saveHandler(e)}
               checked={viewer == "friends"}
             />
           </Box>
@@ -133,7 +162,7 @@ export default function FilterViewer({
           <Box>
             <Radio
               value="except"
-              onChange={(e) => setViewer(e.target.value)}
+              onChange={(e) => saveHandler(e)}
               checked={viewer == "except"}
             />
           </Box>
@@ -158,7 +187,7 @@ export default function FilterViewer({
           <Box>
             <Radio
               value="private"
-              onChange={(e) => setViewer(e.target.value)}
+              onChange={(e) => saveHandler(e)}
               checked={viewer == "private"}
             />
           </Box>

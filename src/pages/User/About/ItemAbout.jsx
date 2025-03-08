@@ -41,6 +41,7 @@ export default function ItemAbout({
           viewer={viewer}
           subject={subject}
           title={title}
+          itemId={id}
         />
         <MenuItem
           open={open}

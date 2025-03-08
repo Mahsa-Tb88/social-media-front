@@ -135,6 +135,11 @@ export function useDeleteRelationship() {
     mutationFn: (data) => axios.delete(`/relationships/delete/${data.id}`),
   });
 }
+export function useFilterRelViewer() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/relationships/viewer/${data.id}`, data),
+  });
+}
 
 //family
 export function useUpdatedFamily() {
@@ -152,6 +157,11 @@ export function useDeleteFamilyMember() {
     mutationFn: (data) => axios.put(`/families/delete/${data.id}`, data),
   });
 }
+export function useFilterFamilyViewer() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/families/viewer/${data.id}`, data),
+  });
+}
 
 //place
 export function useAddPlace() {
@@ -167,6 +177,11 @@ export function useEditPlace() {
 export function useDeletePlace() {
   return useMutation({
     mutationFn: (data) => axios.put(`/places/delete/${data.id}`, data),
+  });
+}
+export function useFilterPlaceViewer() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/places/viewer/${data.id}`, data),
   });
 }
 

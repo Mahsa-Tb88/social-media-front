@@ -15,10 +15,16 @@ import PeopleIcon from "@mui/icons-material/People";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
 import {
+  useFilterEducationViewer,
   useFilterInfosViewer,
   useFilterOverviewsViewer,
+  useFilterWorkViewer,
+  useFilterRelViewer,
+  useFilterFamilyViewer,
+  useFilterPlaceViewer,
 } from "../../../utils/mutation";
 import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function FilterViewer({
   open,
@@ -27,22 +33,25 @@ export default function FilterViewer({
   viewer,
   subject,
   title,
+  itemId,
 }) {
-  console.log("subjecttt", subject);
   const id = useParams().id;
-  console.log("iddd", id);
 
   const mutationOverviewViewer = useFilterOverviewsViewer();
   const mutationInfosViewer = useFilterInfosViewer();
-  const
-
+  const mutationWorkViewer = useFilterWorkViewer();
+  const mutationEducationViewer = useFilterEducationViewer();
+  const mutationRelViewer = useFilterRelViewer();
+  const mutationFamilyViewer = useFilterFamilyViewer();
+  const mutationPlaceViewer = useFilterPlaceViewer();
+  const queryClient = useQueryClient();
   function saveHandler(e) {
-    console.log("hooo------------------------------------------");
     const data = { subject, viewer: e.target.value, id };
     if (title == "overview") {
       mutationOverviewViewer.mutate(data, {
         onSuccess(d) {
           setViewer(e.target.value);
+          queryClient.invalidateQueries({ queryKey: ["overview"] });
         },
         onError(e) {
           console.log("error filter viewer", e);
@@ -52,21 +61,68 @@ export default function FilterViewer({
       mutationInfosViewer.mutate(data, {
         onSuccess(d) {
           setViewer(e.target.value);
+          queryClient.invalidateQueries({ queryKey: ["contactBaseInfo"] });
         },
         onError(e) {
           console.log("error filter viewer", e);
         },
       });
     } else if (title == "Work") {
-      mutationInfosViewer.mutate(data, {
+      const data = { viewer: e.target.value, id, itemId };
+      mutationWorkViewer.mutate(data, {
         onSuccess(d) {
           setViewer(e.target.value);
+          queryClient.invalidateQueries({ queryKey: ["work"] });
         },
         onError(e) {
           console.log("error filter viewer", e);
         },
       });
-    } else if (title == "education") {
+    } else if (title == "Education") {
+      const data = { viewer: e.target.value, id, itemId };
+      mutationEducationViewer.mutate(data, {
+        onSuccess(d) {
+          setViewer(e.target.value);
+          queryClient.invalidateQueries({ queryKey: ["education"] });
+        },
+        onError(e) {
+          console.log("error filter viewer", e);
+        },
+      });
+    } else if (title == "Family") {
+      const data = { viewer: e.target.value, id, itemId };
+      mutationFamilyViewer.mutate(data, {
+        onSuccess(d) {
+          setViewer(e.target.value);
+          queryClient.invalidateQueries({ queryKey: ["familyRel"] });
+        },
+        onError(e) {
+          console.log("error filter viewer", e);
+        },
+      });
+    } else if (title == "Relationship") {
+      const data = { viewer: e.target.value, id };
+      mutationRelViewer.mutate(data, {
+        onSuccess(d) {
+          setViewer(e.target.value);
+          queryClient.invalidateQueries({ queryKey: ["familyRel"] });
+        },
+        onError(e) {
+          console.log("error filter viewer", e);
+        },
+      });
+    } else {
+      const data = { itemId, id, title, viewer: e.target.value };
+      mutationPlaceViewer.mutate(data, {
+        onSuccess(d) {
+          console.log("dddd", viewer);
+          setViewer(e.target.value);
+          queryClient.invalidateQueries({ queryKey: ["placeLived"] });
+        },
+        onError(e) {
+          console.log("error is", error);
+        },
+      });
     }
   }
 

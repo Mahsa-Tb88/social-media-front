@@ -115,7 +115,6 @@ export default function FilterViewer({
       const data = { itemId, id, title, viewer: e.target.value };
       mutationPlaceViewer.mutate(data, {
         onSuccess(d) {
-          console.log("dddd", viewer);
           setViewer(e.target.value);
           queryClient.invalidateQueries({ queryKey: ["placeLived"] });
         },

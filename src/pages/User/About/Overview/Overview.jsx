@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import ItemAbout from "../ItemAbout";
 
-import { useDispatch, useSelector } from "react-redux";
+
 import ShowIcon from "../ShowIcon";
 import { useGetOverview } from "../../../../utils/queries";
 import { useParams } from "react-router-dom";

@@ -11,13 +11,15 @@ import { useGetOverview } from "../../../utils/queries";
 import Loading from "../../../components/Loading";
 import LoadingError from "../../../components/LoadingError";
 import EditValueSubject from "../About/EditVelueSubject";
+import LoyaltyIcon from "@mui/icons-material/Loyalty";
+import ShowIcon from "../About/ShowIcon";
 
 export default function Intro() {
   const theme = useSelector((state) => state.app.theme);
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetOverview(id);
   const user = data?.data?.body;
-
+  console.log("HOOOO", user);
   const intro = ["Pronounce", "School", "Location", "Hometown", "Status"];
 
   return (
@@ -93,43 +95,50 @@ export default function Intro() {
 }
 
 function Item({ item, user, theme }) {
-  function icon(item = "") {
-    if (item == "Pronounce") {
-      return (
-        <AssignmentIndIcon
-          sx={{ color: theme == "light" ? "grey.500" : "grey.500" }}
-        />
-      );
-    } else if (item == "School") {
-      return (
-        <SchoolIcon
-          sx={{ color: theme == "light" ? "grey.500" : "grey.500" }}
-        />
-      );
-    } else if (item == "Location") {
-      return (
-        <LocationOnIcon
-          sx={{ color: theme == "light" ? "grey.500" : "grey.500" }}
-        />
-      );
-    } else if (item == "Hometown") {
-      return (
-        <HomeIcon sx={{ color: theme == "light" ? "grey.500" : "grey.500" }} />
-      );
-    } else if (item == "Status") {
-      return (
-        <HelpIcon sx={{ color: theme == "light" ? "grey.500" : "grey.500" }} />
-      );
-    } else {
-      return false;
-    }
-  }
+  // function icon(item = "") {
+  //   if (item == "Pronounce") {
+  //     return (
+  //       <AssignmentIndIcon
+  //         sx={{ color: theme == "light" ? "grey.500" : "grey.500" }}
+  //       />
+  //     );
+  //   } else if (item == "School") {
+  //     return (
+  //       <SchoolIcon
+  //         sx={{ color: theme == "light" ? "grey.500" : "grey.500" }}
+  //       />
+  //     );
+  //   } else if (item == "Location") {
+  //     return (
+  //       <LocationOnIcon
+  //         sx={{ color: theme == "light" ? "grey.500" : "grey.500" }}
+  //       />
+  //     );
+  //   } else if (item == "Hometown") {
+  //     return (
+  //       <HomeIcon sx={{ color: theme == "light" ? "grey.500" : "grey.500" }} />
+  //     );
+  //   } else if (item == "Status") {
+  //     <ShowIcon />;
+  //     // {
+  //     //   user["Status"].value == "Married" ? (
+  //     //     <LoyaltyIcon />
+  //     //   ) : (
+  //     //     <HelpIcon
+  //     //       sx={{ color: theme == "light" ? "grey.500" : "grey.500" }}
+  //     //     />
+  //     //   );
+  //     // }
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   const [openAddSubject, setOpenAddSubject] = useState(false);
 
   return (
-    <Stack>
-      {icon(item)}
+    <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+      <ShowIcon subject={item} item={user[item]?.value} />
       {user[item]?.value ? (
         <Typography sx={{ ml: 2 }}>{user[item].value}</Typography>
       ) : (

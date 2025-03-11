@@ -21,7 +21,7 @@ import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
 
-export default function ShowIcon({ subject }) {
+export default function ShowIcon({ subject, item }) {
   return (
     <Stack>
       {subject == "Phone" ? (
@@ -48,6 +48,12 @@ export default function ShowIcon({ subject }) {
         <LocationOnIcon />
       ) : subject == "Hometown" ? (
         <HomeIcon />
+      ) : subject == "Status" && item == "Married" ? (
+        <LoyaltyIcon />
+      ) : subject == "Status" && item == "Single" ? (
+        <PersonIcon />
+      ) : subject == "Status" && item == "In relationship" ? (
+        <FavoriteIcon />
       ) : subject == "Status" ? (
         <HelpIcon />
       ) : subject == "Phone" || subject == "Mobile" ? (

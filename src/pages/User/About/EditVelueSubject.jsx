@@ -37,6 +37,7 @@ import {
   useAddFamily,
   useAddPlace,
   useEditPlace,
+  useDeleteOverview,
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -60,6 +61,7 @@ export default function EditValueSubject({
   const mutationContactBaseInfo = useEditContactBaseInfo();
   const mutationAddPlace = useAddPlace();
   const mutationEditPlace = useEditPlace();
+
   function saveChangeHandler() {
     if (title == "overview") {
       const data = {
@@ -132,7 +134,7 @@ export default function EditValueSubject({
 
     onCloseEdit();
   }
-  console.log("------>----", value, subject, title);
+
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -176,6 +178,10 @@ export default function EditValueSubject({
             setNewValue={setNewValue}
             saveChangeHandler={saveChangeHandler}
           />
+        ) : subject == "Pronounce" ? (
+          <Pronounce value={value} onCloseEdit={onCloseEdit} />
+        ) : subject == "Intro" ? (
+          <Intro value={value} type={type} onCloseEdit={onCloseEdit} />
         ) : (
           <Stack>
             <TextField
@@ -223,7 +229,7 @@ function WorkEdit({ value, onCloseEdit, type, id }) {
     if (type == "new") {
       data.id = userId;
       data.isCurrently = currentPosition;
-      console.log("data isss", data);
+
       mutationNewWork.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({
@@ -458,7 +464,6 @@ function EducationEdit({ value, onCloseEdit, type, id }) {
 }
 
 function Relationship({ value, type, onCloseEdit }) {
-  console.log("valueee", value);
   const theme = useSelector((state) => state.app.theme);
   const userId = useParams().id;
   const [status, setStatus] = useState(value.status);
@@ -466,13 +471,9 @@ function Relationship({ value, type, onCloseEdit }) {
   const [userList, setUserList] = useState([]);
   const [search, setSearch] = useState("");
 
-  // const { data, error } = useSearchPerson(user);
-  // const userfounded = data?.data.body || [];
-
   const listFriend = useSelector((state) =>
     state.user.profile.friends.listFriend.filter((f) => f.status == "accepted")
   );
-  console.log("userrr rel", listFriend);
 
   useEffect(() => {
     if (search) {
@@ -718,6 +719,131 @@ function Status({ newValue, setNewValue, saveChangeHandler }) {
         onClick={saveChangeHandler}
       >
         Save
+      </Button>
+    </Stack>
+  );
+}
+
+function Pronounce({ onCloseEdit }) {
+  const userId = useParams().id;
+  const [pronounce, setPronounce] = useState("");
+
+  const querryClient = useQueryClient();
+  const mutationOverview = useEditOverview();
+  function saveHandler() {
+    const data = {
+      subject: "Pronounce",
+      value: pronounce,
+      viewer: "friends",
+      id: userId,
+    };
+    mutationOverview.mutate(data, {
+      onSuccess() {
+        querryClient.invalidateQueries({
+          queryKey: ["overview"],
+        });
+        onCloseEdit();
+      },
+      onError(error) {
+        console.log(error);
+      },
+    });
+  }
+  return (
+    <Stack spacing={3}>
+      <FormControl fullWidth>
+        <InputLabel id="status">Pronounce</InputLabel>
+        <Select
+          id="status"
+          value={pronounce}
+          label="Status"
+          onChange={(e) => setPronounce(e.target.value)}
+        >
+          <MenuItem value={"She/Her"}>She/Her</MenuItem>
+          <MenuItem value={"He/Him"}>He/Him</MenuItem>
+          <MenuItem value={"They/Them"}>They/Them</MenuItem>
+        </Select>
+      </FormControl>
+
+      <Button size="large" sx={{}} onClick={saveHandler}>
+        Save
+      </Button>
+    </Stack>
+  );
+}
+
+function Intro({ value, onCloseEdit, type, saveChangeHandler }) {
+  const theme = useSelector((state) => state.app.theme);
+  const userId = useParams().id;
+  console.log("valueee bio", value);
+  const [bio, setBio] = useState(type == "edit" ? value.value : "");
+
+  const mutationOverview = useEditOverview();
+  const querryClient = useQueryClient();
+  function saveChangeHandler() {
+    const data = {
+      subject: "Intro",
+      value: bio,
+      id: userId,
+    };
+    mutationOverview.mutate(data, {
+      onSuccess() {
+        querryClient.invalidateQueries({
+          queryKey: ["overview"],
+        });
+        onCloseEdit();
+      },
+      onError(error) {
+        console.log(error);
+      },
+    });
+  }
+  const deleteMutation = useDeleteOverview();
+  function deleteBio() {
+    const data = { id: userId, subject: "Intro" };
+
+    deleteMutation.mutate(data, {
+      onSuccess(d) {
+        querryClient.invalidateQueries({
+          queryKey: ["overview"],
+        });
+        onCloseEdit();
+      },
+      onError(e) {
+        console.log(e);
+      },
+    });
+  }
+
+  return (
+    <Stack spacing={3}>
+      <Stack>
+        <Typography sx={{ fontSize: 16, fontWeight: "bold", mb: 3 }}>
+          {type == "new" ? "Write about yourself" : "Edit Bio"}
+        </Typography>
+        <TextField
+          id="outlined-multiline-flexible"
+          label="Bio"
+          multiline
+          rows={4}
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+        />
+      </Stack>
+
+      <Button size="large" onClick={saveChangeHandler}>
+        Save
+      </Button>
+      <Button
+        size="large"
+        sx={{
+          bgcolor: theme == "light" ? "grey.200" : "grey.800",
+          color: theme == "light" ? "grey.800" : "grey.200",
+        }}
+        onClick={deleteBio}
+        disableElevation
+      >
+        Remove
       </Button>
     </Stack>
   );

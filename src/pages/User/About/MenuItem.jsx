@@ -42,7 +42,6 @@ export default function MenuItem({
   const mutationPlace = useDeletePlace();
   const querryClient = useQueryClient();
   const userId = useParams().id;
-  console.log("title", title);
   function deleteItem() {
     if (title == "overview") {
       const data = { id: userId, subject };
@@ -126,7 +125,6 @@ export default function MenuItem({
       title == "currentCity" ||
       title == "usedToLiveCity"
     ) {
-      console.log("iddd", id);
       const data = { id: userId, titleId: id, title };
       mutationPlace.mutate(data, {
         onSuccess(d) {

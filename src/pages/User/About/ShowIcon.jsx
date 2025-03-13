@@ -20,6 +20,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import Diversity1Icon from "@mui/icons-material/Diversity1";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
 export default function ShowIcon({ subject, item }) {
   return (
@@ -74,6 +75,8 @@ export default function ShowIcon({ subject, item }) {
         <Diversity1Icon />
       ) : subject == "Relationship" ? (
         <FavoriteIcon />
+      ) : subject == "Pronounce" ? (
+        <TextSnippetIcon />
       ) : (
         <HomeRepairServiceIcon />
       )}

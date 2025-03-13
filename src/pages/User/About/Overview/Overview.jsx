@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 
 import ItemAbout from "../ItemAbout";
 
-
 import ShowIcon from "../ShowIcon";
 import { useGetOverview } from "../../../../utils/queries";
 import { useParams } from "react-router-dom";
@@ -93,6 +92,7 @@ export default function Overview() {
 }
 
 function Item({ subject, text, value, viewer }) {
+  console.log("itemm subject", subject);
   return (
     <ItemAbout
       subject={subject}

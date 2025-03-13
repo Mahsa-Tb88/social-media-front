@@ -52,6 +52,11 @@ export function useEditOverview() {
     mutationFn: (data) => axios.put(`/overviews/edit/${data.id}`, data),
   });
 }
+export function useEditIntro() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/overviews/edit/intro/${data.id}`, data),
+  });
+}
 export function useDeleteOverview() {
   return useMutation({
     mutationFn: (data) => axios.put(`/overviews/delete/${data.id}`, data),

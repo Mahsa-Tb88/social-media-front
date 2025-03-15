@@ -1,8 +1,6 @@
 import { Container, Grid2, Stack, Typography } from "@mui/material";
 import React from "react";
-import { purple, red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
-import FriendSection from "./FriendSection";
 import MainSection from "./MainSection";
 import { useGetUserById } from "../../../utils/queries";
 import { useParams } from "react-router-dom";

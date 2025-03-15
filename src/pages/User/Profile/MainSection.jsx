@@ -2,13 +2,10 @@ import {
   Alert,
   Box,
   Button,
-  colors,
   Container,
   Divider,
   Paper,
   Stack,
-  TextareaAutosize,
-  TextField,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -26,7 +23,6 @@ import IosShareIcon from "@mui/icons-material/IosShare";
 import FilterViewer from "./FilterViewer";
 import PublicIcon from "@mui/icons-material/Public";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
-import Diversity1Icon from "@mui/icons-material/Diversity1";
 import LockIcon from "@mui/icons-material/Lock";
 
 export default function MainSection({ profile }) {

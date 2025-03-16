@@ -2,7 +2,6 @@ import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import noImage from "../../../assets/images/user.png";
-import { purple, red } from "@mui/material/colors";
 
 export default function FriendSection() {
   const user = useSelector((state) => state.user);

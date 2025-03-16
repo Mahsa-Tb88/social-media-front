@@ -38,6 +38,12 @@ export function useGetOverview(id) {
     queryFn: () => axios.get("/overviews/" + id),
   });
 }
+export function useGetFriends(id) {
+  return useQuery({
+    queryKey: ["friends", id],
+    queryFn: () => axios.get("/users/friends/" + id),
+  });
+}
 
 export function useGetContactBaseInfo(id) {
   return useQuery({

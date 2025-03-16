@@ -7,13 +7,14 @@ export default function IntroUser({ overview }) {
   const keys = Object.keys(overview);
 
   function findKeys() {
+    let m = 0;
     for (let i = 0; i < intro.length; i++) {
       if (keys.includes(intro[i])) {
+        m = m + 1;
         break;
-      } else {
-        return false;
       }
     }
+    return m;
   }
 
   if (!findKeys()) {

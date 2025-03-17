@@ -23,11 +23,16 @@ export default function UserFriends() {
   }, [data]);
 
   return (
-    <Stack sx={{}}>
+    <Stack>
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
+          <LoadingError
+            handleAction={refetch}
+            message={error.response.data.message}
+          />
+        </Stack>
       ) : friends.length == 0 ? (
         <Typography component={"h5"} variant="h5">
           There is no friend yet!

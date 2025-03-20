@@ -10,38 +10,31 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import noImage from "../../../assets/images/user.png";
-import PostProfile from "./PostProfile";
-import { useGetPostsUser } from "../../../utils/queries";
-import LoadingError from "../../../components/LoadingError";
-import Loading from "../../../components/Loading";
+import noImage from "../../../../../assets/images/user.png";
+import PostProfile from "../userLogin/PostProfile";
+import { useGetPostsUser } from "../../../../../utils/queries";
+import LoadingError from "../../../../../components/LoadingError";
+import Loading from "../../../../../components/Loading";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GroupIcon from "@mui/icons-material/Group";
 import ChatIcon from "@mui/icons-material/Chat";
 import IosShareIcon from "@mui/icons-material/IosShare";
-import FilterViewer from "./FilterViewer";
+import FilterViewer from "../userLogin/FilterViewer";
 import PublicIcon from "@mui/icons-material/Public";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
+import MyIconButton from "../../../../../components/Customized/MyIconButton";
+import { Edit } from "@mui/icons-material";
 
-export default function MainSection({ profile }) {
+export default function PostsSection({ profile }) {
   const theme = useSelector((state) => state.app.theme);
-  console.log(profile);
-
   const [openCreatePost, setOpenCreatePost] = useState(false);
+  const [openEditPost, setOpenEditPost] = useState(false);
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
   const [isLike, setIsLike] = useState(false);
-  const [openFilterViewer, setOpenFilterViewer] = useState(false);
-  const [viewer, setViewer] = useState("friends");
-  const [showComments, setShowComments] = useState(false);
 
-  function getDate(dateString) {
-    const myDate = new Date(dateString);
-    const options = { month: "long", day: "2-digit", year: "numeric" };
-    const formattedDate = myDate.toLocaleDateString("en-GB", options);
-    return formattedDate;
-  }
+  const [showComments, setShowComments] = useState(false);
 
   return (
     <Container>
@@ -84,117 +77,21 @@ export default function MainSection({ profile }) {
               <Stack>
                 {data?.data.body.map((p) => {
                   return (
-                    <Stack>
-                      <Stack
-                        sx={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: 2,
-                          mb: 3,
-                        }}
-                      >
-                        <Box
-                          component="img"
-                          src={
-                            profile.profileImg ? profile.profileImg : noImage
-                          }
-                          sx={{
-                            width: "40px",
-                            height: "40px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                        <Stack>
-                          <Typography sx={{ fontSize: 18 }}>
-                            {profile.username}
-                          </Typography>
-                          <Stack
-                            sx={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                              gap: 1,
-                            }}
-                          >
-                            <Typography sx={{ fontSize: 13 }}>
-                              {getDate(p.createdAt)}
-                            </Typography>
-
-                            {viewer == "friends" ? (
-                              <GroupIcon
-                                sx={{
-                                  fontSize: 16,
-                                  cursor: "pointer",
-                                  borderRadius: "50%",
-
-                                  "&:hover": {
-                                    bgcolor:
-                                      theme === "dark"
-                                        ? "grey.800"
-                                        : "grey.200",
-                                  },
-                                }}
-                                onClick={() => setOpenFilterViewer(true)}
-                              />
-                            ) : viewer == "public" ? (
-                              <PublicIcon
-                                sx={{
-                                  fontSize: 16,
-                                  cursor: "pointer",
-                                  borderRadius: "50%",
-
-                                  "&:hover": {
-                                    bgcolor:
-                                      theme === "dark"
-                                        ? "grey.800"
-                                        : "grey.200",
-                                  },
-                                }}
-                                onClick={() => setOpenFilterViewer(true)}
-                              />
-                            ) : viewer == "except" ? (
-                              <GroupRemoveIcon
-                                sx={{
-                                  fontSize: 16,
-                                  cursor: "pointer",
-                                  borderRadius: "50%",
-
-                                  "&:hover": {
-                                    bgcolor:
-                                      theme === "dark"
-                                        ? "grey.800"
-                                        : "grey.200",
-                                  },
-                                }}
-                                onClick={() => setOpenFilterViewer(true)}
-                              />
-                            ) : (
-                              <LockIcon
-                                sx={{
-                                  fontSize: 16,
-                                  cursor: "pointer",
-                                  borderRadius: "50%",
-
-                                  "&:hover": {
-                                    bgcolor:
-                                      theme === "dark"
-                                        ? "grey.800"
-                                        : "grey.200",
-                                  },
-                                }}
-                                onClick={() => setOpenFilterViewer(true)}
-                              />
-                            )}
-                          </Stack>
-                          <FilterViewer
-                            open={openFilterViewer}
-                            onClose={() => setOpenFilterViewer(false)}
-                            setViewer={setViewer}
-                            viewer={viewer}
-                          />
-                        </Stack>
-                      </Stack>
+                    <Stack key={p.createdAt}>
+                      <Info p={p} profile={profile} theme={theme} />
                       <Stack key={p} spacing={2}>
-                        <Typography>{p.title}</Typography>
+                        <Stack
+                          sx={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Typography>{p.title}</Typography>
+                          <MyIconButton onClick={() => setOpenEditPost(true)}>
+                            <Edit sx={{ fontSize: 15 }} />
+                          </MyIconButton>
+                        </Stack>
                         <Stack
                           sx={{
                             justifyContent: "center",
@@ -209,6 +106,12 @@ export default function MainSection({ profile }) {
                         </Stack>
 
                         <Typography>{p.desc}</Typography>
+                        <PostProfile
+                          open={openEditPost}
+                          onClose={() => setOpenEditPost(false)}
+                          type="edit"
+                          p={p}
+                        />
                       </Stack>
                       <Divider sx={{ my: 1 }} />
                       <Stack
@@ -332,5 +235,111 @@ export default function MainSection({ profile }) {
         </Alert>
       )}
     </Container>
+  );
+}
+
+function Info({ profile, p, theme }) {
+  const [openFilterViewer, setOpenFilterViewer] = useState(false);
+  const [viewer, setViewer] = useState("friends");
+  console.log("Infooo", profile);
+
+  function getDate(dateString) {
+    const myDate = new Date(dateString);
+    const options = { month: "long", day: "2-digit", year: "numeric" };
+    const formattedDate = myDate.toLocaleDateString("en-GB", options);
+    return formattedDate;
+  }
+
+  return (
+    <Stack
+      sx={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 2,
+        mb: 3,
+      }}
+    >
+      <Box
+        component="img"
+        src={profile.profileImg ? profile.profileImg : noImage}
+        sx={{
+          width: "40px",
+          height: "40px",
+          borderRadius: "50%",
+        }}
+      />
+      <Stack>
+        <Typography sx={{ fontSize: 18 }}>{profile.username}</Typography>
+        <Stack
+          sx={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Typography sx={{ fontSize: 13 }}>{getDate(p.createdAt)}</Typography>
+
+          {viewer == "friends" ? (
+            <GroupIcon
+              sx={{
+                fontSize: 16,
+                cursor: "pointer",
+                borderRadius: "50%",
+
+                "&:hover": {
+                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                },
+              }}
+              onClick={() => setOpenFilterViewer(true)}
+            />
+          ) : viewer == "public" ? (
+            <PublicIcon
+              sx={{
+                fontSize: 16,
+                cursor: "pointer",
+                borderRadius: "50%",
+
+                "&:hover": {
+                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                },
+              }}
+              onClick={() => setOpenFilterViewer(true)}
+            />
+          ) : viewer == "except" ? (
+            <GroupRemoveIcon
+              sx={{
+                fontSize: 16,
+                cursor: "pointer",
+                borderRadius: "50%",
+
+                "&:hover": {
+                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                },
+              }}
+              onClick={() => setOpenFilterViewer(true)}
+            />
+          ) : (
+            <LockIcon
+              sx={{
+                fontSize: 16,
+                cursor: "pointer",
+                borderRadius: "50%",
+
+                "&:hover": {
+                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                },
+              }}
+              onClick={() => setOpenFilterViewer(true)}
+            />
+          )}
+        </Stack>
+        <FilterViewer
+          open={openFilterViewer}
+          onClose={() => setOpenFilterViewer(false)}
+          setViewer={setViewer}
+          viewer={viewer}
+        />
+      </Stack>
+    </Stack>
   );
 }

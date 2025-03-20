@@ -1,21 +1,21 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import HomePage from "../pages/HomePage";
+import HomePage from "../pages/User/Profile/page/HomePage";
 import PublicLayout from "../Layouts/PublicLayout";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import LogOut from "../pages/Auth/LogOut";
 import Profile from "../pages/User/Profile/page/Profile";
-import EditUser from "../pages/User/EditUser";
-import Post from "../pages/User/Profile/Post";
-import About from "../pages/User/Profile/About";
-import Galery from "../pages/User/Profile/Galery";
-import Friends from "../pages/User/Profile/Friends";
+import EditUser from "../pages/User/Profile/component/userLogin/EditUser";
+import Post from "../pages/User/Profile/component/shared/Post";
+import Galery from "../pages/User/Profile/component/shared/Galery";
+import Friends from "../pages/User/Profile/component/shared/Friends";
 import FamilyAndRel from "../pages/User/About/FamilyAndRel/FamilyAndRel";
 import WorkEducation from "../pages/User/About/WorkEducation/WorkEducation";
 import PlaceLived from "../pages/User/About/PlaceLived/PlaceLived";
 import Contact from "../pages/User/About/Contact/Contact";
 import Overview from "../pages/User/About/Overview/Overview";
+import About from "../pages/User/Profile/component/shared/About";
 
 const router = createBrowserRouter([
   {

@@ -15,8 +15,6 @@ export default function Profile() {
 
   const { isPending, data, refetch, error } = useGetUserById(id);
 
-  // const userId = data?.data?.body._id;
-
   useEffect(() => {
     if (data) {
       setUser(data.data.body);

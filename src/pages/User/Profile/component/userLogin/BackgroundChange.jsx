@@ -8,26 +8,35 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-
 import React, { useState } from "react";
-import noImage from "../../../assets/images/user.png";
-import { useForm } from "react-hook-form";
+import background from "../../../../../assets/images/back.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { useProfileImgChange, useUploadFile } from "../../../utils/mutation";
-import { userActions } from "../../../store/slices/userSlice";
+import { useForm } from "react-hook-form";
+import {
+  useChangeBackgorund,
+  useUploadFile,
+} from "../../../../../utils/mutation";
+import { userActions } from "../../../../../store/slices/userSlice";
 
-export default function ProfileImgChange({ open, onClose, setProfileImg }) {
-  const user = useSelector((state) => state.user.profile);
-  const dispatch = useDispatch();
-
-  const { register, setValue, handleSubmit } = useForm();
+export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
+  const user = useSelector((state) => state.user);
   const [isImageChanged, setIsIamgeChanged] = useState(false);
   const [selectedImage, setSelectedImage] = useState(
-    user.profileImg ? SERVER_URL + user.profileImg : noImage
+    user.profile?.backgroundImg
+      ? SERVER_URL + user.profile.backgroundImg
+      : background
   );
+  const dispatch = useDispatch();
+
+  const {
+    register,
+    formState: { errors },
+    setValue,
+    handleSubmit,
+  } = useForm();
 
   const uploadImgMutation = useUploadFile();
-  const { data, mutate, error } = useProfileImgChange();
+  const { mutate, error, data } = useChangeBackgorund();
 
   const imageField = { ...register("image") };
 
@@ -51,42 +60,19 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     }
   }
 
-  async function onSubmit(data) {
-    if (data.image?.length && isImageChanged) {
-      data.image = selectedImage.replace(SERVER_URL, "");
-    }
-    data.id = user._id;
-    mutate(data, {
-      onSuccess(d) {
-        console.log(d);
-        dispatch(
-          userActions.setProfile({
-            ...user,
-            profileImg: selectedImage.replace(SERVER_URL, ""),
-          })
-        );
-        console.log(selectedImage);
-        setProfileImg(selectedImage);
-      },
-      onError(error) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      },
-    });
-  }
-
-  function handleDeleteImg() {
+  function deleteBackImgHandler() {
     const data = {};
     setValue("image", "");
-    setProfileImg(noImage);
-    setSelectedImage(noImage);
-    data.id = user._id;
+    setBackgroundImg(background);
+    setSelectedImage(background);
+    data.id = user.profile._id;
     data.image = "";
     mutate(data, {
       onSuccess(d) {
         dispatch(
           userActions.setProfile({
-            ...user,
-            profileImg: noImage,
+            ...user.profile,
+            backgroundImg: background,
           })
         );
       },
@@ -94,15 +80,36 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     });
   }
 
+  async function onSubmit(data) {
+    if (data.image?.length && isImageChanged) {
+      data.image = selectedImage.replace(SERVER_URL, "");
+    }
+    data.id = user.profile._id;
+    mutate(data, {
+      onSuccess(d) {
+        dispatch(
+          userActions.setProfile({
+            ...user.profile,
+            backgroundImg: selectedImage.replace(SERVER_URL, ""),
+          })
+        );
+        setBackgroundImg(selectedImage);
+      },
+      onError(error) {},
+    });
+  }
+
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>
+      <DialogTitle sx={{ textAlign: "center", my: 2 }}>
         {data ? (
-          <Alert severity="success">{data.data.message}</Alert>
+          <Alert severity="success" textAlign="center">
+            {data.data.message}
+          </Alert>
         ) : error ? (
           <Alert severity="error">{error.message}</Alert>
         ) : (
-          <Alert severity="info">Update Your Profile Picture</Alert>
+          <Alert severity="info">Update your background</Alert>
         )}
       </DialogTitle>
       <DialogContent>
@@ -119,21 +126,13 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
               component="img"
               src={selectedImage}
               sx={{
-                height: "120px",
-                width: "120px",
+                height: "100px",
+                width: "180px",
                 border: "var(--border)",
-                borderRadius: "50%",
+                borderRadius: "4px",
               }}
             />
             <Stack spacing={3}>
-              <Button
-                variant="outlined"
-                htmlFor="imageFile"
-                component="label"
-                sx={{ fontSize: 17 }}
-              >
-                Select Photo
-              </Button>
               <TextField
                 type="file"
                 {...imageField}
@@ -142,15 +141,24 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
                 style={{ display: "none" }}
                 onChange={handleSelectImage}
               />
-              <Button variant="contained" sx={{ fontSize: 17 }} type="submit">
+
+              <Button
+                sx={{ fontSize: 17 }}
+                variant="outlined"
+                component="label"
+                htmlFor="imageFile"
+              >
+                Change Photo
+              </Button>
+              <Button sx={{ fontSize: 17 }} type="submit">
                 Apply
               </Button>
             </Stack>
           </Stack>
           <Button
+            sx={{ mt: 3, fontSize: 15, alignSelf: "left", width: "100px" }}
             variant="text"
-            sx={{ width: "30%", mt: 2 }}
-            onClick={handleDeleteImg}
+            onClick={deleteBackImgHandler}
           >
             Delete
           </Button>

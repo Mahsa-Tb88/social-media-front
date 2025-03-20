@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import Loading from "../../../components/Loading";
-import LoadingError from "../../../components/LoadingError";
+// import Loading from "../../../../../components/Loading";
+// import LoadingError from "../../../../../components/LoadingError";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 
 export default function About() {

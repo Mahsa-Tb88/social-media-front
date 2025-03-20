@@ -9,14 +9,17 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useGetAllUser } from "../utils/queries";
-import Loading from "../components/Loading";
-import LoadingError from "../components/LoadingError";
-import noImage from "../../src/assets/images/user.png";
+import { useGetAllUser } from "../../../../utils/queries";
+import Loading from "../../../../components/Loading";
+import LoadingError from "../../../../components/LoadingError";
+import noImage from "../../../../assets/images/user.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useAddFriend, useRemoveRequestFriend } from "../utils/mutation";
-import { userActions } from "../store/slices/userSlice";
+import {
+  useAddFriend,
+  useRemoveRequestFriend,
+} from "../../../../utils/mutation";
+import { userActions } from "../../../../store/slices/userSlice";
 
 export default function HomePage() {
   const { isPending, data, error, refetch } = useGetAllUser();
@@ -47,7 +50,6 @@ export default function HomePage() {
 
   const addFriendMutation = useAddFriend();
   function handleAddFriend(user) {
-    console.log("userrrr22", user);
     const data = {
       userId: userLogin.id,
       userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",

@@ -1,12 +1,12 @@
 import { Container, Grid2, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import MainSection from "./MainSection";
-import { useGetUserById } from "../../../utils/queries";
+import { useGetUserById } from "../../../../../utils/queries";
 import { useParams } from "react-router-dom";
-import Loading from "../../../components/Loading";
-import LoadingError from "../../../components/LoadingError";
+import Loading from "../../../../../components/Loading";
+import LoadingError from "../../../../../components/LoadingError";
 import Intro from "./Intro";
+import PostsSection from "./PostsSection";
 
 export default function Post() {
   const theme = useSelector((state) => state.app.theme);
@@ -54,7 +54,7 @@ export default function Post() {
               <Intro />
             </Grid2>
             <Grid2 size={{ xs: 12, lg: 8 }}>
-              <MainSection profile={data.data.body} />
+              <PostsSection profile={data.data.body} />
             </Grid2>
           </Grid2>
         )}

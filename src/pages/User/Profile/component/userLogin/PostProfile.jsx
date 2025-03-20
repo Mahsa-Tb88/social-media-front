@@ -17,27 +17,36 @@ import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import MoodIcon from "@mui/icons-material/Mood";
 
 import React, { useEffect, useState } from "react";
-import MyIconButton from "../../../components/Customized/MyIconButton";
+import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useSelector } from "react-redux";
-import noImage from "../../../assets/images/user.png";
-import { pink, green, blue } from "@mui/material/colors";
-
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import PublicIcon from "@mui/icons-material/Public";
+import noImage from "../../../../../assets/images/user.png";
+import { pink, green } from "@mui/material/colors";
 import { useForm } from "react-hook-form";
 import UploadImage from "./UploadImage";
-import { useCreateNewPost } from "../../../utils/mutation";
+import { useCreateNewPost, useEditPost } from "../../../../../utils/mutation";
 import { LoadingButton } from "@mui/lab";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function PostProfile({ open, onClose }) {
+export default function PostProfile({ open, onClose, type, p }) {
   const profile = useSelector((state) => state.user.profile);
   const [viewer, setViewer] = useState("friends");
-  const [imagePost, setImagePost] = useState("");
+  const [imagePost, setImagePost] = useState(
+    p?.image ? SERVER_URL + p.image : ""
+  );
+  const [imageEditPost, setImgeEditPost] = useState(
+    p?.image ? SERVER_URL + p.image : ""
+  );
   const [openUploadImage, setOpenUploadImage] = useState(false);
 
-  const { register, handleSubmit, setValue } = useForm();
+  console.log("ppp", p);
+
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      title: p?.title ? p.title : "",
+      desc: p?.desc ? p.desc : "",
+    },
+  });
 
   const blue = {
     100: "#DAECFF",
@@ -95,19 +104,45 @@ export default function PostProfile({ open, onClose }) {
   );
 
   const { isPending, error, mutate } = useCreateNewPost();
+  const editMutation = useEditPost();
+
   const queryClient = useQueryClient();
   function onSubmit(data) {
-    data.viewer = viewer;
-    data.image = imagePost;
-    data.id = profile._id;
-    console.log(data);
-    mutate(data, {
-      onSuccess(d) {
-        console.log("dddd", d);
-        onClose();
-        queryClient.invalidateQueries({ queryKey: ["posts"] });
-      },
-    });
+    console.log("submit post", data);
+    if (type == "edit") {
+      console.log("edittt", data);
+      data.id = p._id;
+      data.userId = p.userId;
+      data.image = imagePost;
+      editMutation.mutate(data, {
+        onSuccess(d) {
+          console.log("dddd", d);
+          onClose();
+          queryClient.invalidateQueries({ queryKey: ["posts"] });
+        },
+        onError(e) {
+          console.log("Postprofile", error);
+        },
+      });
+    } else {
+      data.viewer = viewer;
+      data.image = imagePost;
+      data.id = profile.id;
+      mutate(data, {
+        onSuccess(d) {
+          console.log("dddd", d);
+          onClose();
+          queryClient.invalidateQueries({ queryKey: ["posts"] });
+        },
+        onError(error) {
+          console.log("PostProfile", error);
+        },
+      });
+    }
+  }
+
+  function removeImageHandler() {
+    setImgeEditPost("noImage");
   }
 
   useEffect(() => {
@@ -125,7 +160,7 @@ export default function PostProfile({ open, onClose }) {
         }}
       >
         <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
-          Create Post
+          {type == "edit" ? "Edit post" : " Create post"}
         </Typography>
         <MyIconButton onClick={onClose}>
           <Close />
@@ -172,6 +207,18 @@ export default function PostProfile({ open, onClose }) {
             {...register("desc")}
           />
         </Stack>
+        {imageEditPost && imageEditPost != "noImage" ? (
+          <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
+            <Box
+              component="img"
+              src={imagePost}
+              sx={{ maxWidth: "200px", maxHeight: "200px", mb: 2 }}
+            />
+            <Button onClick={removeImageHandler}>Remove image</Button>
+          </Stack>
+        ) : (
+          ""
+        )}
         {openUploadImage && (
           <UploadImage
             setOpenUploadImage={setOpenUploadImage}

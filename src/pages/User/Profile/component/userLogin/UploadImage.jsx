@@ -2,9 +2,9 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import MyIconButton from "../../../components/Customized/MyIconButton";
+import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
-import { useUploadFile } from "../../../utils/mutation";
+import { useUploadFile } from "../../../../../utils/mutation";
 
 export default function UploadImage({ setOpenUploadImage, setImagePost }) {
   const { register, setValue } = useForm();

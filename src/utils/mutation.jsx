@@ -35,15 +35,22 @@ export function useProfileImgChange() {
     mutationFn: (data) => axios.post("/profile/profileImg", data),
   });
 }
+
+export function useEditUser() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/profile/edit/${data.id}`, data),
+  });
+}
+
+//post
 export function useCreateNewPost() {
   return useMutation({
     mutationFn: (data) => axios.post("/profile/post", data),
   });
 }
-
-export function useEditUser() {
+export function useEditPost() {
   return useMutation({
-    mutationFn: (data) => axios.put(`/profile/edit/${data.id}`, data),
+    mutationFn: (data) => axios.put("/profile/post/edit/" + data.id, data),
   });
 }
 //overview

@@ -10,8 +10,8 @@ import {
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useEditUser } from "../../utils/mutation";
-import { userActions } from "../../store/slices/userSlice";
+import { useEditUser } from "../../../../../utils/mutation";
+import { userActions } from "../../../../../store/slices/userSlice";
 
 export default function EditUser() {
   const user = useSelector((state) => state.user.profile);

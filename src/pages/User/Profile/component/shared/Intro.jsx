@@ -2,11 +2,11 @@ import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useGetOverview } from "../../../utils/queries";
-import Loading from "../../../components/Loading";
-import LoadingError from "../../../components/LoadingError";
-import IntroUser from "./component/user/IntroUser";
-import IntroUserLogin from "./component/userLogin/IntroUserLogin";
+import { useGetOverview } from "../../../../../utils/queries";
+import Loading from "../../../../../components/Loading";
+import LoadingError from "../../../../../components/LoadingError";
+import IntroUser from "../user/IntroUser";
+import IntroUserLogin from "../userLogin/IntroUserLogin";
 
 export default function Intro() {
   const user = useSelector((state) => state.user.profile);

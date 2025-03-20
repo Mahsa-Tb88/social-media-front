@@ -6,7 +6,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import noImage from "../../../../../assets/images/user.png";
 
 import { Edit } from "@mui/icons-material";
-import ProfileImgChange from "../../ProfileImgChange";
+import ProfileImgChange from "./ProfileImgChange";
 
 export default function ProfileInfoUserLogin() {
   const theme = useSelector((state) => state.app.theme);

@@ -2,8 +2,8 @@ import { Box, Container, Grid2, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import UserLoginFriends from "./component/userLogin/UserLoginFriends";
-import UserFriends from "./component/user/UserFriends";
+import UserLoginFriends from "../userLogin/UserLoginFriends";
+import UserFriends from "../user/UserFriends";
 
 export default function Friends() {
   const userLogin = useSelector((state) => state.user.profile);

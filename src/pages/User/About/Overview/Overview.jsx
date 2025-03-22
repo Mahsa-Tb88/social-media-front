@@ -92,7 +92,6 @@ export default function Overview() {
 }
 
 function Item({ subject, text, value, viewer }) {
-  console.log("itemm subject", subject);
   return (
     <ItemAbout
       subject={subject}

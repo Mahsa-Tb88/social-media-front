@@ -54,7 +54,6 @@ export default function Navbar() {
 
   function handleOpenListRequest() {
     if (profile.profile.friends.friendRequestList?.length) {
-      console.log("pppp");
       setOpenAddFriend(!openAddFriend);
     }
   }

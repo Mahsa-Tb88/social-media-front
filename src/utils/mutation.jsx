@@ -53,6 +53,13 @@ export function useEditPost() {
     mutationFn: (data) => axios.put("/profile/post/edit/" + data.id, data),
   });
 }
+
+export function useDeletePost() {
+  return useMutation({
+    mutationFn: (id) => axios.delete("/profile/post/" + id),
+  });
+}
+
 //overview
 export function useEditOverview() {
   return useMutation({

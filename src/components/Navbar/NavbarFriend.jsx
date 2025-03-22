@@ -27,7 +27,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
     userLogin.friends?.friendRequestList || []
   );
   console.log("userlogin....", userLogin);
-  console.log("requestList....", requestList);
+ 
   useEffect(() => {
     if (userLogin.friends?.friendRequestList?.length) {
       setRequestList(userLogin.friends?.friendRequestList);

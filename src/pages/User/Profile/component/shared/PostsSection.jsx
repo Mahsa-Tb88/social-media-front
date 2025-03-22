@@ -8,7 +8,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import noImage from "../../../../../assets/images/user.png";
 import PostProfile from "../userLogin/PostProfile";
@@ -26,13 +26,16 @@ import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Edit } from "@mui/icons-material";
+import MenuPost from "../userLogin/MenuPost";
 
 export default function PostsSection({ profile }) {
   const theme = useSelector((state) => state.app.theme);
   const [openCreatePost, setOpenCreatePost] = useState(false);
-  const [openEditPost, setOpenEditPost] = useState(false);
+  const [openMenuPost, setOpenMenuPost] = useState(false);
+
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
   const [isLike, setIsLike] = useState(false);
+  const menuAnchor = useRef(null);
 
   const [showComments, setShowComments] = useState(false);
 
@@ -88,8 +91,12 @@ export default function PostsSection({ profile }) {
                           }}
                         >
                           <Typography>{p.title}</Typography>
-                          <MyIconButton onClick={() => setOpenEditPost(true)}>
-                            <Edit sx={{ fontSize: 15 }} />
+                          <MyIconButton
+                            onClick={() => {
+                              setOpenMenuPost(!openMenuPost);
+                            }}
+                          >
+                            <Edit sx={{ fontSize: 15 }} ref={menuAnchor} />
                           </MyIconButton>
                         </Stack>
                         <Stack
@@ -106,10 +113,11 @@ export default function PostsSection({ profile }) {
                         </Stack>
 
                         <Typography>{p.desc}</Typography>
-                        <PostProfile
-                          open={openEditPost}
-                          onClose={() => setOpenEditPost(false)}
-                          type="edit"
+
+                        <MenuPost
+                          open={openMenuPost}
+                          anchorEl={menuAnchor.current}
+                          handleClose={() => setOpenMenuPost(false)}
                           p={p}
                         />
                       </Stack>

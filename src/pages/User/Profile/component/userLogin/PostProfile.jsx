@@ -39,8 +39,6 @@ export default function PostProfile({ open, onClose, type, p }) {
   );
   const [openUploadImage, setOpenUploadImage] = useState(false);
 
-  console.log("ppp", p);
-
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       title: p?.title ? p.title : "",
@@ -105,18 +103,15 @@ export default function PostProfile({ open, onClose, type, p }) {
 
   const { isPending, error, mutate } = useCreateNewPost();
   const editMutation = useEditPost();
-
   const queryClient = useQueryClient();
   function onSubmit(data) {
     console.log("submit post", data);
     if (type == "edit") {
-      console.log("edittt", data);
       data.id = p._id;
       data.userId = p.userId;
       data.image = imagePost;
       editMutation.mutate(data, {
         onSuccess(d) {
-          console.log("dddd", d);
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         },
@@ -130,7 +125,6 @@ export default function PostProfile({ open, onClose, type, p }) {
       data.id = profile.id;
       mutate(data, {
         onSuccess(d) {
-          console.log("dddd", d);
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         },
@@ -139,10 +133,14 @@ export default function PostProfile({ open, onClose, type, p }) {
         },
       });
     }
+    setValue("title", "");
+    setValue("desc", "");
+    setImagePost("");
   }
 
   function removeImageHandler() {
     setImgeEditPost("noImage");
+    setImagePost("");
   }
 
   useEffect(() => {

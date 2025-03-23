@@ -17,9 +17,14 @@ import DeletePost from "./DeletePost";
 export default function MenuPost({ open, anchorEl, handleClose, p }) {
   const [openEditPost, setOpenEditPost] = useState(false);
   const [openDeletePost, setOpenDeletePost] = useState(false);
-  console.log("edit", openEditPost);
-  console.log("delete", openDeletePost);
-  console.log("handleClose", handleClose);
+  // console.log("edit", openEditPost);
+  // console.log("delete", openDeletePost);
+  // console.log("handleClose", handleClose);
+  function deleteCloseHandler() {
+    setOpenDeletePost(false);
+    handleClose();
+  }
+
   return (
     <Menu
       open={open}
@@ -62,7 +67,7 @@ export default function MenuPost({ open, anchorEl, handleClose, p }) {
       />
       <DeletePost
         open={openDeletePost}
-        onClose={() => setOpenDeletePost(false)}
+        onClose={deleteCloseHandler}
         id={p._id}
       />
     </Menu>

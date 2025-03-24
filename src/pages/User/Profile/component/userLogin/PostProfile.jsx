@@ -28,21 +28,21 @@ import { useCreateNewPost, useEditPost } from "../../../../../utils/mutation";
 import { LoadingButton } from "@mui/lab";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function PostProfile({ open, onClose, type, p }) {
+export default function PostProfile({ open, onClose, type, post }) {
   const profile = useSelector((state) => state.user.profile);
   const [viewer, setViewer] = useState("friends");
   const [imagePost, setImagePost] = useState(
-    p?.image ? SERVER_URL + p.image : ""
+    post?.image ? SERVER_URL + post.image : ""
   );
   const [imageEditPost, setImgeEditPost] = useState(
-    p?.image ? SERVER_URL + p.image : ""
+    post?.image ? SERVER_URL + post.image : ""
   );
   const [openUploadImage, setOpenUploadImage] = useState(false);
 
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
-      title: p?.title ? p.title : "",
-      desc: p?.desc ? p.desc : "",
+      title: post?.title ? post.title : "",
+      desc: post?.desc ? post.desc : "",
     },
   });
 
@@ -104,12 +104,14 @@ export default function PostProfile({ open, onClose, type, p }) {
   const { isPending, error, mutate } = useCreateNewPost();
   const editMutation = useEditPost();
   const queryClient = useQueryClient();
+
   function onSubmit(data) {
-    console.log("submit post", data);
     if (type == "edit") {
-      data.id = p._id;
-      data.userId = p.userId;
-      data.image = imagePost;
+      data.id = post._id;
+      data.userId = post.userId;
+      const img = imagePost.replace(SERVER_URL, "");
+      data.image = img;
+
       editMutation.mutate(data, {
         onSuccess(d) {
           onClose();

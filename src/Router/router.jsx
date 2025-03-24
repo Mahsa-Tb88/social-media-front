@@ -16,6 +16,7 @@ import PlaceLived from "../pages/User/About/PlaceLived/PlaceLived";
 import Contact from "../pages/User/About/Contact/Contact";
 import Overview from "../pages/User/About/Overview/Overview";
 import About from "../pages/User/Profile/component/shared/About";
+import SinglePostPage from "../pages/User/Profile/page/SinglePostPage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <HomePage /> },
           { path: "login", element: <Login /> },
+          { path: "post/:id", element: <SinglePostPage /> },
           { path: "register", element: <Register /> },
           {
             path: "profile/:id",
@@ -51,7 +53,6 @@ const router = createBrowserRouter([
               { path: "galery", element: <Galery /> },
             ],
           },
-
           { path: "logout", element: <LogOut /> },
           { path: "edit/user/:id", element: <EditUser /> },
         ],

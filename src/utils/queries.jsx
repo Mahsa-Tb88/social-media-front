@@ -14,7 +14,7 @@ export function useInitialize() {
 export function useGetPostsUser(id) {
   return useQuery({
     queryKey: ["posts", id],
-    queryFn: () => axios.get("profile/posts/" + id),
+    queryFn: () => axios.get("/posts/" + id),
   });
 }
 
@@ -45,6 +45,18 @@ export function useGetFriends(id) {
   });
 }
 
+export function useGetGalley(id) {
+  return useQuery({
+    queryKey: ["gallery", id],
+    queryFn: () => axios.get("/profile/gallery/" + id),
+  });
+}
+export function useGetPost(id) {
+  return useQuery({
+    queryKey: ["singlePost", id],
+    queryFn: () => axios.get("/posts/single/" + id),
+  });
+}
 export function useGetContactBaseInfo(id) {
   return useQuery({
     queryKey: ["contactBaseInfo", id],

@@ -22,6 +22,7 @@ import {
   useFilterRelViewer,
   useFilterFamilyViewer,
   useFilterPlaceViewer,
+  useEditPost,
 } from "../../../../../utils/mutation";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
@@ -44,6 +45,7 @@ export default function FilterViewer({
   const mutationRelViewer = useFilterRelViewer();
   const mutationFamilyViewer = useFilterFamilyViewer();
   const mutationPlaceViewer = useFilterPlaceViewer();
+  const mutationPostViewer = useEditPost();
   const queryClient = useQueryClient();
   function saveHandler(e) {
     const data = { subject, viewer: e.target.value, id };
@@ -111,6 +113,17 @@ export default function FilterViewer({
           console.log("error filter viewer", e);
         },
       });
+    } else if (title == "post") {
+      const data = { id: itemId, viewer: e.target.value, userId: id };
+      mutationPostViewer.mutate(data, {
+        onSuccess(d) {
+          setViewer(e.target.value);
+          queryClient.invalidateQueries({ queryKey: ["post"] });
+        },
+        onError(e) {
+          console.log("viewer post error is", e);
+        },
+      });
     } else {
       const data = { itemId, id, title, viewer: e.target.value };
       mutationPlaceViewer.mutate(data, {
@@ -159,7 +172,7 @@ export default function FilterViewer({
             </MyIconButton>
             <Box>
               <Typography sx={{ fontWeight: "bold" }}>Public</Typography>
-              <Typography>Anyone on or of Facebook</Typography>
+              <Typography>Anyone on or off Facebook</Typography>
             </Box>
           </Box>
           <Box>
@@ -195,33 +208,7 @@ export default function FilterViewer({
             />
           </Box>
         </Stack>
-        <Stack
-          sx={{
-            mt: 4,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <MyIconButton>
-              <GroupRemoveIcon />
-            </MyIconButton>
-            <Box>
-              <Typography sx={{ fontWeight: "bold" }}>
-                Friends Except...
-              </Typography>
-              <Typography>Do not show to some friends</Typography>
-            </Box>
-          </Box>
-          <Box>
-            <Radio
-              value="except"
-              onChange={(e) => saveHandler(e)}
-              checked={viewer == "except"}
-            />
-          </Box>
-        </Stack>
+
         <Stack
           sx={{
             mt: 4,

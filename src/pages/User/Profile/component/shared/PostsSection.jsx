@@ -26,6 +26,7 @@ export default function PostsSection({ profile }) {
   const menuAnchor = useRef(null);
 
   const [showComments, setShowComments] = useState(false);
+  console.log("sorttt", data?.data?.body);
 
   return (
     <Container>
@@ -63,10 +64,12 @@ export default function PostsSection({ profile }) {
               <Loading message="Loading Post..." />
             ) : error ? (
               <LoadingError message={error.message} handleAction={refetch} />
-            ) : data?.data.body ? (
+            ) : data?.data.body.sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+              ) ? (
               <Stack>
                 {data?.data.body.map((p) => {
-                  return <SinglePost p={p} profile={profile} />;
+                  return <SinglePost post={p} profile={profile} />;
                 })}
               </Stack>
             ) : (

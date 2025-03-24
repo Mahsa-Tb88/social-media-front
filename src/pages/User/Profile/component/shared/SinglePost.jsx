@@ -4,7 +4,6 @@ import FilterViewer from "../userLogin/FilterViewer";
 import { Edit } from "@mui/icons-material";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import noImage from "../../../../../assets/images/user.png";
-
 import { useSelector } from "react-redux";
 import MenuPost from "../userLogin/MenuPost";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -13,20 +12,19 @@ import GroupIcon from "@mui/icons-material/Group";
 import ChatIcon from "@mui/icons-material/Chat";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import PublicIcon from "@mui/icons-material/Public";
-import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
 
-export default function SinglePost({ p, profile }) {
+export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
   const [openMenuPost, setOpenMenuPost] = useState(false);
-
   const [isLike, setIsLike] = useState(false);
   const menuAnchor = useRef(null);
+
   return (
     <Stack>
-      <Paper key={p.createdAt} sx={{ mb: 4, p: 2 }}>
-        <Info p={p} profile={profile} theme={theme} />
-        <Stack key={p} spacing={2}>
+      <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>
+        <Info post={post} profile={profile} theme={theme} />
+        <Stack spacing={2}>
           <Stack
             sx={{
               flexDirection: "row",
@@ -34,7 +32,7 @@ export default function SinglePost({ p, profile }) {
               justifyContent: "space-between",
             }}
           >
-            <Typography>{p.title}</Typography>
+            <Typography>{post.title}</Typography>
             <MyIconButton
               onClick={() => {
                 setOpenMenuPost(!openMenuPost);
@@ -51,18 +49,18 @@ export default function SinglePost({ p, profile }) {
           >
             <Box
               component="img"
-              src={p.image ? SERVER_URL + p.image : ""}
+              src={post.image ? SERVER_URL + post.image : ""}
               sx={{ maxWidth: "300px", maxHeight: "300px" }}
             />
           </Stack>
 
-          <Typography>{p.desc}</Typography>
+          <Typography>{post.desc}</Typography>
 
           <MenuPost
             open={openMenuPost}
             anchorEl={menuAnchor.current}
             handleClose={() => setOpenMenuPost(false)}
-            p={p}
+            post={post}
           />
         </Stack>
         <Divider sx={{ my: 1 }} />
@@ -166,9 +164,9 @@ export default function SinglePost({ p, profile }) {
   );
 }
 
-function Info({ profile, p, theme }) {
+function Info({ profile, post, theme }) {
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
-  const [viewer, setViewer] = useState("friends");
+  const [viewer, setViewer] = useState(post.viewer);
 
   function getDate(dateString) {
     const myDate = new Date(dateString);
@@ -204,7 +202,9 @@ function Info({ profile, p, theme }) {
             gap: 1,
           }}
         >
-          <Typography sx={{ fontSize: 13 }}>{getDate(p.createdAt)}</Typography>
+          <Typography sx={{ fontSize: 13 }}>
+            {getDate(post.createdAt)}
+          </Typography>
 
           {viewer == "friends" ? (
             <GroupIcon
@@ -221,19 +221,6 @@ function Info({ profile, p, theme }) {
             />
           ) : viewer == "public" ? (
             <PublicIcon
-              sx={{
-                fontSize: 16,
-                cursor: "pointer",
-                borderRadius: "50%",
-
-                "&:hover": {
-                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
-                },
-              }}
-              onClick={() => setOpenFilterViewer(true)}
-            />
-          ) : viewer == "except" ? (
-            <GroupRemoveIcon
               sx={{
                 fontSize: 16,
                 cursor: "pointer",
@@ -265,6 +252,8 @@ function Info({ profile, p, theme }) {
           onClose={() => setOpenFilterViewer(false)}
           setViewer={setViewer}
           viewer={viewer}
+          title="post"
+          itemId={post._id}
         />
       </Stack>
     </Stack>

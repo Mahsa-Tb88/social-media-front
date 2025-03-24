@@ -1,27 +1,28 @@
 import { Delete, Edit } from "@mui/icons-material";
 import {
-  Box,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Menu,
-  Stack,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import PostProfile from "./PostProfile";
 import DeletePost from "./DeletePost";
 
-export default function MenuPost({ open, anchorEl, handleClose, p }) {
+export default function MenuPost({ open, anchorEl, handleClose, post }) {
   const [openEditPost, setOpenEditPost] = useState(false);
   const [openDeletePost, setOpenDeletePost] = useState(false);
-  // console.log("edit", openEditPost);
-  // console.log("delete", openDeletePost);
-  // console.log("handleClose", handleClose);
+
   function deleteCloseHandler() {
     setOpenDeletePost(false);
+    handleClose();
+  }
+
+  function editCloseHandler() {
+    setOpenEditPost(false);
     handleClose();
   }
 
@@ -61,14 +62,14 @@ export default function MenuPost({ open, anchorEl, handleClose, p }) {
       </List>
       <PostProfile
         open={openEditPost}
-        onClose={() => setOpenEditPost(false)}
+        onClose={editCloseHandler}
         type="edit"
-        p={p}
+        post={post}
       />
       <DeletePost
         open={openDeletePost}
         onClose={deleteCloseHandler}
-        id={p._id}
+        id={post._id}
       />
     </Menu>
   );

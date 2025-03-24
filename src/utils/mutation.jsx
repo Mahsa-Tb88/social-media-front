@@ -6,25 +6,21 @@ export function useRegister() {
     mutationFn: (data) => axios.post("/auth/register", data),
   });
 }
-
 export function useLogin() {
   return useMutation({
     mutationFn: (data) => axios.post("/auth/login", data),
   });
 }
-
 export function useLogOut() {
   return useMutation({
     mutationFn: () => axios.post("/auth/logout"),
   });
 }
-
 export function useUploadFile() {
   return useMutation({
     mutationFn: (formData) => axios.post("/misc/uploads", formData),
   });
 }
-
 export function useChangeBackgorund() {
   return useMutation({
     mutationFn: (data) => axios.post("/profile/background", data),
@@ -35,7 +31,6 @@ export function useProfileImgChange() {
     mutationFn: (data) => axios.post("/profile/profileImg", data),
   });
 }
-
 export function useEditUser() {
   return useMutation({
     mutationFn: (data) => axios.put(`/profile/edit/${data.id}`, data),
@@ -45,18 +40,17 @@ export function useEditUser() {
 //post
 export function useCreateNewPost() {
   return useMutation({
-    mutationFn: (data) => axios.post("/profile/post", data),
+    mutationFn: (data) => axios.post("/posts/new", data),
   });
 }
 export function useEditPost() {
   return useMutation({
-    mutationFn: (data) => axios.put("/profile/post/edit/" + data.id, data),
+    mutationFn: (data) => axios.put("/posts/edit/" + data.id, data),
   });
 }
-
 export function useDeletePost() {
   return useMutation({
-    mutationFn: (id) => axios.delete("/profile/post/" + id),
+    mutationFn: (id) => axios.delete("/posts/" + id),
   });
 }
 

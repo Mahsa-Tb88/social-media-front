@@ -7,10 +7,18 @@ import Loading from "../../../../components/Loading";
 import LoadingError from "../../../../components/LoadingError";
 import { useGetContactBaseInfo } from "../../../../utils/queries";
 import EditValueSubject from "../EditVelueSubject";
-
+import { useSelector } from "react-redux";
 
 export default function Contact() {
   const id = useParams().id;
+  const userLogin = useSelector((state) => state.user.profile);
+  function hasPermission() {
+    if (id == userLogin.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const { isPending, data, error, refetch } = useGetContactBaseInfo(id);
   const myData = data?.data.body || [];
@@ -22,16 +30,16 @@ export default function Contact() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack spacing={5}>
-          <ContactInfo data={myData} />
-          <Websites data={myData} />
-          <BasicInfo data={myData} />
+          <ContactInfo data={myData} hasPermission={hasPermission} />
+          <Websites data={myData} hasPermission={hasPermission} />
+          <BasicInfo data={myData} hasPermission={hasPermission} />
         </Stack>
       )}
     </Stack>
   );
 }
 
-function ContactInfo({ data }) {
+function ContactInfo({ data, hasPermission }) {
   const mobile = data.Mobile;
   const email = data.Email;
   return (
@@ -67,7 +75,7 @@ function ContactInfo({ data }) {
             </Stack>
           </ItemAbout>
         ) : (
-          <AddSubject subject={"Mobile"} />
+          <AddSubject subject={"Mobile"} hasPermission={hasPermission} />
         )}
         {email?.value ? (
           <ItemAbout
@@ -95,14 +103,14 @@ function ContactInfo({ data }) {
             </Stack>
           </ItemAbout>
         ) : (
-          <AddSubject subject={"Email"} />
+          <AddSubject subject={"Email"} hasPermission={hasPermission} />
         )}
       </Stack>
     </Stack>
   );
 }
 
-function Websites({ data }) {
+function Websites({ data, hasPermission }) {
   const website = data.Website;
   const linkedIn = data.LinkedIn;
   const github = data.Github;
@@ -139,7 +147,7 @@ function Websites({ data }) {
             </Stack>
           </ItemAbout>
         ) : (
-          <AddSubject subject={"Website"} />
+          <AddSubject subject={"Website"} hasPermission={hasPermission} />
         )}
         {linkedIn?.value ? (
           <ItemAbout
@@ -167,7 +175,7 @@ function Websites({ data }) {
             </Stack>
           </ItemAbout>
         ) : (
-          <AddSubject subject={"LinkedIn"} />
+          <AddSubject subject={"LinkedIn"} hasPermission={hasPermission} />
         )}
         {github?.value ? (
           <ItemAbout
@@ -195,14 +203,14 @@ function Websites({ data }) {
             </Stack>
           </ItemAbout>
         ) : (
-          <AddSubject subject={"Github"} />
+          <AddSubject subject={"Github"} hasPermission={hasPermission} />
         )}
       </Stack>
     </Stack>
   );
 }
 
-function BasicInfo({ data }) {
+function BasicInfo({ data, hasPermission }) {
   const gender = data.Gender;
   const pronouns = data.Pronouns;
   const birthday = data.Birthday;
@@ -217,22 +225,26 @@ function BasicInfo({ data }) {
         {gender?.value ? (
           <Item item={gender} subject="Gender" />
         ) : (
-          <AddSubject subject={"Gender"} />
+          <AddSubject subject={"Gender"} hasPermission={hasPermission} />
         )}
         {pronouns?.value ? (
           <Item item={pronouns} subject="Pronouns" />
         ) : (
-          <AddSubject subject={"Pronouns"} />
+          <AddSubject subject={"Pronouns"} hasPermission={hasPermission} />
         )}
         {birthday?.value ? (
-          <Item item={birthday} subject="Birthday" />
+          <Item
+            item={birthday}
+            subject="Birthday"
+            hasPermission={hasPermission}
+          />
         ) : (
-          <AddSubject subject={"Birthday"} />
+          <AddSubject subject={"Birthday"} hasPermission={hasPermission} />
         )}
         {language?.value ? (
           <Item item={language} subject="Language" />
         ) : (
-          <AddSubject subject={"Language"} />
+          <AddSubject subject={"Language"} hasPermission={hasPermission} />
         )}
       </Stack>
     </Stack>
@@ -266,28 +278,35 @@ function Item({ item, subject }) {
     </ItemAbout>
   );
 }
-function AddSubject({ subject }) {
+function AddSubject({ subject, hasPermission }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);
   return (
     <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
       <Box>
         <ShowIcon subject={subject} />
       </Box>
-      <Button
-        variant="text"
-        sx={{ fontSize: 18 }}
-        onClick={() => setOpenAddSubject(true)}
-      >
-        Add {subject}
-      </Button>
-      <Box></Box>
-      <EditValueSubject
-        openEdit={openAddSubject}
-        onCloseEdit={() => setOpenAddSubject(false)}
-        subject={subject}
-        type="new"
-        title="contactBaseInfo"
-      />
+      {hasPermission() ? (
+        <Stack>
+          <Button
+            variant="text"
+            sx={{ fontSize: 18 }}
+            onClick={() => setOpenAddSubject(true)}
+            hasPermission={hasPermission}
+          >
+            Add {subject}
+          </Button>
+          <Box></Box>
+          <EditValueSubject
+            openEdit={openAddSubject}
+            onCloseEdit={() => setOpenAddSubject(false)}
+            subject={subject}
+            type="new"
+            title="contactBaseInfo"
+          />
+        </Stack>
+      ) : (
+        "Not is added yet!"
+      )}
     </Stack>
   );
 }

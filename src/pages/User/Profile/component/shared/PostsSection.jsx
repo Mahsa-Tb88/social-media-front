@@ -16,10 +16,13 @@ import { useGetPostsUser } from "../../../../../utils/queries";
 import LoadingError from "../../../../../components/LoadingError";
 import Loading from "../../../../../components/Loading";
 import SinglePost from "./SinglePost";
+import { useParams } from "react-router-dom";
 
 export default function PostsSection({ profile }) {
   const theme = useSelector((state) => state.app.theme);
   const [openCreatePost, setOpenCreatePost] = useState(false);
+  const userLogin = useSelector((state) => state.user.profile);
+  const id = useParams().id;
 
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
   const [isLike, setIsLike] = useState(false);
@@ -28,36 +31,46 @@ export default function PostsSection({ profile }) {
   const [showComments, setShowComments] = useState(false);
   console.log("sorttt", data?.data?.body);
 
+  function hasPermission() {
+    if (id == userLogin.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   return (
     <Container>
-      <Paper sx={{ p: 4 }}>
-        <Stack sx={{ flexDirection: "row", gap: 2 }}>
-          <Box
-            component="img"
-            src={profile.profileImg ? profile.profileImg : noImage}
-            sx={{ width: "40px", height: "40px", borderRadius: "50%" }}
-          />
-          <Button
-            sx={{
-              bgcolor: theme === "dark" ? "grey.800" : "grey.200",
-              width: "100%",
-              borderRadius: "20px",
-            }}
-            disableElevation
-            variant="outlined"
-            onClick={() => setOpenCreatePost(true)}
-          >
-            What's on your mind?
-          </Button>
+      {hasPermission() && (
+        <Paper sx={{ p: 4 }}>
+          <Stack sx={{ flexDirection: "row", gap: 2 }}>
+            <Box
+              component="img"
+              src={profile.profileImg ? profile.profileImg : noImage}
+              sx={{ width: "40px", height: "40px", borderRadius: "50%" }}
+            />
+            <Button
+              sx={{
+                bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                width: "100%",
+                borderRadius: "20px",
+              }}
+              disableElevation
+              variant="outlined"
+              onClick={() => setOpenCreatePost(true)}
+            >
+              What's on your mind?
+            </Button>
 
-          <PostProfile
-            open={openCreatePost}
-            onClose={() => setOpenCreatePost(false)}
-            type="new"
-          />
-        </Stack>
-      </Paper>
-      {data?.data.body ? (
+            <PostProfile
+              open={openCreatePost}
+              onClose={() => setOpenCreatePost(false)}
+              type="new"
+            />
+          </Stack>
+        </Paper>
+      )}
+      {data?.data.body.length ? (
         <Stack sx={{ mt: 3, minHeight: "100vh" }}>
           <Stack>
             {isPending ? (
@@ -69,7 +82,13 @@ export default function PostsSection({ profile }) {
               ) ? (
               <Stack>
                 {data?.data.body.map((p) => {
-                  return <SinglePost post={p} profile={profile} />;
+                  return (
+                    <SinglePost
+                      post={p}
+                      profile={profile}
+                      hasPermission={hasPermission}
+                    />
+                  );
                 })}
               </Stack>
             ) : (
@@ -78,17 +97,17 @@ export default function PostsSection({ profile }) {
           </Stack>
         </Stack>
       ) : (
-        <Alert
+        <Typography
           sx={{
             textAlign: "center",
             fontSize: "20",
             fontWeight: "bold",
             mt: 3,
           }}
-          severity="info"
+          variant="h4"
         >
-          There is no post
-        </Alert>
+          There is no post yet!
+        </Typography>
       )}
     </Container>
   );

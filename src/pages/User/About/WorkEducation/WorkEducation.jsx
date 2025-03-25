@@ -8,17 +8,27 @@ import { useParams } from "react-router-dom";
 import LoadingError from "../../../../components/LoadingError";
 import Loading from "../../../../components/Loading";
 import { useGetWork, useGetEducation } from "../../../../utils/queries";
+import { useSelector } from "react-redux";
 
 export default function WorkEducation() {
+  const id = useParams().id;
+  const userLogin = useSelector((state) => state.user.profile);
+  function hasPermission() {
+    if (id == userLogin.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   return (
     <Stack spacing={4}>
-      <WorkSection />
-      <EducationSection />
+      <WorkSection hasPermission={hasPermission} />
+      <EducationSection hasPermission={hasPermission} />
     </Stack>
   );
 }
 
-function WorkSection() {
+function WorkSection({ hasPermission }) {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetWork(id);
   const work = data?.data.body || [];
@@ -36,88 +46,97 @@ function WorkSection() {
           <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
             Work
           </Typography>
-          {work.map((w) => (
-            <Stack key={w._id} sx={{ mb: 2 }}>
-              <ItemAbout
-                myViewer={w.viewer}
-                value={w}
-                subject={"Work"}
-                id={w._id}
-                type="edit"
-                title="Work"
-              >
-                <Stack
-                  sx={{
-                    flexDirection: "row",
-                  }}
+          {work.length > 0 &&
+            work.map((w) => (
+              <Stack key={w._id} sx={{ mb: 2 }}>
+                <ItemAbout
+                  myViewer={w.viewer}
+                  value={w}
+                  subject={"Work"}
+                  id={w._id}
+                  type="edit"
+                  title="Work"
                 >
-                  <Box sx={{ mr: 1 }}>
-                    <HomeRepairServiceIcon />
-                  </Box>
-                  <Stack sx={{ mb: 1 }}>
-                    <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-                      <Typography>{w.position}</Typography>
-                      {w.company && (
-                        <Stack
-                          sx={{ flexDirection: "row", alignItems: "center" }}
-                        >
-                          <Typography sx={{ mx: 1 }}>{" at "}</Typography>
-                          <Typography>{w.company}</Typography>
-                        </Stack>
-                      )}
-                    </Stack>
-                    <Stack>
-                      <Stack sx={{ flexDirection: "row" }}>
-                        {w.city && (
-                          <>
-                            <Typography>{w.city}</Typography>
-                            <Typography sx={{ mx: 1 }}>
-                              {w.city && "|"}
-                            </Typography>{" "}
-                          </>
+                  <Stack
+                    sx={{
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Box sx={{ mr: 1 }}>
+                      <HomeRepairServiceIcon />
+                    </Box>
+                    <Stack sx={{ mb: 1 }}>
+                      <Stack
+                        sx={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Typography>{w.position}</Typography>
+                        {w.company && (
+                          <Stack
+                            sx={{ flexDirection: "row", alignItems: "center" }}
+                          >
+                            <Typography sx={{ mx: 1 }}>{" at "}</Typography>
+                            <Typography>{w.company}</Typography>
+                          </Stack>
                         )}
-                        <Stack
-                          sx={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Typography>{w.startYear}</Typography>
-                          {w.startYear && w.isCurrently ? (
-                            <Typography sx={{ mx: 1 }}>-</Typography>
-                          ) : w.startYear && w.endYear ? (
-                            <Typography sx={{ mx: 1 }}>-</Typography>
-                          ) : (
-                            ""
+                      </Stack>
+                      <Stack>
+                        <Stack sx={{ flexDirection: "row" }}>
+                          {w.city && (
+                            <>
+                              <Typography>{w.city}</Typography>
+                              <Typography sx={{ mx: 1 }}>
+                                {w.city && "|"}
+                              </Typography>{" "}
+                            </>
                           )}
+                          <Stack
+                            sx={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography>{w.startYear}</Typography>
+                            {w.startYear && w.isCurrently ? (
+                              <Typography sx={{ mx: 1 }}>-</Typography>
+                            ) : w.startYear && w.endYear ? (
+                              <Typography sx={{ mx: 1 }}>-</Typography>
+                            ) : (
+                              ""
+                            )}
 
-                          {w.endYear ? (
-                            <Typography> {w.endYear}</Typography>
-                          ) : w.isCurrently ? (
-                            <Typography>Currently</Typography>
-                          ) : (
-                            ""
-                          )}
+                            {w.endYear ? (
+                              <Typography> {w.endYear}</Typography>
+                            ) : w.isCurrently ? (
+                              <Typography>Currently</Typography>
+                            ) : (
+                              ""
+                            )}
+                          </Stack>
                         </Stack>
                       </Stack>
                     </Stack>
                   </Stack>
-                </Stack>
-              </ItemAbout>
-            </Stack>
-          ))}
+                </ItemAbout>
+              </Stack>
+            ))}
           <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
             <Box>
               <HomeRepairServiceIcon />
             </Box>
-            <Button
-              variant="text"
-              sx={{ fontSize: 18 }}
-              onClick={() => setOpenAddWork(true)}
-            >
-              Add Work
-            </Button>
-            <Box></Box>
+            {hasPermission() ? (
+              <Stack>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: 18 }}
+                  onClick={() => setOpenAddWork(true)}
+                >
+                  Add Work
+                </Button>
+                <Box></Box>
+              </Stack>
+            ) : (
+              "Nothing is added yet"
+            )}
           </Stack>
           <EditValueSubject
             subject={"Work"}
@@ -131,7 +150,7 @@ function WorkSection() {
   );
 }
 
-function EducationSection() {
+function EducationSection({ hasPermission }) {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetEducation(id);
   const education = data?.data.body || [];
@@ -222,21 +241,27 @@ function EducationSection() {
             <Box>
               <ShowIcon subject="Education" />
             </Box>
-            <Button
-              variant="text"
-              sx={{ fontSize: 18 }}
-              onClick={() => setOpenAddEducation(true)}
-            >
-              Add Education
-            </Button>
-            <Box></Box>
+            {hasPermission() ? (
+              <Stack>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: 18 }}
+                  onClick={() => setOpenAddEducation(true)}
+                >
+                  Add Education
+                </Button>
+                <Box></Box>
+                <EditValueSubject
+                  subject={"Education"}
+                  openEdit={openAddEducation}
+                  onCloseEdit={() => setOpenAddEducation(false)}
+                  type="new"
+                />
+              </Stack>
+            ) : (
+              "Nothing is added yet!"
+            )}
           </Stack>
-          <EditValueSubject
-            subject={"Education"}
-            openEdit={openAddEducation}
-            onCloseEdit={() => setOpenAddEducation(false)}
-            type="new"
-          />
         </Stack>
       )}
     </Stack>

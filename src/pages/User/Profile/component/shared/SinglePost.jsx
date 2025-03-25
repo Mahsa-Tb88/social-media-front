@@ -14,8 +14,10 @@ import IosShareIcon from "@mui/icons-material/IosShare";
 import PublicIcon from "@mui/icons-material/Public";
 import LockIcon from "@mui/icons-material/Lock";
 
-export default function SinglePost({ post, profile }) {
+
+export default function SinglePost({ post, profile, hasPermission }) {
   const theme = useSelector((state) => state.app.theme);
+
   const [openMenuPost, setOpenMenuPost] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const menuAnchor = useRef(null);
@@ -33,13 +35,15 @@ export default function SinglePost({ post, profile }) {
             }}
           >
             <Typography>{post.title}</Typography>
-            <MyIconButton
-              onClick={() => {
-                setOpenMenuPost(!openMenuPost);
-              }}
-            >
-              <Edit sx={{ fontSize: 15 }} ref={menuAnchor} />
-            </MyIconButton>
+            {hasPermission() && (
+              <MyIconButton
+                onClick={() => {
+                  setOpenMenuPost(!openMenuPost);
+                }}
+              >
+                <Edit sx={{ fontSize: 15 }} ref={menuAnchor} />
+              </MyIconButton>
+            )}
           </Stack>
           <Stack
             sx={{

@@ -44,7 +44,14 @@ export default function Galery() {
                         <Grid2
                           size={{ xs: 12, sm: 6, lg: 4 }}
                           key={index}
-                          sx={{ textAlign: "center" }}
+                          sx={{
+                            textAlign: "center",
+                            cursor: "pointer",
+                            transition: "transform 0.3s ease-in-out",
+                            "&:hover": {
+                              transform: "scale(1.08)",
+                            },
+                          }}
                         >
                           <Box
                             component="img"

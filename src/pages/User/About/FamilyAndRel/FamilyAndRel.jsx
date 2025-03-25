@@ -8,15 +8,25 @@ import { useParams } from "react-router-dom";
 import Loading from "../../../../components/Loading";
 import LoadingError from "../../../../components/LoadingError";
 import noImage from "../../../../assets/images/user.png";
+import { useSelector } from "react-redux";
 
 export default function FamilyAndRel() {
   const id = useParams().id;
+  const userLogin = useSelector((state) => state.user.profile);
   const { isPending, data, error, refetch } = useGetFamilyRelationship(id);
   const family = data?.data?.body?.family || [];
   const relationship = data?.data?.body?.relationship || {};
 
   const [openAddFamily, setOpenAddFamily] = useState(false);
   const [openAddRel, setOpenAddRel] = useState(false);
+
+  function hasPermission() {
+    if (id == userLogin.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <Stack>
@@ -67,7 +77,7 @@ export default function FamilyAndRel() {
                   </Stack>
                 </ItemAbout>
               </Stack>
-            ) : (
+            ) : hasPermission() ? (
               <Stack
                 sx={{
                   flexDirection: "row",
@@ -95,6 +105,8 @@ export default function FamilyAndRel() {
                   title="Relationship"
                 />
               </Stack>
+            ) : (
+              "Not is added yet!"
             )}
           </Stack>
           <Stack sx={{ mb: 4 }} spacing={1}>
@@ -103,43 +115,54 @@ export default function FamilyAndRel() {
             </Typography>
 
             <Stack spacing={1}>
-              {family.map((j) => {
-                return (
-                  <Stack key={j.id}>
-                    <ItemAbout
-                      myViewer={j.viewer}
-                      value={j}
-                      subject={"Family"}
-                      id={j.id}
-                      title="Family"
-                    >
-                      <Stack sx={{ mb: 1 }}>
-                        <Stack
-                          sx={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            gap: 1,
-                          }}
-                        >
-                          <img
-                            src={j.profileImg ? j.profileImg : noImage}
-                            height={50}
-                            width={50}
-                            style={{
-                              border: "var(--border)",
-                              borderRadius: "50%",
+              {family.length ? (
+                family.map((j) => {
+                  return (
+                    <Stack key={j.id}>
+                      <ItemAbout
+                        myViewer={j.viewer}
+                        value={j}
+                        subject={"Family"}
+                        id={j.id}
+                        title="Family"
+                      >
+                        <Stack sx={{ mb: 1 }}>
+                          <Stack
+                            sx={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              gap: 1,
                             }}
-                          />
-                          <Stack>
-                            <Typography>{j.username}</Typography>
-                            <Box sx={{ fontSize: 13 }}>{j.status}</Box>
+                          >
+                            <img
+                              src={j.profileImg ? j.profileImg : noImage}
+                              height={50}
+                              width={50}
+                              style={{
+                                border: "var(--border)",
+                                borderRadius: "50%",
+                              }}
+                            />
+                            <Stack>
+                              <Typography>{j.username}</Typography>
+                              <Box sx={{ fontSize: 13 }}>{j.status}</Box>
+                            </Stack>
                           </Stack>
                         </Stack>
-                      </Stack>
-                    </ItemAbout>
-                  </Stack>
-                );
-              })}
+                      </ItemAbout>
+                    </Stack>
+                  );
+                })
+              ) : (
+                <Stack
+                  sx={{ flexDirection: "row", alignItems: "center", gap: 2 }}
+                >
+                  <Box>
+                    <ShowIcon subject="Family" />
+                  </Box>
+                  <Typography>Not is added yet!</Typography>
+                </Stack>
+              )}
             </Stack>
 
             <Stack
@@ -149,25 +172,29 @@ export default function FamilyAndRel() {
                 gap: 1,
               }}
             >
-              <Box>
-                <ShowIcon subject="Family" />
-              </Box>
-              <Button
-                variant="text"
-                sx={{ fontSize: 18 }}
-                onClick={() => setOpenAddFamily(true)}
-              >
-                Add Family
-              </Button>
-              <Box></Box>
-              <EditValueSubject
-                openEdit={openAddFamily}
-                onCloseEdit={() => setOpenAddFamily(false)}
-                value=""
-                subject="Family"
-                type="new"
-                title="Family"
-              />
+              {hasPermission() && (
+                <Stack>
+                  <Box>
+                    <ShowIcon subject="Family" />
+                  </Box>
+                  <Button
+                    variant="text"
+                    sx={{ fontSize: 18 }}
+                    onClick={() => setOpenAddFamily(true)}
+                  >
+                    Add Family
+                  </Button>
+                  <Box></Box>
+                  <EditValueSubject
+                    openEdit={openAddFamily}
+                    onCloseEdit={() => setOpenAddFamily(false)}
+                    value=""
+                    subject="Family"
+                    type="new"
+                    title="Family"
+                  />
+                </Stack>
+              )}
             </Stack>
           </Stack>
         </Stack>

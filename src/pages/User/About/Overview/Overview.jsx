@@ -9,12 +9,22 @@ import { useParams } from "react-router-dom";
 import EditValueSubject from "../EditVelueSubject";
 import LoadingError from "../../../../components/LoadingError";
 import Loading from "../../../../components/Loading";
+import { useSelector } from "react-redux";
 
 export default function Overview() {
   const id = useParams().id;
-  const { isPending, data, error, refetch } = useGetOverview(id);
+  const userLogin = useSelector((state) => state.user.profile);
 
+  const { isPending, data, error, refetch } = useGetOverview(id);
   const overview = data?.data.body || {};
+
+  function hasPermission() {
+    if (id == userLogin.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <Stack>
@@ -32,7 +42,7 @@ export default function Overview() {
               viewer={overview["School"].viewer}
             />
           ) : (
-            <AddSubject subject="School" />
+            <AddSubject subject="School" hasPermission={hasPermission} />
           )}
 
           {overview["Location"]?.value ? (
@@ -43,7 +53,7 @@ export default function Overview() {
               viewer={overview["Location"].viewer}
             />
           ) : (
-            <AddSubject subject="Location" />
+            <AddSubject subject="Location" hasPermission={hasPermission} />
           )}
           {overview["Hometown"]?.value ? (
             <Item
@@ -53,7 +63,7 @@ export default function Overview() {
               viewer={overview["Hometown"].viewer}
             />
           ) : (
-            <AddSubject subject="Hometown" />
+            <AddSubject subject="Hometown" hasPermission={hasPermission} />
           )}
           {overview["Status"]?.value ? (
             <Item
@@ -63,7 +73,7 @@ export default function Overview() {
               viewer={overview["Status"].viewer}
             />
           ) : (
-            <AddSubject subject="Status" />
+            <AddSubject subject="Status" hasPermission={hasPermission} />
           )}
           {overview["Phone"]?.value ? (
             <Item
@@ -73,7 +83,7 @@ export default function Overview() {
               viewer={overview["Phone"].viewer}
             />
           ) : (
-            <AddSubject subject="Phone" />
+            <AddSubject subject="Phone" hasPermission={hasPermission} />
           )}
           {overview["Email"]?.value ? (
             <Item
@@ -83,7 +93,7 @@ export default function Overview() {
               viewer={overview["Email"].viewer}
             />
           ) : (
-            <AddSubject subject="Email" />
+            <AddSubject subject="Email" hasPermission={hasPermission} />
           )}
         </Stack>
       )}
@@ -117,28 +127,34 @@ function Item({ subject, text, value, viewer }) {
   );
 }
 
-function AddSubject({ subject }) {
+function AddSubject({ subject, hasPermission }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);
   return (
     <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
       <Box>
         <ShowIcon subject={subject} />
       </Box>
-      <Button
-        variant="text"
-        sx={{ fontSize: 18 }}
-        onClick={() => setOpenAddSubject(true)}
-      >
-        Add {subject}
-      </Button>
-      <Box></Box>
-      <EditValueSubject
-        openEdit={openAddSubject}
-        onCloseEdit={() => setOpenAddSubject(false)}
-        subject={subject}
-        type="new"
-        title="overview"
-      />
+      {hasPermission() ? (
+        <Stack>
+          <Button
+            variant="text"
+            sx={{ fontSize: 18 }}
+            onClick={() => setOpenAddSubject(true)}
+          >
+            Add {subject}
+          </Button>
+          <Box></Box>
+          <EditValueSubject
+            openEdit={openAddSubject}
+            onCloseEdit={() => setOpenAddSubject(false)}
+            subject={subject}
+            type="new"
+            title="overview"
+          />
+        </Stack>
+      ) : (
+        "Not is added yet!"
+      )}
     </Stack>
   );
 }

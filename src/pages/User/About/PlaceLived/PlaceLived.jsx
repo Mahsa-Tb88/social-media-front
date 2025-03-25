@@ -12,11 +12,20 @@ import LoadingError from "../../../../components/LoadingError";
 
 export default function PlaceLived() {
   const id = useParams().id;
+  const userLogin = useSelector((state) => state.user.profile);
   const theme = useSelector((state) => state.app.theme);
   const { isPending, data, error, refetch } = usePlaceLived(id);
   const hometown = data?.data?.body?.hometown || {};
   const currentCity = data?.data?.body?.currentCity || {};
   const usedToLiveCity = data?.data?.body?.usedToLiveCity || [];
+
+  function hasPermission() {
+    if (id == userLogin.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <Stack>
@@ -30,9 +39,21 @@ export default function PlaceLived() {
             Places Lived
           </Typography>
           <Stack spacing={3}>
-            <Hometown hometown={hometown} theme={theme} />
-            <CurrentCity currentCity={currentCity} theme={theme} />
-            <UsedToLiveCity usedToLiveCity={usedToLiveCity} theme={theme} />
+            <Hometown
+              hometown={hometown}
+              theme={theme}
+              hasPermission={hasPermission}
+            />
+            <CurrentCity
+              currentCity={currentCity}
+              theme={theme}
+              hasPermission={hasPermission}
+            />
+            <UsedToLiveCity
+              usedToLiveCity={usedToLiveCity}
+              theme={theme}
+              hasPermission={hasPermission}
+            />
           </Stack>
         </Stack>
       )}
@@ -40,7 +61,7 @@ export default function PlaceLived() {
   );
 }
 
-function Hometown({ hometown, theme }) {
+function Hometown({ hometown, theme, hasPermission }) {
   const [openAddHometown, setOpenAddHometown] = useState(false);
 
   return (
@@ -52,7 +73,6 @@ function Hometown({ hometown, theme }) {
             value={hometown.value}
             subject={"Hometown"}
             title="hometown"
-           
           >
             <Stack sx={{ mb: 1 }}>
               <Stack
@@ -96,29 +116,34 @@ function Hometown({ hometown, theme }) {
           <Box>
             <ShowIcon subject="Hometown" />
           </Box>
-          <Button
-            variant="text"
-            sx={{ fontSize: 18 }}
-            onClick={() => setOpenAddHometown(true)}
-          >
-            Add Hometown
-          </Button>
-
-          <EditValueSubject
-            openEdit={openAddHometown}
-            onCloseEdit={() => setOpenAddHometown(false)}
-            value=""
-            subject="Hometown"
-            type="new"
-            title="hometown"
-          />
+          {hasPermission() ? (
+            <Stack>
+              <Button
+                variant="text"
+                sx={{ fontSize: 18 }}
+                onClick={() => setOpenAddHometown(true)}
+              >
+                Add Hometown
+              </Button>
+              <EditValueSubject
+                openEdit={openAddHometown}
+                onCloseEdit={() => setOpenAddHometown(false)}
+                value=""
+                subject="Hometown"
+                type="new"
+                title="hometown"
+              />
+            </Stack>
+          ) : (
+            <Typography sx={{ ml: 1 }}>Hometown not is added yet!</Typography>
+          )}
         </Stack>
       )}
     </Stack>
   );
 }
 
-function CurrentCity({ currentCity, theme }) {
+function CurrentCity({ currentCity, theme, hasPermission }) {
   const [openAddCurrentCity, setOpenAddCurrentCity] = useState(false);
 
   return (
@@ -173,29 +198,37 @@ function CurrentCity({ currentCity, theme }) {
           <Box>
             <ShowIcon subject="Location" />
           </Box>
-          <Button
-            variant="text"
-            sx={{ fontSize: 18 }}
-            onClick={() => setOpenAddCurrentCity(true)}
-          >
-            Add current city
-          </Button>
+          {hasPermission() ? (
+            <Stack>
+              <Button
+                variant="text"
+                sx={{ fontSize: 18 }}
+                onClick={() => setOpenAddCurrentCity(true)}
+              >
+                Add current city
+              </Button>
 
-          <EditValueSubject
-            openEdit={openAddCurrentCity}
-            onCloseEdit={() => setOpenAddCurrentCity(false)}
-            value=""
-            subject="Current city"
-            type="new"
-            title="currentCity"
-          />
+              <EditValueSubject
+                openEdit={openAddCurrentCity}
+                onCloseEdit={() => setOpenAddCurrentCity(false)}
+                value=""
+                subject="Current city"
+                type="new"
+                title="currentCity"
+              />
+            </Stack>
+          ) : (
+            <Typography sx={{ ml: 1 }}>
+              Current city is not added yet!
+            </Typography>
+          )}
         </Stack>
       )}
     </Stack>
   );
 }
 
-function UsedToLiveCity({ usedToLiveCity, theme }) {
+function UsedToLiveCity({ usedToLiveCity, theme, hasPermission }) {
   const [openAddPlace, setOpenAddPlace] = useState(false);
 
   return (
@@ -248,22 +281,28 @@ function UsedToLiveCity({ usedToLiveCity, theme }) {
         <Box>
           <ShowIcon subject="Location" />
         </Box>
-        <Button
-          variant="text"
-          sx={{ fontSize: 18 }}
-          onClick={() => setOpenAddPlace(true)}
-        >
-          Add used to live
-        </Button>
-        <Box></Box>
-        <EditValueSubject
-          openEdit={openAddPlace}
-          onCloseEdit={() => setOpenAddPlace(false)}
-          value=""
-          subject="used to live"
-          type="new"
-          title="usedToLiveCity"
-        />
+        {hasPermission() ? (
+          <Stack>
+            <Button
+              variant="text"
+              sx={{ fontSize: 18 }}
+              onClick={() => setOpenAddPlace(true)}
+            >
+              Add used to live
+            </Button>
+            <Box></Box>
+            <EditValueSubject
+              openEdit={openAddPlace}
+              onCloseEdit={() => setOpenAddPlace(false)}
+              value=""
+              subject="used to live"
+              type="new"
+              title="usedToLiveCity"
+            />
+          </Stack>
+        ) : (
+          <Typography>Used to live is not added yet!</Typography>
+        )}
       </Stack>
     </Stack>
   );

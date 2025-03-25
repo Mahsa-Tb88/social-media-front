@@ -106,7 +106,7 @@ export default function FamilyAndRel() {
                 />
               </Stack>
             ) : (
-              "Not is added yet!"
+              "Noting is added yet!"
             )}
           </Stack>
           <Stack sx={{ mb: 4 }} spacing={1}>
@@ -160,7 +160,7 @@ export default function FamilyAndRel() {
                   <Box>
                     <ShowIcon subject="Family" />
                   </Box>
-                  <Typography>Not is added yet!</Typography>
+                  <Typography>Noting is added yet!</Typography>
                 </Stack>
               )}
             </Stack>

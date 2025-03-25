@@ -13,14 +13,26 @@ import ChatIcon from "@mui/icons-material/Chat";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import PublicIcon from "@mui/icons-material/Public";
 import LockIcon from "@mui/icons-material/Lock";
+import { useParams } from "react-router-dom";
 
-
-export default function SinglePost({ post, profile, hasPermission }) {
+export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
+  const userLogin = useSelector((state) => state.user.profile);
+  const id = useParams().id;
+
+  console.log("post single is", post);
 
   const [openMenuPost, setOpenMenuPost] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const menuAnchor = useRef(null);
+
+  function hasPermission() {
+    if (id == userLogin.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <Stack>

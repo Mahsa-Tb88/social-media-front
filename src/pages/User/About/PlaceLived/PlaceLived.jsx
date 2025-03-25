@@ -135,7 +135,7 @@ function Hometown({ hometown, theme, hasPermission }) {
               />
             </Stack>
           ) : (
-            <Typography sx={{ ml: 1 }}>Hometown not is added yet!</Typography>
+            <Typography sx={{ ml: 1 }}>Hometown is not added yet!</Typography>
           )}
         </Stack>
       )}

@@ -29,7 +29,6 @@ export default function PostsSection({ profile }) {
   const menuAnchor = useRef(null);
 
   const [showComments, setShowComments] = useState(false);
-  console.log("sorttt", data?.data?.body);
 
   function hasPermission() {
     if (id == userLogin.id) {
@@ -38,7 +37,7 @@ export default function PostsSection({ profile }) {
       return false;
     }
   }
-
+  console.log("ooo", hasPermission);
   return (
     <Container>
       {hasPermission() && (
@@ -81,15 +80,9 @@ export default function PostsSection({ profile }) {
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
               ) ? (
               <Stack>
-                {data?.data.body.map((p) => {
-                  return (
-                    <SinglePost
-                      post={p}
-                      profile={profile}
-                      hasPermission={hasPermission}
-                    />
-                  );
-                })}
+               {/*  {data?.data.body.map((p) => {
+                  return <SinglePost post={p} profile={profile} />;
+                })} */}
               </Stack>
             ) : (
               ""

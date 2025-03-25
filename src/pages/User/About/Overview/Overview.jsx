@@ -153,7 +153,7 @@ function AddSubject({ subject, hasPermission }) {
           />
         </Stack>
       ) : (
-        "Not is added yet!"
+        "Noting is added yet!"
       )}
     </Stack>
   );

@@ -24,7 +24,7 @@ import {
   useFilterPlaceViewer,
   useEditPost,
 } from "../../../../../utils/mutation";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function FilterViewer({
@@ -35,8 +35,13 @@ export default function FilterViewer({
   subject,
   title,
   itemId,
+  userId,
 }) {
-  const id = useParams().id;
+  let id = useParams().id;
+  const location = useLocation();
+  if (location.pathname.includes("post")) {
+    id = userId;
+  }
 
   const mutationOverviewViewer = useFilterOverviewsViewer();
   const mutationInfosViewer = useFilterInfosViewer();

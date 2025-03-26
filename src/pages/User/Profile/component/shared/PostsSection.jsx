@@ -37,11 +37,10 @@ export default function PostsSection({ profile }) {
       return false;
     }
   }
-  console.log("ooo", hasPermission);
   return (
     <Container>
       {hasPermission() && (
-        <Paper sx={{ p: 4 }}>
+        <Paper sx={{ p: 4,mb:3 }}>
           <Stack sx={{ flexDirection: "row", gap: 2 }}>
             <Box
               component="img"
@@ -70,7 +69,7 @@ export default function PostsSection({ profile }) {
         </Paper>
       )}
       {data?.data.body.length ? (
-        <Stack sx={{ mt: 3, minHeight: "100vh" }}>
+        <Stack sx={{ mt: 0, minHeight: "100vh" }}>
           <Stack>
             {isPending ? (
               <Loading message="Loading Post..." />
@@ -80,9 +79,9 @@ export default function PostsSection({ profile }) {
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
               ) ? (
               <Stack>
-               {/*  {data?.data.body.map((p) => {
+                {data?.data.body.map((p) => {
                   return <SinglePost post={p} profile={profile} />;
-                })} */}
+                })}
               </Stack>
             ) : (
               ""

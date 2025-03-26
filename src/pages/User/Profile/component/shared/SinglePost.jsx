@@ -13,14 +13,21 @@ import ChatIcon from "@mui/icons-material/Chat";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import PublicIcon from "@mui/icons-material/Public";
 import LockIcon from "@mui/icons-material/Lock";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
-  const id = useParams().id;
+  let id = useParams().id;
+  console.log("post");
 
-  console.log("post single is", post);
+  const location = useLocation();
+  console.log("location", location.pathname);
+  console.log("post", post);
+
+  if (location.pathname.includes("post")) {
+    id = post.userId._id;
+  }
 
   const [openMenuPost, setOpenMenuPost] = useState(false);
   const [isLike, setIsLike] = useState(false);
@@ -37,7 +44,12 @@ export default function SinglePost({ post, profile }) {
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>
-        <Info post={post} profile={profile} theme={theme} />
+        <Info
+          post={post}
+          profile={profile}
+          theme={theme}
+          hasPermission={hasPermission}
+        />
         <Stack spacing={2}>
           <Stack
             sx={{
@@ -180,7 +192,7 @@ export default function SinglePost({ post, profile }) {
   );
 }
 
-function Info({ profile, post, theme }) {
+function Info({ profile, post, theme, hasPermission }) {
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(post.viewer);
 
@@ -263,14 +275,18 @@ function Info({ profile, post, theme }) {
             />
           )}
         </Stack>
-        <FilterViewer
-          open={openFilterViewer}
-          onClose={() => setOpenFilterViewer(false)}
-          setViewer={setViewer}
-          viewer={viewer}
-          title="post"
-          itemId={post._id}
-        />
+
+        {hasPermission() && (
+          <FilterViewer
+            open={openFilterViewer}
+            onClose={() => setOpenFilterViewer(false)}
+            setViewer={setViewer}
+            viewer={viewer}
+            title="post"
+            itemId={post._id}
+            userId={post.userId._id}
+          />
+        )}
       </Stack>
     </Stack>
   );

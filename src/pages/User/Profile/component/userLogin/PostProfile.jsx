@@ -106,7 +106,10 @@ export default function PostProfile({ open, onClose, type, post }) {
   const queryClient = useQueryClient();
 
   function onSubmit(data) {
+    console.log("edit...");
     if (type == "edit") {
+      console.log("edit", data);
+
       data.id = post._id;
       data.userId = post.userId;
       const img = imagePost.replace(SERVER_URL, "");
@@ -114,8 +117,12 @@ export default function PostProfile({ open, onClose, type, post }) {
 
       editMutation.mutate(data, {
         onSuccess(d) {
+          setValue("title", "");
+          setValue("desc", "");
+          setImagePost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
+          queryClient.invalidateQueries({ queryKey: ["singlePost"] });
         },
         onError(e) {
           console.log("Postprofile", error);
@@ -127,6 +134,9 @@ export default function PostProfile({ open, onClose, type, post }) {
       data.id = profile.id;
       mutate(data, {
         onSuccess(d) {
+          setValue("title", "");
+          setValue("desc", "");
+          setImagePost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         },
@@ -135,9 +145,6 @@ export default function PostProfile({ open, onClose, type, post }) {
         },
       });
     }
-    setValue("title", "");
-    setValue("desc", "");
-    setImagePost("");
   }
 
   function removeImageHandler() {

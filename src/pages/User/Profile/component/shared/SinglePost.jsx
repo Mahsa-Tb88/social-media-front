@@ -18,13 +18,9 @@ import { useLocation, useParams } from "react-router-dom";
 export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
-  let id = useParams().id;
-  console.log("post");
-
   const location = useLocation();
-  console.log("location", location.pathname);
-  console.log("post", post);
 
+  let id = useParams().id;
   if (location.pathname.includes("post")) {
     id = post.userId._id;
   }

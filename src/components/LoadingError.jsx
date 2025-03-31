@@ -14,7 +14,7 @@ export default function LoadingError({
       icon={false}
       sx={{
         width: { xs: "100%", sm: "400px" },
-        py:3,
+        py: 3,
         flexDirection: "column",
         display: "flex",
         justifyContent: "center",

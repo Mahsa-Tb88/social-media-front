@@ -1,9 +1,28 @@
-import { Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import ShowIcon from "../../../About/ShowIcon";
+import { useSelector } from "react-redux";
 
 export default function IntroUser({ overview }) {
   const intro = ["Pronounce", "School", "Location", "Hometown", "Status"];
+  console.log("overvieww isssss", overview);
+  const userLogin = useSelector((state) => state.user.profile);
+
+  // function isPrivate() {
+  //   const findFriend = userLogin.friends.listFriend.find(
+  //     (f) => f.id == user._id
+  //   );
+  //   if (findFriend) {
+  //     if (findFriend.status == "pending") {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
   const keys = Object.keys(overview);
 
   function findKeys() {
@@ -17,27 +36,42 @@ export default function IntroUser({ overview }) {
     return m;
   }
 
-  if (!findKeys()) {
+  if (!findKeys() && "!isPrivate()") {
     return <Stack>Nothing to show!</Stack>;
   } else {
   }
 
   return (
     <Stack>
-      {intro.map((item) => {
-        return (
-          <Stack>
-            {overview && overview[item]?.value ? (
-              <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-                <ShowIcon subject={item} item={overview[item].value} />
-                <Typography sx={{ ml: 2 }}>{overview[item].value}</Typography>
-              </Stack>
-            ) : (
-              ""
-            )}
-          </Stack>
-        );
-      })}
+      {"isPrivate()" ? (
+        <Stack
+          sx={{
+            mt: 25,
+            mb: 10,
+            textAlign: "center",
+          }}
+        >
+          <Divider />
+          <Typography component={"h3"} variant="h5" sx={{ pt: 2 }}>
+            This profile is private
+          </Typography>
+        </Stack>
+      ) : (
+        intro.map((item) => {
+          return (
+            <Stack>
+              {overview && overview[item]?.value ? (
+                <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+                  <ShowIcon subject={item} item={overview[item].value} />
+                  <Typography sx={{ ml: 2 }}>{overview[item].value}</Typography>
+                </Stack>
+              ) : (
+                ""
+              )}
+            </Stack>
+          );
+        })
+      )}
     </Stack>
   );
 }

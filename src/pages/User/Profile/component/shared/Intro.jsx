@@ -14,7 +14,7 @@ export default function Intro() {
   const { isPending, data, error, refetch } = useGetOverview(id);
   const overview = data?.data?.body;
 
-  console.log("overview is....", overview);
+ 
 
   return (
     <Paper sx={{ p: 2 }}>
@@ -24,7 +24,10 @@ export default function Intro() {
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : user.id != id ? (
         <IntroUser overview={overview} />
       ) : (

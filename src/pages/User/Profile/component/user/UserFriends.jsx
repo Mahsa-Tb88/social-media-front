@@ -5,8 +5,10 @@ import Loading from "../../../../../components/Loading";
 import LoadingError from "../../../../../components/LoadingError";
 import { useNavigate, useParams } from "react-router-dom";
 import noImage from "../../../../../assets/images/user.png";
+import { useSelector } from "react-redux";
 
 export default function UserFriends() {
+  const userLogin = useSelector((state) => state.user.profile);
   const [friends, setFriends] = useState([]);
   const navigate = useNavigate();
   const id = useParams().id;
@@ -15,6 +17,7 @@ export default function UserFriends() {
 
   useEffect(() => {
     if (data) {
+      
       const list = data.data.body.listFriend.filter(
         (f) => f.status == "accepted"
       );

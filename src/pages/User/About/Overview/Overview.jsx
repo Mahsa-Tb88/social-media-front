@@ -13,20 +13,11 @@ import { useSelector } from "react-redux";
 
 export default function Overview() {
   const id = useParams().id;
-  const userLogin = useSelector((state) => state.user.profile);
-
   const { isPending, data, error, refetch } = useGetOverview(id);
+
   const overview = data?.data.body[0] || {};
   const isFriend = data?.data.body[1] || false;
   const isOwner = data?.data.body[2] || false;
-
-  function hasPermission() {
-    if (id == userLogin.id) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   const overviewKeys = [
     "School",
@@ -60,8 +51,8 @@ export default function Overview() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack sx={{ gap: 4 }}>
-          {!Object.keys(overview).length ? (
-            <Stack>Nothing to show!</Stack>
+          {!Object.keys(overview).length && !isFriend && !isOwner ? (
+            <Stack>Noting to show!</Stack>
           ) : (
             overviewKeys.map((item, index) => {
               return overview[item]?.value ? (
@@ -71,13 +62,10 @@ export default function Overview() {
                   value={overview[item].value}
                   viewer={overview[item].viewer}
                   key={index}
+                  isOwner={isOwner}
                 />
-              ) : !overview[item]?.value && (isFriend || isOwner) ? (
-                <AddSubject
-                  subject={item}
-                  hasPermission={hasPermission}
-                  key={index}
-                />
+              ) : !overview[item]?.value && (isOwner || isFriend) ? (
+                <AddSubject subject={item} isOwner={isOwner} key={index} />
               ) : (
                 ""
               );
@@ -89,8 +77,8 @@ export default function Overview() {
   );
 }
 
-function Item({ subject, text, value, viewer }) {
-  return (
+function Item({ subject, text, value, viewer, isOwner }) {
+  return isOwner ? (
     <ItemAbout
       subject={subject}
       text={text}
@@ -98,31 +86,39 @@ function Item({ subject, text, value, viewer }) {
       myViewer={viewer}
       title="overview"
     >
-      <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-        {subject == "Status" && value == "Married" ? (
-          <ShowIcon subject={value} sx={{ mr: 1 }} />
-        ) : subject == "Status" && value == "In relationship" ? (
-          <ShowIcon subject={value} sx={{ mr: 1 }} />
-        ) : subject == "Status" && value == "Single" ? (
-          <ShowIcon subject={value} sx={{ mr: 1 }} />
-        ) : (
-          <ShowIcon subject={subject} sx={{ mr: 1 }} />
-        )}
-        <Typography>{text}</Typography>
-        <Typography>{value}</Typography>
-      </Stack>
+      <Content subject={subject} value={value} text={text} />
     </ItemAbout>
+  ) : (
+    <Content subject={subject} value={value} text={text} />
   );
 }
 
-function AddSubject({ subject, hasPermission }) {
+function Content({ subject, value, text }) {
+  return (
+    <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
+      {subject == "Status" && value == "Married" ? (
+        <ShowIcon subject={value} sx={{ mr: 1 }} />
+      ) : subject == "Status" && value == "In relationship" ? (
+        <ShowIcon subject={value} sx={{ mr: 1 }} />
+      ) : subject == "Status" && value == "Single" ? (
+        <ShowIcon subject={value} sx={{ mr: 1 }} />
+      ) : (
+        <ShowIcon subject={subject} sx={{ mr: 1 }} />
+      )}
+      <Typography>{text}</Typography>
+      <Typography>{value}</Typography>
+    </Stack>
+  );
+}
+
+function AddSubject({ subject, isOwner }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);
   return (
     <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
       <Box>
         <ShowIcon subject={subject} />
       </Box>
-      {hasPermission() ? (
+      {isOwner ? (
         <Stack>
           <Button
             variant="text"
@@ -141,7 +137,7 @@ function AddSubject({ subject, hasPermission }) {
           />
         </Stack>
       ) : (
-        "Noting is added yet!"
+        "It is not added yet!"
       )}
     </Stack>
   );

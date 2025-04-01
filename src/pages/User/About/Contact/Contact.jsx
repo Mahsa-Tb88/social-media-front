@@ -11,14 +11,6 @@ import { useSelector } from "react-redux";
 
 export default function Contact() {
   const id = useParams().id;
-  const userLogin = useSelector((state) => state.user.profile);
-  function hasPermission() {
-    if (id == userLogin.id) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   const { isPending, data, error, refetch } = useGetContactBaseInfo(id);
   const myData = data?.data.body[0] || {};
@@ -33,145 +25,39 @@ export default function Contact() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack spacing={5}>
-          <ContactInfo
-            data={myData}
-            hasPermission={hasPermission}
-            isFriend={isFriend}
-            isOwner={isOwner}
-          />
-          <Websites
-            data={myData}
-            hasPermission={hasPermission}
-            isFriend={isFriend}
-            isOwner={isOwner}
-          />
-          <BasicInfo
-            data={myData}
-            hasPermission={hasPermission}
-            isFriend={isFriend}
-            isOwner={isOwner}
-          />
+          <ContactInfo data={myData} isFriend={isFriend} isOwner={isOwner} />
+          <Websites data={myData} isFriend={isFriend} isOwner={isOwner} />
+          <BasicInfo data={myData} isFriend={isFriend} isOwner={isOwner} />
         </Stack>
       )}
     </Stack>
   );
 }
 
-function ContactInfo({ data, hasPermission, isFriend, isOwner }) {
-  const mobile = data.Mobile;
-  const email = data.Email;
+function ContactInfo({ data, isFriend, isOwner }) {
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Contact
       </Typography>
-
       <Stack spacing={1}>
-        {mobile?.value ? (
-          <ItemAbout
-            myViewer={mobile.viewer}
-            value={mobile.value}
-            subject={"Mobile"}
-            title={"contactBaseInfo"}
-          >
-            <Stack
-              sx={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Box>
-                <ShowIcon subject={"Mobile"} />
-              </Box>
-              <Stack>
-                <Stack>
-                  <Typography>{mobile.value}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>{"Mobile"}</Typography>
-                </Stack>
-              </Stack>
-            </Stack>
-          </ItemAbout>
-        ) : !mobile?.value && (isFriend || isOwner) ? (
-          <AddSubject subject={"Mobile"} hasPermission={hasPermission} />
-        ) : (
-          ""
-        )}
-        {email?.value ? (
-          <ItemAbout
-            myViewer={email.viewer}
-            value={email.value}
-            subject={"Email"}
-            title={"contactBaseInfo"}
-          >
-            <Stack
-              sx={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Box>
-                <ShowIcon subject={"Email"} />
-              </Box>
-              <Stack>
-                <Stack>
-                  <Typography>{email.value}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>{"Email"}</Typography>
-                </Stack>
-              </Stack>
-            </Stack>
-          </ItemAbout>
-        ) : !email?.value && (isFriend || isOwner) ? (
-          <AddSubject subject={"Email"} hasPermission={hasPermission} />
-        ) : (
-          ""
-        )}
-      </Stack>
-    </Stack>
-  );
-}
-
-function Websites({ data, hasPermission, isFriend, isOwner }) {
-  return (
-    <Stack>
-      <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
-        Website & Social Media
-      </Typography>
-      <Stack spacing={2}>
-        {["Website", "LinkedIn", "Github"].map((item, index) => {
+        {["Mobile", "Email"].map((item, index) => {
           return data[item]?.value ? (
-            <ItemAbout
-              myViewer={data[item].viewer}
-              value={data[item].value}
-              subject={item}
-              title={"contactBaseInfo"}
-              key={index}
-            >
-              <Stack
-                sx={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 1,
-                }}
+            isOwner ? (
+              <ItemAbout
+                myViewer={data[item].viewer}
+                value={data[item].value}
+                subject={item}
+                title={"contactBaseInfo"}
+                index={index}
               >
-                <Box>
-                  <ShowIcon subject={item} />
-                </Box>
-                <Stack>
-                  <Stack>
-                    <Typography>{data[item].value}</Typography>
-                    <Typography sx={{ fontSize: 10 }}>{item}</Typography>
-                  </Stack>
-                </Stack>
-              </Stack>
-            </ItemAbout>
+                <Content item={item} dataItem={data[item]} />
+              </ItemAbout>
+            ) : (
+              <Content item={item} dataItem={data[item]} />
+            )
           ) : !data[item]?.value && (isFriend || isOwner) ? (
-            <AddSubject
-              subject={item}
-              hasPermission={hasPermission}
-              key={index}
-            />
+            <AddSubject subject={item} isOwner={isOwner} />
           ) : (
             ""
           );
@@ -181,7 +67,43 @@ function Websites({ data, hasPermission, isFriend, isOwner }) {
   );
 }
 
-function BasicInfo({ data, hasPermission, isFriend, isOwner }) {
+function Websites({ data, isFriend, isOwner }) {
+  return (
+    <Stack>
+      {
+        <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
+          Website & Social Media
+        </Typography>
+      }
+
+      <Stack spacing={2}>
+        {["Website", "LinkedIn", "Github"].map((item, index) => {
+          return data[item]?.value ? (
+            isOwner ? (
+              <ItemAbout
+                myViewer={data[item].viewer}
+                value={data[item].value}
+                subject={item}
+                title={"contactBaseInfo"}
+                key={index}
+              >
+                <Content item={item} dataItem={data[item]} />
+              </ItemAbout>
+            ) : (
+              <Content item={item} dataItem={data[item]} />
+            )
+          ) : !data[item]?.value && (isFriend || isOwner) ? (
+            <AddSubject subject={item} isOwner={isOwner} key={index} />
+          ) : (
+            ""
+          );
+        })}
+      </Stack>
+    </Stack>
+  );
+}
+
+function BasicInfo({ data, isFriend, isOwner }) {
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
@@ -190,9 +112,21 @@ function BasicInfo({ data, hasPermission, isFriend, isOwner }) {
       <Stack spacing={1}>
         {["Gender", "Pronouns", "Birthday", "Language"].map((item, index) => {
           return data[item]?.value ? (
-            <Item item={data[item]} subject={item} key={index} />
-          ) : data[item]?.value && (isFriend || isOwner) ? (
-            <AddSubject subject={item} hasPermission={hasPermission} />
+            isOwner ? (
+              <ItemAbout
+                myViewer={data[item].viewer}
+                value={data[item].value}
+                subject={item}
+                title="contactBaseInfo"
+                key={index}
+              >
+                <Content dataItem={data[item]} item={item} />
+              </ItemAbout>
+            ) : (
+              <Content dataItem={data[item]} item={item} />
+            )
+          ) : !data[item]?.value && (isFriend || isOwner) ? (
+            <AddSubject subject={item} isOwner={isOwner} key={index} />
           ) : (
             ""
           );
@@ -201,48 +135,43 @@ function BasicInfo({ data, hasPermission, isFriend, isOwner }) {
     </Stack>
   );
 }
-function Item({ item, subject }) {
+
+function Content({ dataItem, item }) {
   return (
-    <ItemAbout
-      myViewer={item.viewer}
-      value={item.value}
-      subject={subject}
-      title="contactBaseInfo"
+    <Stack
+      sx={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 1,
+      }}
     >
-      <Stack
-        sx={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 1,
-        }}
-      >
-        <Box>
-          <ShowIcon subject={subject} />
-        </Box>
+      <Box>
+        <ShowIcon subject={item} />
+      </Box>
+      <Stack>
         <Stack>
-          <Stack>
-            <Typography>{item.value}</Typography>
-            <Typography sx={{ fontSize: 10 }}>{subject}</Typography>
-          </Stack>
+          <Typography>{dataItem.value}</Typography>
+          <Typography sx={{ fontSize: 10 }}>{item}</Typography>
         </Stack>
       </Stack>
-    </ItemAbout>
+    </Stack>
   );
 }
-function AddSubject({ subject, hasPermission }) {
+
+function AddSubject({ subject, isOwner }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);
   return (
     <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
       <Box>
         <ShowIcon subject={subject} />
       </Box>
-      {hasPermission() ? (
+      {isOwner ? (
         <Stack>
           <Button
             variant="text"
             sx={{ fontSize: 18 }}
             onClick={() => setOpenAddSubject(true)}
-            hasPermission={hasPermission}
+            isOwner={isOwner}
           >
             Add {subject}
           </Button>

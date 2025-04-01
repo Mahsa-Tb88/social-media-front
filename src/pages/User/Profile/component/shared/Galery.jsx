@@ -17,7 +17,6 @@ import { useSelector } from "react-redux";
 
 export default function Galery() {
   const theme = useSelector((state) => state.app.theme);
-
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetGalley(id);
   const navigate = useNavigate();
@@ -69,7 +68,7 @@ export default function Galery() {
                   </Grid2>
                 ) : (
                   <Typography component="h5" variant="h5">
-                    Nothing to show!
+                    No photos to show!
                   </Typography>
                 )}
               </Stack>
@@ -99,7 +98,7 @@ export default function Galery() {
                   })
                 ) : (
                   <Typography component="h5" variant="h5">
-                    Nothing to show!
+                    No Videos to show!
                   </Typography>
                 )}
               </Stack>

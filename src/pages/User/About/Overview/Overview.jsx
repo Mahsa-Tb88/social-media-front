@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import ItemAbout from "../ItemAbout";
 
@@ -16,7 +16,9 @@ export default function Overview() {
   const userLogin = useSelector((state) => state.user.profile);
 
   const { isPending, data, error, refetch } = useGetOverview(id);
-  const overview = data?.data.body || {};
+  const overview = data?.data.body[0] || {};
+  const isFriend = data?.data.body[1] || false;
+  const isOwner = data?.data.body[2] || false;
 
   function hasPermission() {
     if (id == userLogin.id) {
@@ -26,6 +28,30 @@ export default function Overview() {
     }
   }
 
+  const overviewKeys = [
+    "School",
+    "Location",
+    "Hometown",
+    "Status",
+    "Phone",
+    "Email",
+  ];
+
+  function showText(subject) {
+    if (subject == "School") {
+      return "Study at";
+    } else if (subject == "Location") {
+      return "Livs in";
+    } else if (subject == "Hometown") {
+      return "From";
+    } else if (subject == "Status") {
+      return "I am";
+    } else if (subject == "Phone") {
+      return "Phone";
+    } else {
+      return "Email";
+    }
+  }
   return (
     <Stack>
       {isPending ? (
@@ -34,66 +60,28 @@ export default function Overview() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack sx={{ gap: 4 }}>
-          {overview["School"]?.value ? (
-            <Item
-              subject="School"
-              text="Study at"
-              value={overview["School"].value}
-              viewer={overview["School"].viewer}
-            />
+          {!Object.keys(overview).length ? (
+            <Stack>Nothing to show!</Stack>
           ) : (
-            <AddSubject subject="School" hasPermission={hasPermission} />
-          )}
-
-          {overview["Location"]?.value ? (
-            <Item
-              subject="Location"
-              text="Livs in"
-              value={overview["Location"].value}
-              viewer={overview["Location"].viewer}
-            />
-          ) : (
-            <AddSubject subject="Location" hasPermission={hasPermission} />
-          )}
-          {overview["Hometown"]?.value ? (
-            <Item
-              subject="Hometown"
-              text="From"
-              value={overview["Hometown"].value}
-              viewer={overview["Hometown"].viewer}
-            />
-          ) : (
-            <AddSubject subject="Hometown" hasPermission={hasPermission} />
-          )}
-          {overview["Status"]?.value ? (
-            <Item
-              subject="Status"
-              text="I am"
-              value={overview["Status"].value}
-              viewer={overview["Status"].viewer}
-            />
-          ) : (
-            <AddSubject subject="Status" hasPermission={hasPermission} />
-          )}
-          {overview["Phone"]?.value ? (
-            <Item
-              subject="Phone"
-              text="Phone"
-              value={overview["Phone"].value}
-              viewer={overview["Phone"].viewer}
-            />
-          ) : (
-            <AddSubject subject="Phone" hasPermission={hasPermission} />
-          )}
-          {overview["Email"]?.value ? (
-            <Item
-              subject="Email"
-              text="Email"
-              value={overview["Email"].value}
-              viewer={overview["Email"].viewer}
-            />
-          ) : (
-            <AddSubject subject="Email" hasPermission={hasPermission} />
+            overviewKeys.map((item, index) => {
+              return overview[item]?.value ? (
+                <Item
+                  subject={item}
+                  text={showText(item)}
+                  value={overview[item].value}
+                  viewer={overview[item].viewer}
+                  key={index}
+                />
+              ) : !overview[item]?.value && (isFriend || isOwner) ? (
+                <AddSubject
+                  subject={item}
+                  hasPermission={hasPermission}
+                  key={index}
+                />
+              ) : (
+                ""
+              );
+            })
           )}
         </Stack>
       )}

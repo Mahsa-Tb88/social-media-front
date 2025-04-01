@@ -8,8 +8,8 @@ import noImage from "../../../../../assets/images/user.png";
 import { useSelector } from "react-redux";
 
 export default function UserFriends() {
-  const userLogin = useSelector((state) => state.user.profile);
   const [friends, setFriends] = useState([]);
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const id = useParams().id;
   const { data, isPending, error, refetch } = useGetFriends(id);
@@ -17,11 +17,13 @@ export default function UserFriends() {
 
   useEffect(() => {
     if (data) {
-      
-      const list = data.data.body.listFriend.filter(
-        (f) => f.status == "accepted"
-      );
-      setFriends(list);
+      const listFriend = data.data.body.listFriend;
+      if (!listFriend.length) {
+        setMsg(data.data.body.message);
+      } else {
+        const friendsList = listFriend.filter((f) => f.status == "accepted");
+        setFriends(friendsList);
+      }
     }
   }, [data]);
 
@@ -38,7 +40,7 @@ export default function UserFriends() {
         </Stack>
       ) : friends.length == 0 ? (
         <Typography component={"h5"} variant="h5">
-          There is no friend yet!
+          {msg}
         </Typography>
       ) : (
         <Grid2 container spacing={3}>

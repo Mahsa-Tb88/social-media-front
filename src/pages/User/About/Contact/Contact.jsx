@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, ListItemAvatar, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
 import ShowIcon from "../ShowIcon";
@@ -21,7 +21,10 @@ export default function Contact() {
   }
 
   const { isPending, data, error, refetch } = useGetContactBaseInfo(id);
-  const myData = data?.data.body || [];
+  const myData = data?.data.body[0] || {};
+  const isFriend = data?.data.body[1] || false;
+  const isOwner = data?.data.body[2] || false;
+
   return (
     <Stack>
       {isPending ? (
@@ -30,16 +33,31 @@ export default function Contact() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack spacing={5}>
-          <ContactInfo data={myData} hasPermission={hasPermission} />
-          <Websites data={myData} hasPermission={hasPermission} />
-          <BasicInfo data={myData} hasPermission={hasPermission} />
+          <ContactInfo
+            data={myData}
+            hasPermission={hasPermission}
+            isFriend={isFriend}
+            isOwner={isOwner}
+          />
+          <Websites
+            data={myData}
+            hasPermission={hasPermission}
+            isFriend={isFriend}
+            isOwner={isOwner}
+          />
+          <BasicInfo
+            data={myData}
+            hasPermission={hasPermission}
+            isFriend={isFriend}
+            isOwner={isOwner}
+          />
         </Stack>
       )}
     </Stack>
   );
 }
 
-function ContactInfo({ data, hasPermission }) {
+function ContactInfo({ data, hasPermission, isFriend, isOwner }) {
   const mobile = data.Mobile;
   const email = data.Email;
   return (
@@ -74,8 +92,10 @@ function ContactInfo({ data, hasPermission }) {
               </Stack>
             </Stack>
           </ItemAbout>
-        ) : (
+        ) : !mobile?.value && (isFriend || isOwner) ? (
           <AddSubject subject={"Mobile"} hasPermission={hasPermission} />
+        ) : (
+          ""
         )}
         {email?.value ? (
           <ItemAbout
@@ -102,150 +122,81 @@ function ContactInfo({ data, hasPermission }) {
               </Stack>
             </Stack>
           </ItemAbout>
-        ) : (
+        ) : !email?.value && (isFriend || isOwner) ? (
           <AddSubject subject={"Email"} hasPermission={hasPermission} />
+        ) : (
+          ""
         )}
       </Stack>
     </Stack>
   );
 }
 
-function Websites({ data, hasPermission }) {
-  const website = data.Website;
-  const linkedIn = data.LinkedIn;
-  const github = data.Github;
+function Websites({ data, hasPermission, isFriend, isOwner }) {
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Website & Social Media
       </Typography>
-
-      <Stack spacing={1}>
-        {website?.value ? (
-          <ItemAbout
-            myViewer={website.viewer}
-            value={website.value}
-            subject={"Website"}
-            title={"contactBaseInfo"}
-          >
-            <Stack
-              sx={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 1,
-              }}
+      <Stack spacing={2}>
+        {["Website", "LinkedIn", "Github"].map((item, index) => {
+          return data[item]?.value ? (
+            <ItemAbout
+              myViewer={data[item].viewer}
+              value={data[item].value}
+              subject={item}
+              title={"contactBaseInfo"}
+              key={index}
             >
-              <Box>
-                <ShowIcon subject={"Website"} />
-              </Box>
-              <Stack>
+              <Stack
+                sx={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <Box>
+                  <ShowIcon subject={item} />
+                </Box>
                 <Stack>
-                  <Typography>{website.value}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>{"Website"}</Typography>
+                  <Stack>
+                    <Typography>{data[item].value}</Typography>
+                    <Typography sx={{ fontSize: 10 }}>{item}</Typography>
+                  </Stack>
                 </Stack>
               </Stack>
-            </Stack>
-          </ItemAbout>
-        ) : (
-          <AddSubject subject={"Website"} hasPermission={hasPermission} />
-        )}
-        {linkedIn?.value ? (
-          <ItemAbout
-            myViewer={linkedIn.viewer}
-            value={linkedIn.value}
-            subject={"LinkedIn"}
-            title={"contactBaseInfo"}
-          >
-            <Stack
-              sx={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Box>
-                <ShowIcon subject={"LinkedIn"} />
-              </Box>
-              <Stack>
-                <Stack>
-                  <Typography>{linkedIn.value}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>{"LinkedIn"}</Typography>
-                </Stack>
-              </Stack>
-            </Stack>
-          </ItemAbout>
-        ) : (
-          <AddSubject subject={"LinkedIn"} hasPermission={hasPermission} />
-        )}
-        {github?.value ? (
-          <ItemAbout
-            myViewer={github.viewer}
-            value={github.value}
-            subject={"Github"}
-            title="contactBaseInfo"
-          >
-            <Stack
-              sx={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Box>
-                <ShowIcon subject={"Github"} />
-              </Box>
-              <Stack>
-                <Stack>
-                  <Typography>{github.value}</Typography>
-                  <Typography sx={{ fontSize: 10 }}>{"Github"}</Typography>
-                </Stack>
-              </Stack>
-            </Stack>
-          </ItemAbout>
-        ) : (
-          <AddSubject subject={"Github"} hasPermission={hasPermission} />
-        )}
+            </ItemAbout>
+          ) : !data[item]?.value && (isFriend || isOwner) ? (
+            <AddSubject
+              subject={item}
+              hasPermission={hasPermission}
+              key={index}
+            />
+          ) : (
+            ""
+          );
+        })}
       </Stack>
     </Stack>
   );
 }
 
-function BasicInfo({ data, hasPermission }) {
-  const gender = data.Gender;
-  const pronouns = data.Pronouns;
-  const birthday = data.Birthday;
-  const language = data.Language;
-
+function BasicInfo({ data, hasPermission, isFriend, isOwner }) {
   return (
     <Stack>
       <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
         Basic Info
       </Typography>
       <Stack spacing={1}>
-        {gender?.value ? (
-          <Item item={gender} subject="Gender" />
-        ) : (
-          <AddSubject subject={"Gender"} hasPermission={hasPermission} />
-        )}
-        {pronouns?.value ? (
-          <Item item={pronouns} subject="Pronouns" />
-        ) : (
-          <AddSubject subject={"Pronouns"} hasPermission={hasPermission} />
-        )}
-        {birthday?.value ? (
-          <Item
-            item={birthday}
-            subject="Birthday"
-            hasPermission={hasPermission}
-          />
-        ) : (
-          <AddSubject subject={"Birthday"} hasPermission={hasPermission} />
-        )}
-        {language?.value ? (
-          <Item item={language} subject="Language" />
-        ) : (
-          <AddSubject subject={"Language"} hasPermission={hasPermission} />
-        )}
+        {["Gender", "Pronouns", "Birthday", "Language"].map((item, index) => {
+          return data[item]?.value ? (
+            <Item item={data[item]} subject={item} key={index} />
+          ) : data[item]?.value && (isFriend || isOwner) ? (
+            <AddSubject subject={item} hasPermission={hasPermission} />
+          ) : (
+            ""
+          );
+        })}
       </Stack>
     </Stack>
   );

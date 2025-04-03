@@ -13,7 +13,6 @@ export default function UserFriends() {
   const navigate = useNavigate();
   const id = useParams().id;
   const { data, isPending, error, refetch } = useGetFriends(id);
-  console.log("dataaaccddss", data);
 
   useEffect(() => {
     if (data) {

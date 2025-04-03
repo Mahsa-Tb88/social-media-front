@@ -45,7 +45,7 @@ export default function ShowIcon({ subject, item }) {
         <CakeIcon />
       ) : subject == "Language" ? (
         <ExplicitIcon />
-      ) : subject == "Location" || subject == "current city" ? (
+      ) : subject == "current city" ? (
         <LocationOnIcon />
       ) : subject == "Hometown" ? (
         <HomeIcon />

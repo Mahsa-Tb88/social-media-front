@@ -2,7 +2,7 @@ import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useGetOverview } from "../../../../../utils/queries";
+import { useGetIntro } from "../../../../../utils/queries";
 import Loading from "../../../../../components/Loading";
 import LoadingError from "../../../../../components/LoadingError";
 import IntroUser from "../user/IntroUser";
@@ -11,10 +11,10 @@ import IntroUserLogin from "../userLogin/IntroUserLogin";
 export default function Intro() {
   const user = useSelector((state) => state.user.profile);
   const id = useParams().id;
-  const { isPending, data, error, refetch } = useGetOverview(id);
-  const overview = data?.data?.body;
+  const { isPending, data, error, refetch } = useGetIntro(id);
+  const myData = data?.data?.body;
 
- 
+  console.log("---", myData);
 
   return (
     <Paper sx={{ p: 2 }}>
@@ -29,9 +29,9 @@ export default function Intro() {
           message={error.response.data.message}
         />
       ) : user.id != id ? (
-        <IntroUser overview={overview} />
+        <IntroUser data={myData} />
       ) : (
-        <IntroUserLogin overview={overview} />
+        <IntroUserLogin overview={myData.overview} />
       )}
     </Paper>
   );

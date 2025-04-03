@@ -3,27 +3,12 @@ import React from "react";
 import ShowIcon from "../../../About/ShowIcon";
 import { useSelector } from "react-redux";
 
-export default function IntroUser({ overview }) {
+export default function IntroUser({ data }) {
   const intro = ["Pronounce", "School", "Location", "Hometown", "Status"];
-  console.log("overvieww isssss", overview);
-  const userLogin = useSelector((state) => state.user.profile);
+  console.log("overvieww isssss", data);
 
-  // function isPrivate() {
-  //   const findFriend = userLogin.friends.listFriend.find(
-  //     (f) => f.id == user._id
-  //   );
-  //   if (findFriend) {
-  //     if (findFriend.status == "pending") {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } else {
-  //     return true;
-  //   }
-  // }
-
-  const keys = Object.keys(overview);
+  const keys = Object.keys(data?.overview);
+  console.log("keeys", keys);
 
   function findKeys() {
     let m = 0;
@@ -36,34 +21,33 @@ export default function IntroUser({ overview }) {
     return m;
   }
 
-  if (!findKeys() && "!isPrivate()") {
-    return <Stack>Nothing to show!</Stack>;
-  } else {
-  }
-
   return (
     <Stack>
-      {"isPrivate()" ? (
+      {!keys.length && !data.isFriend ? (
         <Stack
           sx={{
-            mt: 25,
+            
             mb: 10,
             textAlign: "center",
           }}
         >
           <Divider />
           <Typography component={"h3"} variant="h5" sx={{ pt: 2 }}>
-            This profile is private
+            This profile is private!
           </Typography>
         </Stack>
+      ) : !keys.length ? (
+        "Nothing is added yet!"
       ) : (
         intro.map((item) => {
           return (
             <Stack>
-              {overview && overview[item]?.value ? (
-                <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-                  <ShowIcon subject={item} item={overview[item].value} />
-                  <Typography sx={{ ml: 2 }}>{overview[item].value}</Typography>
+              {keys.length && data.overview[item]?.value ? (
+                <Stack sx={{ flexDirection: "row", alignItems: "center" ,mb:2}}>
+                  <ShowIcon subject={item} item={data.overview[item].value} />
+                  <Typography sx={{ ml: 2 }}>
+                    {data.overview[item].value}
+                  </Typography>
                 </Stack>
               ) : (
                 ""

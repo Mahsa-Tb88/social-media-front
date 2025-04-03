@@ -9,15 +9,15 @@ import { useParams } from "react-router-dom";
 import EditValueSubject from "../EditVelueSubject";
 import LoadingError from "../../../../components/LoadingError";
 import Loading from "../../../../components/Loading";
-import { useSelector } from "react-redux";
 
 export default function Overview() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetOverview(id);
 
-  const overview = data?.data.body[0] || {};
-  const isFriend = data?.data.body[1] || false;
-  const isOwner = data?.data.body[2] || false;
+  const overview = data?.data.body.overview;
+  const isFriend = data?.data.body.isFriend;
+  const isOwner = data?.data.body.isOwner;
+  console.log("overview", overview);
 
   const overviewKeys = [
     "School",
@@ -52,7 +52,11 @@ export default function Overview() {
       ) : (
         <Stack sx={{ gap: 4 }}>
           {!Object.keys(overview).length && !isFriend && !isOwner ? (
-            <Stack>Noting to show!</Stack>
+            <Stack>
+              <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
+                Overview
+              </Typography>
+            </Stack>
           ) : (
             overviewKeys.map((item, index) => {
               return overview[item]?.value ? (

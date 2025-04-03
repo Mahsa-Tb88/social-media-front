@@ -5,12 +5,11 @@ import EditIntro from "./EditIntro";
 import EditValueSubject from "../../../About/EditVelueSubject";
 import { Button, Stack, Typography } from "@mui/material";
 
-export default function IntroUserLogin({overview}) {
+export default function IntroUserLogin({ overview }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);
   const [openEditIntro, setOpenEditIntro] = useState(false);
   const theme = useSelector((state) => state.app.theme);
   const intro = ["Pronounce", "School", "Location", "Hometown", "Status"];
-
 
   return (
     <Stack>

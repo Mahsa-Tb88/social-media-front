@@ -699,7 +699,7 @@ function FamilyMember({ value, type, onCloseEdit }) {
 function Status({ newValue, setNewValue, saveChangeHandler }) {
   return (
     <Stack>
-      <FormControl>
+      <FormControl >
         <InputLabel id="status">Status</InputLabel>
         <Select
           value={newValue}

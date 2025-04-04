@@ -49,10 +49,7 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
         ) : (
           <>
             <ListItem divider>
-              <ListItemButton
-                LinkComponent={Link}
-                to={`/edit/user/${user._id}`}
-              >
+              <ListItemButton LinkComponent={Link} to={`/edit/user/${user.id}`}>
                 <ListItemIcon>
                   <EditRounded />
                 </ListItemIcon>

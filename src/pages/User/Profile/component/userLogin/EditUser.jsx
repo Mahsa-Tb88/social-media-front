@@ -3,7 +3,11 @@ import {
   Alert,
   CircularProgress,
   Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   TextField,
 } from "@mui/material";
@@ -26,7 +30,7 @@ export default function EditUser() {
   const { isPending, error, data, mutate } = useEditUser();
 
   function onSubmit(data) {
-    data.id = user._id;
+    data.id = user.id;
     console.log(data);
 
     mutate(data, {
@@ -35,8 +39,8 @@ export default function EditUser() {
           userActions.setProfile({
             ...user,
             email: data.email,
-            work: data.work,
-            livesIn: data.livesIn,
+            password: data.password,
+            viewer: data.viewer,
           })
         );
       },
@@ -69,18 +73,21 @@ export default function EditUser() {
             variant="standard"
             defaultValue={user.username}
           />
-          <TextField
-            {...register("livesIn")}
-            label="Lives in"
-            variant="standard"
-            defaultValue={user.livesIn}
-          />
-          <TextField
-            {...register("work")}
-            label="Work"
-            variant="standard"
-            defaultValue={user.work}
-          />
+
+          <FormControl fullWidth>
+            <InputLabel id="viewer">viewer</InputLabel>
+            <Select
+              labelId="viewer"
+              label="Viewer"
+              defaultValue={user.viewer || "private"}
+              {...register("viewer")}
+            >
+              <MenuItem value="private">Private</MenuItem>
+              <MenuItem value="friends">Friends</MenuItem>
+              <MenuItem value="public">Public</MenuItem>
+            </Select>
+          </FormControl>
+
           <TextField
             label="Email"
             variant="standard"

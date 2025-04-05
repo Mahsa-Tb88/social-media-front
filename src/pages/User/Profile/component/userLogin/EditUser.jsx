@@ -16,10 +16,12 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useEditUser } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function EditUser() {
   const user = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -35,14 +37,11 @@ export default function EditUser() {
 
     mutate(data, {
       onSuccess(d) {
-        dispatch(
-          userActions.setProfile({
-            ...user,
-            email: data.email,
-            password: data.password,
-            viewer: data.viewer,
-          })
-        );
+        function goToLogin() {
+          dispatch(userActions.setLogout());
+          navigate("/login");
+        }
+        setTimeout(() => goToLogin(), 2000);
       },
       onError(error) {
         console.log("error", error);
@@ -68,19 +67,29 @@ export default function EditUser() {
           spacing={4}
         >
           <TextField
-            disabled
             label="Username"
             variant="standard"
             defaultValue={user.username}
+            {...register("username", {
+              required: "Please enter a username",
+              minLength: {
+                value: 6,
+                message: "username should be at least 6 characters.",
+              },
+              maxLength: {
+                value: 13,
+                message: "username should be at least 13 characters.",
+              },
+            })}
           />
 
           <FormControl fullWidth>
-            <InputLabel id="viewer">viewer</InputLabel>
+            <InputLabel id="viewerProfile">viewer</InputLabel>
             <Select
-              labelId="viewer"
+              labelId="viewerProfile"
               label="Viewer"
               defaultValue={user.viewer || "private"}
-              {...register("viewer")}
+              {...register("viewerProfile")}
             >
               <MenuItem value="private">Private</MenuItem>
               <MenuItem value="friends">Friends</MenuItem>
@@ -89,16 +98,10 @@ export default function EditUser() {
           </FormControl>
 
           <TextField
+            disabled
             label="Email"
             variant="standard"
             defaultValue={user.email}
-            {...register("email", {
-              required: "Please enter an email",
-              minLength: {
-                value: 5,
-                message: "Email should be at least 5 characters.",
-              },
-            })}
             error={errors.email}
             helperText={errors.email?.message}
           />
@@ -143,7 +146,7 @@ export default function EditUser() {
             variant="contained"
             sx={{ alignSelf: "center", width: 120, fontSize: 18 }}
           >
-            Register
+            Update
           </LoadingButton>
         </Stack>
       </Paper>

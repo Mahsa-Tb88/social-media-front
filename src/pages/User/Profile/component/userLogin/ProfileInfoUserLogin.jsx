@@ -7,10 +7,12 @@ import noImage from "../../../../../assets/images/user.png";
 
 import { Edit } from "@mui/icons-material";
 import ProfileImgChange from "./ProfileImgChange";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileInfoUserLogin() {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
+  const navigate = useNavigate();
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
@@ -109,6 +111,7 @@ export default function ProfileInfoUserLogin() {
                 }}
                 startIcon={<Edit />}
                 disableElevation
+                onClick={() => navigate("/edit/user/" + userLogin.id)}
               >
                 Edit profile
               </Button>

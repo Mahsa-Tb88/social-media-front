@@ -1,5 +1,12 @@
-import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import {
+  Box,
+  Divider,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
 import FilterViewer from "../userLogin/FilterViewer";
 import { Edit } from "@mui/icons-material";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
@@ -12,14 +19,18 @@ import GroupIcon from "@mui/icons-material/Group";
 import ChatIcon from "@mui/icons-material/Chat";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import PublicIcon from "@mui/icons-material/Public";
+import SendIcon from "@mui/icons-material/Send";
 import LockIcon from "@mui/icons-material/Lock";
 import { useLocation, useParams } from "react-router-dom";
+import { useleaveComment } from "../../../../../utils/mutation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const location = useLocation();
-
+  const [postCommets, setPostComments] = useState(post.comments);
+  console.log("post", post);
   let id = useParams().id;
   if (location.pathname.includes("post")) {
     id = post.userId._id;
@@ -29,23 +40,12 @@ export default function SinglePost({ post, profile }) {
   const [isLike, setIsLike] = useState(false);
   const menuAnchor = useRef(null);
 
-  function hasPermission() {
-    if (id == userLogin.id) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  const isOwner = id == userLogin.id ? true : false;
 
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>
-        <Info
-          post={post}
-          profile={profile}
-          theme={theme}
-          hasPermission={hasPermission}
-        />
+        <Info post={post} profile={profile} theme={theme} isOwner={isOwner} />
         <Stack spacing={2}>
           <Stack
             sx={{
@@ -55,7 +55,7 @@ export default function SinglePost({ post, profile }) {
             }}
           >
             <Typography>{post.title}</Typography>
-            {hasPermission() && (
+            {isOwner && (
               <MyIconButton
                 onClick={() => {
                   setOpenMenuPost(!openMenuPost);
@@ -118,6 +118,7 @@ export default function SinglePost({ post, profile }) {
                 />
               </Box>
             )}
+
             <Box
               sx={{
                 cursor: "pointer",
@@ -161,34 +162,29 @@ export default function SinglePost({ post, profile }) {
             <Typography>Share</Typography>
           </Stack>
         </Stack>
-        <Divider sx={{ my: 1 }} />
 
-        <Box
-          component="textarea"
-          placeholder="Write your comment"
-          minRows={3}
-          sx={{
-            mt: 3,
-            width: "100%",
-            borderColor: theme === "dark" ? "grey.800" : "grey.200",
-            bgcolor: theme === "dark" ? "grey.800" : "grey.200",
-            fontSize: 15,
-            borderRadius: "15px",
-            px: 1,
-            py: 2,
-            resize: "none",
-            "&:focus": {
-              outline: "none",
-              borderColor: theme === "dark" ? "grey.200" : "grey.800",
-            },
-          }}
+        <Divider sx={{ my: 1 }} />
+        {postCommets.length > 0 &&
+          postCommets.map((c, index) => {
+            return (
+              <Stack key={index}>
+                <ShowComment c={c} />
+              </Stack>
+            );
+          })}
+        <Comments
+          theme={theme}
+          id={post._id}
+          userLogin={userLogin}
+          postCommets={postCommets}
+          setPostComments={setPostComments}
         />
       </Paper>
     </Stack>
   );
 }
 
-function Info({ profile, post, theme, hasPermission }) {
+function Info({ profile, post, theme, isOwner }) {
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(post.viewer);
 
@@ -272,7 +268,7 @@ function Info({ profile, post, theme, hasPermission }) {
           )}
         </Stack>
 
-        {hasPermission() && (
+        {isOwner && (
           <FilterViewer
             open={openFilterViewer}
             onClose={() => setOpenFilterViewer(false)}
@@ -284,6 +280,98 @@ function Info({ profile, post, theme, hasPermission }) {
           />
         )}
       </Stack>
+    </Stack>
+  );
+}
+
+function Comments({ theme, id, userLogin, postCommets, setPostComments }) {
+  const [text, setText] = useState("");
+  const mutation = useleaveComment();
+  const queryClient = useQueryClient();
+
+  function sendText() {
+    const data = {};
+    data.id = id;
+    data.comment = text;
+    data.username = userLogin.username;
+    data.userId = userLogin.id;
+    data.profileImg = userLogin.profileImg;
+
+    mutation.mutate(data, {
+      onSuccess(d) {
+        queryClient.invalidateQueries({ queryKey: ["singlePost"] });
+        console.log("dddd", d);
+        setText("");
+        setPostComments([
+          ...postCommets,
+          {
+            comment: text,
+            username: userLogin.username,
+            userId: userLogin.id,
+            profileImg: userLogin.profileImg
+              ? SERVER_URL + userLogin.profileImg
+              : noImage,
+          },
+        ]);
+      },
+      onError(e) {
+        console.log("error", e);
+      },
+    });
+  }
+
+  return (
+    <Stack
+      sx={{
+        mt: 3,
+        px: 1,
+        gap: 2,
+        flexDirection: "row",
+        alignItems: "center",
+        borderRadius: "6px",
+        border: "1px solid",
+        borderColor: theme === "dark" ? "grey.800" : "grey.200",
+        bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+        "&:focus": {
+          outline: "none",
+          borderColor: theme === "dark" ? "grey.200" : "grey.800",
+        },
+      }}
+    >
+      <TextField
+        placeholder="Write your comment"
+        multiline
+        sx={{
+          width: "100%",
+          fontSize: 15,
+          px: 1,
+          py: 1,
+        }}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <Box sx={{ cursor: "pointer" }} onClick={sendText}>
+        <SendIcon
+          sx={text ? { color: "#1976d2", "&:hover": { color: "#1769aa" } } : ""}
+        />
+      </Box>
+    </Stack>
+  );
+}
+
+function ShowComment({ c }) {
+  console.log("ccc", c);
+  return (
+    <Stack>
+      <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+        <Box
+          sx={{ width: "20px", height: "20px" }}
+          component="img"
+          src={c.image ? SERVER_URL + c.image : noImage}
+        />
+        <Typography>{c.username}</Typography>
+      </Stack>
+      <Typography>{c.comment}</Typography>
     </Stack>
   );
 }

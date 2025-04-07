@@ -48,6 +48,11 @@ export function useEditPost() {
     mutationFn: (data) => axios.put("/posts/edit/" + data.id, data),
   });
 }
+export function useDeleteComment() {
+  return useMutation({
+    mutationFn: (data) => axios.put("/posts/comment/delete/" + data.id, data),
+  });
+}
 export function useDeletePost() {
   return useMutation({
     mutationFn: (id) => axios.delete("/posts/" + id),

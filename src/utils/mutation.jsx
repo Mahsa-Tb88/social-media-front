@@ -63,6 +63,11 @@ export function useleaveComment() {
     mutationFn: (data) => axios.put("/posts/comment/" + data.id, data),
   });
 }
+export function useLikePost() {
+  return useMutation({
+    mutationFn: (data) => axios.put("/posts/like/" + data.id, data),
+  });
+}
 //overview
 export function useEditOverview() {
   return useMutation({

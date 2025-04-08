@@ -23,35 +23,37 @@ import PublicIcon from "@mui/icons-material/Public";
 import SendIcon from "@mui/icons-material/Send";
 import LockIcon from "@mui/icons-material/Lock";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteComment,
   useleaveComment,
+  useLikePost,
 } from "../../../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
+import MenuUserLike from "./MenuUserLike";
 
 export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
-  const location = useLocation();
   const [postComments, setPostComments] = useState(post.comments);
   const [showComments, setShowComments] = useState(false);
+  const [openMenuPost, setOpenMenuPost] = useState(false);
+  const menuPostAnchor = useRef(null);
+  const location = useLocation();
+  let id = useParams().id;
 
   useEffect(() => {
+    // I should use useEffect so when I use invalideQuerry
+    //  becuse page doesnt change rfresh, value of post does not chnage
     setPostComments(post.comments);
   }, [post]);
 
-  console.log("post", post);
-  let id = useParams().id;
   if (location.pathname.includes("post")) {
     id = post.userId._id;
   }
-
-  const [openMenuPost, setOpenMenuPost] = useState(false);
-  const [isLike, setIsLike] = useState(false);
-  const menuAnchor = useRef(null);
-
   const isOwner = id == userLogin.id ? true : false;
+
+  console.log("post is", post);
 
   return (
     <Stack>
@@ -72,7 +74,7 @@ export default function SinglePost({ post, profile }) {
                   setOpenMenuPost(!openMenuPost);
                 }}
               >
-                <Edit sx={{ fontSize: 15 }} ref={menuAnchor} />
+                <Edit sx={{ fontSize: 15 }} ref={menuPostAnchor} />
               </MyIconButton>
             )}
           </Stack>
@@ -93,7 +95,7 @@ export default function SinglePost({ post, profile }) {
 
           <MenuPost
             open={openMenuPost}
-            anchorEl={menuAnchor.current}
+            anchorEl={menuPostAnchor.current}
             handleClose={() => setOpenMenuPost(false)}
             post={post}
           />
@@ -106,39 +108,7 @@ export default function SinglePost({ post, profile }) {
             gap: 5,
           }}
         >
-          <Stack sx={{ flexDirection: "row", gap: 1 }}>
-            {isLike ? (
-              <Box
-                onClick={() => setIsLike(!isLike)}
-                sx={{ "&:hover": { color: "blue" } }}
-              >
-                <FavoriteIcon
-                  sx={{
-                    color: "#f50057",
-                    cursor: "pointer",
-                  }}
-                />
-              </Box>
-            ) : (
-              <Box onClick={() => setIsLike(!isLike)}>
-                <FavoriteBorderIcon
-                  sx={{
-                    cursor: "pointer",
-                    "&:hover": { color: "#f50057" },
-                  }}
-                />
-              </Box>
-            )}
-
-            <Box
-              sx={{
-                cursor: "pointer",
-                "&:hover": { fontWeight: "bold" },
-              }}
-            >
-              54
-            </Box>
-          </Stack>
+          <LikePost post={post} />
           <Stack
             sx={{
               flexDirection: "row",
@@ -290,13 +260,93 @@ function Info({ profile, post, theme, isOwner }) {
   );
 }
 
+function LikePost({ post }) {
+  const userLogin = useSelector((state) => state.user.profile);
+  const findLike = post.like.find((l) => l.userId == userLogin.id);
+  const [isLike, setIsLike] = useState(findLike ? true : false);
+
+  const mutation = useLikePost();
+  const queryClient = useQueryClient();
+
+  function likeHandler(postId) {
+    setIsLike(!isLike);
+    const data = {
+      username: userLogin.username,
+      userId: userLogin.id,
+      profileImg: userLogin.profileImg,
+      isLike: isLike ? false : true,
+      id: postId,
+    };
+
+    mutation.mutate(data, {
+      onSuccess(d) {
+        queryClient.invalidateQueries({ queryKey: ["posts", post.userId] });
+      },
+      onError(e) {
+        console.log("error is", e);
+      },
+    });
+  }
+
+  return (
+    <Stack sx={{ flexDirection: "row", gap: 1 }}>
+      <Stack onClick={() => likeHandler(post._id)}>
+        {isLike ? (
+          <Box sx={{ "&:hover": { color: "blue" } }}>
+            <FavoriteIcon
+              sx={{
+                color: "#f50057",
+                cursor: "pointer",
+              }}
+            />
+          </Box>
+        ) : (
+          <Box>
+            <FavoriteBorderIcon
+              sx={{
+                cursor: "pointer",
+                "&:hover": { color: "#f50057" },
+              }}
+            />
+          </Box>
+        )}
+      </Stack>
+      <ShowNumberOfLike post={post} />
+    </Stack>
+  );
+}
+
+function ShowNumberOfLike({ post }) {
+  const menuUserLike = useRef(null);
+  const [openMenuLike, setOpenMenuLike] = useState(false);
+  return (
+    <Stack>
+      <Box
+        sx={{
+          cursor: "pointer",
+          "&:hover": { fontWeight: "bold" },
+        }}
+        ref={menuUserLike}
+        onClick={() => setOpenMenuLike(true)}
+      >
+        {post.like.length}
+      </Box>
+      <MenuUserLike
+        open={openMenuLike}
+        anchorEl={menuUserLike.current}
+        handleClose={() => setOpenMenuLike(false)}
+        likes={post.like}
+      />
+    </Stack>
+  );
+}
+
 function ShowComments({
   postComments,
   setShowComments,
   setPostComments,
   postId,
 }) {
-  console.log(";;;", postComments);
   return (
     <Stack>
       <Button
@@ -328,6 +378,7 @@ function ShowComments({
 
 function Comment({ c, setPostComments, postComments, postId }) {
   const id = useParams().id;
+  const navigate = useNavigate();
   const theme = useSelector((state) => state.app.theme);
 
   const userLogin = useSelector((state) => state.user.profile);
@@ -343,7 +394,19 @@ function Comment({ c, setPostComments, postComments, postId }) {
       }}
     >
       <Stack sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
+        <Stack
+          sx={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
+            cursor: "pointer",
+            transition: "transform 0.3s ease-in-out",
+            "&:hover": {
+              transform: "scale(1.08)",
+            },
+          }}
+          onClick={() => navigate("/profile/" + c.userId)}
+        >
           <Box
             sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
             component="img"

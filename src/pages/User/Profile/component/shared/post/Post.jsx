@@ -1,11 +1,11 @@
 import { Container, Grid2, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import { useGetUserById } from "../../../../../utils/queries";
 import { useParams } from "react-router-dom";
-import Loading from "../../../../../components/Loading";
-import LoadingError from "../../../../../components/LoadingError";
-import Intro from "./Intro";
+import Loading from "../../../../../../components/Loading";
+import LoadingError from "../../../../../../components/LoadingError";
+import Intro from "../Intro";
+import { useGetUserById } from "../../../../../../utils/queries";
 import PostsSection from "./PostsSection";
 
 export default function Post() {

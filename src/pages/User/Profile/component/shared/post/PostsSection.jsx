@@ -10,11 +10,11 @@ import {
 } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import noImage from "../../../../../assets/images/user.png";
-import PostProfile from "../userLogin/PostProfile";
-import { useGetPostsUser } from "../../../../../utils/queries";
-import LoadingError from "../../../../../components/LoadingError";
-import Loading from "../../../../../components/Loading";
+import noImage from "../../../../../../assets/images/user.png";
+import PostProfile from "../../userLogin/PostProfile";
+import { useGetPostsUser } from "../../../../../../utils/queries";
+import LoadingError from "../../../../../../components/LoadingError";
+import Loading from "../../../../../../components/Loading";
 import SinglePost from "./SinglePost";
 import { useParams } from "react-router-dom";
 
@@ -25,7 +25,6 @@ export default function PostsSection({ profile }) {
   const id = useParams().id;
 
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
-  const [isLike, setIsLike] = useState(false);
 
   function hasPermission() {
     if (id == userLogin.id) {

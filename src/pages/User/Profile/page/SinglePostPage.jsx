@@ -1,6 +1,6 @@
 import { Container, Stack } from "@mui/material";
 import React from "react";
-import SinglePost from "../component/shared/SinglePost";
+import SinglePost from "../component/shared/post/SinglePost";
 import { useGetPost, useGetUserById } from "../../../../utils/queries";
 import { useParams } from "react-router-dom";
 import Loading from "../../../../components/Loading";
@@ -11,7 +11,6 @@ export default function SinglePostPage() {
   const theme = useSelector((state) => state.app.theme);
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetPost(id);
-
 
   return (
     <Stack sx={{ py: 5, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>

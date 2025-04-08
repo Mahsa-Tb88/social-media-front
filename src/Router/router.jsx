@@ -7,7 +7,6 @@ import Register from "../pages/Auth/Register";
 import LogOut from "../pages/Auth/LogOut";
 import Profile from "../pages/User/Profile/page/Profile";
 import EditUser from "../pages/User/Profile/component/userLogin/EditUser";
-import Post from "../pages/User/Profile/component/shared/Post";
 import Galery from "../pages/User/Profile/component/shared/Galery";
 import Friends from "../pages/User/Profile/component/shared/Friends";
 import FamilyAndRel from "../pages/User/About/FamilyAndRel/FamilyAndRel";
@@ -17,6 +16,7 @@ import Contact from "../pages/User/About/Contact/Contact";
 import Overview from "../pages/User/About/Overview/Overview";
 import About from "../pages/User/Profile/component/shared/About";
 import SinglePostPage from "../pages/User/Profile/page/SinglePostPage";
+import Post from "../pages/User/Profile/component/shared/post/Post";
 
 const router = createBrowserRouter([
   {

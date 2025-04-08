@@ -2,6 +2,7 @@ import {
   AdminPanelSettings,
   EditRounded,
   Logout,
+  Message,
   Person,
 } from "@mui/icons-material";
 import {
@@ -58,7 +59,14 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
             </ListItem>
           </>
         )}
-
+        <ListItem divider>
+          <ListItemButton LinkComponent={Link} to={`/Messages/${user.id}`}>
+            <ListItemIcon>
+              <Message />
+            </ListItemIcon>
+            <ListItemText>Messages</ListItemText>
+          </ListItemButton>
+        </ListItem>
         <ListItem>
           <ListItemButton LinkComponent={Link} to="/logout">
             <ListItemIcon>

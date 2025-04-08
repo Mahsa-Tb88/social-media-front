@@ -17,6 +17,7 @@ import Overview from "../pages/User/About/Overview/Overview";
 import About from "../pages/User/Profile/component/shared/About";
 import SinglePostPage from "../pages/User/Profile/page/SinglePostPage";
 import Post from "../pages/User/Profile/component/shared/post/Post";
+import Messages from "../pages/User/Profile/page/Messages";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
             ],
           },
           { path: "logout", element: <LogOut /> },
+          { path: "messages/:id", element: <Messages /> },
           { path: "edit/user/:id", element: <EditUser /> },
         ],
       },

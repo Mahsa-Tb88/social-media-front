@@ -61,6 +61,7 @@ export function useGetPost(id) {
   return useQuery({
     queryKey: ["singlePost", id],
     queryFn: () => axios.get("/posts/single/" + id),
+    staleTime: 1000,
   });
 }
 export function useGetContactBaseInfo(id) {

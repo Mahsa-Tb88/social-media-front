@@ -26,9 +26,6 @@ export default function PostsSection({ profile }) {
 
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
   const [isLike, setIsLike] = useState(false);
-  const menuAnchor = useRef(null);
-
-  const [showComments, setShowComments] = useState(false);
 
   function hasPermission() {
     if (id == userLogin.id) {
@@ -40,7 +37,7 @@ export default function PostsSection({ profile }) {
   return (
     <Container>
       {hasPermission() && (
-        <Paper sx={{ p: 4,mb:3 }}>
+        <Paper sx={{ p: 4, mb: 3 }}>
           <Stack sx={{ flexDirection: "row", gap: 2 }}>
             <Box
               component="img"

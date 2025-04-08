@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FilterViewer from "../userLogin/FilterViewer";
 import { Edit } from "@mui/icons-material";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
@@ -36,6 +36,10 @@ export default function SinglePost({ post, profile }) {
   const location = useLocation();
   const [postComments, setPostComments] = useState(post.comments);
   const [showComments, setShowComments] = useState(false);
+
+  useEffect(() => {
+    setPostComments(post.comments);
+  }, [post]);
 
   console.log("post", post);
   let id = useParams().id;
@@ -180,13 +184,7 @@ export default function SinglePost({ post, profile }) {
             postId={post._id}
           />
         )}
-        <SendCommentSection
-          theme={theme}
-          id={post._id}
-          userLogin={userLogin}
-          postComments={postComments}
-          setPostComments={setPostComments}
-        />
+        <SendCommentSection theme={theme} post={post} userLogin={userLogin} />
       </Paper>
     </Stack>
   );
@@ -367,25 +365,19 @@ function Comment({ c, setPostComments, postComments, postId }) {
           </Stack>
         )}
       </Stack>
-      <Typography sx={{ ml: 1 }}>{c.comment}</Typography>
+      <Text c={c} />
     </Stack>
   );
 }
 
-function SendCommentSection({
-  theme,
-  id,
-  userLogin,
-  postComments,
-  setPostComments,
-}) {
+function SendCommentSection({ theme, post, userLogin }) {
   const [text, setText] = useState("");
   const mutation = useleaveComment();
   const queryClient = useQueryClient();
 
   function sendText() {
     const data = {};
-    data.id = id;
+    data.id = post._id;
     data.comment = text;
     data.username = userLogin.username;
     data.userId = userLogin.id;
@@ -393,20 +385,10 @@ function SendCommentSection({
     data.dateComment = Date.now();
     mutation.mutate(data, {
       onSuccess(d) {
-        queryClient.invalidateQueries({ queryKey: ["singlePost"] });
+        queryClient.invalidateQueries({
+          queryKey: ["posts", post.userId],
+        });
         setText("");
-        setPostComments([
-          ...postComments,
-          {
-            comment: text,
-            username: userLogin.username,
-            userId: userLogin.id,
-            date: data.dateComment,
-            profileImg: userLogin.profileImg
-              ? SERVER_URL + userLogin.profileImg
-              : noImage,
-          },
-        ]);
       },
       onError(e) {
         console.log("error", e);
@@ -443,12 +425,47 @@ function SendCommentSection({
         }}
         value={text}
         onChange={(e) => setText(e.target.value)}
+        error={text.length >= 1100}
+        inputProps={{ maxLength: 1100 }}
       />
       <Box sx={{ cursor: "pointer" }} onClick={sendText}>
         <SendIcon
           sx={text ? { color: "#1976d2", "&:hover": { color: "#1769aa" } } : ""}
         />
       </Box>
+    </Stack>
+  );
+}
+
+function Text({ c }) {
+  const [isLong, setIsLong] = useState(c.comment.length > 200 ? true : false);
+  return (
+    <Stack>
+      {isLong ? (
+        <Stack>
+          <Typography>{c.comment.slice(0, 200) + " ..."}</Typography>
+          <Button
+            variant="text"
+            sx={{ textAlign: "left" }}
+            onClick={() => setIsLong(false)}
+          >
+            View more
+          </Button>
+        </Stack>
+      ) : (
+        <Stack>
+          <Typography sx={{ ml: 1 }}>{c.comment}</Typography>
+          {c.comment.length > 200 && (
+            <Button
+              variant="text"
+              sx={{ cursor: "pointer" }}
+              onClick={() => setIsLong(true)}
+            >
+              Back
+            </Button>
+          )}
+        </Stack>
+      )}
     </Stack>
   );
 }

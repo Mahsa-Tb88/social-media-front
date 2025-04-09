@@ -13,10 +13,12 @@ import { userActions } from "../../../../../store/slices/userSlice";
 import NavbarFriendRequest from "./NavbarFriendRequest";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import NavbarHandleFriend from "./NavbarHandleFriend";
+import { Link, useParams } from "react-router-dom";
 
 export default function ProfileInfoUser({ user }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
+  const userId = useParams().id;
   const dispatch = useDispatch();
   const [profileImg, setProfileImg] = useState(
     user.profileImg ? SERVER_URL + user.profileImg : noImage
@@ -221,6 +223,8 @@ export default function ProfileInfoUser({ user }) {
                 }}
                 startIcon={<MessageIcon />}
                 disableElevation
+                LinkComponent={Link}
+                to={`/chat/` + userLogin.id + userId}
               >
                 Message
               </Button>

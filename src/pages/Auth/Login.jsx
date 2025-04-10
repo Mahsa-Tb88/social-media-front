@@ -39,7 +39,7 @@ export default function Login() {
       onSuccess(d) {
         const user = d.data.body.user;
         const friends = d.data.body.friends;
-        console.log("friends....", friends);
+        const messages = d.data.body.messages;
 
         dispatch(userActions.setIsLoggedIn(true));
         dispatch(userActions.setIsAdmin(user.isAdmin));
@@ -52,7 +52,8 @@ export default function Login() {
             backgroundImg: user.backgroundImg,
             bio: user.bio,
             viewer: user.viewerProfile,
-            friends: friends,
+            friends,
+            messages,
           })
         );
       },

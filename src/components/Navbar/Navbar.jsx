@@ -98,7 +98,7 @@ export default function Navbar() {
             {isLoggedIn ? (
               <Stack direction="row" spacing={3} alignItems="center">
                 <Badge
-                  badgeContent={3}
+                  badgeContent={8}
                   invisible={""}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
@@ -112,8 +112,7 @@ export default function Navbar() {
                   </MyIconButton>
                 </Badge>
                 <Badge
-                  badgeContent={3}
-                  invisible={""}
+                  badgeContent={profile.profile.messages?.length}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"

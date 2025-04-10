@@ -8,9 +8,12 @@ import {
   Menu,
 } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
 
 export default function NavbarMsg({ open, anchorEl, handleClose }) {
-  const msgList = ["messsage 1", "message 2"];
+  const userLoging = useSelector((state) => state.user.profile);
+  const msgList = userLoging.messages || [];
+  
   return (
     <Menu
       open={open}
@@ -21,12 +24,12 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
       <List disablePadding>
         {msgList.map((msg) => {
           return (
-            <ListItem key={msg} divider disablePadding>
+            <ListItem key={msg._id} divider disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   <Message />
                 </ListItemIcon>
-                <ListItemText>{msg}</ListItemText>
+                <ListItemText>{msg.username}</ListItemText>
               </ListItemButton>
             </ListItem>
           );

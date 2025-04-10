@@ -113,7 +113,14 @@ export default function Chat() {
                       />
                     );
                   } else {
-                    return <UserMsgs user={user} theme={theme} c={c} />;
+                    return (
+                      <UserMsgs
+                        user={user}
+                        theme={theme}
+                        c={c}
+                        date={showDate}
+                      />
+                    );
                   }
                 })
               : " There is no chat yet!"}
@@ -209,7 +216,7 @@ function UserLoginMsgs({ userLogin, theme, c, date }) {
   );
 }
 
-function UserMsgs({ user, theme, c }) {
+function UserMsgs({ user, theme, c, date }) {
   function getTime(time) {
     const createdAt = new Date(time);
 
@@ -226,6 +233,33 @@ function UserMsgs({ user, theme, c }) {
         mb: 3,
       }}
     >
+      {date && (
+        <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+          <Box
+            sx={{
+              height: "1px",
+              width: "100%",
+              bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+            }}
+          ></Box>
+          <Box
+            sx={{
+              width: "20%",
+              textAlign: "center",
+              color: theme === "dark" ? "grey.800" : "grey.600",
+            }}
+          >
+            {getDate(c.createdAt)}
+          </Box>
+          <Box
+            sx={{
+              height: "1px",
+              width: "100%",
+              bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+            }}
+          ></Box>
+        </Stack>
+      )}
       <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
         <Typography sx={{ mr: 1 }}>{user.username}</Typography>
         {user.profileImg ? (

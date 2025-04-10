@@ -12,6 +12,7 @@ const initialState = {
     backgroundImg: "",
     bio: "",
     viewer: "",
+    messages: [],
     friends: {
       // listFriend: [
       //   { id: 1, username: "mah", profileImag: "" },

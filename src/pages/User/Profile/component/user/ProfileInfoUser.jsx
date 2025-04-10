@@ -110,7 +110,8 @@ export default function ProfileInfoUser({ user }) {
       },
     });
   }
-
+  const chatId =
+    userLogin.id > userId ? userLogin.id + userId : userId + userLogin.id;
   return (
     <Container
       fixed
@@ -224,7 +225,7 @@ export default function ProfileInfoUser({ user }) {
                 startIcon={<MessageIcon />}
                 disableElevation
                 LinkComponent={Link}
-                to={`/chat/` + userLogin.id + userId}
+                to={`/chat/` + chatId}
               >
                 Message
               </Button>

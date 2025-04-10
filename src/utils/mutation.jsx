@@ -244,3 +244,8 @@ export function useSendChat() {
     mutationFn: (data) => axios.post(`/chats/${data.id}`, data),
   });
 }
+export function useChangeToRead() {
+  return useMutation({
+    mutationFn: (data) => axios.put(`/chats/${data.id}`, data),
+  });
+}

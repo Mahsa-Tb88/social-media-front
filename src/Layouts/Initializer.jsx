@@ -16,10 +16,9 @@ export default function Initializer() {
       const { body } = data.data;
       dispatch(appActions.setCategories(body.categories));
       dispatch(appActions.setInitialized(true));
-      console.log("dataaa body", body);
 
       if (body?.user) {
-        const { user, friends } = body;
+        const { user, friends, messages } = body;
         dispatch(userActions.setIsLoggedIn(true));
 
         dispatch(
@@ -31,7 +30,8 @@ export default function Initializer() {
             backgroundImg: user.backgroundImg,
             bio: user.bio,
             viewer: user.viewerProfile,
-            friends: friends,
+            friends,
+            messages,
           })
         );
       }

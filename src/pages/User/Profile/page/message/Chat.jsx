@@ -226,13 +226,16 @@ function UserMsgs({ user, theme, c, date }) {
     const formattedTime = `${hours}:${minutes}`;
     return formattedTime;
   }
+
+  function getDate(dateString) {
+    const myDate = new Date(dateString);
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    const formattedDate = myDate.toLocaleDateString("en-GB", options);
+    return formattedDate;
+  }
+
   return (
-    <Stack
-      sx={{
-        alignItems: "end",
-        mb: 3,
-      }}
-    >
+    <Stack>
       {date && (
         <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
           <Box
@@ -260,31 +263,38 @@ function UserMsgs({ user, theme, c, date }) {
           ></Box>
         </Stack>
       )}
-      <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-        <Typography sx={{ mr: 1 }}>{user.username}</Typography>
-        {user.profileImg ? (
-          <Avatar alt="Remy Sharp" src={SERVER_URL + user.profileImg} />
-        ) : (
-          <Avatar sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" }}>
-            {user.username[0]}
-          </Avatar>
-        )}
-      </Stack>
-
       <Stack
         sx={{
-          mt: 1,
-
-          bgcolor: theme === "dark" ? "#1769aa" : "#bbdefb",
-          px: 1,
-          py: 1,
-          borderRadius: "4px",
+          alignItems: "end",
+          mb: 3,
         }}
       >
-        <Typography>{c.msg}</Typography>
-        <Typography sx={{ mt: 2, fontSize: "12px" }}>
-          {getTime(c.createdAt)}
-        </Typography>
+        <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+          <Typography sx={{ mr: 1 }}>{user.username}</Typography>
+          {user.profileImg ? (
+            <Avatar alt="Remy Sharp" src={SERVER_URL + user.profileImg} />
+          ) : (
+            <Avatar sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" }}>
+              {user.username[0]}
+            </Avatar>
+          )}
+        </Stack>
+
+        <Stack
+          sx={{
+            mt: 1,
+
+            bgcolor: theme === "dark" ? "#1769aa" : "#bbdefb",
+            px: 1,
+            py: 1,
+            borderRadius: "4px",
+          }}
+        >
+          <Typography>{c.msg}</Typography>
+          <Typography sx={{ mt: 2, fontSize: "12px" }}>
+            {getTime(c.createdAt)}
+          </Typography>
+        </Stack>
       </Stack>
     </Stack>
   );

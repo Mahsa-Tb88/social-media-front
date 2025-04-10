@@ -104,3 +104,10 @@ export function usePlaceLived(id) {
     queryFn: () => axios.get("/places/" + id),
   });
 }
+
+export function useGetChats(id) {
+  return useQuery({
+    queryKey: ["chats", id],
+    queryFn: () => axios.get("/chats/" + id),
+  });
+}

@@ -237,3 +237,10 @@ export function useRemoveFriend() {
     mutationFn: (data) => axios.put(`/friends/delete/${data.userId}`, data),
   });
 }
+
+//chats
+export function useSendChat() {
+  return useMutation({
+    mutationFn: (data) => axios.post(`/chats/${data.id}`, data),
+  });
+}

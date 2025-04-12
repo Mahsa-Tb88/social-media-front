@@ -111,3 +111,9 @@ export function useGetChats(id) {
     queryFn: () => axios.get("/chats/" + id),
   });
 }
+export function useGetListMsg(id) {
+  return useQuery({
+    queryKey: ["messages", id],
+    queryFn: () => axios.get("/chats/messages/" + id),
+  });
+}

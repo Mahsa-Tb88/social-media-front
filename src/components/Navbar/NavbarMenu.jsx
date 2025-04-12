@@ -6,6 +6,7 @@ import {
   Person,
 } from "@mui/icons-material";
 import {
+  Badge,
   List,
   ListItem,
   ListItemButton,
@@ -19,6 +20,7 @@ import { Link } from "react-router-dom";
 
 export default function NavbarMenu({ open, anchorEl, handleClose }) {
   const user = useSelector((state) => state.user.profile);
+  const msgList = user.messages || [];
   return (
     <Menu
       open={open}
@@ -61,7 +63,14 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
         <ListItem divider>
           <ListItemButton LinkComponent={Link} to={`/Messages/${user.id}`}>
             <ListItemIcon>
-              <Message />
+              <Badge
+                badgeContent={msgList?.length}
+                color="error"
+                anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                overlap="circular"
+              >
+                <Message />
+              </Badge>
             </ListItemIcon>
             <ListItemText>Messages</ListItemText>
           </ListItemButton>

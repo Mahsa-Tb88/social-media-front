@@ -162,14 +162,14 @@ function UserLoginMsgs({ userLogin, theme, c, date }) {
             sx={{
               height: "1px",
               width: "100%",
-              bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+              bgcolor: theme === "dark" ? "grey.500" : "grey.400",
             }}
           ></Box>
           <Box
             sx={{
               width: "20%",
               textAlign: "center",
-              color: theme === "dark" ? "grey.800" : "grey.600",
+              color: theme === "dark" ? "grey.500" : "grey.400",
             }}
           >
             {getDate(c.createdAt)}
@@ -178,7 +178,7 @@ function UserLoginMsgs({ userLogin, theme, c, date }) {
             sx={{
               height: "1px",
               width: "100%",
-              bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+              bgcolor: theme === "dark" ? "grey.500" : "grey.400",
             }}
           ></Box>
         </Stack>
@@ -242,14 +242,14 @@ function UserMsgs({ user, theme, c, date }) {
             sx={{
               height: "1px",
               width: "100%",
-              bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+              bgcolor: theme === "dark" ? "grey.500" : "grey.400",
             }}
           ></Box>
           <Box
             sx={{
               width: "20%",
               textAlign: "center",
-              color: theme === "dark" ? "grey.800" : "grey.600",
+              color: theme === "dark" ? "grey.500" : "grey.400",
             }}
           >
             {getDate(c.createdAt)}
@@ -258,7 +258,7 @@ function UserMsgs({ user, theme, c, date }) {
             sx={{
               height: "1px",
               width: "100%",
-              bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+              bgcolor: theme === "dark" ? "grey.500" : "grey.400",
             }}
           ></Box>
         </Stack>

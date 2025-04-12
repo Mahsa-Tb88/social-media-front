@@ -20,6 +20,7 @@ export default function Initializer() {
       if (body?.user) {
         const { user, friends, messages } = body;
         dispatch(userActions.setIsLoggedIn(true));
+        console.log("body intializer", body);
 
         dispatch(
           userActions.setProfile({

@@ -18,7 +18,6 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
   const msgList = userLoging.messages || [];
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("msgList", msgList);
   const mutation = useChangeToRead();
   function clickHandler(id, chatId) {
     const data = { id, chatId };

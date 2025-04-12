@@ -108,6 +108,7 @@ export default function Chat() {
                       <UserLoginMsgs
                         userLogin={userLogin}
                         c={c}
+                        key={index}
                         theme={theme}
                         date={showDate}
                       />
@@ -119,6 +120,7 @@ export default function Chat() {
                         theme={theme}
                         c={c}
                         date={showDate}
+                        key={index}
                       />
                     );
                   }

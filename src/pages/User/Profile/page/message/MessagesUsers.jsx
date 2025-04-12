@@ -17,12 +17,16 @@ import { useGetListMsg } from "../../../../../utils/queries";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../../components/Loading";
 import LoadingError from "../../../../../components/LoadingError";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useChangeToRead } from "../../../../../utils/mutation";
+import { userActions } from "../../../../../store/slices/userSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function MessagesUserss() {
   const id = useParams().id;
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const theme = useSelector((state) => state.app.theme);
   const { isPending, data, error, refetch } = useGetListMsg(id);
   console.log("data is", data);
@@ -32,6 +36,34 @@ export default function MessagesUserss() {
     const options = { day: "2-digit", month: "short", year: "numeric" };
     const formattedDate = myDate.toLocaleDateString("en-GB", options);
     return formattedDate;
+  }
+
+  const mutation = useChangeToRead();
+  const queryClient = useQueryClient();
+
+  function clickHandler(msgId, chatId, isRead) {
+    const data = { id: msgId, chatId };
+    if (isRead) {
+      navigate("/chat/" + chatId);
+      return;
+    }
+
+    mutation.mutate(data, {
+      onSuccess(d) {
+        const updatedMsgs = userLogin.messages.filter((m) => m.id != msgId);
+        console.log("updatedddd", updatedMsgs);
+        dispatch(
+          userActions.setProfile({ ...userLogin, messages: updatedMsgs })
+        );
+        queryClient.invalidateQueries({
+          queryKey: ["messages", id],
+        });
+        navigate("/chat/" + chatId);
+      },
+      onError(e) {
+        console.log("error", e);
+      },
+    });
   }
 
   return (
@@ -107,7 +139,9 @@ export default function MessagesUserss() {
                             transform: "scale(1.08)",
                           },
                         }}
-                        onClick={() => navigate("/chat/" + msg.chatId)}
+                        onClick={() =>
+                          clickHandler(msg.msgId, msg.chatId, msg.isRead)
+                        }
                       >
                         <Box
                           sx={{

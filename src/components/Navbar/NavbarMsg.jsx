@@ -6,6 +6,7 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,7 +59,12 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
                     <Avatar>{msg.username[0]}</Avatar>
                   )}
                 </ListItemIcon>
-                <ListItemText>{msg.username}</ListItemText>
+                <ListItemText>
+                  <Typography>{msg.username}</Typography>
+                  <Typography sx={{ fontSize: "12px" }}>
+                    {msg.msg.slice(0, 20) + " ... "}
+                  </Typography>
+                </ListItemText>
               </ListItemButton>
             </ListItem>
           );

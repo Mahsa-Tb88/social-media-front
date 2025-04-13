@@ -87,7 +87,7 @@ export default function Navbar() {
             </MyIconButton>
             <MyIconButton
               onClick={chageHandlerTheme}
-              sx={{ width: 30, height: 30 }}
+              sx={{ width: 40, height: 40 }}
             >
               {theme === "light" ? (
                 <DarkMode />
@@ -98,14 +98,13 @@ export default function Navbar() {
             {isLoggedIn ? (
               <Stack direction="row" spacing={3} alignItems="center">
                 <Badge
-                  badgeContent={8}
-                  invisible={""}
+                  badgeContent={0}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
                 >
                   <MyIconButton
-                    sx={{ width: 30, height: 30 }}
+                    sx={{ width: 40, height: 40 }}
                     onClick={() => setopenNotification(!openNotification)}
                   >
                     <Notifications ref={notificationAnchor} />
@@ -118,8 +117,12 @@ export default function Navbar() {
                   overlap="circular"
                 >
                   <MyIconButton
-                    sx={{ width: 30, height: 30 }}
-                    onClick={() => setopenMsg(!openMsg)}
+                    sx={{ width: 40, height: 40 }}
+                    onClick={() =>
+                      setopenMsg(
+                        profile.profile.messages?.length ? !openMsg : false
+                      )
+                    }
                   >
                     <Message ref={msgAnchor} />
                   </MyIconButton>
@@ -128,14 +131,13 @@ export default function Navbar() {
                   badgeContent={
                     profile.profile.friends?.friendRequestList &&
                     numOfFriendrequest()
-                    // profile.profile.friends.friendRequestList.length
                   }
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
                 >
                   <MyIconButton
-                    sx={{ width: 30, height: 30 }}
+                    sx={{ width: 40, height: 40 }}
                     onClick={handleOpenListRequest}
                   >
                     <PersonAdd ref={addFriendAnchor} />

@@ -20,6 +20,7 @@ const initialState = {
       // ],
       // listFriendRequest:[{ id: "3", username: "gfhf", profileImg: "" },]
     },
+    notoficationList: [],
   },
 };
 

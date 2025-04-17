@@ -28,7 +28,7 @@ import NavbarMsg from "./NavbarMsg";
 import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
-  const profile = useSelector((state) => state.user);
+  const userLogin = useSelector((state) => state.user.profile);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const theme = useSelector((state) => state.app.theme);
   const dispatch = useDispatch();
@@ -53,13 +53,13 @@ export default function Navbar() {
   }
 
   function handleOpenListRequest() {
-    if (profile.profile.friends.friendRequestList?.length) {
+    if (userLogin.friends.friendRequestList?.length) {
       setOpenAddFriend(!openAddFriend);
     }
   }
 
   function numOfFriendrequest() {
-    const list = profile?.profile?.friends?.friendRequestList?.filter(
+    const list = userLogin?.friends?.friendRequestList?.filter(
       (f) => f.status == undefined
     );
     return list.length;
@@ -98,7 +98,7 @@ export default function Navbar() {
             {isLoggedIn ? (
               <Stack direction="row" spacing={3} alignItems="center">
                 <Badge
-                  badgeContent={0}
+                  badgeContent={userLogin.notificationList.length}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
@@ -111,7 +111,7 @@ export default function Navbar() {
                   </MyIconButton>
                 </Badge>
                 <Badge
-                  badgeContent={profile.profile.messages?.length}
+                  badgeContent={userLogin.messages?.length}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
@@ -119,9 +119,7 @@ export default function Navbar() {
                   <MyIconButton
                     sx={{ width: 40, height: 40 }}
                     onClick={() =>
-                      setopenMsg(
-                        profile.profile.messages?.length ? !openMsg : false
-                      )
+                      setopenMsg(userLogin.messages?.length ? !openMsg : false)
                     }
                   >
                     <Message ref={msgAnchor} />
@@ -129,8 +127,7 @@ export default function Navbar() {
                 </Badge>
                 <Badge
                   badgeContent={
-                    profile.profile.friends?.friendRequestList &&
-                    numOfFriendrequest()
+                    userLogin.friends?.friendRequestList && numOfFriendrequest()
                   }
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
@@ -152,7 +149,7 @@ export default function Navbar() {
                   sx={{ cursor: "pointer" }}
                 >
                   <img
-                    src={profile?.img ? profile.img : noImage}
+                    src={userLogin?.img ? userLogin.img : noImage}
                     width={40}
                     height={40}
                     style={{ border: "var(--border)", borderRadius: "50%" }}

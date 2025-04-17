@@ -18,7 +18,7 @@ export default function Initializer() {
       dispatch(appActions.setInitialized(true));
 
       if (body?.user) {
-        const { user, friends, messages } = body;
+        const { user, friends, messages, notificationList } = body;
         dispatch(userActions.setIsLoggedIn(true));
         console.log("body intializer", body);
 
@@ -33,6 +33,7 @@ export default function Initializer() {
             viewer: user.viewerProfile,
             friends,
             messages,
+            notificationList,
           })
         );
       }

@@ -8,9 +8,11 @@ import {
   Menu,
 } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
 
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
-  const notificationList = ["notification1", "notification2"];
+  const userLogin = useSelector((state) => state.user.profile);
+  console.log("....", userLogin);
   return (
     <Menu
       open={open}
@@ -19,7 +21,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
       MenuListProps={{ sx: { p: 0 } }}
     >
       <List disablePadding>
-        {notificationList.map((not) => {
+        {userLogin.notificationList.map((not) => {
           return (
             <ListItem key={not} divider disablePadding>
               <ListItemButton>

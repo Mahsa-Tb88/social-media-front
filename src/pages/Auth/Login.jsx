@@ -40,6 +40,7 @@ export default function Login() {
         const user = d.data.body.user;
         const friends = d.data.body.friends;
         const messages = d.data.body.messages;
+        const notificationList = d.data.body.notificationList;
 
         dispatch(userActions.setIsLoggedIn(true));
         dispatch(userActions.setIsAdmin(user.isAdmin));
@@ -54,6 +55,7 @@ export default function Login() {
             viewer: user.viewerProfile,
             friends,
             messages,
+            notificationList,
           })
         );
       },

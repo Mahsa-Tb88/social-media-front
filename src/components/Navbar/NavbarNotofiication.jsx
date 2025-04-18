@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
+  const notifiList = userLogin.notificationList || [];
   console.log("....", userLogin);
   const navigate = useNavigate();
   function notificationHandler(id) {
@@ -30,7 +31,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
       MenuListProps={{ sx: { p: 0 } }}
     >
       <List disablePadding>
-        {userLogin.notificationList.map((n, index) => {
+        {notifiList.map((n, index) => {
           return (
             <ListItem
               key={index}

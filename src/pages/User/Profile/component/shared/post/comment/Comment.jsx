@@ -3,6 +3,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import TextComment from "./TextComment";
+import noImage from "../../../../../../../assets/images/user.png";
+import DeleteCommnet from "./DeleteCommnet";
 
 export default function Comment({ c, setPostComments, postComments, postId }) {
   const id = useParams().id;
@@ -47,7 +49,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             <Typography sx={{ fontSize: "10px" }}>
               {new Date(c.date).toLocaleDateString()}
             </Typography>
-            <DeleteComment
+            <DeleteCommnet
               setPostComments={setPostComments}
               postComments={postComments}
               id={c.date}

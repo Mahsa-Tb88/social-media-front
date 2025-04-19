@@ -9,17 +9,23 @@ import {
   Menu,
 } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import noImage from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
+import { userActions } from "../../store/slices/userSlice";
 
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
+  const dispatch = useDispatch();
   const notifiList = userLogin.notificationList || [];
   console.log("....", userLogin);
   const navigate = useNavigate();
   function notificationHandler(id) {
     console.log("iddd", id);
+    const updatedNotifiList = notifiList.filter((n) => n.id != id);
+    dispatch(
+      userActions.setProfile({ ...userLogin, notifications: updatedNotifiList })
+    );
     navigate("/post/" + id);
   }
 

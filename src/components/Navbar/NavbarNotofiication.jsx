@@ -18,13 +18,14 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
   const notifiList = userLogin.notificationList || [];
-  console.log("....", userLogin);
   const navigate = useNavigate();
   function notificationHandler(id) {
-    console.log("iddd", id);
-    const updatedNotifiList = notifiList.filter((n) => n.id != id);
+    const updatedNotifiList = notifiList.filter((n) => n.postId != id);
     dispatch(
-      userActions.setProfile({ ...userLogin, notifications: updatedNotifiList })
+      userActions.setProfile({
+        ...userLogin,
+        notificationList: updatedNotifiList,
+      })
     );
     navigate("/post/" + id);
   }

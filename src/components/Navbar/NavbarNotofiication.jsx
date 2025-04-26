@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import noImage from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
 import { userActions } from "../../store/slices/userSlice";
-import { useUpdateNotifi } from "../../utils/mutation";
+import { useUpdateSeenNotifi } from "../../utils/mutation";
 
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
@@ -23,7 +23,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
     notifiList = userLogin.notificationList;
   }
   const navigate = useNavigate();
-  const notifiMutation = useUpdateNotifi();
+  const notifiMutation = useUpdateSeenNotifi();
   function notificationHandler(id, date) {
     const updatedNotifiList = notifiList.map((n) => {
       if (n.postId == id) {

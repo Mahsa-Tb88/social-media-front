@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import noImage from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
 import { userActions } from "../../store/slices/userSlice";
+import { useUpdateNotifi } from "../../utils/mutation";
 
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
@@ -22,15 +23,30 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
     notifiList = userLogin.notificationList;
   }
   const navigate = useNavigate();
+  const notifiMutation = useUpdateNotifi();
+  function notificationHandler(id, date) {
+    const updatedNotifiList = notifiList.map((n) => {
+      if (n.postId == id) {
+        return { ...n, isSeen: true };
+      } else {
+        return n;
+      }
+    });
 
-  function notificationHandler(id) {
-    const updatedNotifiList = notifiList.filter((n) => n.postId != id);
-    dispatch(
-      userActions.setProfile({
-        ...userLogin,
-        notificationList: updatedNotifiList,
-      })
-    );
+    const data = { id: date, userId: userLogin.id };
+    notifiMutation.mutate(data, {
+      onSuccess(d) {
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            notificationList: updatedNotifiList,
+          })
+        );
+      },
+      onError(e) {
+        console.log("error", e);
+      },
+    });
 
     navigate("/post/" + id);
   }
@@ -49,7 +65,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
               key={index}
               divider
               disablePadding
-              onClick={() => notificationHandler(n.postId)}
+              onClick={() => notificationHandler(n.postId, n.date)}
             >
               <ListItemButton>
                 <ListItemIcon>

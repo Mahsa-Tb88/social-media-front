@@ -17,8 +17,12 @@ import { userActions } from "../../store/slices/userSlice";
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
-  const notifiList = userLogin.notificationList || [];
+  let notifiList = [];
+  if (userLogin.notificationList) {
+    notifiList = userLogin.notificationList;
+  }
   const navigate = useNavigate();
+
   function notificationHandler(id) {
     const updatedNotifiList = notifiList.filter((n) => n.postId != id);
     dispatch(
@@ -27,6 +31,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
         notificationList: updatedNotifiList,
       })
     );
+
     navigate("/post/" + id);
   }
 
@@ -55,11 +60,10 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                   />
                 </ListItemIcon>
                 <ListItemText>
-                  `{n.username}
+                  {n.username}
                   {n.type == "comment"
-                    ? "Left a message on your post"
+                    ? " Left a message on your post"
                     : "liked your post"}
-                  `
                 </ListItemText>
               </ListItemButton>
             </ListItem>

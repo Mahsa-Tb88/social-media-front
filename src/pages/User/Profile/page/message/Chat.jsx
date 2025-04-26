@@ -21,7 +21,6 @@ export default function Chat() {
   const userLogin = useSelector((state) => state.user.profile);
   const id = useParams().id;
 
-  console.log("userLogin", userLogin);
   const [msg, setMsg] = useState("");
 
   const { isPending, error, refetch, data } = useGetChats(id);
@@ -41,7 +40,6 @@ export default function Chat() {
     }
   }
 
-  console.log("dataaa chat", data);
   const chats = data?.data?.body.chats;
   const user = data?.data?.body.user;
   function getDate(dateString) {

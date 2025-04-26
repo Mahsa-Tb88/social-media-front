@@ -35,6 +35,13 @@ export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
   const menuAnchor = useRef(null);
 
+  let unSeenNotification = [];
+  if (userLogin.notificationList) {
+    unSeenNotification = userLogin.notificationList.filter(
+      (n) => n.isSeen == false
+    );
+  }
+
   const [openAddFriend, setOpenAddFriend] = useState(false);
   const addFriendAnchor = useRef(null);
 
@@ -98,7 +105,7 @@ export default function Navbar() {
             {isLoggedIn ? (
               <Stack direction="row" spacing={3} alignItems="center">
                 <Badge
-                  badgeContent={userLogin.notificationList.length}
+                  badgeContent={unSeenNotification.length}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"

@@ -60,7 +60,7 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
                   )}
                 </ListItemIcon>
                 <ListItemText>
-                  <Typography>{msg.username}</Typography>
+                  <Typography>{msg.username} </Typography>
                   <Typography sx={{ fontSize: "12px" }}>
                     {msg.msg.slice(0, 20) + " ... "}
                   </Typography>

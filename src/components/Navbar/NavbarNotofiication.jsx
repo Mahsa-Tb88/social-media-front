@@ -16,6 +16,7 @@ import { userActions } from "../../store/slices/userSlice";
 import { useUpdateSeenNotifi } from "../../utils/mutation";
 
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
+  const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
   let notifiList = [];
@@ -24,16 +25,16 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   }
   const navigate = useNavigate();
   const notifiMutation = useUpdateSeenNotifi();
-  function notificationHandler(id, date) {
+  function notificationHandler(id, postId) {
     const updatedNotifiList = notifiList.map((n) => {
-      if (n.postId == id) {
+      if (n._id == id) {
         return { ...n, isSeen: true };
       } else {
         return n;
       }
     });
 
-    const data = { id: date, userId: userLogin.id };
+    const data = { id, userId: userLogin.id };
     notifiMutation.mutate(data, {
       onSuccess(d) {
         dispatch(
@@ -48,7 +49,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
       },
     });
 
-    navigate("/post/" + id);
+    navigate("/post/" + postId);
   }
 
   return (
@@ -65,9 +66,11 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
               key={index}
               divider
               disablePadding
-              onClick={() => notificationHandler(n.postId, n.date)}
+              onClick={() => notificationHandler(n._id, n.postId)}
             >
-              <ListItemButton>
+              <ListItemButton
+                sx={{ background: n.isSeen ? "transparent" : "#bbdefb" }}
+              >
                 <ListItemIcon>
                   <Box
                     component={"img"}
@@ -78,8 +81,8 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                 <ListItemText>
                   {n.username}
                   {n.type == "comment"
-                    ? " Left a message on your post"
-                    : "liked your post"}
+                    ? " left a message on your post"
+                    : " liked your post"}
                 </ListItemText>
               </ListItemButton>
             </ListItem>

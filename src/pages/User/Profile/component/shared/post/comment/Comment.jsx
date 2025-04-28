@@ -52,7 +52,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             <DeleteCommnet
               setPostComments={setPostComments}
               postComments={postComments}
-              id={c.date}
+              id={c.notifiId}
               postId={postId}
             />
           </Stack>

@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,6 +53,33 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
     navigate("/post/" + postId);
   }
 
+  function getDate(dateString) {
+    const myDate = new Date(dateString);
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    const formattedDate = myDate.toLocaleDateString("en-GB", options);
+    return formattedDate;
+  }
+
+  function timeAgo(createdAt) {
+    const now = new Date();
+    const createdDate = new Date(createdAt);
+    const diffMs = now - createdDate;
+
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffWeeks = Math.floor(diffDays / 7);
+    const diffMonths = Math.floor(diffDays / 30);
+
+    if (diffDays < 1) {
+      return "Today";
+    } else if (diffDays < 7) {
+      return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+    } else if (diffDays < 30) {
+      return `${diffWeeks} week${diffWeeks > 1 ? "s" : ""} ago`;
+    } else {
+      return `${diffMonths} month${diffMonths > 1 ? "s" : ""} ago`;
+    }
+  }
+
   return (
     <Menu
       open={open}
@@ -79,10 +107,15 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                   />
                 </ListItemIcon>
                 <ListItemText>
-                  {n.username}
-                  {n.type == "comment"
-                    ? " left a message on your post"
-                    : " liked your post"}
+                  <Typography>
+                    {n.username}
+                    {n.type == "comment"
+                      ? " left a message on your post"
+                      : " liked your post"}
+                  </Typography>
+                  <Typography sx={{ fontSize: "10px", mt: "5px" }}>
+                    {timeAgo(n.createdAt)}
+                  </Typography>
                 </ListItemText>
               </ListItemButton>
             </ListItem>

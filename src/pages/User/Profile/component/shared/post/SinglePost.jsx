@@ -16,6 +16,10 @@ import { useLocation, useParams } from "react-router-dom";
 import CommentList from "./comment/CommentList";
 import InputComment from "./comment/InputComment";
 import PostLike from "./like/PostLike";
+import { useQueries } from "@tanstack/react-query";
+import { useGetComments } from "../../../../../../utils/queries";
+import Loading from "../../../../../../components/Loading";
+import LoadingError from "../../../../../../components/LoadingError";
 
 export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
@@ -27,16 +31,20 @@ export default function SinglePost({ post, profile }) {
   const location = useLocation();
   let id = useParams().id;
 
-  useEffect(() => {
-    // I should use useEffect so when I use invalideQuerry
-    //  becuse page doesnt change rfresh, value of post does not chnage
-    setPostComments(post.comments);
-  }, [post]);
+  const { isPending, error, data, refetch } = useGetComments(post._id);
+
+  // useEffect(() => {
+  //   // I should use useEffect so when I use invalideQuerry
+  //   //  becuse page doesnt change rfresh, value of post does not chnage
+  //   setPostComments(post.comments);
+  // }, [post]);
 
   if (location.pathname.includes("post")) {
     id = post.userId._id;
   }
   const isOwner = id == userLogin.id ? true : false;
+
+  console.log("comeeents", data);
 
   return (
     <Stack>
@@ -108,9 +116,9 @@ export default function SinglePost({ post, profile }) {
           >
             <ChatIcon />
             <Typography>Comments</Typography>
-            <Typography>{postComments.length}</Typography>
+            <Typography>{data?.data?.body.length}</Typography>
           </Stack>
-          <Stack
+          {/* <Stack
             sx={{
               flexDirection: "row",
               alignItems: "center",
@@ -125,19 +133,24 @@ export default function SinglePost({ post, profile }) {
           >
             <IosShareIcon />
             <Typography>Share</Typography>
-          </Stack>
+          </Stack> */}
         </Stack>
 
         <Divider sx={{ my: 1 }} />
-        {showComments && postComments.length > 0 && (
+        {isPending ? (
+          <Loading message="Is loading..." />
+        ) : error ? (
+          <LoadingError handleAction={refetch} message={error.message} />
+        ) : (
           <CommentList
-            postComments={postComments}
+            postComments={data.data.body}
             setShowComments={setShowComments}
-            setPostComments={setPostComments}
+            showComments={showComments}
+            // setPostComments={setPostComments}
             postId={post._id}
           />
         )}
-        <InputComment post={post} />
+        <InputComment post={post} type="commnet" replyId={""} />
       </Paper>
     </Stack>
   );
@@ -241,4 +254,7 @@ function Info({ profile, post, theme, isOwner }) {
       </Stack>
     </Stack>
   );
+}
+
+{
 }

@@ -1,13 +1,15 @@
 import { Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
+import CommentLike from "../like/CommentLike";
+import ReplyToComment from "./ReplyToComment";
 
 export default function TextComment({ c }) {
-  const [isLong, setIsLong] = useState(c.comment.length > 200 ? true : false);
+  const [isLong, setIsLong] = useState(c.text.length > 200 ? true : false);
   return (
     <Stack>
       {isLong ? (
         <Stack>
-          <Typography>{c.comment.slice(0, 200) + " ..."}</Typography>
+          <Typography>{c.text.slice(0, 200) + " ..."}</Typography>
           <Button
             variant="text"
             sx={{ textAlign: "left" }}
@@ -18,8 +20,12 @@ export default function TextComment({ c }) {
         </Stack>
       ) : (
         <Stack>
-          <Typography sx={{ ml: 1 }}>{c.comment}</Typography>
-          {c.comment.length > 200 && (
+          <Typography sx={{ ml: 1 }}>{c.text}</Typography>
+          <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+            <CommentLike comment={c} />
+            <ReplyToComment />
+          </Stack>
+          {c.text.length > 200 && (
             <Button
               variant="text"
               sx={{ cursor: "pointer" }}

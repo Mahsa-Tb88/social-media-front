@@ -5,14 +5,14 @@ import { Box, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector } from "react-redux";
 
-export default function InputComment({ post }) {
+export default function InputComment({ post, replyId, type }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
 
   const [text, setText] = useState("");
   const mutation = useleaveComment();
   const queryClient = useQueryClient();
-  
+
   function sendText() {
     const data = {};
     data.id = post._id;
@@ -20,12 +20,13 @@ export default function InputComment({ post }) {
     data.username = userLogin.username;
     data.userId = userLogin.id;
     data.profileImg = userLogin.profileImg;
-    data.dateComment = Date.now();
-    
+    data.replyId = replyId ? replyId : "";
+    data.type = type;
+
     mutation.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({
-          queryKey: ["posts", post.userId],
+          queryKey: ["comments", post._id],
         });
         setText("");
       },

@@ -117,3 +117,9 @@ export function useGetListMsg(id) {
     queryFn: () => axios.get("/chats/messages/" + id),
   });
 }
+export function useGetComments(id) {
+  return useQuery({
+    queryKey: ["comments", id],
+    queryFn: () => axios.get("/posts/comments/" + id),
+  });
+}

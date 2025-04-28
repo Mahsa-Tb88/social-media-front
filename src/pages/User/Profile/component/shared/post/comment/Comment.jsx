@@ -10,6 +10,8 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
   const id = useParams().id;
   const navigate = useNavigate();
   const theme = useSelector((state) => state.app.theme);
+  console.log("cccc", c);
+  console.log("postttComments", postComments);
 
   const userLogin = useSelector((state) => state.user.profile);
   const userLoginId = userLogin.id;
@@ -44,19 +46,20 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
           />
           <Typography>{c.username}</Typography>
         </Stack>
-        {(id == userLoginId || c.userId == userLoginId) && (
-          <Stack>
-            <Typography sx={{ fontSize: "10px" }}>
-              {new Date(c.date).toLocaleDateString()}
-            </Typography>
+
+        <Stack>
+          <Typography sx={{ fontSize: "10px" }}>
+            {new Date(c.date).toLocaleDateString()}
+          </Typography>
+          {(id == userLoginId || c.userId == userLoginId) && (
             <DeleteCommnet
               setPostComments={setPostComments}
               postComments={postComments}
               id={c.notifiId}
               postId={postId}
             />
-          </Stack>
-        )}
+          )}
+        </Stack>
       </Stack>
       <TextComment c={c} />
     </Stack>

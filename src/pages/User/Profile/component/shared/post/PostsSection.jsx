@@ -25,7 +25,6 @@ export default function PostsSection({ profile }) {
   const id = useParams().id;
 
   const { isPending, data, error, refetch } = useGetPostsUser(profile._id);
-
   function hasPermission() {
     if (id == userLogin.id) {
       return true;

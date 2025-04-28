@@ -21,6 +21,7 @@ export default function InputComment({ post }) {
     data.userId = userLogin.id;
     data.profileImg = userLogin.profileImg;
     data.dateComment = Date.now();
+    
     mutation.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({

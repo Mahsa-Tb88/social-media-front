@@ -2,11 +2,14 @@ import { Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import CommentLike from "../like/CommentLike";
 import ReplyToComment from "./ReplyToComment";
+import InputComment from "./InputComment";
 
 export default function TextComment({ c }) {
   const [isLong, setIsLong] = useState(c.text.length > 200 ? true : false);
+  const [reply, setReply] = useState(false);
+
   return (
-    <Stack>
+    <Stack sx={{ mt: 1 }}>
       {isLong ? (
         <Stack>
           <Typography>{c.text.slice(0, 200) + " ..."}</Typography>
@@ -20,11 +23,18 @@ export default function TextComment({ c }) {
         </Stack>
       ) : (
         <Stack>
-          <Typography sx={{ ml: 1 }}>{c.text}</Typography>
+          <Typography sx={{ ml: 1, mb: 2 }}>{c.text}</Typography>
           <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
             <CommentLike comment={c} />
-            <ReplyToComment />
+            <Button
+              variant="text"
+              sx={{ maxWidth: "80px" }}
+              onClick={() => setReply(true)}
+            >
+              Reply
+            </Button>
           </Stack>
+          {reply && <InputComment type="reply" replyId={c._id} />}
           {c.text.length > 200 && (
             <Button
               variant="text"

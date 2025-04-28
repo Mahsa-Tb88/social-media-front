@@ -49,7 +49,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
 
         <Stack>
           <Typography sx={{ fontSize: "10px" }}>
-            {new Date(c.date).toLocaleDateString()}
+            {new Date(c.createdAt).toLocaleDateString()}
           </Typography>
           {(id == userLoginId || c.userId == userLoginId) && (
             <DeleteCommnet

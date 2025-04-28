@@ -146,7 +146,7 @@ export default function SinglePost({ post, profile }) {
             postComments={data.data.body}
             setShowComments={setShowComments}
             showComments={showComments}
-            // setPostComments={setPostComments}
+            setPostComments={setPostComments}
             postId={post._id}
           />
         )}
@@ -254,7 +254,4 @@ function Info({ profile, post, theme, isOwner }) {
       </Stack>
     </Stack>
   );
-}
-
-{
 }

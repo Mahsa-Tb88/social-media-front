@@ -24,14 +24,25 @@ import LoadingError from "../../../../../../components/LoadingError";
 export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
-  const [postComments, setPostComments] = useState(post.comments);
+  const [postComments, setPostComments] = useState([]);
+  const [filterComments, setFilterComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [openMenuPost, setOpenMenuPost] = useState(false);
   const menuPostAnchor = useRef(null);
   const location = useLocation();
   let id = useParams().id;
-
   const { isPending, error, data, refetch } = useGetComments(post._id);
+
+  useEffect(() => {
+    if (data) {
+      const comments1 = data.data.body.filter((p) => p.replyId == "");
+      const comments2 = data.data.body.filter((p) => p.replyId != "");
+      setPostComments(comments1);
+      setFilterComments(comments2);
+    }
+  }, [data]);
+
+  console.log("commentssss", postComments);
 
   // useEffect(() => {
   //   // I should use useEffect so when I use invalideQuerry
@@ -116,7 +127,7 @@ export default function SinglePost({ post, profile }) {
           >
             <ChatIcon />
             <Typography>Comments</Typography>
-            <Typography>{data?.data?.body.length}</Typography>
+            <Typography>{postComments.length}</Typography>
           </Stack>
           {/* <Stack
             sx={{
@@ -143,7 +154,8 @@ export default function SinglePost({ post, profile }) {
           <LoadingError handleAction={refetch} message={error.message} />
         ) : (
           <CommentList
-            postComments={data.data.body}
+            postComments={postComments}
+            filterComments={filterComments}
             setShowComments={setShowComments}
             showComments={showComments}
             setPostComments={setPostComments}

@@ -12,10 +12,10 @@ export default function DeleteCommnet({
 }) {
   const mutation = useDeleteComment(postId);
   function DeleteComment() {
-    const updatedComments = postComments.filter((c) => c.notifiId !== id);
+    const updatedComments = postComments.filter((c) => c._id !== id);
     const data = {};
-    data.id = postId;
-    data.comments = updatedComments;
+    data.id = id;
+    data.postId = postId;
     data.notifiId = id;
     mutation.mutate(data, {
       onSuccess(d) {

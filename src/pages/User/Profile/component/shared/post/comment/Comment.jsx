@@ -6,7 +6,13 @@ import TextComment from "./TextComment";
 import noImage from "../../../../../../../assets/images/user.png";
 import DeleteCommnet from "./DeleteCommnet";
 
-export default function Comment({ c, setPostComments, postComments, postId }) {
+export default function Comment({
+  c,
+  setPostComments,
+  postComments,
+  postId,
+  filterCommnets,
+}) {
   const id = useParams().id;
   const navigate = useNavigate();
   const theme = useSelector((state) => state.app.theme);
@@ -23,6 +29,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
         backgroundColor: theme === "dark" ? "grey.800" : "grey.200",
         p: 1,
         borderRadius: "5px",
+        border: filterCommnets ? "1px solid white" : "",
       }}
     >
       <Stack sx={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -55,13 +62,13 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             <DeleteCommnet
               setPostComments={setPostComments}
               postComments={postComments}
-              id={c.notifiId}
+              id={c._id}
               postId={postId}
             />
           )}
         </Stack>
       </Stack>
-      <TextComment c={c} />
+      <TextComment c={c} filterCommnets={filterCommnets} />
     </Stack>
   );
 }

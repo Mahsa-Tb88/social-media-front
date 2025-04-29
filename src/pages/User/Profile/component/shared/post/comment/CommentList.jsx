@@ -6,6 +6,7 @@ export default function CommentList({
   postComments,
   setShowComments,
   showComments,
+  filterCommnets,
   setPostComments,
   postId,
 }) {
@@ -32,6 +33,7 @@ export default function CommentList({
                     setPostComments={setPostComments}
                     postComments={postComments}
                     postId={postId}
+                    filterCommnets={filterCommnets}
                   />
                 </Stack>
               );

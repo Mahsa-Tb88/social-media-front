@@ -8,11 +8,10 @@ import { useSelector } from "react-redux";
 export default function InputComment({ post, replyId, type }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
-
+  console.log("post", post);
   const [text, setText] = useState("");
   const mutation = useleaveComment();
   const queryClient = useQueryClient();
-
   function sendText() {
     const data = {};
     data.id = post._id;
@@ -26,7 +25,7 @@ export default function InputComment({ post, replyId, type }) {
     mutation.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({
-          queryKey: ["comments", post._id],
+          queryKey: ["comments", post.postId],
         });
         setText("");
       },

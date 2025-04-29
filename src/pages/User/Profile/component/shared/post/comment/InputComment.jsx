@@ -22,11 +22,11 @@ export default function InputComment({ post, replyId, type }) {
     data.profileImg = userLogin.profileImg;
     data.replyId = replyId ? replyId : "";
     data.type = type;
-
+    console.log("type", type, "id", data.id);
     mutation.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({
-          queryKey: ["comments", post.postId],
+          queryKey: ["comments", type == "reply" ? post.postId : post._id],
         });
         setText("");
       },

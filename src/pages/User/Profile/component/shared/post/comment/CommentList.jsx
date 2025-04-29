@@ -7,11 +7,8 @@ export default function CommentList({
   setPostComments,
   setShowComments,
   showComments,
-  filterComments,
-  setFilterComments,
   postId,
 }) {
-  console.log("filter-listCom", filterComments);
   console.log("post-listCom", postComments);
 
   return (
@@ -37,8 +34,6 @@ export default function CommentList({
                     setPostComments={setPostComments}
                     postComments={postComments}
                     postId={postId}
-                    filterComments={filterComments}
-                    setFilterComments={setFilterComments}
                   />
                 </Stack>
               );

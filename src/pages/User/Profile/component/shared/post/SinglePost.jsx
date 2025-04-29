@@ -23,7 +23,6 @@ export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const [postComments, setPostComments] = useState([]);
-  const [filterComments, setFilterComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [openMenuPost, setOpenMenuPost] = useState(false);
   const menuPostAnchor = useRef(null);
@@ -31,23 +30,20 @@ export default function SinglePost({ post, profile }) {
   let id = useParams().id;
   const { isPending, error, data, refetch } = useGetComments(post._id);
 
+
   useEffect(() => {
     if (data) {
-      const comments1 = data.data.body.filter((p) => p.replyId == "");
-      const comments2 = data.data.body.filter((p) => p.replyId != "");
-      setPostComments(comments1);
-      setFilterComments(comments2);
+      setPostComments(data.data.body);
     }
   }, [data]);
-
 
   if (location.pathname.includes("post")) {
     id = post.userId._id;
   }
   const isOwner = id == userLogin.id ? true : false;
 
-  console.log("dataa", data);
-  console.log("filter-singlepost", filterComments);
+  console.log("dataa111", data);
+
   console.log("post-singlepost", postComments);
 
   return (
@@ -120,9 +116,7 @@ export default function SinglePost({ post, profile }) {
           >
             <ChatIcon />
             <Typography>Comments</Typography>
-            <Typography>
-              {postComments.length + filterComments.length}
-            </Typography>
+            <Typography>{postComments.length}</Typography>
           </Stack>
           {/* <Stack
             sx={{
@@ -150,15 +144,13 @@ export default function SinglePost({ post, profile }) {
         ) : (
           <CommentList
             postComments={postComments}
-            filterComments={filterComments}
-            setFilterComments={setFilterComments}
             setShowComments={setShowComments}
             showComments={showComments}
             setPostComments={setPostComments}
             postId={post._id}
           />
         )}
-        <InputComment post={post} type="commnet" replyId={""} />
+        <InputComment post={post} type="comment" replyId={""} />
       </Paper>
     </Stack>
   );

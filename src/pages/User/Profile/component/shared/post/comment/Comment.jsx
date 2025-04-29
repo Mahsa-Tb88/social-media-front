@@ -6,20 +6,12 @@ import TextComment from "./TextComment";
 import noImage from "../../../../../../../assets/images/user.png";
 import DeleteCommnet from "./DeleteCommnet";
 
-export default function Comment({
-  c,
-  setPostComments,
-  postComments,
-  postId,
-  filterComments,
-  setFilterComments,
-}) {
+export default function Comment({ c, setPostComments, postComments, postId }) {
   const id = useParams().id;
   const navigate = useNavigate();
   const theme = useSelector((state) => state.app.theme);
   console.log("comment is ---", c);
   console.log("post-Comments", postComments);
-  console.log("filter-Comments", filterComments);
 
   const userLogin = useSelector((state) => state.user.profile);
   const userLoginId = userLogin.id;
@@ -31,10 +23,9 @@ export default function Comment({
         backgroundColor: theme === "dark" ? "grey.800" : "grey.200",
         p: 1,
         borderRadius: "5px",
-        border: filterComments ? "1px solid white" : "",
       }}
     >
-      <Stack sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <Stack>
         <Stack
           sx={{
             flexDirection: "row",
@@ -48,36 +39,60 @@ export default function Comment({
           }}
           onClick={() => navigate("/profile/" + c.userId)}
         >
-          <Box
-            sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
-            component="img"
-            src={c.image ? SERVER_URL + c.image : noImage}
-          />
-          <Typography>{c.username}</Typography>
-        </Stack>
-
-        <Stack>
-          <Typography sx={{ fontSize: "10px" }}>
-            {new Date(c.createdAt).toLocaleDateString()}
-          </Typography>
-          {(id == userLoginId || c.userId == userLoginId) && (
-            <DeleteCommnet
-              setPostComments={setPostComments}
-              postComments={postComments}
-              setFilterComments={setFilterComments}
-              filterComments={filterComments}
-              id={c._id}
-              postId={postId}
-              replyId={c.replyId}
+          <Stack>
+            <Box
+              sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
+              component="img"
+              src={c.image ? SERVER_URL + c.image : noImage}
             />
-          )}
+            <Typography>{c.username}</Typography>
+          </Stack>
+          <Stack>
+            <Typography sx={{ fontSize: "10px" }}>
+              {new Date(c.createdAt).toLocaleDateString()}
+            </Typography>
+            {(id == userLoginId || c.userId == userLoginId) && (
+              <DeleteCommnet
+                setPostComments={setPostComments}
+                postComments={postComments}
+                id={c._id}
+                postId={postId}
+                replyId={c.replyId}
+              />
+            )}
+          </Stack>
         </Stack>
+        {c.reply.length > 0 &&
+          c.reply.map((r, index) => {
+            return (
+              <Stack>
+                <Stack
+                  sx={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 1,
+                    cursor: "pointer",
+                    transition: "transform 0.3s ease-in-out",
+                    "&:hover": {
+                      transform: "scale(1.08)",
+                    },
+                  }}
+                  onClick={() => navigate("/profile/" + r.userId)}
+                  key={index}
+                >
+                  <Box
+                    sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
+                    component="img"
+                    src={r.image ? SERVER_URL + r.image : noImage}
+                  />
+                  <Typography>{r.username}</Typography>
+                </Stack>
+                <Typography>{r.text}</Typography>
+              </Stack>
+            );
+          })}
       </Stack>
-      <TextComment
-        c={c}
-        filterComments={filterComments}
-        setFilterComments={setFilterComments}
-      />
+      <TextComment c={c} />
     </Stack>
   );
 }

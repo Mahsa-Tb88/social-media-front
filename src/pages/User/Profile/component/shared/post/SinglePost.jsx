@@ -9,14 +9,12 @@ import MenuPost from "../../userLogin/MenuPost";
 
 import GroupIcon from "@mui/icons-material/Group";
 import ChatIcon from "@mui/icons-material/Chat";
-import IosShareIcon from "@mui/icons-material/IosShare";
 import PublicIcon from "@mui/icons-material/Public";
 import LockIcon from "@mui/icons-material/Lock";
 import { useLocation, useParams } from "react-router-dom";
 import CommentList from "./comment/CommentList";
 import InputComment from "./comment/InputComment";
 import PostLike from "./like/PostLike";
-import { useQueries } from "@tanstack/react-query";
 import { useGetComments } from "../../../../../../utils/queries";
 import Loading from "../../../../../../components/Loading";
 import LoadingError from "../../../../../../components/LoadingError";
@@ -42,20 +40,15 @@ export default function SinglePost({ post, profile }) {
     }
   }, [data]);
 
-  console.log("commentssss", postComments);
-
-  // useEffect(() => {
-  //   // I should use useEffect so when I use invalideQuerry
-  //   //  becuse page doesnt change rfresh, value of post does not chnage
-  //   setPostComments(post.comments);
-  // }, [post]);
 
   if (location.pathname.includes("post")) {
     id = post.userId._id;
   }
   const isOwner = id == userLogin.id ? true : false;
 
-  console.log("comeeents", data);
+  console.log("dataa", data);
+  console.log("filter-singlepost", filterComments);
+  console.log("post-singlepost", postComments);
 
   return (
     <Stack>
@@ -127,7 +120,9 @@ export default function SinglePost({ post, profile }) {
           >
             <ChatIcon />
             <Typography>Comments</Typography>
-            <Typography>{postComments.length}</Typography>
+            <Typography>
+              {postComments.length + filterComments.length}
+            </Typography>
           </Stack>
           {/* <Stack
             sx={{
@@ -156,6 +151,7 @@ export default function SinglePost({ post, profile }) {
           <CommentList
             postComments={postComments}
             filterComments={filterComments}
+            setFilterComments={setFilterComments}
             setShowComments={setShowComments}
             showComments={showComments}
             setPostComments={setPostComments}

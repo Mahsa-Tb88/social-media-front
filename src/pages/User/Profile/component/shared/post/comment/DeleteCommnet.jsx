@@ -9,17 +9,31 @@ export default function DeleteCommnet({
   id,
   postComments,
   postId,
+  setFilterComments,
+  filterComments,
+  replyId,
 }) {
+
+  console.log("deleteee",filterComments,postComments)
   const mutation = useDeleteComment(postId);
   function DeleteComment() {
-    const updatedComments = postComments.filter((c) => c._id !== id);
+    let updatedComments;
+    if (replyId) {
+      updatedComments = filterComments.filter((c) => c._id !== id);
+    } else {
+      updatedComments = postComments.filter((c) => c._id !== id);
+    }
     const data = {};
     data.id = id;
     data.postId = postId;
     data.notifiId = id;
     mutation.mutate(data, {
       onSuccess(d) {
-        setPostComments(updatedComments);
+        if (replyId) {
+          setFilterComments(updatedComments);
+        } else {
+          setPostComments(updatedComments);
+        }
       },
       onError(e) {
         console.log("error is ", error);

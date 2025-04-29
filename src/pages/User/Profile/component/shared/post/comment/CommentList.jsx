@@ -4,12 +4,16 @@ import Comment from "./Comment";
 
 export default function CommentList({
   postComments,
+  setPostComments,
   setShowComments,
   showComments,
-  filterCommnets,
-  setPostComments,
+  filterComments,
+  setFilterComments,
   postId,
 }) {
+  console.log("filter-listCom", filterComments);
+  console.log("post-listCom", postComments);
+
   return (
     <Stack>
       {showComments && (
@@ -33,7 +37,8 @@ export default function CommentList({
                     setPostComments={setPostComments}
                     postComments={postComments}
                     postId={postId}
-                    filterCommnets={filterCommnets}
+                    filterComments={filterComments}
+                    setFilterComments={setFilterComments}
                   />
                 </Stack>
               );

@@ -11,13 +11,15 @@ export default function Comment({
   setPostComments,
   postComments,
   postId,
-  filterCommnets,
+  filterComments,
+  setFilterComments,
 }) {
   const id = useParams().id;
   const navigate = useNavigate();
   const theme = useSelector((state) => state.app.theme);
-  console.log("cccc", c);
-  console.log("postttComments", postComments);
+  console.log("comment is ---", c);
+  console.log("post-Comments", postComments);
+  console.log("filter-Comments", filterComments);
 
   const userLogin = useSelector((state) => state.user.profile);
   const userLoginId = userLogin.id;
@@ -29,7 +31,7 @@ export default function Comment({
         backgroundColor: theme === "dark" ? "grey.800" : "grey.200",
         p: 1,
         borderRadius: "5px",
-        border: filterCommnets ? "1px solid white" : "",
+        border: filterComments ? "1px solid white" : "",
       }}
     >
       <Stack sx={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -62,13 +64,20 @@ export default function Comment({
             <DeleteCommnet
               setPostComments={setPostComments}
               postComments={postComments}
+              setFilterComments={setFilterComments}
+              filterComments={filterComments}
               id={c._id}
               postId={postId}
+              replyId={c.replyId}
             />
           )}
         </Stack>
       </Stack>
-      <TextComment c={c} filterCommnets={filterCommnets} />
+      <TextComment
+        c={c}
+        filterComments={filterComments}
+        setFilterComments={setFilterComments}
+      />
     </Stack>
   );
 }

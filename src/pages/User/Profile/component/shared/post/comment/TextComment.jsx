@@ -4,16 +4,15 @@ import CommentLike from "../like/CommentLike";
 import InputComment from "./InputComment";
 import Comment from "./Comment";
 
-export default function TextComment({ c, filterCommnets }) {
+export default function TextComment({ c, filterComments, setFilterComments }) {
   const [isLong, setIsLong] = useState(c.text.length > 200 ? true : false);
   const [reply, setReply] = useState(false);
 
   function findReplyCommnet() {
     let replyComments = [];
-    if (filterCommnets) {
-      replyComments = filterCommnets.filter((comm) => comm.replyId == c._id);
+    if (filterComments) {
+      replyComments = filterComments.filter((comm) => comm.replyId == c._id);
     }
-    console.log("toooodat tooo", replyComments);
     return replyComments;
   }
 
@@ -63,10 +62,10 @@ export default function TextComment({ c, filterCommnets }) {
                 <Stack key={index} sx={{ ml: 2 }}>
                   <Comment
                     c={c}
-                    // postComments={findReplyCommnet()}
                     postId={c.postId}
                     id={c._id}
-                    // filterCommnets={filterCommnets}
+                    filterComments={filterComments}
+                    setFilterComments={setFilterComments}
                   />
                 </Stack>
               );

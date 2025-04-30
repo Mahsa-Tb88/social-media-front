@@ -1,14 +1,15 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import CommentLike from "../like/CommentLike";
 import InputComment from "./InputComment";
 import Comment from "./Comment";
+import noImage from "../../../../../../../assets/images/user.png";
 
 export default function TextComment({ c }) {
   const [isLong, setIsLong] = useState(c.text.length > 200 ? true : false);
   const [reply, setReply] = useState(false);
-
-
+  const [replyComments, setReplyComments] = useState(c.reply);
+  console.log("ccc", c);
   return (
     <Stack sx={{ mt: 1 }}>
       {isLong ? (
@@ -52,6 +53,19 @@ export default function TextComment({ c }) {
           {}
         </Stack>
       )}
+      {c.reply.length > 0 &&
+        c.reply.map((r, index) => {
+          return (
+            <Stack sx={{}} key={c._id}>
+              <Comment
+                c={r}
+                setPostComments={setReplyComments}
+                postComments={replyComments}
+                postId={r.postId}
+              />
+            </Stack>
+          );
+        })}
     </Stack>
   );
 }

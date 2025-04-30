@@ -62,37 +62,8 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             )}
           </Stack>
         </Stack>
-        {c.reply.length > 0 &&
-          c.reply.map((r, index) => {
-            return (
-              <Stack>
-                <Stack
-                  sx={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 1,
-                    cursor: "pointer",
-                    transition: "transform 0.3s ease-in-out",
-                    "&:hover": {
-                      transform: "scale(1.08)",
-                    },
-                  }}
-                  onClick={() => navigate("/profile/" + r.userId)}
-                  key={index}
-                >
-                  <Box
-                    sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
-                    component="img"
-                    src={r.image ? SERVER_URL + r.image : noImage}
-                  />
-                  <Typography>{r.username}</Typography>
-                </Stack>
-                <Typography>{r.text}</Typography>
-              </Stack>
-            );
-          })}
       </Stack>
-      <TextComment c={c} />
+      {c.replyId == "" && <TextComment c={c} />}
     </Stack>
   );
 }

@@ -3,42 +3,58 @@ import React, { useEffect, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import NumberOfComLike from "./NumberOfComLike";
-import { useLikeComment } from "../../../../../../../utils/mutation";
+import {
+  useLikeComment,
+  useLikeReply,
+} from "../../../../../../../utils/mutation";
 import { useSelector } from "react-redux";
 
 export default function CommentLike({ comment, userLike }) {
-  console.log("userLike", userLike);
   const [isLike, setIsLike] = useState(userLike);
   const [numOfLike, setNumOfLike] = useState(comment.like.length);
   const userLogin = useSelector((state) => state.user.profile);
-  const mutation = useLikeComment();
-
-
+  const mutationLikeComment = useLikeComment();
+  const mutationLikeReply = useLikeReply();
   console.log("commentLikee", comment);
   function likeHandler(id) {
-    console.log("likeeee", comment);
-
     const data = {
-      id,
+      id: comment.replyId ? comment.replyId : id,
       postId: comment.postId,
       username: userLogin.username,
       profileImg: userLogin.profileImg,
       userId: userLogin.id,
       isLike: !isLike,
+      notifiId: comment.notifiId,
     };
-    mutation.mutate(data, {
-      onSuccess(d) {
-        setIsLike(!isLike);
-        if (isLike) {
-          setNumOfLike((n) => n - 1);
-        } else {
-          setNumOfLike((n) => n + 1);
-        }
-      },
-      onError(e) {
-        console.log("error is ", e);
-      },
-    });
+    if (comment.replyId) {
+      mutationLikeReply.mutate(data, {
+        onSuccess(d) {
+          setIsLike(!isLike);
+          if (isLike) {
+            setNumOfLike((n) => n - 1);
+          } else {
+            setNumOfLike((n) => n + 1);
+          }
+        },
+        onError(e) {
+          console.log("error is ", e);
+        },
+      });
+    } else {
+      mutationLikeComment.mutate(data, {
+        onSuccess(d) {
+          setIsLike(!isLike);
+          if (isLike) {
+            setNumOfLike((n) => n - 1);
+          } else {
+            setNumOfLike((n) => n + 1);
+          }
+        },
+        onError(e) {
+          console.log("error is ", e);
+        },
+      });
+    }
   }
 
   return (

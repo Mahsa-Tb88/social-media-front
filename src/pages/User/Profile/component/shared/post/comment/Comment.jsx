@@ -19,51 +19,67 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
   return (
     <Stack
       sx={{
-        mb: 2,
-        backgroundColor: theme === "dark" ? "grey.800" : "grey.200",
-        p: 1,
+
+        backgroundColor:
+          c.replyId == ""
+            ? theme === "dark"
+              ? "grey.700"
+              : "grey.200"
+            : theme === "dark"
+            ? "grey.800"
+            : "grey.300",
+        p: "5px",
+        m: c.replyId == 3 ? "" : 1,
         borderRadius: "5px",
+        
+
       }}
     >
-      <Stack>
+      <Stack
+        sx={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+         
+        }}
+        onClick={() => navigate("/profile/" + c.userId)}
+      >
         <Stack
           sx={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 1,
             cursor: "pointer",
             transition: "transform 0.3s ease-in-out",
             "&:hover": {
               transform: "scale(1.08)",
             },
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
           }}
-          onClick={() => navigate("/profile/" + c.userId)}
         >
-          <Stack>
-            <Box
-              sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
-              component="img"
-              src={c.image ? SERVER_URL + c.image : noImage}
+          <Box
+            sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
+            component="img"
+            src={c.image ? SERVER_URL + c.image : noImage}
+          />
+          <Typography sx={{ fontWeight: "bold" }}>{c.username}</Typography>
+        </Stack>
+        <Stack>
+          <Typography sx={{ fontSize: "10px" }}>
+            {new Date(c.createdAt).toLocaleDateString()}
+          </Typography>
+          {(id == userLoginId || c.userId == userLoginId) && (
+            <DeleteCommnet
+              setPostComments={setPostComments}
+              postComments={postComments}
+              id={c._id}
+              postId={postId}
+              replyId={c.replyId}
             />
-            <Typography>{c.username}</Typography>
-          </Stack>
-          <Stack>
-            <Typography sx={{ fontSize: "10px" }}>
-              {new Date(c.createdAt).toLocaleDateString()}
-            </Typography>
-            {(id == userLoginId || c.userId == userLoginId) && (
-              <DeleteCommnet
-                setPostComments={setPostComments}
-                postComments={postComments}
-                id={c._id}
-                postId={postId}
-                replyId={c.replyId}
-              />
-            )}
-          </Stack>
+          )}
         </Stack>
       </Stack>
-      {c.replyId == "" && <TextComment c={c} />}
+
+      <TextComment c={c} />
     </Stack>
   );
 }

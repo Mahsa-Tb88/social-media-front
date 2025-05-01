@@ -30,7 +30,6 @@ export default function SinglePost({ post, profile }) {
   let id = useParams().id;
   const { isPending, error, data, refetch } = useGetComments(post._id);
 
-
   useEffect(() => {
     if (data) {
       setPostComments(data.data.body);
@@ -118,22 +117,6 @@ export default function SinglePost({ post, profile }) {
             <Typography>Comments</Typography>
             <Typography>{postComments.length}</Typography>
           </Stack>
-          {/* <Stack
-            sx={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-              cursor: "pointer",
-              p: 1,
-              borderRadius: "5px",
-              "&:hover ": {
-                bgcolor: theme === "dark" ? "grey.800" : "grey.200",
-              },
-            }}
-          >
-            <IosShareIcon />
-            <Typography>Share</Typography>
-          </Stack> */}
         </Stack>
 
         <Divider sx={{ my: 1 }} />

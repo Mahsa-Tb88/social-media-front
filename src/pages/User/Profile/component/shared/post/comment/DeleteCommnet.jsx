@@ -13,8 +13,6 @@ export default function DeleteCommnet({
   filterComments,
   replyId,
 }) {
-
-  console.log("deleteee",filterComments,postComments)
   const mutation = useDeleteComment(postId);
   function DeleteComment() {
     let updatedComments;
@@ -45,7 +43,10 @@ export default function DeleteCommnet({
     <Stack>
       <MyIconButton onClick={() => DeleteComment(id)}>
         <DeleteOutlineIcon
-          sx={{ fontSize: "17px", "&:hover": { color: "red" } }}
+          sx={{
+            fontSize: "17px",
+            "&:hover": { color: "red" },
+          }}
         />
       </MyIconButton>
     </Stack>

@@ -1,7 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import React, { useRef, useState } from "react";
 
-export default function NumberOfComLike({ c }) {
+export default function NumberOfComLike({ numOfLike }) {
   const menuUserLike = useRef(null);
   const [openMenuLike, setOpenMenuLike] = useState(false);
   return (
@@ -14,7 +14,7 @@ export default function NumberOfComLike({ c }) {
         ref={menuUserLike}
         onClick={() => setOpenMenuLike(true)}
       >
-        {c?.like?.length}
+        {numOfLike}
       </Box>
       {/*  <MenuUserLike
         open={openMenuLike}

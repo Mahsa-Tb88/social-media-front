@@ -9,15 +9,10 @@ import { useSelector } from "react-redux";
 export default function CommentLike({ comment, userLike }) {
   console.log("userLike", userLike);
   const [isLike, setIsLike] = useState(userLike);
+  const [numOfLike, setNumOfLike] = useState(comment.like.length);
   const userLogin = useSelector((state) => state.user.profile);
   const mutation = useLikeComment();
 
-  useEffect(() => {
-    // const user = comment.like.find((c) => c.userId == userLogin.id);
-    // if(user){
-    //   setIsLike(true)
-    // }
-  }, []);
 
   console.log("commentLikee", comment);
   function likeHandler(id) {
@@ -34,6 +29,11 @@ export default function CommentLike({ comment, userLike }) {
     mutation.mutate(data, {
       onSuccess(d) {
         setIsLike(!isLike);
+        if (isLike) {
+          setNumOfLike((n) => n - 1);
+        } else {
+          setNumOfLike((n) => n + 1);
+        }
       },
       onError(e) {
         console.log("error is ", e);
@@ -80,7 +80,7 @@ export default function CommentLike({ comment, userLike }) {
           </Box>
         )}
       </Stack>
-      <NumberOfComLike c={comment} />
+      <NumberOfComLike numOfLike={numOfLike} />
     </Stack>
   );
 }

@@ -1,11 +1,46 @@
 import { Box, Stack } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import NumberOfComLike from "./NumberOfComLike";
+import { useLikeComment } from "../../../../../../../utils/mutation";
+import { useSelector } from "react-redux";
 
-export default function CommentLike({ comment }) {
-  const [isLike, setIsLike] = useState("");
+export default function CommentLike({ comment, userLike }) {
+  console.log("userLike", userLike);
+  const [isLike, setIsLike] = useState(userLike);
+  const userLogin = useSelector((state) => state.user.profile);
+  const mutation = useLikeComment();
+
+  useEffect(() => {
+    // const user = comment.like.find((c) => c.userId == userLogin.id);
+    // if(user){
+    //   setIsLike(true)
+    // }
+  }, []);
+
+  console.log("commentLikee", comment);
+  function likeHandler(id) {
+    console.log("likeeee", comment);
+
+    const data = {
+      id,
+      postId: comment.postId,
+      username: userLogin.username,
+      profileImg: userLogin.profileImg,
+      userId: userLogin.id,
+      isLike: !isLike,
+    };
+    mutation.mutate(data, {
+      onSuccess(d) {
+        setIsLike(!isLike);
+      },
+      onError(e) {
+        console.log("error is ", e);
+      },
+    });
+  }
+
   return (
     <Stack sx={{ flexDirection: "row", gap: 1 }}>
       <Stack
@@ -45,7 +80,7 @@ export default function CommentLike({ comment }) {
           </Box>
         )}
       </Stack>
-      <NumberOfComLike />
+      <NumberOfComLike c={comment} />
     </Stack>
   );
 }

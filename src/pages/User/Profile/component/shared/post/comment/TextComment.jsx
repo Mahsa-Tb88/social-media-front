@@ -3,17 +3,29 @@ import React, { useState } from "react";
 import CommentLike from "../like/CommentLike";
 import InputComment from "./InputComment";
 import Comment from "./Comment";
+import { useSelector } from "react-redux";
 
 export default function TextComment({ c }) {
   const [isLong, setIsLong] = useState(c.text.length > 200 ? true : false);
   const [showMore, setShowMore] = useState(false);
   const [reply, setReply] = useState(false);
   const [replyComments, setReplyComments] = useState(c.reply);
+  const userLogin = useSelector((state) => state.user.profile);
+
   console.log("ccc", c);
+  console.log("id", userLogin.id);
+  function userLike() {
+    const findUser = c.like.find((c) => c.userId == userLogin.id);
+    if (findUser) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   return (
     <Stack sx={{}}>
       {isLong ? (
-        <Typography>
+        <Typography sx={{ textAlign: "justify" }}>
           {!showMore ? c.text.slice(0, 200) + " ..." : c.text}
           <Button
             variant="text"
@@ -29,7 +41,7 @@ export default function TextComment({ c }) {
         </Stack>
       )}
       <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-        <CommentLike comment={c} />
+        <CommentLike comment={c} userLike={userLike()} />
         {c.replyId == "" && (
           <Button
             variant="text"
@@ -41,7 +53,12 @@ export default function TextComment({ c }) {
         )}
       </Stack>
       {reply && c.replyId == "" && (
-        <InputComment type="reply" replyId={c._id} post={c} />
+        <InputComment
+          type="reply"
+          replyId={c._id}
+          post={c}
+          setReply={setReply}
+        />
       )}
 
       {c.replyId == "" &&

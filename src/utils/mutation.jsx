@@ -68,6 +68,12 @@ export function useLikePost() {
     mutationFn: (data) => axios.put("/posts/like/" + data.id, data),
   });
 }
+export function useLikeComment() {
+  return useMutation({
+    mutationFn: (data) => axios.put("/posts/comment/like/" + data.id, data),
+  });
+}
+
 export function useUpdateSeenNotifi() {
   return useMutation({
     mutationFn: (data) => axios.put("/posts/notification/" + data.id, data),

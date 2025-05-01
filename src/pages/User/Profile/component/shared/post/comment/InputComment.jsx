@@ -5,7 +5,7 @@ import { Box, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector } from "react-redux";
 
-export default function InputComment({ post, replyId, type }) {
+export default function InputComment({ post, replyId, type, setReply }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const [text, setText] = useState("");
@@ -29,6 +29,7 @@ export default function InputComment({ post, replyId, type }) {
           queryKey: ["comments", type == "reply" ? post.postId : post._id],
         });
         setText("");
+        setReply(false);
       },
       onError(e) {
         console.log("error", e);

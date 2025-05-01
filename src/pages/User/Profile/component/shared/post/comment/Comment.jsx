@@ -28,7 +28,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             : theme === "dark"
             ? "grey.800"
             : "grey.300",
-        p: "5px",
+        p: 1,
         m: c.replyId == 3 ? "" : 1,
         borderRadius: "5px",
         

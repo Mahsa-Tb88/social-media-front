@@ -14,7 +14,7 @@ export default function NumberOfComLike({ c }) {
         ref={menuUserLike}
         onClick={() => setOpenMenuLike(true)}
       >
-        {c?.like.length}
+        {c?.like?.length}
       </Box>
       {/*  <MenuUserLike
         open={openMenuLike}

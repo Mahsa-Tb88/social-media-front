@@ -9,7 +9,7 @@ export default function CommentList({
   showComments,
   postId,
 }) {
-  console.log("post-listCom", postComments);
+  
 
   return (
     <Stack>

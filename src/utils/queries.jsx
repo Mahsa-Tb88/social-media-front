@@ -64,6 +64,13 @@ export function useGetPost(id) {
     staleTime: 1000,
   });
 }
+export function useGetCommentPost(id) {
+  return useQuery({
+    queryKey: ["comments", id],
+    queryFn: () => axios.get("/comments/" + id),
+    staleTime: 1000,
+  });
+}
 export function useGetContactBaseInfo(id) {
   return useQuery({
     queryKey: ["contactBaseInfo", id],

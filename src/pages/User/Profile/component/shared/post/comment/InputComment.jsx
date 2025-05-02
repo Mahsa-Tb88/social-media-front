@@ -1,32 +1,28 @@
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useleaveComment } from "../../../../../../../utils/mutation";
+import { useLeaveComment } from "../../../../../../../utils/mutation";
 import { Box, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector } from "react-redux";
 
-export default function InputComment({ post, replyId, type, setReply }) {
+export default function InputComment({ postId, replyTo, setReply }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const [text, setText] = useState("");
 
-  const mutation = useleaveComment();
+  const mutation = useLeaveComment();
   const queryClient = useQueryClient();
 
   function sendText() {
     const data = {};
-    data.id = type == "reply" ? post.postId : post._id;
-    data.comment = text;
-    data.username = userLogin.username;
+    data.postId = postId;
+    data.text = text;
     data.userId = userLogin.id;
-    data.profileImg = userLogin.profileImg;
-    data.replyId = replyId ? replyId : "";
-    data.type = type;
-    console.log("type", type, "id", data.id);
+    data.replyTo = replyTo ? replyTo : "";
     mutation.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({
-          queryKey: ["comments", type == "reply" ? post.postId : post._id],
+          queryKey: ["comments", postId],
         });
         setText("");
         setReply(false);

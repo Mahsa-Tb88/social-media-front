@@ -12,10 +12,8 @@ export default function TextComment({ c }) {
   const [replyComments, setReplyComments] = useState(c.reply);
   const userLogin = useSelector((state) => state.user.profile);
 
-  console.log("ccc", c);
-  console.log("id", userLogin.id);
   function userLike() {
-    const findUser = c.like.find((c) => c.userId == userLogin.id);
+    const findUser = c.likes.find((c) => c.userId._id == userLogin.id);
     if (findUser) {
       return true;
     } else {
@@ -42,7 +40,7 @@ export default function TextComment({ c }) {
       )}
       <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
         <CommentLike comment={c} userLike={userLike()} />
-        {c.replyId == "" && (
+        {!c?.replyTo && (
           <Button
             variant="text"
             sx={{ maxWidth: "80px" }}
@@ -52,18 +50,18 @@ export default function TextComment({ c }) {
           </Button>
         )}
       </Stack>
-      {reply && c.replyId == "" && (
+      {reply && !c?.replyTo && (
         <InputComment
           type="reply"
-          replyId={c._id}
-          post={c}
+          replyTo={c._id}
+          postId={c.postId}
           setReply={setReply}
         />
       )}
 
-      {c.replyId == "" &&
-        c?.reply.length > 0 &&
-        c.reply.map((r, index) => {
+      {!c?.replyTo &&
+        c?.replies.length > 0 &&
+        c.replies.map((r, index) => {
           return (
             <Stack sx={{}} key={c._id}>
               <Comment

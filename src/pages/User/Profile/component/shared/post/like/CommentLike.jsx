@@ -11,12 +11,12 @@ import { useSelector } from "react-redux";
 
 export default function CommentLike({ comment, userLike }) {
   const [isLike, setIsLike] = useState(userLike);
-  const [numOfLike, setNumOfLike] = useState(comment.like.length);
+  const [numOfLike, setNumOfLike] = useState(comment.likes.length);
   const userLogin = useSelector((state) => state.user.profile);
   const mutationLikeComment = useLikeComment();
   const mutationLikeReply = useLikeReply();
   console.log("commentLikee", comment);
-  function likeHandler(id) {
+  function likesHandler(id) {
     const data = {
       id: comment.replyId ? comment.replyId : id,
       postId: comment.postId,

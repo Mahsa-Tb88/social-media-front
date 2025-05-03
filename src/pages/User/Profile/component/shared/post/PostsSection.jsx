@@ -75,7 +75,11 @@ export default function PostsSection({ profile }) {
               ) ? (
               <Stack>
                 {data?.data.body.map((p) => {
-                  return <SinglePost post={p} profile={profile} />;
+                  return (
+                    <Stack key={p._id}>
+                      <SinglePost post={p} profile={profile} />
+                    </Stack>
+                  );
                 })}
               </Stack>
             ) : (

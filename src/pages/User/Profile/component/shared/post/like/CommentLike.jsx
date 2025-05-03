@@ -3,58 +3,65 @@ import React, { useEffect, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import NumberOfComLike from "./NumberOfComLike";
-import {
-  useLikeComment,
-  useLikeReply,
-} from "../../../../../../../utils/mutation";
+import { useLikeComment } from "../../../../../../../utils/mutation";
 import { useSelector } from "react-redux";
 
 export default function CommentLike({ comment, userLike }) {
   const [isLike, setIsLike] = useState(userLike);
-  const [numOfLike, setNumOfLike] = useState(comment.likes.length);
+  const [numOfLike, setNumOfLike] = useState(comment?.likes.length);
   const userLogin = useSelector((state) => state.user.profile);
-  const mutationLikeComment = useLikeComment();
-  const mutationLikeReply = useLikeReply();
-  console.log("commentLikee", comment);
-  function likesHandler(id) {
+  const mutation = useLikeComment();
+  console.log("commentLikee", comment.text, userLike);
+  function likeHandler() {
     const data = {
-      id: comment.replyId ? comment.replyId : id,
-      postId: comment.postId,
-      username: userLogin.username,
-      profileImg: userLogin.profileImg,
       userId: userLogin.id,
-      isLike: !isLike,
-      notifiId: comment.notifiId,
+      postId: comment.postId,
+      commentId: comment._id,
     };
-    if (comment.replyId) {
-      mutationLikeReply.mutate(data, {
-        onSuccess(d) {
-          setIsLike(!isLike);
-          if (isLike) {
-            setNumOfLike((n) => n - 1);
-          } else {
-            setNumOfLike((n) => n + 1);
-          }
-        },
-        onError(e) {
-          console.log("error is ", e);
-        },
-      });
-    } else {
-      mutationLikeComment.mutate(data, {
-        onSuccess(d) {
-          setIsLike(!isLike);
-          if (isLike) {
-            setNumOfLike((n) => n - 1);
-          } else {
-            setNumOfLike((n) => n + 1);
-          }
-        },
-        onError(e) {
-          console.log("error is ", e);
-        },
-      });
-    }
+
+    mutation.mutate(data, {
+      onSuccess(d) {
+        setIsLike(!isLike);
+        if (isLike) {
+          setNumOfLike((n) => n - 1);
+        } else {
+          setNumOfLike((n) => n + 1);
+        }
+      },
+      onError(e) {
+        console.log("eeror is ", e);
+      },
+    });
+
+    // if (comment.replyId) {
+    //   mutationLikeReply.mutate(data, {
+    //     onSuccess(d) {
+    //       setIsLike(!isLike);
+    //       if (isLike) {
+    //         setNumOfLike((n) => n - 1);
+    //       } else {
+    //         setNumOfLike((n) => n + 1);
+    //       }
+    //     },
+    //     onError(e) {
+    //       console.log("error is ", e);
+    //     },
+    //   });
+    // } else {
+    //   mutationLikeComment.mutate(data, {
+    //     onSuccess(d) {
+    //       setIsLike(!isLike);
+    //       if (isLike) {
+    //         setNumOfLike((n) => n - 1);
+    //       } else {
+    //         setNumOfLike((n) => n + 1);
+    //       }
+    //     },
+    //     onError(e) {
+    //       console.log("error is ", e);
+    //     },
+    //   });
+    // }
   }
 
   return (

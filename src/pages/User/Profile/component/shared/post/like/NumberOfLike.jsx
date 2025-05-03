@@ -15,13 +15,13 @@ export default function NumberOfLike({ post }) {
         ref={menuUserLike}
         onClick={() => setOpenMenuLike(true)}
       >
-        {post.like.length}
+        {post?.likes.length}
       </Box>
       <MenuUserLike
         open={openMenuLike}
         anchorEl={menuUserLike.current}
         handleClose={() => setOpenMenuLike(false)}
-        likes={post.like}
+        likes={post.likes}
       />
     </Stack>
   );

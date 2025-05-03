@@ -11,15 +11,18 @@ export default function TextComment({ c }) {
   const [reply, setReply] = useState(false);
   const [replyComments, setReplyComments] = useState(c.reply);
   const userLogin = useSelector((state) => state.user.profile);
+  console.log("textCommenttttt--------", c);
 
   function userLike() {
-    const findUser = c.likes.find((c) => c.userId._id == userLogin.id);
+    let findUser;
+    findUser = c.likes.find((u) => u._id == userLogin.id);
     if (findUser) {
       return true;
     } else {
       return false;
     }
   }
+  
   return (
     <Stack sx={{}}>
       {isLong ? (

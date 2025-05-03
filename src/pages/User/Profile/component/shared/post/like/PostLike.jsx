@@ -9,19 +9,15 @@ import NumberOfLike from "./NumberOfLike";
 
 export default function postLike({ post }) {
   const userLogin = useSelector((state) => state.user.profile);
-  const findLike = post.like.find((l) => l.userId == userLogin.id);
+  const findLike = post?.likes.find((l) => l._id == userLogin.id);
   const [isLike, setIsLike] = useState(findLike ? true : false);
-
   const mutation = useLikePost();
   const queryClient = useQueryClient();
 
   function likeHandler(postId) {
     setIsLike(!isLike);
     const data = {
-      username: userLogin.username,
       userId: userLogin.id,
-      profileImg: userLogin.profileImg,
-      isLike: isLike ? false : true,
       id: postId,
     };
 

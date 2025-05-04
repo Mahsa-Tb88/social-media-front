@@ -103,7 +103,7 @@ export default function CommentLike({ comment, userLike }) {
           </Box>
         )}
       </Stack>
-      <NumberOfComLike numOfLike={numOfLike} />
+      <NumberOfComLike numOfLike={numOfLike} likes={comment.likes} />
     </Stack>
   );
 }

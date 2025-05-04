@@ -1,7 +1,8 @@
 import { Box, Stack } from "@mui/material";
 import React, { useRef, useState } from "react";
+import MenuUserLike from "../../MenuUserLike";
 
-export default function NumberOfComLike({ numOfLike }) {
+export default function NumberOfComLike({ numOfLike, likes }) {
   const menuUserLike = useRef(null);
   const [openMenuLike, setOpenMenuLike] = useState(false);
   return (
@@ -16,12 +17,12 @@ export default function NumberOfComLike({ numOfLike }) {
       >
         {numOfLike}
       </Box>
-      {/*  <MenuUserLike
+      <MenuUserLike
         open={openMenuLike}
         anchorEl={menuUserLike.current}
         handleClose={() => setOpenMenuLike(false)}
-        likes={post.like}
-      /> */}
+        likes={likes}
+      />
     </Stack>
   );
 }

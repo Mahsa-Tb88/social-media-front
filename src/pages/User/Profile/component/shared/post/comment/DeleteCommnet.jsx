@@ -6,35 +6,27 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 export default function DeleteCommnet({
   setPostComments,
-  id,
   postComments,
+  id,
   postId,
-  setFilterComments,
-  filterComments,
-  replyId,
+  replyTo,
 }) {
   const mutation = useDeleteComment(postId);
+
   function DeleteComment() {
-    let updatedComments;
-    if (replyId) {
-      updatedComments = filterComments.filter((c) => c._id !== id);
-    } else {
-      updatedComments = postComments.filter((c) => c._id !== id);
-    }
-    const data = {};
-    data.id = id;
-    data.postId = postId;
-    data.notifiId = id;
+    const data = { id, postId, replyTo };
+    let comments;
     mutation.mutate(data, {
       onSuccess(d) {
-        if (replyId) {
-          setFilterComments(updatedComments);
+        if (replyTo) {
+          comments = postComments.replies.filter((c) => c.id != id);
         } else {
-          setPostComments(updatedComments);
+          comments = postComments.filter((c) => c._id != id);
         }
+        setPostComments(comments);
       },
       onError(e) {
-        console.log("error is ", error);
+        console.log("error is ", e);
       },
     });
   }

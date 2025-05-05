@@ -48,16 +48,17 @@ export function useEditPost() {
     mutationFn: (data) => axios.put("/posts/edit/" + data.id, data),
   });
 }
-export function useDeleteComment() {
-  return useMutation({
-    mutationFn: (data) => axios.put("/posts/comment/delete/" + data.id, data),
-  });
-}
 export function useDeletePost() {
   return useMutation({
     mutationFn: (id) => axios.delete("/posts/" + id),
   });
 }
+export function useLikePost() {
+  return useMutation({
+    mutationFn: (data) => axios.put("/posts/like/" + data.id, data),
+  });
+}
+// comments
 export function useLeaveComment() {
   return useMutation({
     mutationFn: (data) => axios.post("/comments/" + data.postId, data),
@@ -65,7 +66,7 @@ export function useLeaveComment() {
 }
 export function useLikeComment() {
   return useMutation({
-    mutationFn: (data) => axios.put("/comments/" + data.postId, data),
+    mutationFn: (data) => axios.put("/comments/like/" + data.postId, data),
   });
 }
 
@@ -74,21 +75,14 @@ export function useleaveComment() {
     mutationFn: (data) => axios.put("/posts/comment/" + data.id, data),
   });
 }
-export function useLikePost() {
+
+export function useDeleteComment() {
   return useMutation({
-    mutationFn: (data) => axios.put("/posts/like/" + data.id, data),
+    mutationFn: (data) => axios.put("/comments/delete/" + data.id, data),
   });
 }
-// export function useLikeComment() {
-//   return useMutation({
-//     mutationFn: (data) => axios.put("/posts/comment/like/" + data.id, data),
-//   });
-// }
-// export function useLikeReply() {
-//   return useMutation({
-//     mutationFn: (data) => axios.put("/posts/reply/like/" + data.id, data),
-//   });
-// }
+
+
 
 export function useUpdateSeenNotifi() {
   return useMutation({

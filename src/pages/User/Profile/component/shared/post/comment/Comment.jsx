@@ -10,7 +10,8 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
   const id = useParams().id;
   const navigate = useNavigate();
   const theme = useSelector((state) => state.app.theme);
-  console.log("comment is ---", c);
+  // console.log("comment is ---", c);
+  console.log("postcoments is ---", postComments);
 
   const userLogin = useSelector((state) => state.user.profile);
   const userLoginId = userLogin.id;
@@ -36,7 +37,6 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
           alignItems: "center",
           justifyContent: "space-between",
         }}
-        onClick={() => navigate("/profile/" + c.userId._id)}
       >
         <Stack
           sx={{
@@ -49,6 +49,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             alignItems: "center",
             gap: 1,
           }}
+          onClick={() => navigate("/profile/" + c.userId._id)}
         >
           <Box
             sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
@@ -69,7 +70,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             <DeleteCommnet
               setPostComments={setPostComments}
               postComments={postComments}
-              id={c._id}
+              comment={c}
               postId={postId}
               replyTo={c.replyTo}
             />
@@ -77,7 +78,11 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
         </Stack>
       </Stack>
 
-      <TextComment c={c} />
+      <TextComment
+        c={c}
+        setPostComments={setPostComments}
+        postComments={postComments}
+      />
     </Stack>
   );
 }

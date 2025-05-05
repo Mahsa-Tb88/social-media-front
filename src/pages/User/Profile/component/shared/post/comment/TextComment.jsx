@@ -5,7 +5,7 @@ import InputComment from "./InputComment";
 import Comment from "./Comment";
 import { useSelector } from "react-redux";
 
-export default function TextComment({ c }) {
+export default function TextComment({ c, setPostComments, postComments }) {
   const [isLong, setIsLong] = useState(c.text.length > 200 ? true : false);
   const [showMore, setShowMore] = useState(false);
   const [reply, setReply] = useState(false);
@@ -22,7 +22,7 @@ export default function TextComment({ c }) {
       return false;
     }
   }
-  
+
   return (
     <Stack sx={{}}>
       {isLong ? (
@@ -69,8 +69,8 @@ export default function TextComment({ c }) {
             <Stack sx={{}} key={c._id}>
               <Comment
                 c={r}
-                setPostComments={setReplyComments}
-                postComments={replyComments}
+                setPostComments={setPostComments}
+                postComments={postComments}
                 postId={r.postId}
               />
             </Stack>

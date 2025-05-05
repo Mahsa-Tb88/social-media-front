@@ -51,7 +51,6 @@ export default function SinglePost({ post, profile }) {
 
   console.log("dataa111", data);
 
-  console.log("commentsPost", postComments);
 
   return (
     <Stack>

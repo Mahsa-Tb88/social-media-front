@@ -30,6 +30,8 @@ export default function SinglePost({ post, profile }) {
   let id = useParams().id;
   const { isPending, error, data, refetch } = useGetCommentPost(post._id);
 
+  console.log("post=====", post);
+
   useEffect(() => {
     if (data) {
       setPostComments(data.data.body);
@@ -48,9 +50,6 @@ export default function SinglePost({ post, profile }) {
     id = post.userId._id;
   }
   const isOwner = id == userLogin.id ? true : false;
-
-  console.log("dataa111", data);
-
 
   return (
     <Stack>
@@ -142,7 +141,7 @@ export default function SinglePost({ post, profile }) {
             />
           )}
         </Stack>
-        <InputComment postId={post._id} type="comment" replyId={""} />
+        <InputComment postId={post._id} userGetComm={post.userId} />
       </Paper>
     </Stack>
   );
@@ -247,5 +246,3 @@ function Info({ profile, post, theme, isOwner }) {
     </Stack>
   );
 }
-
-

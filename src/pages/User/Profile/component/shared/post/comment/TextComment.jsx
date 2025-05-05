@@ -6,10 +6,8 @@ import Comment from "./Comment";
 import { useSelector } from "react-redux";
 
 export default function TextComment({ c, setPostComments, postComments }) {
-  const [isLong, setIsLong] = useState(c.text.length > 200 ? true : false);
   const [showMore, setShowMore] = useState(false);
   const [reply, setReply] = useState(false);
-  const [replyComments, setReplyComments] = useState(c.reply);
   const userLogin = useSelector((state) => state.user.profile);
   console.log("textCommenttttt--------", c);
 
@@ -25,7 +23,7 @@ export default function TextComment({ c, setPostComments, postComments }) {
 
   return (
     <Stack sx={{}}>
-      {isLong ? (
+      {c.text.length > 200 ? (
         <Typography sx={{ textAlign: "justify" }}>
           {!showMore ? c.text.slice(0, 200) + " ..." : c.text}
           <Button
@@ -54,12 +52,7 @@ export default function TextComment({ c, setPostComments, postComments }) {
         )}
       </Stack>
       {reply && !c?.replyTo && (
-        <InputComment
-          type="reply"
-          replyTo={c._id}
-          postId={c.postId}
-          setReply={setReply}
-        />
+        <InputComment replyTo={c._id} postId={c.postId} setReply={setReply} />
       )}
 
       {!c?.replyTo &&

@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
+  Stack,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -17,7 +18,6 @@ import { userActions } from "../../store/slices/userSlice";
 import { useUpdateSeenNotifi } from "../../utils/mutation";
 
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
-  const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
   let notifiList = [];
@@ -28,7 +28,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const notifiMutation = useUpdateSeenNotifi();
   function notificationHandler(id, postId) {
     const updatedNotifiList = notifiList.map((n) => {
-      if (n._id == id) {
+      if (n.userId._id == id) {
         return { ...n, isSeen: true };
       } else {
         return n;
@@ -94,26 +94,49 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
               key={index}
               divider
               disablePadding
-              onClick={() => notificationHandler(n._id, n.postId)}
+              onClick={() => notificationHandler(n.userId._id, n.postId)}
             >
-              <ListItemButton
-                sx={{ background: n.isSeen ? "transparent" : "#bbdefb" }}
-              >
-                <ListItemIcon>
-                  <Box
-                    component={"img"}
-                    src={n.profileImg ? SERVER_URL + n.profileImg : noImage}
-                    sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
-                  />
-                </ListItemIcon>
+              <ListItemButton>
                 <ListItemText>
-                  <Typography>
-                    {n.username}
-                    {n.type == "comment"
-                      ? " left a message on your post"
-                      : " liked your post"}
+                  <Stack
+                    sx={{ flexDirection: "row", gap: 1, alignItems: "center" }}
+                  >
+                    <Box
+                      component={"img"}
+                      src={
+                        n.userId.profileImg
+                          ? SERVER_URL + n.userId.profileImg
+                          : noImage
+                      }
+                      sx={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                    <Typography>
+                      {n.userId.username}
+                      {n.type == "comment"
+                        ? " left a message on your post"
+                        : " liked your post"}
+                    </Typography>
+                  </Stack>
+                  <Typography
+                    sx={{
+                      ml: 1,
+                      background: !n.isSeen ? "#0288d1" : "#eeeeee",
+                      py: "3px",
+                      px: "5px",
+                      mt: 1,
+                      borderRadius: "7px",
+                      width: "100px",
+                      fontSize: "12px",
+                      color: !n.isSeen ? "#fff" : "grey",
+                    }}
+                  >
+                    {n?.text ? n.text.slice(0, 10) + " ..." : ""}
                   </Typography>
-                  <Typography sx={{ fontSize: "10px", mt: "5px" }}>
+                  <Typography sx={{ fontSize: "10px", mt: "5px", ml: 1 }}>
                     {timeAgo(n.createdAt)}
                   </Typography>
                 </ListItemText>

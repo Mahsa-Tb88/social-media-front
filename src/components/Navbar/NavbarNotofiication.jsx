@@ -28,12 +28,13 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const notifiMutation = useUpdateSeenNotifi();
   function notificationHandler(id, postId) {
     const updatedNotifiList = notifiList.map((n) => {
-      if (n.userId._id == id) {
+      if (n._id == id) {
         return { ...n, isSeen: true };
       } else {
         return n;
       }
     });
+    console.log("updatedNotifiList", updatedNotifiList);
 
     const data = { id, userId: userLogin.id };
     notifiMutation.mutate(data, {
@@ -94,7 +95,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
               key={index}
               divider
               disablePadding
-              onClick={() => notificationHandler(n.userId._id, n.postId)}
+              onClick={() => notificationHandler(n._id, n.postId)}
             >
               <ListItemButton>
                 <ListItemText>

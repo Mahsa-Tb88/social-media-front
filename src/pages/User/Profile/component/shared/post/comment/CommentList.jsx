@@ -9,8 +9,6 @@ export default function CommentList({
   showComments,
   postId,
 }) {
-  
-
   return (
     <Stack>
       {showComments && (
@@ -24,20 +22,18 @@ export default function CommentList({
       )}
       <Stack sx={{ maxHeight: "400px", overflowY: "auto" }}>
         {showComments &&
-          postComments
-            .sort((a, b) => b.date - a.date)
-            .map((c, index) => {
-              return (
-                <Stack key={index}>
-                  <Comment
-                    c={c}
-                    setPostComments={setPostComments}
-                    postComments={postComments}
-                    postId={postId}
-                  />
-                </Stack>
-              );
-            })}
+          postComments.map((c, index) => {
+            return (
+              <Stack key={index}>
+                <Comment
+                  c={c}
+                  setPostComments={setPostComments}
+                  postComments={postComments}
+                  postId={postId}
+                />
+              </Stack>
+            );
+          })}
       </Stack>
     </Stack>
   );

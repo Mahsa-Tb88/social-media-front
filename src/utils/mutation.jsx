@@ -82,11 +82,10 @@ export function useDeleteComment() {
   });
 }
 
-
-
 export function useUpdateSeenNotifi() {
   return useMutation({
-    mutationFn: (data) => axios.put("/posts/notification/" + data.id, data),
+    mutationFn: (data) =>
+      axios.put("/comments/notificationSeen/" + data.id, data),
   });
 }
 //overview

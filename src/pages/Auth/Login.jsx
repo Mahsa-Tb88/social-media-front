@@ -40,7 +40,9 @@ export default function Login() {
         const user = d.data.body.user;
         const friends = d.data.body.friends;
         const messages = d.data.body.messages;
-        const notificationList = d.data.body.notificationList;
+        const notificationList = d.data.body.notificationList.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
 
         dispatch(userActions.setIsLoggedIn(true));
         dispatch(userActions.setIsAdmin(user.isAdmin));

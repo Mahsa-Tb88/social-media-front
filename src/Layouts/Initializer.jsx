@@ -33,7 +33,9 @@ export default function Initializer() {
             viewer: user.viewerProfile,
             friends,
             messages,
-            notificationList,
+            notificationList: notificationList.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            ),
           })
         );
       }

@@ -20,6 +20,8 @@ import Loading from "../../../../../../components/Loading";
 import LoadingError from "../../../../../../components/LoadingError";
 
 export default function SinglePost({ post, profile }) {
+  console.log("singlePost", post);
+
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const [postComments, setPostComments] = useState([]);
@@ -29,8 +31,6 @@ export default function SinglePost({ post, profile }) {
   const location = useLocation();
   let id = useParams().id;
   const { isPending, error, data, refetch } = useGetCommentPost(post._id);
-
-  console.log("post=====", post);
 
   useEffect(() => {
     if (data) {

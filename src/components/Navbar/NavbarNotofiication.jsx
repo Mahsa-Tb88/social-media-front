@@ -34,7 +34,6 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
         return n;
       }
     });
-    console.log("updatedNotifiList", updatedNotifiList);
 
     const data = { id, userId: userLogin.id };
     notifiMutation.mutate(data, {
@@ -45,13 +44,12 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
             notificationList: updatedNotifiList,
           })
         );
+        navigate("/post/" + postId);
       },
       onError(e) {
         console.log("error", e);
       },
     });
-
-    navigate("/post/" + postId);
   }
 
   function getDate(dateString) {
@@ -60,7 +58,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
     const formattedDate = myDate.toLocaleDateString("en-GB", options);
     return formattedDate;
   }
-
+  console.log("notifiList", notifiList);
   function timeAgo(createdAt) {
     const now = new Date();
     const createdDate = new Date(createdAt);
@@ -88,7 +86,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
       onClick={handleClose}
       MenuListProps={{ sx: { p: 0 } }}
     >
-      <List disablePadding>
+      <List disablePadding sx={{ maxHeight: "500px", overflow: "auto" }}>
         {notifiList.map((n, index) => {
           return (
             <ListItem
@@ -119,7 +117,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                       {n.userId.username}
                       {n.type == "comment"
                         ? " left a message on your post"
-                        : " liked your post"}
+                        : " liked your comment"}
                     </Typography>
                   </Stack>
                   <Typography

@@ -608,7 +608,7 @@ function FamilyMember({ value, type, onCloseEdit }) {
           viewer: "friends",
         },
       };
-      console.log("add family", data);
+
       mutationAddFamily.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["familyRel"] });
@@ -699,7 +699,7 @@ function FamilyMember({ value, type, onCloseEdit }) {
 function Status({ newValue, setNewValue, saveChangeHandler }) {
   return (
     <Stack>
-      <FormControl >
+      <FormControl>
         <InputLabel id="status">Status</InputLabel>
         <Select
           value={newValue}

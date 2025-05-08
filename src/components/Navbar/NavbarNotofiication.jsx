@@ -26,6 +26,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   }
   const navigate = useNavigate();
   const notifiMutation = useUpdateSeenNotifi();
+  
   function notificationHandler(id, postId) {
     const updatedNotifiList = notifiList.map((n) => {
       if (n._id == id) {

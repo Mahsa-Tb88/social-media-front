@@ -175,7 +175,7 @@ function AddSubFamily() {
 
 function Content({ item }) {
   const navigate = useNavigate();
-  console.log("item", item);
+
   return (
     <Stack sx={{ mb: 1 }}>
       <Stack

@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useLeaveComment } from "../../../../../../../utils/mutation";
+import { useGetSearchUser } from "../../../../../../../utils/queries";
 import { Box, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector } from "react-redux";
@@ -13,9 +14,23 @@ export default function InputComment({ postId, replyTo, setReply }) {
   const theme = useSelector((state) => state.app.theme);
   const [text, setText] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
+  const [search, setSearch] = useState(false);
+  const [q, setQ] = useState(false);
+  const searchRef = useRef(null);
   const userLogin = useSelector((state) => state.user.profile);
-  const mutation = useLeaveComment();
+
+  const mutationLeaveComm = useLeaveComment();
+  const { isPending, data, error } = useGetSearchUser(search);
   const queryClient = useQueryClient();
+
+  console.log("dataa users search", data);
+
+  useEffect(() => {
+    setSearch(q);
+    return () => {
+      // clearTimeOut(searchRef.current);
+    };
+  }, [q]);
 
   function sendText() {
     const data = {};
@@ -23,7 +38,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
     data.text = text;
     data.userId = userLogin.id;
     data.replyTo = replyTo ? replyTo : "";
-    mutation.mutate(data, {
+    mutationLeaveComm.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({
           queryKey: ["comments", postId],
@@ -43,8 +58,16 @@ export default function InputComment({ postId, replyTo, setReply }) {
     const newText = text + emoji;
     setText(newText);
   }
-  console.log(" Text", text);
-
+  function inputHandler(value) {
+    if (value[0] == "@") {
+      const searchRef = setTimeout(() => {
+        setQ(value.slice(1));
+      }, 2000);
+    } else {
+      setText(value);
+      setShowEmoji(false);
+    }
+  }
   return (
     <Box sx={{ position: "relative", width: "100%" }}>
       <Stack
@@ -75,8 +98,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
           }}
           value={text}
           onChange={(e) => {
-            setText(e.target.value);
-            setShowEmoji(false);
+            inputHandler(e.target.value);
           }}
           error={text.length >= 1100}
           inputProps={{ maxLength: 1100 }}
@@ -97,7 +119,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
         <Stack
           sx={{
             position: "absolute",
-            top: "100%", // or adjust like `top: 60px` depending on design
+            top: "100%",
             right: 0,
             zIndex: 10,
           }}

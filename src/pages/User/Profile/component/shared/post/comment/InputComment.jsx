@@ -4,6 +4,9 @@ import { useLeaveComment } from "../../../../../../../utils/mutation";
 import { Box, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useSelector } from "react-redux";
+import MyIconButton from "../../../../../../../components/Customized/MyIconButton";
+import MoodIcon from "@mui/icons-material/Mood";
+import { green } from "@mui/material/colors";
 
 export default function InputComment({ postId, replyTo, setReply }) {
   const theme = useSelector((state) => state.app.theme);
@@ -64,6 +67,9 @@ export default function InputComment({ postId, replyTo, setReply }) {
         error={text.length >= 1100}
         inputProps={{ maxLength: 1100 }}
       />
+      <MyIconButton tooltip="post" onClick={() => setShowEmoji(!showEmoji)}>
+        <MoodIcon sx={{ color: green[500] }} />
+      </MyIconButton>
       <Box sx={{ cursor: "pointer" }} onClick={sendText}>
         <SendIcon
           sx={text ? { color: "#1976d2", "&:hover": { color: "#1769aa" } } : ""}

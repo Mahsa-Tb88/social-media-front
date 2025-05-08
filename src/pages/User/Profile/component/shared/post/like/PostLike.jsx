@@ -10,7 +10,9 @@ import NumberOfLike from "./NumberOfLike";
 export default function postLike({ post }) {
   const userLogin = useSelector((state) => state.user.profile);
   const findLike = post?.likes.find((l) => l._id == userLogin.id);
+
   const [isLike, setIsLike] = useState(findLike ? true : false);
+
   const mutation = useLikePost();
   const queryClient = useQueryClient();
 
@@ -20,7 +22,6 @@ export default function postLike({ post }) {
       userId: userLogin.id,
       id: postId,
     };
-
     mutation.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({ queryKey: ["posts", post.userId] });

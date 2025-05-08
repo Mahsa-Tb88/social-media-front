@@ -16,7 +16,7 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import MoodIcon from "@mui/icons-material/Mood";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useSelector } from "react-redux";
@@ -27,6 +27,7 @@ import UploadImage from "./UploadImage";
 import { useCreateNewPost, useEditPost } from "../../../../../utils/mutation";
 import { LoadingButton } from "@mui/lab";
 import { useQueryClient } from "@tanstack/react-query";
+import EmojiPicker from "emoji-picker-react";
 
 export default function PostProfile({ open, onClose, type, post }) {
   const profile = useSelector((state) => state.user.profile);
@@ -38,75 +39,20 @@ export default function PostProfile({ open, onClose, type, post }) {
     post?.image ? SERVER_URL + post.image : ""
   );
   const [openUploadImage, setOpenUploadImage] = useState(false);
+  const [showEmoji, setShowEmoji] = useState(false);
 
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       title: post?.title ? post.title : "",
       desc: post?.desc ? post.desc : "",
     },
   });
 
-  const blue = {
-    100: "#DAECFF",
-    200: "#b6daff",
-    400: "#3399FF",
-    500: "#007FFF",
-    600: "#0072E5",
-    900: "#003A75",
-  };
-
-  const grey = {
-    50: "#F3F6F9",
-    100: "#E5EAF2",
-    200: "#DAE2ED",
-    300: "#C7D0DD",
-    400: "#B0B8C4",
-    500: "#9DA8B7",
-    600: "#6B7A90",
-    700: "#434D5B",
-    800: "#303740",
-    900: "#1C2025",
-  };
-
-  const TextareaAutosize = styled(BaseTextareaAutosize)(
-    ({ theme }) => `
-    box-sizing: border-box;
-    
-    font-weight: 400;
-    line-height: 1.5;
-    padding: 8px 12px;
-    border-radius: 8px;
-    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-    background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-    border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-    box-shadow: 0 2px 2px ${
-      theme.palette.mode === "dark" ? grey[900] : grey[50]
-    };
-  
-    &:hover {
-      border-color: ${blue[400]};
-    }
-  
-    &:focus {
-      border-color: ${blue[400]};
-      box-shadow: 0 0 0 3px ${
-        theme.palette.mode === "dark" ? blue[600] : blue[200]
-      };
-    }
-  
-    /* firefox */
-    &:focus-visible {
-      outline: 0;
-    }
-  `
-  );
-
   const { isPending, error, mutate } = useCreateNewPost();
   const editMutation = useEditPost();
   const queryClient = useQueryClient();
 
   function onSubmit(data) {
-    console.log("edit...");
     if (type == "edit") {
       console.log("edit", data);
 
@@ -155,6 +101,23 @@ export default function PostProfile({ open, onClose, type, post }) {
   useEffect(() => {
     setOpenUploadImage(false);
   }, [open]);
+
+  const textareaRef = useRef(null);
+  const desc = watch("desc") || "";
+
+  function handleEmoji(emojiData) {
+    const emoji = emojiData.emoji;
+    console.log("desc is ", desc);
+    // Get current cursor position
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    // Insert emoji at the cursor position
+    const newText = desc.substring(0, start) + emoji + desc.substring(end);
+
+    setValue("desc", newText);
+  }
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -207,11 +170,26 @@ export default function PostProfile({ open, onClose, type, post }) {
             size="small"
             {...register("title")}
           />
-          <TextareaAutosize
+          <Box
             sx={{ mt: 4, width: "100%" }}
             placeholder="What is on your mind?"
+            component={"textarea"}
             minRows={3}
-            {...register("desc")}
+            {...register("desc", {
+              onChange: (e) => setValue("desc", e.target.value),
+            })}
+            ref={textareaRef}
+            value={desc}
+            style={{
+              width: "100%",
+              padding: "8px",
+              fontSize: "16px",
+              borderColor: "#ccc",
+              
+              borderRadius: "4px",
+              resize: "none",
+              fontFamily: "inherit",
+            }}
           />
         </Stack>
         {imageEditPost && imageEditPost != "noImage" ? (
@@ -231,6 +209,11 @@ export default function PostProfile({ open, onClose, type, post }) {
             setOpenUploadImage={setOpenUploadImage}
             setImagePost={setImagePost}
           />
+        )}
+        {showEmoji && (
+          <Stack>
+            <EmojiPicker onEmojiClick={handleEmoji} />
+          </Stack>
         )}
         <Stack
           sx={{
@@ -255,11 +238,14 @@ export default function PostProfile({ open, onClose, type, post }) {
             </Tooltip>
             <Tooltip title="Video" arrow>
               <MyIconButton tooltip="post">
-                <VideoLibraryIcon sx={{ color: blue[500] }} />
+                <VideoLibraryIcon sx={{ color: "#007FFF" }} />
               </MyIconButton>
             </Tooltip>
             <Tooltip title="Feeling" arrow>
-              <MyIconButton tooltip="post">
+              <MyIconButton
+                tooltip="post"
+                onClick={() => setShowEmoji(!showEmoji)}
+              >
                 <MoodIcon sx={{ color: green[500] }} />
               </MyIconButton>
             </Tooltip>

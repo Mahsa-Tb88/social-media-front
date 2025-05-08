@@ -2,13 +2,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import React, { useState, useRef, useEffect } from "react";
 import { useLeaveComment } from "../../../../../../../utils/mutation";
 import { useGetSearchUser } from "../../../../../../../utils/queries";
-import { Box, Stack, TextField } from "@mui/material";
+import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import noImage from "../../../../../../../../src/assets/images/user.png";
 import { useSelector } from "react-redux";
 import MyIconButton from "../../../../../../../components/Customized/MyIconButton";
 import MoodIcon from "@mui/icons-material/Mood";
 import { green } from "@mui/material/colors";
 import EmojiPicker from "emoji-picker-react";
+import Loading from "../../../../../../../components/Loading";
+import LoadingError from "../../../../../../../components/LoadingError";
 
 export default function InputComment({ postId, replyTo, setReply }) {
   const theme = useSelector((state) => state.app.theme);
@@ -20,16 +23,16 @@ export default function InputComment({ postId, replyTo, setReply }) {
   const userLogin = useSelector((state) => state.user.profile);
 
   const mutationLeaveComm = useLeaveComment();
-  const { isPending, data, error } = useGetSearchUser(search);
+  const { isPending, data, error, refetch } = useGetSearchUser(search);
   const queryClient = useQueryClient();
 
   console.log("dataa users search", data);
+  console.log("error users search", error);
 
   useEffect(() => {
     setSearch(q);
-    return () => {
-      // clearTimeOut(searchRef.current);
-    };
+    const timeOut = setTimeout(setSearch(q), 2000);
+    return () => clearTimeout(timeOut);
   }, [q]);
 
   function sendText() {
@@ -60,9 +63,8 @@ export default function InputComment({ postId, replyTo, setReply }) {
   }
   function inputHandler(value) {
     if (value[0] == "@") {
-      const searchRef = setTimeout(() => {
-        setQ(value.slice(1));
-      }, 2000);
+      setText(value);
+      setQ(value.slice(1));
     } else {
       setText(value);
       setShowEmoji(false);
@@ -87,22 +89,24 @@ export default function InputComment({ postId, replyTo, setReply }) {
           },
         }}
       >
-        <TextField
-          placeholder="Write your comment"
-          multiline
-          sx={{
-            width: "100%",
-            fontSize: 15,
-            px: 1,
-            py: 1,
-          }}
-          value={text}
-          onChange={(e) => {
-            inputHandler(e.target.value);
-          }}
-          error={text.length >= 1100}
-          inputProps={{ maxLength: 1100 }}
-        />
+        <Stack sx={{ width: "100%" }}>
+          <TextField
+            placeholder="Write your comment"
+            multiline
+            sx={{
+              width: "100%",
+              fontSize: 15,
+              px: 1,
+              py: 1,
+            }}
+            value={text}
+            onChange={(e) => {
+              inputHandler(e.target.value);
+            }}
+            error={text.length >= 1100}
+            inputProps={{ maxLength: 1100 }}
+          />
+        </Stack>
         <MyIconButton tooltip="post" onClick={() => setShowEmoji(!showEmoji)}>
           <MoodIcon sx={{ color: green[500] }} />
         </MyIconButton>
@@ -126,6 +130,48 @@ export default function InputComment({ postId, replyTo, setReply }) {
         >
           <EmojiPicker onEmojiClick={handleEmoji} />
         </Stack>
+      )}
+      {q && isPending ? (
+        <Loading message="Is loading..." />
+      ) : error ? (
+        <LoadingError handleAction={refetch} message={error.message} />
+      ) : (
+        <Paper
+          sx={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            zIndex: 10,
+            width: "30%",
+            p: 2,
+          }}
+        >
+          {data?.data?.body.map((user) => {
+            return (
+              <Stack
+                key={user._id}
+                sx={{
+                  mb: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 1,
+                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                  borderRadius: "5px",
+                  p: "7px",
+                }}
+              >
+                <Box
+                  component={"img"}
+                  src={user.profileImg ? user.profileImg : noImage}
+                  sx={{ width: "20px", height: "20px", borderRadius: "50%" }}
+                />
+                <Typography sx={{ fontSize: "12px", fontWeight: "bold" }}>
+                  {user.username}
+                </Typography>
+              </Stack>
+            );
+          })}
+        </Paper>
       )}
     </Box>
   );

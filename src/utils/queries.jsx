@@ -27,7 +27,7 @@ export function useGetAllUser() {
 export function useGetSearchUser(search) {
   return useQuery({
     queryKey: ["usersSearch", search],
-    queryFn: () => axios.get("/users/search", { params: { search } }),
+    queryFn: () => axios.get("/users/username/search/", { params: { search } }),
   });
 }
 export function useGetUserById(id) {

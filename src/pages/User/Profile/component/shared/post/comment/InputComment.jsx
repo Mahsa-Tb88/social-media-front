@@ -19,7 +19,6 @@ export default function InputComment({ postId, replyTo, setReply }) {
   const [showEmoji, setShowEmoji] = useState(false);
   const [search, setSearch] = useState(false);
   const [q, setQ] = useState(false);
-  const searchRef = useRef(null);
   const userLogin = useSelector((state) => state.user.profile);
 
   const mutationLeaveComm = useLeaveComment();
@@ -131,47 +130,59 @@ export default function InputComment({ postId, replyTo, setReply }) {
           <EmojiPicker onEmojiClick={handleEmoji} />
         </Stack>
       )}
-      {q && isPending ? (
+      {isPending ? (
         <Loading message="Is loading..." />
       ) : error ? (
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
-        <Paper
-          sx={{
-            position: "absolute",
-            top: "100%",
-            left: 0,
-            zIndex: 10,
-            width: "30%",
-            p: 2,
-          }}
-        >
-          {data?.data?.body.map((user) => {
-            return (
-              <Stack
-                key={user._id}
-                sx={{
-                  mb: 1,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 1,
-                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
-                  borderRadius: "5px",
-                  p: "7px",
-                }}
-              >
-                <Box
-                  component={"img"}
-                  src={user.profileImg ? user.profileImg : noImage}
-                  sx={{ width: "20px", height: "20px", borderRadius: "50%" }}
-                />
-                <Typography sx={{ fontSize: "12px", fontWeight: "bold" }}>
-                  {user.username}
-                </Typography>
-              </Stack>
-            );
-          })}
-        </Paper>
+        q && (
+          <Paper
+            sx={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              zIndex: 10,
+              width: "30%",
+              p: 2,
+            }}
+          >
+            {data?.data?.body.length
+              ? data?.data?.body.map((user) => {
+                  return (
+                    <Stack
+                      key={user._id}
+                      sx={{
+                        mb: 1,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 1,
+                        bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                        borderRadius: "5px",
+                        p: "7px",
+                      }}
+                      onClick={() => {
+                        setText("@ " + user.username + " ");
+                        setQ("");
+                      }}
+                    >
+                      <Box
+                        component={"img"}
+                        src={user.profileImg ? user.profileImg : noImage}
+                        sx={{
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "50%",
+                        }}
+                      />
+                      <Typography sx={{ fontSize: "12px", fontWeight: "bold" }}>
+                        {user.username}
+                      </Typography>
+                    </Stack>
+                  );
+                })
+              : "Nothing to show!"}
+          </Paper>
+        )
       )}
     </Box>
   );

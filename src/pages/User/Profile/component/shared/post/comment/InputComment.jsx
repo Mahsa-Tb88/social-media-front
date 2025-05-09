@@ -18,7 +18,8 @@ export default function InputComment({ postId, replyTo, setReply }) {
   const [text, setText] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const [search, setSearch] = useState(false);
-  const [q, setQ] = useState(false);
+  const [q, setQ] = useState("");
+  const [username, setUsername] = useState("");
   const userLogin = useSelector((state) => state.user.profile);
 
   const mutationLeaveComm = useLeaveComment();
@@ -30,7 +31,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
 
   useEffect(() => {
     setSearch(q);
-    const timeOut = setTimeout(setSearch(q), 2000);
+    const timeOut = setTimeout(setSearch(q.slice(1)), 2000);
     return () => clearTimeout(timeOut);
   }, [q]);
 
@@ -40,18 +41,19 @@ export default function InputComment({ postId, replyTo, setReply }) {
     data.text = text;
     data.userId = userLogin.id;
     data.replyTo = replyTo ? replyTo : "";
-    mutationLeaveComm.mutate(data, {
-      onSuccess(d) {
-        queryClient.invalidateQueries({
-          queryKey: ["comments", postId],
-        });
-        setText("");
-        setReply(false);
-      },
-      onError(e) {
-        console.log("error", e);
-      },
-    });
+    console.log("submit", data);
+    // mutationLeaveComm.mutate(data, {
+    //   onSuccess(d) {
+    //     queryClient.invalidateQueries({
+    //       queryKey: ["comments", postId],
+    //     });
+    //     setText("");
+    //     setReply(false);
+    //   },
+    //   onError(e) {
+    //     console.log("error", e);
+    //   },
+    // });
   }
 
   function handleEmoji(emojiData) {
@@ -62,13 +64,16 @@ export default function InputComment({ postId, replyTo, setReply }) {
   }
   function inputHandler(value) {
     if (value[0] == "@") {
-      setText(value);
-      setQ(value.slice(1));
+      setQ(value);
+      setUsername(true);
+      setText("");
     } else {
       setText(value);
       setShowEmoji(false);
     }
   }
+  console.log("q is ", q);
+  console.log("text is ", text);
   return (
     <Box sx={{ position: "relative", width: "100%" }}>
       <Stack
@@ -88,22 +93,36 @@ export default function InputComment({ postId, replyTo, setReply }) {
           },
         }}
       >
-        <Stack sx={{ width: "100%" }}>
+        <Stack
+          sx={{ width: "100%", flexDirection: "row", alignItems: "center" }}
+        >
+          {q && (
+            <Typography sx={{ color: "blue", whiteSpace: "nowrap" }}>
+              {q}
+            </Typography>
+          )}
           <TextField
             placeholder="Write your comment"
             multiline
+            fullWidth
+            variant="standard"
             sx={{
-              width: "100%",
               fontSize: 15,
               px: 1,
               py: 1,
+              color: "info",
             }}
             value={text}
             onChange={(e) => {
               inputHandler(e.target.value);
             }}
             error={text.length >= 1100}
-            inputProps={{ maxLength: 1100 }}
+            InputProps={{
+              sx: {
+                maxLength: 1100,
+                mb: 2,
+              },
+            }}
           />
         </Stack>
         <MyIconButton tooltip="post" onClick={() => setShowEmoji(!showEmoji)}>
@@ -135,7 +154,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
       ) : error ? (
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
-        q && (
+        username && (
           <Paper
             sx={{
               position: "absolute",
@@ -161,8 +180,8 @@ export default function InputComment({ postId, replyTo, setReply }) {
                         p: "7px",
                       }}
                       onClick={() => {
-                        setText("@ " + user.username + " ");
-                        setQ("");
+                        setQ("@ " + user.username + " ");
+                        setUsername(false);
                       }}
                     >
                       <Box

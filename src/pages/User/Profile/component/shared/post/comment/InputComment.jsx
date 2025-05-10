@@ -2,7 +2,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import React, { useState, useRef, useEffect } from "react";
 import { useLeaveComment } from "../../../../../../../utils/mutation";
 import { useGetSearchUser } from "../../../../../../../utils/queries";
-import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import {
+  Box,
+  IconButton,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import noImage from "../../../../../../../../src/assets/images/user.png";
 import { useSelector } from "react-redux";
@@ -12,14 +20,16 @@ import { green } from "@mui/material/colors";
 import EmojiPicker from "emoji-picker-react";
 import Loading from "../../../../../../../components/Loading";
 import LoadingError from "../../../../../../../components/LoadingError";
+import { Close } from "@mui/icons-material";
 
 export default function InputComment({ postId, replyTo, setReply }) {
   const theme = useSelector((state) => state.app.theme);
   const [text, setText] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
-  const [search, setSearch] = useState(false);
+  const [search, setSearch] = useState("");
   const [q, setQ] = useState("");
-  const [username, setUsername] = useState("");
+  const [usernameList, setUsernameList] = useState("");
+  const [mentionUserId, setMentionUserId] = useState("");
   const userLogin = useSelector((state) => state.user.profile);
 
   const mutationLeaveComm = useLeaveComment();
@@ -30,9 +40,12 @@ export default function InputComment({ postId, replyTo, setReply }) {
   console.log("error users search", error);
 
   useEffect(() => {
-    setSearch(q);
-    const timeOut = setTimeout(setSearch(q.slice(1)), 2000);
-    return () => clearTimeout(timeOut);
+    if (q) {
+      setSearch(q);
+      console.log("newwwwww req");
+      const timeOut = setTimeout(setSearch(q), 2000);
+      return () => clearTimeout(timeOut);
+    }
   }, [q]);
 
   function sendText() {
@@ -41,6 +54,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
     data.text = text;
     data.userId = userLogin.id;
     data.replyTo = replyTo ? replyTo : "";
+    data.mentionUser = mentionUserId;
     console.log("submit", data);
     // mutationLeaveComm.mutate(data, {
     //   onSuccess(d) {
@@ -62,18 +76,29 @@ export default function InputComment({ postId, replyTo, setReply }) {
     const newText = text + emoji;
     setText(newText);
   }
+  console.log("q", q);
+  console.log("text", text);
+
   function inputHandler(value) {
-    if (value[0] == "@") {
-      setQ(value);
-      setUsername(true);
-      setText("");
+    setText(value);
+
+    if (text[0] == "@") {
+      const firstSpaceIndex = value.indexOf(" ");
+      setUsernameList(true);
+      if (firstSpaceIndex > 1) {
+        setQ(value.slice(1, firstSpaceIndex));
+      } else {
+        if (value.slice(1) && firstSpaceIndex != 1) {
+          setQ(value.slice(1));
+        } else {
+          setUsernameList(false);
+        }
+      }
     } else {
-      setText(value);
-      setShowEmoji(false);
+      setUsernameList(false);
     }
   }
-  console.log("q is ", q);
-  console.log("text is ", text);
+
   return (
     <Box sx={{ position: "relative", width: "100%" }}>
       <Stack
@@ -96,10 +121,29 @@ export default function InputComment({ postId, replyTo, setReply }) {
         <Stack
           sx={{ width: "100%", flexDirection: "row", alignItems: "center" }}
         >
-          {q && (
-            <Typography sx={{ color: "blue", whiteSpace: "nowrap" }}>
-              {q}
-            </Typography>
+          {mentionUserId && (
+            <Stack sx={{ position: "relative" }}>
+              <Box
+                sx={{ "&:hover": { color: "#f50057" } }}
+                onClick={() => {
+                  setQ("");
+                  setMentionUserId(false);
+                }}
+              >
+                <Close
+                  sx={{
+                    fontSize: "12px",
+                    position: "absolute",
+                    bottom: "100%",
+                    left: "0",
+                    cursor: "pointer",
+                  }}
+                />
+              </Box>
+              <Typography sx={{ color: "blue", whiteSpace: "nowrap" }}>
+                {q}
+              </Typography>
+            </Stack>
           )}
           <TextField
             placeholder="Write your comment"
@@ -154,7 +198,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
       ) : error ? (
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
-        username && (
+        usernameList && (
           <Paper
             sx={{
               position: "absolute",
@@ -181,7 +225,9 @@ export default function InputComment({ postId, replyTo, setReply }) {
                       }}
                       onClick={() => {
                         setQ("@ " + user.username + " ");
-                        setUsername(false);
+                        setUsernameList(false);
+                        setText(text.replace(/^@\S+\s*/, ""));
+                        setMentionUserId(user._id);
                       }}
                     >
                       <Box

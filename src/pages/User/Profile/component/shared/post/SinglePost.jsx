@@ -20,7 +20,6 @@ import Loading from "../../../../../../components/Loading";
 import LoadingError from "../../../../../../components/LoadingError";
 
 export default function SinglePost({ post, profile }) {
-
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const [postComments, setPostComments] = useState([]);
@@ -42,7 +41,9 @@ export default function SinglePost({ post, profile }) {
     postComments.forEach((c) => {
       number = number + c?.replies.length;
     });
-    return number;
+    if (number) {
+      return number;
+    }
   }
 
   if (location.pathname.includes("post")) {

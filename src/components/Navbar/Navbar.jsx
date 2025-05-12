@@ -71,6 +71,7 @@ export default function Navbar() {
     );
     return list.length;
   }
+
   return (
     <AppBar
       position="sticky"
@@ -112,13 +113,19 @@ export default function Navbar() {
                 >
                   <MyIconButton
                     sx={{ width: 40, height: 40 }}
-                    onClick={() => setopenNotification(!openNotification)}
+                    onClick={() =>
+                      setopenNotification(
+                        unSeenNotification.length > 0
+                          ? !openNotification
+                          : false
+                      )
+                    }
                   >
                     <Notifications ref={notificationAnchor} />
                   </MyIconButton>
                 </Badge>
                 <Badge
-                  badgeContent={userLogin.messages?.length}
+                  badgeContent={userLogin.messages.length}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
@@ -146,7 +153,6 @@ export default function Navbar() {
                   >
                     <PersonAdd ref={addFriendAnchor} />
                   </MyIconButton>
-                  )
                 </Badge>
 
                 <Box

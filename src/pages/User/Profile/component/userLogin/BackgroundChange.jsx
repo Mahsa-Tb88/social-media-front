@@ -84,7 +84,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
     if (data.image?.length && isImageChanged) {
       data.image = selectedImage.replace(SERVER_URL, "");
     }
-    data.id = user.profile._id;
+    data.id = user.profile.id;
     mutate(data, {
       onSuccess(d) {
         dispatch(
@@ -95,7 +95,9 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
         );
         setBackgroundImg(selectedImage);
       },
-      onError(error) {},
+      onError(error) {
+        console.log("error", error);
+      },
     });
   }
 

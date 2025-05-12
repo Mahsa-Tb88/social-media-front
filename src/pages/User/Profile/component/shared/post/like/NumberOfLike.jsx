@@ -11,11 +11,12 @@ export default function NumberOfLike({ post }) {
         sx={{
           cursor: "pointer",
           "&:hover": { fontWeight: "bold" },
+          width:"20px"
         }}
         ref={menuUserLike}
         onClick={() => setOpenMenuLike(true)}
       >
-        {post?.likes.length}
+        {post?.likes.length > 0 && post?.likes.length}
       </Box>
       <MenuUserLike
         open={openMenuLike}

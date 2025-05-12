@@ -11,7 +11,7 @@ export default function CommentList({
 }) {
   return (
     <Stack>
-      {showComments && (
+      {showComments && postComments.length > 0 && (
         <Button
           variant="outlined"
           sx={{ mb: 3, width: "150px" }}

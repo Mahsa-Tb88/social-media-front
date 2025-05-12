@@ -58,7 +58,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     if (data.image?.length && isImageChanged) {
       data.image = selectedImage.replace(SERVER_URL, "");
     }
-    data.id = user._id;
+    data.id = user.id;
     mutate(data, {
       onSuccess(d) {
         console.log(d);
@@ -68,7 +68,6 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
             profileImg: selectedImage.replace(SERVER_URL, ""),
           })
         );
-        console.log(selectedImage);
         setProfileImg(selectedImage);
       },
       onError(error) {
@@ -82,7 +81,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     setValue("image", "");
     setProfileImg(noImage);
     setSelectedImage(noImage);
-    data.id = user._id;
+    data.id = user.id;
     data.image = "";
     mutate(data, {
       onSuccess(d) {

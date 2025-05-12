@@ -54,20 +54,20 @@ export default function InputComment({ postId, replyTo, setReply }) {
     data.text = text;
     data.userId = userLogin.id;
     data.replyTo = replyTo ? replyTo : "";
-    data.mentionUser = mentionUserId;
+    data.mentionUser = mentionUserId ? mentionUserId : null;
     console.log("submit", data);
-    // mutationLeaveComm.mutate(data, {
-    //   onSuccess(d) {
-    //     queryClient.invalidateQueries({
-    //       queryKey: ["comments", postId],
-    //     });
-    //     setText("");
-    //     setReply(false);
-    //   },
-    //   onError(e) {
-    //     console.log("error", e);
-    //   },
-    // });
+    mutationLeaveComm.mutate(data, {
+      onSuccess(d) {
+        queryClient.invalidateQueries({
+          queryKey: ["comments", postId],
+        });
+        setText("");
+        setReply(false);
+      },
+      onError(e) {
+        console.log("error", e);
+      },
+    });
   }
 
   function handleEmoji(emojiData) {

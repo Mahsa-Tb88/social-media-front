@@ -26,7 +26,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   }
   const navigate = useNavigate();
   const notifiMutation = useUpdateSeenNotifi();
-  
+
   function notificationHandler(id, postId) {
     const updatedNotifiList = notifiList.map((n) => {
       if (n._id == id) {
@@ -118,6 +118,8 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                       {n.userId.username}
                       {n.type == "comment"
                         ? " left a message on your post"
+                        : n.type == "post"
+                        ? "like your post"
                         : " liked your comment"}
                     </Typography>
                   </Stack>

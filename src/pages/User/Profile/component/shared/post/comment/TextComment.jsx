@@ -4,11 +4,13 @@ import CommentLike from "../like/CommentLike";
 import InputComment from "./InputComment";
 import Comment from "./Comment";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function TextComment({ c, setPostComments, postComments }) {
   const [showMore, setShowMore] = useState(false);
   const [reply, setReply] = useState(false);
   const userLogin = useSelector((state) => state.user.profile);
+  const navigate = useNavigate();
   console.log("textCommenttttt--------", c);
 
   function userLike() {
@@ -35,7 +37,17 @@ export default function TextComment({ c, setPostComments, postComments }) {
           </Button>
         </Typography>
       ) : (
-        <Stack sx={{ ml: 1, mb: 1 }}>
+        <Stack
+          sx={{ ml: 1, mb: 1, flexDirection: "row", alignItems: "center" }}
+        >
+          {c.mentionUser && (
+            <Typography
+              sx={{ color: "#1976d2",mr:1 }}
+              onClick={() => navigate("./profile" + c._id)}
+            >
+              {c.mentionUser.username}
+            </Typography>
+          )}
           <Typography>{c.text}</Typography>
         </Stack>
       )}

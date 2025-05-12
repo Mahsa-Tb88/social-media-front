@@ -62,6 +62,8 @@ export default function InputComment({ postId, replyTo, setReply }) {
           queryKey: ["comments", postId],
         });
         setText("");
+        setQ("");
+        setMentionUserId(false);
         setReply(false);
       },
       onError(e) {

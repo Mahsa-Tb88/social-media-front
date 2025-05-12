@@ -117,10 +117,10 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                     <Typography>
                       {n.userId.username}
                       {n.type == "comment"
-                        ? " left a message on your post"
+                        ? " left a message on the post"
                         : n.type == "post"
-                        ? "like your post"
-                        : " liked your comment"}
+                        ? " like the post"
+                        : " liked the comment"}
                     </Typography>
                   </Stack>
                   <Typography
@@ -136,7 +136,11 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                       color: !n.isSeen ? "#fff" : "grey",
                     }}
                   >
-                    {n?.text ? n.text.slice(0, 10) + " ..." : ""}
+                    {n?.text
+                      ? n.text.slice(0, 10) + " ..."
+                      : n?.desc
+                      ? n.desc.slice(0, 10) + " ..."
+                      : "See post ..."}
                   </Typography>
                   <Typography sx={{ fontSize: "10px", mt: "5px", ml: 1 }}>
                     {timeAgo(n.createdAt)}

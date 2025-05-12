@@ -24,10 +24,11 @@ export function useGetAllUser() {
     queryFn: () => axios.get("/users/"),
   });
 }
-export function useGetSearchUser(search) {
+export function useGetSearchUser(search, postId) {
   return useQuery({
     queryKey: ["usersSearch", search],
-    queryFn: () => axios.get("/users/username/search/", { params: { search } }),
+    queryFn: () =>
+      axios.get("/users/username/search/", { params: { search, postId } }),
   });
 }
 export function useGetUserById(id) {

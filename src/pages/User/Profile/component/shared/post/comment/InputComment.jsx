@@ -3,14 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useLeaveComment } from "../../../../../../../utils/mutation";
 import { useGetSearchUser } from "../../../../../../../utils/queries";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import {
-  Box,
-  IconButton,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import noImage from "../../../../../../../../src/assets/images/user.png";
 import { useSelector } from "react-redux";
@@ -33,7 +26,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
   const userLogin = useSelector((state) => state.user.profile);
 
   const mutationLeaveComm = useLeaveComment();
-  const { isPending, data, error, refetch } = useGetSearchUser(search);
+  const { isPending, data, error, refetch } = useGetSearchUser(search, postId);
   const queryClient = useQueryClient();
 
   console.log("dataa users search", data);
@@ -55,7 +48,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
     data.userId = userLogin.id;
     data.replyTo = replyTo ? replyTo : "";
     data.mentionUser = mentionUserId ? mentionUserId : null;
-    console.log("submit", data);
+    console.log("submittttttttttttttttttttttttttttttttttttttttttttttttttttt", data);
     mutationLeaveComm.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({
@@ -78,12 +71,9 @@ export default function InputComment({ postId, replyTo, setReply }) {
     const newText = text + emoji;
     setText(newText);
   }
-  console.log("q", q);
-  console.log("text", text);
 
   function inputHandler(value) {
     setText(value);
-
     if (text[0] == "@") {
       const firstSpaceIndex = value.indexOf(" ");
       setUsernameList(true);

@@ -46,9 +46,12 @@ export default function InputComment({ postId, replyTo, setReply }) {
     data.postId = postId;
     data.text = text;
     data.userId = userLogin.id;
-    data.replyTo = replyTo ? replyTo : "";
+    data.replyTo = replyTo ? replyTo : null;
     data.mentionUser = mentionUserId ? mentionUserId : null;
-    console.log("submittttttttttttttttttttttttttttttttttttttttttttttttttttt", data);
+    console.log(
+      "submittttttttttttttttttttttttttttttttttttttttttttttttttttt",
+      data
+    );
     mutationLeaveComm.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({

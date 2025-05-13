@@ -113,13 +113,7 @@ export default function Navbar() {
                 >
                   <MyIconButton
                     sx={{ width: 40, height: 40 }}
-                    onClick={() =>
-                      setopenNotification(
-                        unSeenNotification.length > 0
-                          ? !openNotification
-                          : false
-                      )
-                    }
+                    onClick={() => setopenNotification(!openNotification)}
                   >
                     <Notifications ref={notificationAnchor} />
                   </MyIconButton>

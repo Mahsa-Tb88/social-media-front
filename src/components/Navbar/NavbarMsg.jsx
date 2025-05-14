@@ -25,11 +25,18 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
 
     mutation.mutate(data, {
       onSuccess(d) {
-        const updatedMsgs = userLoging.messages.filter((m) => m.id != id);
+        const updatedMsgs = userLoging.messages.map((msg) => {
+          if (msg.id == id) {
+            return { ...msg, isRead: true };
+          } else {
+            return msg;
+          }
+        });
         dispatch(
           userActions.setProfile({ ...userLoging, messages: updatedMsgs })
         );
         navigate("/chat/" + chatId);
+        handleClose();
       },
       onError(e) {
         console.log("error", e);

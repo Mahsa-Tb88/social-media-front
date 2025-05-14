@@ -19,8 +19,13 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function NavbarMenu({ open, anchorEl, handleClose }) {
-  const user = useSelector((state) => state.user.profile);
-  const msgList = user.messages || [];
+  const userLogin = useSelector((state) => state.user.profile);
+  let unSeenMsg = [];
+  if (userLogin.notificationList) {
+    unSeenMsg = userLogin.messages.filter((n) => n.isRead == false);
+  }
+
+
   return (
     <Menu
       open={open}
@@ -30,14 +35,14 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
     >
       <List disablePadding>
         <ListItem divider>
-          <ListItemButton LinkComponent={Link} to={`/profile/${user.id}`}>
+          <ListItemButton LinkComponent={Link} to={`/profile/${userLogin.id}`}>
             <ListItemIcon>
               <Person />
             </ListItemIcon>
             <ListItemText>Profile</ListItemText>
           </ListItemButton>
         </ListItem>
-        {user.isAdmin ? (
+        {userLogin.isAdmin ? (
           <>
             <ListItem>
               <ListItemButton>
@@ -51,7 +56,7 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
         ) : (
           <>
             <ListItem divider>
-              <ListItemButton LinkComponent={Link} to={`/edit/user/${user.id}`}>
+              <ListItemButton LinkComponent={Link} to={`/edit/user/${userLogin.id}`}>
                 <ListItemIcon>
                   <EditRounded />
                 </ListItemIcon>
@@ -61,10 +66,10 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
           </>
         )}
         <ListItem divider>
-          <ListItemButton LinkComponent={Link} to={`/Messages/${user.id}`}>
+          <ListItemButton LinkComponent={Link} to={`/Messages/${userLogin.id}`}>
             <ListItemIcon>
               <Badge
-                badgeContent={msgList?.length}
+                badgeContent={unSeenMsg?.length}
                 color="error"
                 anchorOrigin={{ vertical: "top", horizontal: "left" }}
                 overlap="circular"

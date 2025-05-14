@@ -42,6 +42,11 @@ export default function Navbar() {
     );
   }
 
+  let unSeenMsg = [];
+  if (userLogin.notificationList) {
+    unSeenMsg = userLogin.messages.filter((n) => n.isRead == false);
+  }
+
   const [openAddFriend, setOpenAddFriend] = useState(false);
   const addFriendAnchor = useRef(null);
 
@@ -119,16 +124,14 @@ export default function Navbar() {
                   </MyIconButton>
                 </Badge>
                 <Badge
-                  badgeContent={userLogin.messages.length}
+                  badgeContent={unSeenMsg.length}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
                 >
                   <MyIconButton
                     sx={{ width: 40, height: 40 }}
-                    onClick={() =>
-                      setopenMsg(userLogin.messages?.length ? !openMsg : false)
-                    }
+                    onClick={() => setopenMsg(!openMsg)}
                   >
                     <Message ref={msgAnchor} />
                   </MyIconButton>

@@ -94,7 +94,10 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
               key={index}
               divider
               disablePadding
-              onClick={() => notificationHandler(n._id, n.postId)}
+              onClick={() => {
+                notificationHandler(n._id, n.postId);
+                handleClose();
+              }}
             >
               <ListItemButton>
                 <ListItemText>

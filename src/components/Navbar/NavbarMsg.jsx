@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   List,
   ListItem,
   ListItemButton,
@@ -13,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useChangeToRead } from "../../utils/mutation";
 import { userActions } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import MailIcon from "@mui/icons-material/Email";
+import DraftsIcon from "@mui/icons-material/Drafts";
 
 export default function NavbarMsg({ open, anchorEl, handleClose }) {
   const userLoging = useSelector((state) => state.user.profile);
@@ -57,18 +60,35 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
             <ListItem key={msg.id} divider disablePadding>
               <ListItemButton onClick={() => clickHandler(msg.id, msg.chatId)}>
                 <ListItemIcon>
-                  {msg.profileImg ? (
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={SERVER_URL + msg.profileImg}
-                    />
-                  ) : (
-                    <Avatar>{msg.username[0]}</Avatar>
-                  )}
+                  <Badge
+                    overlap="circular"
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    badgeContent={!msg.isRead && <MailIcon color="error" />}
+                  >
+                    {msg.profileImg ? (
+                      <Avatar
+                        alt="Remy Sharp"
+                        src={SERVER_URL + msg.profileImg}
+                      />
+                    ) : (
+                      <Avatar>{msg.username[0]}</Avatar>
+                    )}
+                  </Badge>
                 </ListItemIcon>
                 <ListItemText>
                   <Typography>{msg.username} </Typography>
-                  <Typography sx={{ fontSize: "12px" }}>
+                  <Typography
+                    sx={{
+                      fontSize: "12px",
+                      background: !msg.isRead ? "#0288d1" : "#eeeeee",
+                      color: !msg.isRead ? "#fff" : "grey",
+                      py: "3px",
+                      px: "5px",
+                      borderRadius: "7px",
+                      width: "100px",
+                      fontSize: "12px",
+                    }}
+                  >
                     {msg.msg.slice(0, 20) + " ... "}
                   </Typography>
                 </ListItemText>

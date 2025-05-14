@@ -34,6 +34,7 @@ export default function Chat() {
         onSuccess(d) {
           setMsg("");
           queryClient.invalidateQueries({ queryKey: ["chats", id] });
+          window.scrollTo({ top: 0, behavior: "smooth" });
         },
         onError(e) {},
       });

@@ -53,6 +53,7 @@ export default function PostProfile({ open, onClose, type, post }) {
   const queryClient = useQueryClient();
 
   function onSubmit(data) {
+    console.log("data", data);
     if (type == "edit") {
       console.log("edit", data);
 
@@ -102,21 +103,26 @@ export default function PostProfile({ open, onClose, type, post }) {
     setOpenUploadImage(false);
   }, [open]);
 
-  const textareaRef = useRef(null);
-  const desc = watch("desc") || "";
+  const descRef = useRef(null);
+  const titleRef = useRef(null);
+  // const desc = watch("desc") || "";
+  // const title = watch("title") || "";
 
+  const [focusedField, setFocusedField] = useState(null);
   function handleEmoji(emojiData) {
     const emoji = emojiData.emoji;
-    console.log("desc is ", desc);
-    // Get current cursor position
-    const textarea = textareaRef.current;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    // Insert emoji at the cursor position
-    const newText = desc.substring(0, start) + emoji + desc.substring(end);
-
-    setValue("desc", newText);
+    if (focusedField == "title") {
+      const title = watch("title");
+      const newtitle = title + " " + emoji;
+      setValue("title", newtitle);
+      setShowEmoji(false);
+    }
+    if (focusedField == "desc") {
+      const desc = watch("desc");
+      const newDesc = desc + " " + emoji;
+      setValue("desc", newDesc);
+      setShowEmoji(false);
+    }
   }
 
   return (
@@ -163,14 +169,23 @@ export default function PostProfile({ open, onClose, type, post }) {
             </Select>
           </Stack>
         </Stack>
-        <Stack>
+        <Stack sx={{ gap: 3 }}>
           <TextField
             variant="standard"
             label="Title"
             size="small"
             {...register("title")}
+            onFocus={() => setFocusedField("title")}
           />
-          <Box
+          <TextField
+            multiline
+            variant="standard"
+            label="What is on your mind"
+            size="small"
+            {...register("desc")}
+            onFocus={() => setFocusedField("desc")}
+          />
+          {/*  <Box
             sx={{ mt: 4, width: "100%" }}
             placeholder="What is on your mind?"
             component={"textarea"}
@@ -178,19 +193,20 @@ export default function PostProfile({ open, onClose, type, post }) {
             {...register("desc", {
               onChange: (e) => setValue("desc", e.target.value),
             })}
-            ref={textareaRef}
+            ref={descRef}
             value={desc}
             style={{
               width: "100%",
               padding: "8px",
               fontSize: "16px",
               borderColor: "#ccc",
-              
+
               borderRadius: "4px",
               resize: "none",
               fontFamily: "inherit",
             }}
-          />
+            onFocus={() => setFocusedField("desc")}
+          /> */}
         </Stack>
         {imageEditPost && imageEditPost != "noImage" ? (
           <Stack sx={{ justifyContent: "center", alignItems: "center" }}>

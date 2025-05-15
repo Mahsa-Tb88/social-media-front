@@ -103,10 +103,6 @@ export default function PostProfile({ open, onClose, type, post }) {
     setOpenUploadImage(false);
   }, [open]);
 
-  const descRef = useRef(null);
-  const titleRef = useRef(null);
-  // const desc = watch("desc") || "";
-  // const title = watch("title") || "";
 
   const [focusedField, setFocusedField] = useState(null);
   function handleEmoji(emojiData) {

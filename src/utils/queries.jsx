@@ -137,9 +137,9 @@ export function useGetComments(id) {
   });
 }
 
-export function useGetPublicPosts(id) {
+export function useGetPublicPosts() {
   return useQuery({
     queryKey: ["publicPosts"],
-    queryFn: () => axios.get("/public"),
+    queryFn: () => axios.get("/posts/public"),
   });
 }

@@ -1,5 +1,13 @@
-import { Box, Button, Divider, Stack, TextField, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import {
   useAddFriend,
   useRemoveRequestFriend,
@@ -7,11 +15,37 @@ import {
 import noImage from "../../../../../assets/images/user.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useGetAllUser } from "../../../../../utils/queries";
+import Loading from "../../../../../components/Loading";
+import LoadingError from "../../../../../components/LoadingError";
 
-export default function SearchBar({ users }) {
+export default function SearchBar() {
   const userLogin = useSelector((state) => state.user.profile);
   const theme = useSelector((state) => state.app.theme);
   const dispatch = useDispatch();
+  const { isPending, data, error, refetch } = useGetAllUser();
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      // filter users to show only users that not friends or in friend request
+      filterUsers();
+    }
+  }, [data]);
+
+  function filterUsers() {
+    let updatedUserList = data.data.body;
+    const friends = userLogin.friends?.listFriend || [];
+    const userRequestList = userLogin.friends?.friendRequestList || [];
+    friends.forEach((element) => {
+      updatedUserList = updatedUserList.filter((f) => f._id != element.id);
+    });
+    userRequestList.forEach((element) => {
+      updatedUserList = updatedUserList.filter((f) => f._id != element.id);
+    });
+    setUsers(updatedUserList);
+  }
 
   //add friend
   const addFriendMutation = useAddFriend();
@@ -103,80 +137,90 @@ export default function SearchBar({ users }) {
     });
   }
   return (
-    <Stack>
+    <Paper sx={{p:2}}>
       <TextField label="Search" variant="outlined" sx={{ width: "100%" }} />
       <Typography sx={{ mt: 5, fontWeight: "bold", fontSize: 20 }}>
         Make new friends
       </Typography>
       <Divider sx={{ mt: 2 }} />
       <Stack>
-        {users.map((user) => {
-          return (
-            <Stack
-              key={user._id}
-              sx={{
-                my: 1,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                p: 1,
-                borderRadius: "5px",
-                "&:hover": {
-                  bgcolor: theme == "light" ? "grey.200" : "grey.800",
-                },
-              }}
-            >
+        {isPending ? (
+          <Box>
+            <Loading message="Is Loading" />
+          </Box>
+        ) : error ? (
+          <LoadingError handleAction={refetch} message={error.message} />
+        ) : (
+          users.map((user) => {
+            return (
               <Stack
+                key={user._id}
                 sx={{
+                  my: 1,
                   flexDirection: "row",
                   alignItems: "center",
-                  gap: 1,
-                  textDecoration: "none",
+                  justifyContent: "space-between",
+                  p: 1,
+                  borderRadius: "5px",
+                  "&:hover": {
+                    bgcolor: theme == "light" ? "grey.200" : "grey.800",
+                  },
                 }}
-                component={Link}
-                to={`profile/${user._id}`}
               >
-                <Box
-                  component="img"
+                <Stack
                   sx={{
-                    height: "50px",
-                    width: "50px",
-                    borderRadius: "50%",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 1,
+                    textDecoration: "none",
                   }}
-                  src={user.profileImg ? SERVER_URL + user.profileImg : noImage}
-                />
-                <Typography
+                  component={Link}
+                  to={`profile/${user._id}`}
+                >
+                  <Box
+                    component="img"
+                    sx={{
+                      height: "50px",
+                      width: "50px",
+                      borderRadius: "50%",
+                    }}
+                    src={
+                      user.profileImg ? SERVER_URL + user.profileImg : noImage
+                    }
+                  />
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: 17,
+                      color: theme == "light" ? "grey.800" : "grey.200",
+                    }}
+                  >
+                    {user.username[0].toUpperCase() + user.username.slice(1)}
+                  </Typography>
+                </Stack>
+                <Box
                   sx={{
-                    fontWeight: "bold",
-                    fontSize: 17,
-                    color: theme == "light" ? "grey.800" : "grey.200",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                    alignItems: "center",
                   }}
                 >
-                  {user.username[0].toUpperCase() + user.username.slice(1)}
-                </Typography>
+                  {user?.status == "pending" ? (
+                    <Button onClick={() => handleCancelRequest(user)}>
+                      Cancel Request
+                    </Button>
+                  ) : (
+                    <Button onClick={() => handleAddFriend(user)}>
+                      Add friend
+                    </Button>
+                  )}
+                </Box>
               </Stack>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1,
-                  alignItems: "center",
-                }}
-              >
-                {user?.status == "pending" ? (
-                  <Button onClick={() => handleCancelRequest(user)}>
-                    Cancel Request
-                  </Button>
-                ) : (
-                  <Button onClick={() => handleAddFriend(user)}>
-                    Add friend
-                  </Button>
-                )}
-              </Box>
-            </Stack>
-          );
-        })}
+            );
+          })
+        )}
       </Stack>
-    </Stack>
+    </Paper>
   );
 }

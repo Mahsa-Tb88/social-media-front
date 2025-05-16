@@ -6,7 +6,7 @@ export default function Loading({ message = "VibeLink" }) {
     <Alert
       color="info"
       sx={{
-        width: { xs: "100%", sm: "400px" },
+        width: { xs: "100%", sm: "70%" },
         py: 3,
         minWidth: 320,
         mx: "auto",

@@ -10,7 +10,6 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
   const id = useParams().id;
   const navigate = useNavigate();
   const theme = useSelector((state) => state.app.theme);
-  console.log("postcoments is ---", postComments);
 
   const userLogin = useSelector((state) => state.user.profile);
   const userLoginId = userLogin.id;

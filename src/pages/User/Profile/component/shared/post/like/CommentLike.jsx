@@ -5,14 +5,17 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import NumberOfComLike from "./NumberOfComLike";
 import { useLikeComment } from "../../../../../../../utils/mutation";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function CommentLike({ comment, userLike }) {
   const [isLike, setIsLike] = useState(userLike);
   const [numOfLike, setNumOfLike] = useState(comment?.likes.length);
   const userLogin = useSelector((state) => state.user.profile);
+  const navigate = useNavigate();
   const mutation = useLikeComment();
-  console.log("commentLikee", comment.text, userLike);
+
   function likeHandler() {
+    if (redirectIfNotLoggedIn(userLogin, navigate)) return;
     const data = {
       userId: userLogin.id,
       postId: comment.postId,

@@ -7,22 +7,24 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useAddFriend,
   useRemoveRequestFriend,
 } from "../../../../../utils/mutation";
 import noImage from "../../../../../assets/images/user.png";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetAllUser } from "../../../../../utils/queries";
 import Loading from "../../../../../components/Loading";
 import LoadingError from "../../../../../components/LoadingError";
+import { redirectIfNotLoggedIn } from "../../../../../utils/customeFunction";
 
 export default function SearchBar() {
   const userLogin = useSelector((state) => state.user.profile);
   const theme = useSelector((state) => state.app.theme);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isPending, data, error, refetch } = useGetAllUser();
 
   const [users, setUsers] = useState([]);
@@ -50,6 +52,7 @@ export default function SearchBar() {
   //add friend
   const addFriendMutation = useAddFriend();
   function handleAddFriend(user) {
+    if (redirectIfNotLoggedIn(userLogin, navigate)) return;
     const data = {
       userId: userLogin.id,
       userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",
@@ -136,8 +139,9 @@ export default function SearchBar() {
       },
     });
   }
+
   return (
-    <Paper sx={{p:2}}>
+    <Paper sx={{ p: 2 }}>
       <TextField label="Search" variant="outlined" sx={{ width: "100%" }} />
       <Typography sx={{ mt: 5, fontWeight: "bold", fontSize: 20 }}>
         Make new friends
@@ -149,7 +153,9 @@ export default function SearchBar() {
             <Loading message="Is Loading" />
           </Box>
         ) : error ? (
-          <LoadingError handleAction={refetch} message={error.message} />
+          <Box>
+            <LoadingError handleAction={refetch} message={error.message} />
+          </Box>
         ) : (
           users.map((user) => {
             return (

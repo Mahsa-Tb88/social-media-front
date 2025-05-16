@@ -2,6 +2,7 @@ import { Container, Grid2, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import SearchBar from "./SearchBar";
 import Feed from "./Feed";
+import { useState } from "react";
 
 export default function HomePage() {
   const theme = useSelector((state) => state.app.theme);

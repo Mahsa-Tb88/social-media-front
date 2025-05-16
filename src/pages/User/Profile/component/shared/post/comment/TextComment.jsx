@@ -11,7 +11,7 @@ export default function TextComment({ c, setPostComments, postComments }) {
   const [reply, setReply] = useState(false);
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
-  console.log("textCommenttttt--------", c);
+ 
 
   function userLike() {
     let findUser;

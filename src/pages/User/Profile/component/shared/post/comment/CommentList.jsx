@@ -1,6 +1,7 @@
-import { Button, Stack } from "@mui/material";
+import { Alert, Button, Stack } from "@mui/material";
 import React from "react";
 import Comment from "./Comment";
+import { useSelector } from "react-redux";
 
 export default function CommentList({
   postComments,
@@ -9,6 +10,7 @@ export default function CommentList({
   showComments,
   postId,
 }) {
+  
   return (
     <Stack>
       {showComments && postComments.length > 0 && (

@@ -14,6 +14,7 @@ import EmojiPicker from "emoji-picker-react";
 import Loading from "../../../../../../../components/Loading";
 import LoadingError from "../../../../../../../components/LoadingError";
 import { Close } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 export default function InputComment({ postId, replyTo, setReply }) {
   const theme = useSelector((state) => state.app.theme);
@@ -48,10 +49,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
     data.userId = userLogin.id;
     data.replyTo = replyTo ? replyTo : null;
     data.mentionUser = mentionUserId ? mentionUserId : null;
-    console.log(
-      "submittttttttttttttttttttttttttttttttttttttttttttttttttttt",
-      data
-    );
+
     mutationLeaveComm.mutate(data, {
       onSuccess(d) {
         queryClient.invalidateQueries({

@@ -11,22 +11,26 @@ import GroupIcon from "@mui/icons-material/Group";
 import ChatIcon from "@mui/icons-material/Chat";
 import PublicIcon from "@mui/icons-material/Public";
 import LockIcon from "@mui/icons-material/Lock";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CommentList from "./comment/CommentList";
 import InputComment from "./comment/InputComment";
 import PostLike from "./like/PostLike";
 import { useGetCommentPost } from "../../../../../../utils/queries";
 import Loading from "../../../../../../components/Loading";
 import LoadingError from "../../../../../../components/LoadingError";
+import { redirectIfNotLoggedIn } from "../../../../../../utils/customeFunction";
+import LoginFirst from "../../../page/Home/LoginFirst";
 
 export default function SinglePost({ post, profile }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const [postComments, setPostComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
+  const [openLoginUser, setOpenLoginUser] = useState(false);
   const [openMenuPost, setOpenMenuPost] = useState(false);
   const menuPostAnchor = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
   let id = useParams().id;
   const { isPending, error, data, refetch } = useGetCommentPost(post._id);
 
@@ -50,6 +54,14 @@ export default function SinglePost({ post, profile }) {
     id = post.userId._id;
   }
   const isOwner = id == userLogin.id ? true : false;
+
+  function buttonHandler() {
+    if (userLogin.id) {
+      setShowComments(true);
+    } else {
+      setOpenLoginUser(true);
+    }
+  }
 
   return (
     <Stack>
@@ -117,12 +129,13 @@ export default function SinglePost({ post, profile }) {
                 bgcolor: theme === "dark" ? "grey.800" : "grey.200",
               },
             }}
-            onClick={() => setShowComments(true)}
+            onClick={() => buttonHandler()}
           >
             <ChatIcon />
             <Typography>Comments</Typography>
             <Typography>{numOfComment()}</Typography>
           </Stack>
+          <LoginFirst open={openLoginUser} onClose={setOpenLoginUser} />
         </Stack>
 
         <Divider sx={{ my: 1 }} />
@@ -141,7 +154,9 @@ export default function SinglePost({ post, profile }) {
             />
           )}
         </Stack>
-        <InputComment postId={post._id} userGetComm={post.userId} />
+        {userLogin.id && (
+          <InputComment postId={post._id} userGetComm={post.userId} />
+        )}
       </Paper>
     </Stack>
   );

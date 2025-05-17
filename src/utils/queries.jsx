@@ -143,3 +143,9 @@ export function useGetPublicPosts() {
     queryFn: () => axios.get("/posts/public"),
   });
 }
+export function useFindUser(q) {
+  return useQuery({
+    queryKey: ["findSearchUser", q],
+    queryFn: () => axios.get("/users/search/findUser/", { params: { q } }),
+  });
+}

@@ -6,10 +6,12 @@ import { Box, Stack } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import NumberOfLike from "./NumberOfLike";
+import LoginFirst from "../../../../page/Home/LoginFirst";
 
 export default function postLike({ post }) {
   const userLogin = useSelector((state) => state.user.profile);
   const findLike = post?.likes.find((l) => l._id == userLogin.id);
+  const [openLoginUser, setOpenLoginUser] = useState(false);
 
   const [isLike, setIsLike] = useState(findLike ? true : false);
 
@@ -17,7 +19,12 @@ export default function postLike({ post }) {
   const queryClient = useQueryClient();
 
   function likeHandler(postId) {
+    if (!userLogin.id) {
+      setOpenLoginUser(true);
+      return;
+    }
     setIsLike(!isLike);
+
     const data = {
       userId: userLogin.id,
       id: postId,
@@ -56,6 +63,7 @@ export default function postLike({ post }) {
         )}
       </Stack>
       <NumberOfLike post={post} />
+      <LoginFirst open={openLoginUser} onClose={setOpenLoginUser} />
     </Stack>
   );
 }

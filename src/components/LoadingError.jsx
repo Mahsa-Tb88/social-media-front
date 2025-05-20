@@ -14,7 +14,7 @@ export default function LoadingError({
         color="error"
         icon={false}
         sx={{
-          width: { xs: "100%", sm: "400px" },
+          width: { xs: "100%", sm: "300px", md: "400px" },
           py: 3,
           flexDirection: "column",
           display: "flex",

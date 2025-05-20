@@ -20,13 +20,12 @@ import { Link } from "react-router-dom";
 
 export default function SearchBar() {
   const [search, setSearch] = useState(false);
-  const [q, setQ] = useState(false);
+  const [q, setQ] = useState("");
   const [openLoginUser, setOpenLoginUser] = useState(false);
 
   const theme = useSelector((state) => state.app.theme);
 
-  const { isPending, data, error, refetch } = useFindUser(q);
-  // console.log("findUserr111", findUser.data);
+  const { isFetching, data, error, refetch } = useFindUser(q);
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setQ(search);
@@ -43,7 +42,7 @@ export default function SearchBar() {
         onChange={(e) => setSearch(e.target.value)}
       />
       <Stack sx={{ mt: 2 }}>
-        {isPending ? (
+        {isFetching ? (
           <Box>
             <Loading message="Is Loading" />
           </Box>
@@ -51,9 +50,9 @@ export default function SearchBar() {
           <Box>
             <LoadingError handleAction={refetch} message={error.message} />
           </Box>
-        ) : data.data.body.length ? (
+        ) : data?.data?.body?.length ? (
           <Stack>
-            {data.data.body.map((user) => {
+            {data?.data?.body?.map((user) => {
               return (
                 <Stack
                   key={user._id}
@@ -122,7 +121,7 @@ export default function SearchBar() {
               );
             })}
           </Stack>
-        ) : !data.data.body.length && search ? (
+        ) : !data?.data?.body?.length && search ? (
           <Typography>Nothing found!</Typography>
         ) : (
           ""

@@ -137,15 +137,16 @@ export function useGetComments(id) {
   });
 }
 
-export function useGetPublicPosts() {
+export function useGetPublicPosts(userId) {
   return useQuery({
-    queryKey: ["publicPosts"],
-    queryFn: () => axios.get("/posts/public"),
+    queryKey: ["publicPosts", userId],
+    queryFn: () => axios.get("/posts/home", { params: { userId } }),
   });
 }
 export function useFindUser(q) {
   return useQuery({
     queryKey: ["findSearchUser", q],
     queryFn: () => axios.get("/users/search/findUser/", { params: { q } }),
+    enabled: !!q,
   });
 }

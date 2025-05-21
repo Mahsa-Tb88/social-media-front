@@ -25,7 +25,7 @@ export default function SearchBar() {
 
   const theme = useSelector((state) => state.app.theme);
 
-  const { isFetching, data, error, refetch } = useFindUser(q);
+  const { isPending, isFetching, data, error, refetch } = useFindUser(q);
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setQ(search);
@@ -33,6 +33,7 @@ export default function SearchBar() {
     return () => clearTimeout(timeOut);
   }, [search]);
 
+  console.log("data...22", data?.data?.body);
   return (
     <Paper sx={{ p: 2 }}>
       <TextField
@@ -121,7 +122,7 @@ export default function SearchBar() {
               );
             })}
           </Stack>
-        ) : !data?.data?.body?.length && search ? (
+        ) : !data?.data?.body?.length && search && !isPending ? (
           <Typography>Nothing found!</Typography>
         ) : (
           ""

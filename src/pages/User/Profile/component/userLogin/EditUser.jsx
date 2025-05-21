@@ -33,7 +33,6 @@ export default function EditUser() {
 
   function onSubmit(data) {
     data.id = user.id;
-    console.log(data);
 
     mutate(data, {
       onSuccess(d) {

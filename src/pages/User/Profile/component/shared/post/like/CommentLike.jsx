@@ -1,6 +1,7 @@
 import { Box, Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { redirectIfNotLoggedIn } from "../../../../../../../utils/customeFunction";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import NumberOfComLike from "./NumberOfComLike";
 import { useLikeComment } from "../../../../../../../utils/mutation";
@@ -36,35 +37,6 @@ export default function CommentLike({ comment, userLike }) {
       },
     });
 
-    // if (comment.replyId) {
-    //   mutationLikeReply.mutate(data, {
-    //     onSuccess(d) {
-    //       setIsLike(!isLike);
-    //       if (isLike) {
-    //         setNumOfLike((n) => n - 1);
-    //       } else {
-    //         setNumOfLike((n) => n + 1);
-    //       }
-    //     },
-    //     onError(e) {
-    //       console.log("error is ", e);
-    //     },
-    //   });
-    // } else {
-    //   mutationLikeComment.mutate(data, {
-    //     onSuccess(d) {
-    //       setIsLike(!isLike);
-    //       if (isLike) {
-    //         setNumOfLike((n) => n - 1);
-    //       } else {
-    //         setNumOfLike((n) => n + 1);
-    //       }
-    //     },
-    //     onError(e) {
-    //       console.log("error is ", e);
-    //     },
-    //   });
-    // }
   }
 
   return (

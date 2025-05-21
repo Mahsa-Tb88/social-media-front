@@ -17,6 +17,7 @@ export default function UserFriends() {
   useEffect(() => {
     if (data) {
       const listFriend = data.data.body.listFriend;
+      console.log("listFriend", data);
       if (!listFriend.length) {
         setMsg(data.data.body.message);
       } else {

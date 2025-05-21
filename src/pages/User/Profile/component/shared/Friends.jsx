@@ -1,5 +1,4 @@
-import { Box, Container, Grid2, Paper, Stack, Typography } from "@mui/material";
-import React from "react";
+import { Container, Paper, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import UserLoginFriends from "../userLogin/UserLoginFriends";
@@ -15,6 +14,7 @@ export default function Friends() {
       <Container maxWidth="md">
         <Paper sx={{ p: 4 }}>
           {userLogin.id == id ? <UserLoginFriends /> : <UserFriends />}
+          
         </Paper>
       </Container>
     </Stack>

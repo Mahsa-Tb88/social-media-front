@@ -28,6 +28,7 @@ import { useCreateNewPost, useEditPost } from "../../../../../utils/mutation";
 import { LoadingButton } from "@mui/lab";
 import { useQueryClient } from "@tanstack/react-query";
 import EmojiPicker from "emoji-picker-react";
+import UploadVideo from "./UploadVideo";
 
 export default function PostProfile({ open, onClose, type, post }) {
   const profile = useSelector((state) => state.user.profile);
@@ -39,6 +40,7 @@ export default function PostProfile({ open, onClose, type, post }) {
     post?.image ? SERVER_URL + post.image : ""
   );
   const [openUploadImage, setOpenUploadImage] = useState(false);
+  const [openUplodViedo, setOpenUploadVideo] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
 
   const { register, handleSubmit, setValue, watch } = useForm({
@@ -101,8 +103,8 @@ export default function PostProfile({ open, onClose, type, post }) {
 
   useEffect(() => {
     setOpenUploadImage(false);
+    setOpenUploadVideo(false);
   }, [open]);
-
 
   const [focusedField, setFocusedField] = useState(null);
   function handleEmoji(emojiData) {
@@ -222,6 +224,9 @@ export default function PostProfile({ open, onClose, type, post }) {
             setImagePost={setImagePost}
           />
         )}
+        {openUplodViedo && (
+          <UploadVideo setOpenUploadVideo={setOpenUploadVideo} />
+        )}
         {showEmoji && (
           <Stack>
             <EmojiPicker onEmojiClick={handleEmoji} />
@@ -249,7 +254,10 @@ export default function PostProfile({ open, onClose, type, post }) {
               </MyIconButton>
             </Tooltip>
             <Tooltip title="Video" arrow>
-              <MyIconButton tooltip="post">
+              <MyIconButton
+                tooltip="post"
+                onClick={() => setOpenUploadVideo(true)}
+              >
                 <VideoLibraryIcon sx={{ color: "#007FFF" }} />
               </MyIconButton>
             </Tooltip>

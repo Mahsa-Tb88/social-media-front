@@ -1,5 +1,5 @@
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FilterViewer from "../../userLogin/FilterViewer";
 import { Edit } from "@mui/icons-material";
 import MyIconButton from "../../../../../../components/Customized/MyIconButton";
@@ -60,7 +60,7 @@ export default function SinglePost({ post, profile }) {
       setOpenLoginUser(true);
     }
   }
-
+  console.log("post is userId mikham", post);
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>
@@ -163,6 +163,7 @@ export default function SinglePost({ post, profile }) {
 function Info({ profile, post, theme, isOwner }) {
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(post.viewer);
+  const navigate = useNavigate();
 
   function getDate(dateString) {
     const myDate = new Date(dateString);
@@ -187,10 +188,15 @@ function Info({ profile, post, theme, isOwner }) {
           width: "40px",
           height: "40px",
           borderRadius: "50%",
+          cursor: "pointer",
         }}
+        onClick={() => navigate("profile/" + post.userId._id)}
       />
       <Stack>
-        <Typography sx={{ fontSize: 18 }}>
+        <Typography
+          sx={{ fontSize: 18, cursor: "pointer" }}
+          onClick={() => navigate("profile/" + post.userId._id)}
+        >
           {profile.username[0].toUpperCase() + profile.username.slice(1)}
         </Typography>
         <Stack

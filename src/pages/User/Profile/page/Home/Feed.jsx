@@ -10,6 +10,7 @@ export default function Feed() {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const { isPending, error, refetch, data } = useGetPublicPosts(userLogin.id);
+  console.log("get postss", data?.data?.body);
 
   return (
     <Stack sx={{ bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>

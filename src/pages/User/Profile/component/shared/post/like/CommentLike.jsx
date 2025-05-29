@@ -16,7 +16,7 @@ export default function CommentLike({ comment, userLike }) {
   const mutation = useLikeComment();
 
   function likeHandler() {
-    if (redirectIfNotLoggedIn(userLogin, navigate)) return;
+    // if (redirectIfNotLoggedIn(userLogin, navigate)) return;
     const data = {
       userId: userLogin.id,
       postId: comment.postId,
@@ -36,7 +36,6 @@ export default function CommentLike({ comment, userLike }) {
         console.log("eeror is ", e);
       },
     });
-
   }
 
   return (

@@ -51,7 +51,8 @@ export default function SinglePost({ post, profile }) {
   if (location.pathname.includes("post")) {
     id = post.userId._id;
   }
-  const isOwner = id == userLogin.id ? true : false;
+  console.log("aaa yani cheee", id, userLogin.id);
+  const isOwner = id == userLogin.id && userLogin.id ? true : false;
 
   function buttonHandler() {
     if (userLogin.id) {
@@ -61,6 +62,7 @@ export default function SinglePost({ post, profile }) {
     }
   }
   console.log("post is userId mikham", post);
+  console.log("isOwner hast ayaaa", isOwner);
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>

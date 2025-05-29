@@ -10,6 +10,7 @@ import {
   useRemoveRequestFriend,
 } from "../../../../../utils/mutation";
 import { Link } from "react-router-dom";
+import LoginFirst from "./LoginFirst";
 
 export default function RandomUserList() {
   const userLogin = useSelector((state) => state.user.profile);
@@ -18,6 +19,7 @@ export default function RandomUserList() {
   const { isPending, data, error, refetch } = useGetAllUser();
 
   const [users, setUsers] = useState([]);
+  const [openLoginUser, setOpenLoginUser] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -209,6 +211,7 @@ export default function RandomUserList() {
           );
         })
       )}
+      <LoginFirst open={openLoginUser} onClose={setOpenLoginUser} />
     </Stack>
   );
 }

@@ -1,5 +1,5 @@
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import FilterViewer from "../../userLogin/FilterViewer";
 import { Edit } from "@mui/icons-material";
 import MyIconButton from "../../../../../../components/Customized/MyIconButton";
@@ -18,7 +18,6 @@ import PostLike from "./like/PostLike";
 import { useGetCommentPost } from "../../../../../../utils/queries";
 import Loading from "../../../../../../components/Loading";
 import LoadingError from "../../../../../../components/LoadingError";
-import { redirectIfNotLoggedIn } from "../../../../../../utils/customeFunction";
 import LoginFirst from "../../../page/Home/LoginFirst";
 
 export default function SinglePost({ post, profile }) {
@@ -30,7 +29,6 @@ export default function SinglePost({ post, profile }) {
   const [openMenuPost, setOpenMenuPost] = useState(false);
   const menuPostAnchor = useRef(null);
   const location = useLocation();
-  const navigate = useNavigate();
   let id = useParams().id;
   const { isPending, error, data, refetch } = useGetCommentPost(post._id);
 
@@ -192,7 +190,9 @@ function Info({ profile, post, theme, isOwner }) {
         }}
       />
       <Stack>
-        <Typography sx={{ fontSize: 18 }}>{profile.username}</Typography>
+        <Typography sx={{ fontSize: 18 }}>
+          {profile.username[0].toUpperCase() + profile.username.slice(1)}
+        </Typography>
         <Stack
           sx={{
             flexDirection: "row",

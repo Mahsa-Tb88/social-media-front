@@ -43,6 +43,7 @@ export default function Overview() {
       return "Email";
     }
   }
+
   return (
     <Stack>
       {isPending ? (
@@ -54,7 +55,7 @@ export default function Overview() {
           {!Object.keys(overview).length && !isFriend && !isOwner ? (
             <Stack>
               <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
-                Overview
+                There is nothing to show!
               </Typography>
             </Stack>
           ) : (

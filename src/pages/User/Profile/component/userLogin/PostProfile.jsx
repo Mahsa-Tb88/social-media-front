@@ -16,7 +16,7 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import MoodIcon from "@mui/icons-material/Mood";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useSelector } from "react-redux";
@@ -43,9 +43,6 @@ export default function PostProfile({ open, onClose, type, post }) {
   const [imageEditPost, setImgeEditPost] = useState(
     post?.image ? SERVER_URL + post.image : ""
   );
-  const [videoEditPost, setVideoEditPost] = useState(
-    post?.video ? SERVER_URL + post.video : ""
-  );
 
   const [openUploadImage, setOpenUploadImage] = useState(false);
   const [openUplodViedo, setOpenUploadVideo] = useState(false);
@@ -63,7 +60,6 @@ export default function PostProfile({ open, onClose, type, post }) {
   const queryClient = useQueryClient();
 
   function onSubmit(data) {
-    console.log("data", data);
     if (type == "edit") {
       console.log("edit", data);
 
@@ -71,12 +67,16 @@ export default function PostProfile({ open, onClose, type, post }) {
       data.userId = post.userId;
       const img = imagePost.replace(SERVER_URL, "");
       data.image = img;
+      const video = videoPost ? videoPost.replace(SERVER_URL, "") : "";
+      data.video = video;
+      console.log("data", data);
 
       editMutation.mutate(data, {
         onSuccess(d) {
           setValue("title", "");
           setValue("desc", "");
           setImagePost("");
+          setVideoPost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
           queryClient.invalidateQueries({ queryKey: ["singlePost"] });
@@ -110,8 +110,8 @@ export default function PostProfile({ open, onClose, type, post }) {
     setImgeEditPost("noImage");
     setImagePost("");
   }
+
   function removeVideoHandler() {
-    setVideoEditPost("");
     setVideoPost("");
   }
 
@@ -232,14 +232,14 @@ export default function PostProfile({ open, onClose, type, post }) {
         ) : (
           ""
         )}
-        {videoEditPost ? (
+        {videoPost ? (
           <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
             <Box
               component="video"
               src={videoPost}
               sx={{ maxWidth: "200px", maxHeight: "200px", mb: 2 }}
             />
-            <Button onClick={removeVideoHandler}>Remove video</Button>
+            <Button onClick={removeVideoHandler}>Remove Video</Button>
           </Stack>
         ) : (
           ""

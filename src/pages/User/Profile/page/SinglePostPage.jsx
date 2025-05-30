@@ -11,7 +11,6 @@ export default function SinglePostPage() {
   const theme = useSelector((state) => state.app.theme);
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetPost(id);
-  console.log("singleeeeeeeee", data);
 
   return (
     <Stack sx={{ py: 5, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>

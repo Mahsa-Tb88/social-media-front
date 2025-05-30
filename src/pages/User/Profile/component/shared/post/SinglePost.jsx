@@ -93,16 +93,13 @@ export default function SinglePost({ post, profile }) {
             {post.image ? (
               <Box
                 component="img"
-                src={post.image ? SERVER_URL + post.image : ""}
+                src={SERVER_URL + post.image}
                 sx={{ maxWidth: "300px", maxHeight: "300px" }}
               />
             ) : post.video ? (
-              <Box sx={{ maxWidth: 600, margin: "auto" }}>
+              <Box sx={{ maxWidth: "100%", margin: "auto" }}>
                 <video width="100%" controls>
-                  <source
-                    src={post.video ? post.video : ""}
-                    type="video/mp4"
-                  />
+                  <source src={SERVER_URL + post.video} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </Box>

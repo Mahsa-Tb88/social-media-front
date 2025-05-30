@@ -19,9 +19,8 @@ export default function UploadVideo({ setOpenUploadVideo, setVideoPost }) {
       form.append("file", file);
       uploadImgMutation.mutate(form, {
         onSuccess(d) {
-          console.log("dddd video", d);
-          setVideoPost(SERVER_URL + d.data.body.url);
-          return;
+          setSelectedVideo(SERVER_URL + d.data.body.url);
+          setVideoPost(d.data.body.url);
         },
         onError(error) {
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -48,7 +47,12 @@ export default function UploadVideo({ setOpenUploadVideo, setVideoPost }) {
         </Box>
         {selectedVideo ? (
           <Stack>
-            <Box component="video" src={selectedVideo} />
+            <Box sx={{ maxWidth: "60%", margin: "auto" }}>
+              <video width="100%" controls>
+                <source src={selectedVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </Box>
           </Stack>
         ) : (
           <Stack>

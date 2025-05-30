@@ -36,9 +36,17 @@ export default function PostProfile({ open, onClose, type, post }) {
   const [imagePost, setImagePost] = useState(
     post?.image ? SERVER_URL + post.image : ""
   );
+  const [videoPost, setVideoPost] = useState(
+    post?.video ? SERVER_URL + post.video : ""
+  );
+
   const [imageEditPost, setImgeEditPost] = useState(
     post?.image ? SERVER_URL + post.image : ""
   );
+  const [videoEditPost, setVideoEditPost] = useState(
+    post?.video ? SERVER_URL + post.video : ""
+  );
+
   const [openUploadImage, setOpenUploadImage] = useState(false);
   const [openUplodViedo, setOpenUploadVideo] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
@@ -80,17 +88,19 @@ export default function PostProfile({ open, onClose, type, post }) {
     } else {
       data.viewer = viewer;
       data.image = imagePost;
+      data.video = videoPost;
       data.id = profile.id;
       mutate(data, {
         onSuccess(d) {
           setValue("title", "");
           setValue("desc", "");
           setImagePost("");
+          setVideoPost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         },
         onError(error) {
-          console.log("PostProfile", error);
+          console.log("PostProfile error", error);
         },
       });
     }
@@ -99,6 +109,10 @@ export default function PostProfile({ open, onClose, type, post }) {
   function removeImageHandler() {
     setImgeEditPost("noImage");
     setImagePost("");
+  }
+  function removeVideoHandler() {
+    setVideoEditPost("");
+    setVideoPost("");
   }
 
   useEffect(() => {
@@ -218,6 +232,18 @@ export default function PostProfile({ open, onClose, type, post }) {
         ) : (
           ""
         )}
+        {videoEditPost ? (
+          <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
+            <Box
+              component="video"
+              src={videoPost}
+              sx={{ maxWidth: "200px", maxHeight: "200px", mb: 2 }}
+            />
+            <Button onClick={removeVideoHandler}>Remove video</Button>
+          </Stack>
+        ) : (
+          ""
+        )}
         {openUploadImage && (
           <UploadImage
             setOpenUploadImage={setOpenUploadImage}
@@ -225,7 +251,10 @@ export default function PostProfile({ open, onClose, type, post }) {
           />
         )}
         {openUplodViedo && (
-          <UploadVideo setOpenUploadVideo={setOpenUploadVideo} />
+          <UploadVideo
+            setOpenUploadVideo={setOpenUploadVideo}
+            setVideoPost={setVideoPost}
+          />
         )}
         {showEmoji && (
           <Stack>

@@ -1,13 +1,40 @@
-import { Box, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useState } from "react";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-export default function UploadVideo({ setOpenUploadVideo }) {
+import { useUploadFile } from "../../../../../utils/mutation";
+import { useForm } from "react-hook-form";
+
+export default function UploadVideo({ setOpenUploadVideo, setVideoPost }) {
   const [selectedVideo, setSelectedVideo] = useState(false);
 
-  function handleSelectVideo() {}
-  function removeVideoHandler() {}
+  const uploadImgMutation = useUploadFile();
+
+  function handleSelectVideo(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const form = new FormData();
+      form.append("file", file);
+      uploadImgMutation.mutate(form, {
+        onSuccess(d) {
+          console.log("dddd video", d);
+          setVideoPost(SERVER_URL + d.data.body.url);
+          return;
+        },
+        onError(error) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          console.log("errror", error);
+          return;
+        },
+      });
+    }
+  }
+  function removeVideoHandler() {
+    setSelectedVideo("");
+    setVideoPost("");
+  }
 
   return (
     <Stack spacing={2}>
@@ -21,7 +48,7 @@ export default function UploadVideo({ setOpenUploadVideo }) {
         </Box>
         {selectedVideo ? (
           <Stack>
-            <Box component="img" src={selectedVideo} />
+            <Box component="video" src={selectedVideo} />
           </Stack>
         ) : (
           <Stack>
@@ -44,7 +71,6 @@ export default function UploadVideo({ setOpenUploadVideo }) {
             </Box>
             <TextField
               type="file"
-              {...videoField}
               id="videoFile"
               accept="video/*"
               style={{ display: "none" }}

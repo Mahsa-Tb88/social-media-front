@@ -90,11 +90,25 @@ export default function SinglePost({ post, profile }) {
               alignItems: "center",
             }}
           >
-            <Box
-              component="img"
-              src={post.image ? SERVER_URL + post.image : ""}
-              sx={{ maxWidth: "300px", maxHeight: "300px" }}
-            />
+            {post.image ? (
+              <Box
+                component="img"
+                src={post.image ? SERVER_URL + post.image : ""}
+                sx={{ maxWidth: "300px", maxHeight: "300px" }}
+              />
+            ) : post.video ? (
+              <Box sx={{ maxWidth: 600, margin: "auto" }}>
+                <video width="100%" controls>
+                  <source
+                    src={post.video ? post.video : ""}
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              </Box>
+            ) : (
+              ""
+            )}
           </Stack>
 
           <Typography>{post.desc}</Typography>

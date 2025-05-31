@@ -61,8 +61,6 @@ export default function PostProfile({ open, onClose, type, post }) {
 
   function onSubmit(data) {
     if (type == "edit") {
-      console.log("edit", data);
-
       data.id = post._id;
       data.userId = post.userId;
       const img = imagePost.replace(SERVER_URL, "");
@@ -79,7 +77,7 @@ export default function PostProfile({ open, onClose, type, post }) {
           setVideoPost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
-          // queryClient.invalidateQueries({ queryKey: ["singlePost"] });
+          queryClient.invalidateQueries({ queryKey: ["singlePost"] });
           console.log("yees....");
         },
         onError(e) {
@@ -137,6 +135,8 @@ export default function PostProfile({ open, onClose, type, post }) {
       setShowEmoji(false);
     }
   }
+
+  console.log("open image", openUploadImage);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -206,7 +206,9 @@ export default function PostProfile({ open, onClose, type, post }) {
               src={imagePost}
               sx={{ maxWidth: "200px", maxHeight: "200px", mb: 2 }}
             />
-            <Button onClick={removeImageHandler}>Remove image</Button>
+            <Button onClick={removeImageHandler} variant="outlined">
+              Remove image
+            </Button>
           </Stack>
         ) : (
           ""
@@ -223,7 +225,9 @@ export default function PostProfile({ open, onClose, type, post }) {
               sx={{ maxWidth: "200px", maxHeight: "200px", mb: 2 }}
             />
 
-            <Button onClick={removeVideoHandler}>Remove Video</Button>
+            <Button onClick={removeVideoHandler} variant="outlined">
+              Remove Video
+            </Button>
           </Stack>
         ) : (
           ""
@@ -246,50 +250,59 @@ export default function PostProfile({ open, onClose, type, post }) {
             <EmojiPicker onEmojiClick={handleEmoji} />
           </Stack>
         )}
-        <Stack
-          sx={{
-            border: 1,
-            borderColor: "#B0B8C4",
-            p: 1,
-            borderRadius: "4px",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography>Add to your post</Typography>
-          <Stack sx={{ flexDirection: "row", gap: 2 }}>
-            <Tooltip title="Image" arrow>
-              <MyIconButton
-                tooltip="post"
-                onClick={() => setOpenUploadImage(true)}
-              >
-                <CollectionsIcon sx={{ color: pink[500] }} />
-              </MyIconButton>
-            </Tooltip>
-            <Tooltip title="Video" arrow>
-              <MyIconButton
-                tooltip="post"
-                onClick={() => setOpenUploadVideo(true)}
-              >
-                <VideoLibraryIcon sx={{ color: "#007FFF" }} />
-              </MyIconButton>
-            </Tooltip>
-            <Tooltip title="Feeling" arrow>
-              <MyIconButton
-                tooltip="post"
-                onClick={() => setShowEmoji(!showEmoji)}
-              >
-                <MoodIcon sx={{ color: green[500] }} />
-              </MyIconButton>
-            </Tooltip>
+        {!imagePost && !videoPost && (
+          <Stack
+            sx={{
+              border: 1,
+              borderColor: "#B0B8C4",
+              p: 1,
+              borderRadius: "4px",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography>Add to your post</Typography>
+            <Stack sx={{ flexDirection: "row", gap: 2 }}>
+              <Tooltip title="Image" arrow>
+                <MyIconButton
+                  tooltip="post"
+                  onClick={() => {
+                    setOpenUploadImage(true);
+                    setOpenUploadVideo(false);
+                  }}
+                >
+                  <CollectionsIcon sx={{ color: pink[500] }} />
+                </MyIconButton>
+              </Tooltip>
+              <Tooltip title="Video" arrow>
+                <MyIconButton
+                  tooltip="post"
+                  onClick={() => {
+                    setOpenUploadVideo(true);
+                    setOpenUploadImage(false);
+                  }}
+                >
+                  <VideoLibraryIcon sx={{ color: "#007FFF" }} />
+                </MyIconButton>
+              </Tooltip>
+              <Tooltip title="Feeling" arrow>
+                <MyIconButton
+                  tooltip="post"
+                  onClick={() => setShowEmoji(!showEmoji)}
+                >
+                  <MoodIcon sx={{ color: green[500] }} />
+                </MyIconButton>
+              </Tooltip>
+            </Stack>
           </Stack>
-        </Stack>
+        )}
         <LoadingButton
           loading={isPending}
           size="large"
           sx={{ fontSize: 17 }}
           type="submit"
+          variant="contained"
         >
           Post
         </LoadingButton>

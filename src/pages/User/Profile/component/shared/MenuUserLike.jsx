@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function MenuUserLike({ likes, open, anchorEl, handleClose }) {
   const navigate = useNavigate();
-  console.log("likes....", likes);
   return (
     <Menu
       open={open}
@@ -25,9 +24,7 @@ export default function MenuUserLike({ likes, open, anchorEl, handleClose }) {
         {likes.map((l, index) => {
           return (
             <ListItem disablePadding sx={{ p: 1 }} divider key={index}>
-              <ListItemButton
-                onClick={() => navigate("/profile/" + l._id)}
-              >
+              <ListItemButton onClick={() => navigate("/profile/" + l._id)}>
                 <Box
                   component="img"
                   src={l.profileImg ? SERVER_URL + l.profileImg : noImage}

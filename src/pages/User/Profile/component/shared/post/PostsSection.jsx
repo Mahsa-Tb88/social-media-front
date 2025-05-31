@@ -32,6 +32,8 @@ export default function PostsSection({ profile }) {
       return false;
     }
   }
+
+  console.log("posts is", data?.data?.body);
   return (
     <Container>
       {hasPermission() && (

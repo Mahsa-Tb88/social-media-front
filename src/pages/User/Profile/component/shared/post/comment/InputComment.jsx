@@ -30,13 +30,9 @@ export default function InputComment({ postId, replyTo, setReply }) {
   const { isPending, data, error, refetch } = useGetSearchUser(search, postId);
   const queryClient = useQueryClient();
 
-  console.log("dataa users search", data);
-  console.log("error users search", error);
-
   useEffect(() => {
     if (q) {
       setSearch(q);
-      console.log("newwwwww req");
       const timeOut = setTimeout(setSearch(q), 2000);
       return () => clearTimeout(timeOut);
     }

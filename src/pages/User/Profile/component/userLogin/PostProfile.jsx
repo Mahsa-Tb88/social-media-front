@@ -16,7 +16,7 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import MoodIcon from "@mui/icons-material/Mood";
 
-import React, { useEffect,  useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useSelector } from "react-redux";
@@ -47,7 +47,7 @@ export default function PostProfile({ open, onClose, type, post }) {
   const [openUploadImage, setOpenUploadImage] = useState(false);
   const [openUplodViedo, setOpenUploadVideo] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
-
+  console.log("video post", videoPost);
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       title: post?.title ? post.title : "",
@@ -79,7 +79,8 @@ export default function PostProfile({ open, onClose, type, post }) {
           setVideoPost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
-          queryClient.invalidateQueries({ queryKey: ["singlePost"] });
+          // queryClient.invalidateQueries({ queryKey: ["singlePost"] });
+          console.log("yees....");
         },
         onError(e) {
           console.log("Postprofile", error);
@@ -197,28 +198,6 @@ export default function PostProfile({ open, onClose, type, post }) {
             {...register("desc")}
             onFocus={() => setFocusedField("desc")}
           />
-          {/*  <Box
-            sx={{ mt: 4, width: "100%" }}
-            placeholder="What is on your mind?"
-            component={"textarea"}
-            minRows={3}
-            {...register("desc", {
-              onChange: (e) => setValue("desc", e.target.value),
-            })}
-            ref={descRef}
-            value={desc}
-            style={{
-              width: "100%",
-              padding: "8px",
-              fontSize: "16px",
-              borderColor: "#ccc",
-
-              borderRadius: "4px",
-              resize: "none",
-              fontFamily: "inherit",
-            }}
-            onFocus={() => setFocusedField("desc")}
-          /> */}
         </Stack>
         {imageEditPost && imageEditPost != "noImage" ? (
           <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
@@ -236,9 +215,14 @@ export default function PostProfile({ open, onClose, type, post }) {
           <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
             <Box
               component="video"
-              src={videoPost}
+              src={
+                videoPost.includes(SERVER_URL)
+                  ? videoPost
+                  : SERVER_URL + videoPost
+              }
               sx={{ maxWidth: "200px", maxHeight: "200px", mb: 2 }}
             />
+
             <Button onClick={removeVideoHandler}>Remove Video</Button>
           </Stack>
         ) : (
@@ -254,6 +238,7 @@ export default function PostProfile({ open, onClose, type, post }) {
           <UploadVideo
             setOpenUploadVideo={setOpenUploadVideo}
             setVideoPost={setVideoPost}
+            videoPost={videoPost}
           />
         )}
         {showEmoji && (

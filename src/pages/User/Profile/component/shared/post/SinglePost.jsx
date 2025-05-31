@@ -60,7 +60,7 @@ export default function SinglePost({ post, profile }) {
       setOpenLoginUser(true);
     }
   }
-
+  console.log("..............", post.video);
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>
@@ -98,7 +98,7 @@ export default function SinglePost({ post, profile }) {
               />
             ) : post.video ? (
               <Box sx={{ maxWidth: "100%", margin: "auto" }}>
-                <video width="100%" controls>
+                <video width="100%" controls key={post.video}>
                   <source src={SERVER_URL + post.video} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>

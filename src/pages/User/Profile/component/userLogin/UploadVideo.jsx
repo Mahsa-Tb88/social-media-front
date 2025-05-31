@@ -3,13 +3,13 @@ import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useState } from "react";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-
 import { useUploadFile } from "../../../../../utils/mutation";
-import { useForm } from "react-hook-form";
 
-export default function UploadVideo({ setOpenUploadVideo, setVideoPost }) {
-  const [selectedVideo, setSelectedVideo] = useState(false);
-
+export default function UploadVideo({
+  setOpenUploadVideo,
+  setVideoPost,
+  videoPost,
+}) {
   const uploadImgMutation = useUploadFile();
 
   function handleSelectVideo(e) {
@@ -19,7 +19,6 @@ export default function UploadVideo({ setOpenUploadVideo, setVideoPost }) {
       form.append("file", file);
       uploadImgMutation.mutate(form, {
         onSuccess(d) {
-          setSelectedVideo(SERVER_URL + d.data.body.url);
           setVideoPost(d.data.body.url);
         },
         onError(error) {
@@ -33,59 +32,105 @@ export default function UploadVideo({ setOpenUploadVideo, setVideoPost }) {
   function removeVideoHandler() {
     setSelectedVideo("");
     setVideoPost("");
+    onclose();
   }
 
   return (
     <Stack spacing={2}>
-      <Stack
-        sx={{ border: 1, borderRadius: "4px", py: 1, borderColor: "#B0B8C4" }}
-      >
-        <Box sx={{ textAlign: "right", pr: 1 }}>
-          <MyIconButton onClick={() => setOpenUploadVideo(false)}>
-            <Close sx={{ fontSize: 13 }} />
-          </MyIconButton>
-        </Box>
-        {selectedVideo ? (
-          <Stack>
-            <Box sx={{ maxWidth: "60%", margin: "auto" }}>
-              <video width="100%" controls>
-                <source src={selectedVideo} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </Box>
-          </Stack>
-        ) : (
-          <Stack>
-            <Box
-              htmlFor="videoFile"
-              component="label"
-              sx={{
-                fontSize: 17,
-                textAlign: "center",
-                cursor: "pointer",
-                justifyContent: "center",
-              }}
-            >
-              <MyIconButton>
-                <UploadFileIcon />
+      {!videoPost && (
+        <Stack>
+          <Stack
+            sx={{
+              border: 1,
+              borderRadius: "4px",
+              py: 1,
+              borderColor: "#B0B8C4",
+            }}
+          >
+            <Box sx={{ textAlign: "right", pr: 1 }}>
+              <MyIconButton onClick={() => setOpenUploadVideo(false)}>
+                <Close sx={{ fontSize: 13 }} />
               </MyIconButton>
-              <Typography sx={{ fontWeight: "bold", mt: 1 }}>
-                Select Video
-              </Typography>
             </Box>
-            <TextField
-              type="file"
-              id="videoFile"
-              accept="video/*"
-              style={{ display: "none" }}
-              onChange={handleSelectVideo}
-            />
+
+            <Stack>
+              <Box
+                htmlFor="videoFile"
+                component="label"
+                sx={{
+                  fontSize: 17,
+                  textAlign: "center",
+                  cursor: "pointer",
+                  justifyContent: "center",
+                }}
+              >
+                <MyIconButton>
+                  <UploadFileIcon />
+                </MyIconButton>
+                <Typography sx={{ fontWeight: "bold", mt: 1 }}>
+                  Select Video
+                </Typography>
+              </Box>
+              <TextField
+                type="file"
+                id="videoFile"
+                accept="video/*"
+                style={{ display: "none" }}
+                onChange={handleSelectVideo}
+              />
+            </Stack>
           </Stack>
-        )}
-      </Stack>
-      <Button variant="outlined" onClick={() => removeVideoHandler()}>
-        Remove
-      </Button>
+          <Button
+            sx={{ mt: 3 }}
+            variant="outlined"
+            onClick={() => removeVideoHandler()}
+          >
+            Remove
+          </Button>
+        </Stack>
+      )}
     </Stack>
   );
 }
+
+// {selectedVideo ? (
+//           <Stack>
+//             <Box sx={{ maxWidth: "60%", margin: "auto" }}>
+//               <video width="100%" controls>
+//                 <source src={selectedVideo} type="video/mp4" />
+//                 Your browser does not support the video tag.
+//               </video>
+//             </Box>
+//           </Stack>
+//         ) : (
+//           <Stack>
+//             <Box
+//               htmlFor="videoFile"
+//               component="label"
+//               sx={{
+//                 fontSize: 17,
+//                 textAlign: "center",
+//                 cursor: "pointer",
+//                 justifyContent: "center",
+//               }}
+//             >
+//               <MyIconButton>
+//                 <UploadFileIcon />
+//               </MyIconButton>
+//               <Typography sx={{ fontWeight: "bold", mt: 1 }}>
+//                 Select Video
+//               </Typography>
+//             </Box>
+//             <TextField
+//               type="file"
+//               id="videoFile"
+//               accept="video/*"
+//               style={{ display: "none" }}
+//               onChange={handleSelectVideo}
+//             />
+//           </Stack>
+//         )}
+//       </Stack>
+//       <Button variant="outlined" onClick={() => removeVideoHandler()}>
+//         Remove
+//       </Button>

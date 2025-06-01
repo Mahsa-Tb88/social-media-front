@@ -40,9 +40,6 @@ export default function PostProfile({ open, onClose, type, post }) {
     post?.video ? SERVER_URL + post.video : ""
   );
 
-  const [imageEditPost, setImgeEditPost] = useState(
-    post?.image ? SERVER_URL + post.image : ""
-  );
 
   const [openUploadImage, setOpenUploadImage] = useState(false);
   const [openUplodViedo, setOpenUploadVideo] = useState(false);
@@ -77,7 +74,6 @@ export default function PostProfile({ open, onClose, type, post }) {
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
           queryClient.invalidateQueries({ queryKey: ["singlePost"] });
-          console.log("yees....");
         },
         onError(e) {
           console.log("Postprofile error is ..", e);
@@ -134,6 +130,13 @@ export default function PostProfile({ open, onClose, type, post }) {
     }
   }
 
+  function closeHandler() {
+    onClose();
+    setValue("title", "");
+    setValue("desc", "");
+    setImagePost("");
+    setVideoPost("");
+  }
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <Stack
@@ -147,7 +150,7 @@ export default function PostProfile({ open, onClose, type, post }) {
         <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
           {type == "edit" ? "Edit post" : " Create post"}
         </Typography>
-        <MyIconButton onClick={onClose}>
+        <MyIconButton onClick={closeHandler}>
           <Close />
         </MyIconButton>
       </Stack>

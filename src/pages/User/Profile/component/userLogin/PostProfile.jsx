@@ -236,6 +236,7 @@ export default function PostProfile({ open, onClose, type, post }) {
           <UploadImage
             setOpenUploadImage={setOpenUploadImage}
             setImagePost={setImagePost}
+            imagePost={imagePost}
           />
         )}
         {openUplodViedo && (

@@ -1,4 +1,11 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useState } from "react";
@@ -10,11 +17,13 @@ export default function UploadVideo({
   setVideoPost,
   videoPost,
 }) {
+  const [msg, setmsg] = useState("");
   const uploadImgMutation = useUploadFile();
 
   function handleSelectVideo(e) {
     const file = e.target.files[0];
-    if (file) {
+    if (file && file.type.includes("video")) {
+      setmsg("");
       const form = new FormData();
       form.append("file", file);
       uploadImgMutation.mutate(form, {
@@ -28,6 +37,9 @@ export default function UploadVideo({
         },
       });
     }
+    if (!file.type.includes("video")) {
+      setmsg("Please select a file with type of video");
+    }
   }
   function removeVideoHandler() {
     setSelectedVideo("");
@@ -37,6 +49,8 @@ export default function UploadVideo({
 
   return (
     <Stack spacing={2}>
+      {msg && <Alert color="error">{msg}</Alert>}
+
       {!videoPost && (
         <Stack>
           <Stack
@@ -92,4 +106,3 @@ export default function UploadVideo({
     </Stack>
   );
 }
-

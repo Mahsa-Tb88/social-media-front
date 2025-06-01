@@ -1,19 +1,29 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useUploadFile } from "../../../../../utils/mutation";
+import { useState } from "react";
 
 export default function UploadImage({
   setOpenUploadImage,
   setImagePost,
   imagePost,
 }) {
+  const [msg, setMsg] = useState("");
   const uploadImgMutation = useUploadFile();
 
   function handleSelectImage(e) {
     const file = e.target.files[0];
-    if (file) {
+    if (file && file.type.includes("image")) {
+      setMsg("");
       const form = new FormData();
       form.append("file", file);
       uploadImgMutation.mutate(form, {
@@ -27,6 +37,9 @@ export default function UploadImage({
         },
       });
     }
+    if (!file.type.includes("image")) {
+      setMsg("Please select a file with type of image");
+    }
   }
 
   function removeImageHandler() {
@@ -35,6 +48,7 @@ export default function UploadImage({
 
   return (
     <Stack spacing={2}>
+      {msg && <Alert color="error">{msg}</Alert>}
       {!imagePost && (
         <Stack>
           <Stack

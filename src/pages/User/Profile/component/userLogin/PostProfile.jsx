@@ -80,7 +80,7 @@ export default function PostProfile({ open, onClose, type, post }) {
           console.log("yees....");
         },
         onError(e) {
-          console.log("Postprofile", error);
+          console.log("Postprofile error is ..", e);
         },
       });
     } else {

@@ -47,7 +47,6 @@ export default function PostProfile({ open, onClose, type, post }) {
   const [openUploadImage, setOpenUploadImage] = useState(false);
   const [openUplodViedo, setOpenUploadVideo] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
-  console.log("video post", videoPost);
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       title: post?.title ? post.title : "",
@@ -106,7 +105,6 @@ export default function PostProfile({ open, onClose, type, post }) {
   }
 
   function removeImageHandler() {
-    setImgeEditPost("noImage");
     setImagePost("");
   }
 
@@ -135,8 +133,6 @@ export default function PostProfile({ open, onClose, type, post }) {
       setShowEmoji(false);
     }
   }
-
-  console.log("open image", openUploadImage);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -199,11 +195,15 @@ export default function PostProfile({ open, onClose, type, post }) {
             onFocus={() => setFocusedField("desc")}
           />
         </Stack>
-        {imageEditPost && imageEditPost != "noImage" ? (
+        {imagePost ? (
           <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
             <Box
               component="img"
-              src={imagePost}
+              src={
+                imagePost.includes(SERVER_URL)
+                  ? imagePost
+                  : SERVER_URL + imagePost
+              }
               sx={{ maxWidth: "200px", maxHeight: "200px", mb: 2 }}
             />
             <Button onClick={removeImageHandler} variant="outlined">

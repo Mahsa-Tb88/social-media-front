@@ -33,7 +33,6 @@ export default function SearchBar() {
     return () => clearTimeout(timeOut);
   }, [search]);
 
-  console.log("data...22", data?.data?.body);
   return (
     <Paper sx={{ p: 2 }}>
       <TextField

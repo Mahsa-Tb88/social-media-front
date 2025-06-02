@@ -135,7 +135,7 @@ export default function RandomUserList() {
     });
   }
   return (
-    <Stack>
+    <Stack sx={{ mt: 1, height: "350px" }}>
       {isPending ? (
         <Box>
           <Loading message="Is Loading" />
@@ -144,7 +144,7 @@ export default function RandomUserList() {
         <Box>
           <LoadingError handleAction={refetch} message={error.message} />
         </Box>
-      ) : (
+      ) : users.length ? (
         users.map((user) => {
           return (
             <Stack
@@ -211,6 +211,8 @@ export default function RandomUserList() {
             </Stack>
           );
         })
+      ) : (
+        "There is no user!"
       )}
       <LoginFirst open={openLoginUser} onClose={setOpenLoginUser} />
     </Stack>

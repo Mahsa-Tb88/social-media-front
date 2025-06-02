@@ -8,7 +8,13 @@ export default function HomePage() {
   const theme = useSelector((state) => state.app.theme);
 
   return (
-    <Stack sx={{ p: 5, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>
+    <Stack
+      sx={{
+        minHeight: "100vh",
+        p: 5,
+        bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+      }}
+    >
       <Container fixed>
         <Grid2 container spacing={5}>
           <Grid2 size={{ xs: 12, md: 4 }}>

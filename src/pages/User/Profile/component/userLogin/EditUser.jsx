@@ -2,9 +2,11 @@ import { LoadingButton } from "@mui/lab";
 import {
   Alert,
   Button,
+  Checkbox,
   CircularProgress,
   Container,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Paper,
@@ -20,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEditUser } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { CheckBox } from "@mui/icons-material";
 
 export default function EditUser() {
   const user = useSelector((state) => state.user.profile);
@@ -33,10 +36,11 @@ export default function EditUser() {
   } = useForm();
 
   const { isPending, error, data, mutate } = useEditUser();
+  const checkedDeleteAccount = watch("deleteAccount");
 
   function onSubmit(data) {
     data.id = user.id;
-
+    console.log("data... is...", data);
     mutate(data, {
       onSuccess(d) {
         function goToLogin() {
@@ -107,25 +111,44 @@ export default function EditUser() {
             error={errors.email}
             helperText={errors.email?.message}
           />
-
-          <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-            <Typography color="error" variant="text" sx={{ width: "300px" }}>
-              Delete Account
-            </Typography>
-            <Radio
-              // checked={selectedValue === "a"}
-              // onChange={handleChange}
-              value="a"
-              name="radio-buttons"
-              inputProps={{ "aria-label": "A" }}
-              sx={{
-                color: "red",
-                "&.Mui-checked": {
-                  color: "red",
-                },
-              }}
+          <Stack spacing={1}>
+            <FormControlLabel
+              control={
+                <Checkbox {...register("deleteAccount")} color="error" />
+              }
+              label={
+                <Typography color="error" fontWeight="bold">
+                  Delete Account
+                </Typography>
+              }
             />
+            <Stack>
+              {checkedDeleteAccount && (
+                <FormControl fullWidth error={!!errors.deleteReason}>
+                  <InputLabel id="delete-reason-label">Reason</InputLabel>
+                  <Select
+                    labelId="delete-reason-label"
+                    label="Reason"
+                    defaultValue=""
+                    {...register("deleteReason", {
+                      required:
+                        "Please select a reason for deleting your account",
+                    })}
+                  >
+                    <MenuItem value="privacy">Privacy concerns</MenuItem>
+                    <MenuItem value="not_useful">Not useful</MenuItem>
+                    <MenuItem value="other">Other</MenuItem>
+                  </Select>
+                  {errors.deleteReason && (
+                    <Typography color="error" fontSize={12} sx={{mt:1}}>
+                      {errors.deleteReason.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
+            </Stack>
           </Stack>
+
           <TextField
             {...register("password", {
               required: "Please enter a password",

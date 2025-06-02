@@ -60,7 +60,8 @@ export default function SinglePost({ post, profile }) {
       setOpenLoginUser(true);
     }
   }
-  console.log("..............", post.video);
+
+  
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>

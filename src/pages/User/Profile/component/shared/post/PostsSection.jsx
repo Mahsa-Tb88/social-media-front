@@ -33,7 +33,7 @@ export default function PostsSection({ profile }) {
     }
   }
 
-  console.log("posts is", data?.data?.body);
+  
   return (
     <Container>
       {hasPermission() && (

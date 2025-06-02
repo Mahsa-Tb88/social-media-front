@@ -12,7 +12,6 @@ export default function CommentLike({ comment, userLike }) {
   const [isLike, setIsLike] = useState(userLike);
   const [numOfLike, setNumOfLike] = useState(comment?.likes.length);
   const userLogin = useSelector((state) => state.user.profile);
-  const navigate = useNavigate();
   const mutation = useLikeComment();
 
   function likeHandler() {

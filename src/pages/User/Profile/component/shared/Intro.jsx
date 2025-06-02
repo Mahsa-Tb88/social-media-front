@@ -14,7 +14,6 @@ export default function Intro() {
   const { isPending, data, error, refetch } = useGetIntro(id);
   const myData = data?.data?.body;
 
-  console.log("---", myData);
 
   return (
     <Paper sx={{ p: 2 }}>

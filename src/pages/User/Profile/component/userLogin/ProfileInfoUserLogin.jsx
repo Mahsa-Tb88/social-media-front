@@ -19,7 +19,6 @@ export default function ProfileInfoUserLogin() {
     userLogin.profileImg ? SERVER_URL + userLogin.profileImg : noImage
   );
 
-  console.log("user login", userLogin);
   function addStory() {}
 
   return (

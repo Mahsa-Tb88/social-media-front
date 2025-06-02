@@ -59,7 +59,6 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
     const formattedDate = myDate.toLocaleDateString("en-GB", options);
     return formattedDate;
   }
-  console.log("notifiList", notifiList);
   function timeAgo(createdAt) {
     const now = new Date();
     const createdDate = new Date(createdAt);

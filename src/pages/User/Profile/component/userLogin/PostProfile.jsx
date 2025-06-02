@@ -40,7 +40,6 @@ export default function PostProfile({ open, onClose, type, post }) {
     post?.video ? SERVER_URL + post.video : ""
   );
 
-
   const [openUploadImage, setOpenUploadImage] = useState(false);
   const [openUplodViedo, setOpenUploadVideo] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
@@ -254,7 +253,7 @@ export default function PostProfile({ open, onClose, type, post }) {
             <EmojiPicker onEmojiClick={handleEmoji} />
           </Stack>
         )}
-        {!imagePost && !videoPost && (
+        {
           <Stack
             sx={{
               border: 1,
@@ -268,28 +267,32 @@ export default function PostProfile({ open, onClose, type, post }) {
           >
             <Typography>Add to your post</Typography>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>
-              <Tooltip title="Image" arrow>
-                <MyIconButton
-                  tooltip="post"
-                  onClick={() => {
-                    setOpenUploadImage(true);
-                    setOpenUploadVideo(false);
-                  }}
-                >
-                  <CollectionsIcon sx={{ color: pink[500] }} />
-                </MyIconButton>
-              </Tooltip>
-              <Tooltip title="Video" arrow>
-                <MyIconButton
-                  tooltip="post"
-                  onClick={() => {
-                    setOpenUploadVideo(true);
-                    setOpenUploadImage(false);
-                  }}
-                >
-                  <VideoLibraryIcon sx={{ color: "#007FFF" }} />
-                </MyIconButton>
-              </Tooltip>
+              {!imagePost && !videoPost && (
+                <Tooltip title="Image" arrow>
+                  <MyIconButton
+                    tooltip="post"
+                    onClick={() => {
+                      setOpenUploadImage(true);
+                      setOpenUploadVideo(false);
+                    }}
+                  >
+                    <CollectionsIcon sx={{ color: pink[500] }} />
+                  </MyIconButton>
+                </Tooltip>
+              )}
+              {!imagePost && !videoPost && (
+                <Tooltip title="Video" arrow>
+                  <MyIconButton
+                    tooltip="post"
+                    onClick={() => {
+                      setOpenUploadVideo(true);
+                      setOpenUploadImage(false);
+                    }}
+                  >
+                    <VideoLibraryIcon sx={{ color: "#007FFF" }} />
+                  </MyIconButton>
+                </Tooltip>
+              )}
               <Tooltip title="Feeling" arrow>
                 <MyIconButton
                   tooltip="post"
@@ -300,7 +303,7 @@ export default function PostProfile({ open, onClose, type, post }) {
               </Tooltip>
             </Stack>
           </Stack>
-        )}
+        }
         <LoadingButton
           loading={isPending}
           size="large"

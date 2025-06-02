@@ -71,12 +71,14 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
                         src={SERVER_URL + msg.profileImg}
                       />
                     ) : (
-                      <Avatar>{msg.username[0]}</Avatar>
+                      <Avatar>{msg.username[0].toUpperCase()}</Avatar>
                     )}
                   </Badge>
                 </ListItemIcon>
                 <ListItemText>
-                  <Typography>{msg.username} </Typography>
+                  <Typography>
+                    {msg.username[0].toUpperCase() + msg.username.slice(1)}{" "}
+                  </Typography>
                   <Typography
                     sx={{
                       fontSize: "12px",
@@ -84,6 +86,7 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
                       color: !msg.isRead ? "#fff" : "grey",
                       py: "3px",
                       px: "5px",
+                      mt: 1,
                       borderRadius: "7px",
                       width: "100px",
                       fontSize: "12px",

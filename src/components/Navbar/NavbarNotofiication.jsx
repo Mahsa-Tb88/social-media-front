@@ -118,7 +118,7 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                       }}
                     />
                     <Typography>
-                      {n.userId.username}
+                      {n.userId.username[0].toUpperCase() + n.userId.username.slice(1)}
                       {n.type == "comment"
                         ? " left a message on the post"
                         : n.type == "post"

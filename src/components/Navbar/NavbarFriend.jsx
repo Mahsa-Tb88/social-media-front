@@ -26,8 +26,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
   const [requestList, setRequestList] = useState(
     userLogin.friends?.friendRequestList || []
   );
-  console.log("userlogin....", userLogin);
- 
+
   useEffect(() => {
     if (userLogin.friends?.friendRequestList?.length) {
       setRequestList(userLogin.friends?.friendRequestList);
@@ -55,7 +54,6 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
     };
     confirmMutation.mutate(data, {
       onSuccess(d) {
-        console.log("success");
         const updatedListFriends = [
           ...userLogin?.friends.listFriend,
           {
@@ -149,7 +147,9 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                 >
                   <ListItemText>
                     <Typography>
-                      {friend.username} is your new friend
+                      {friend.username[0].toUpperCase() +
+                        friend.username.slice(1)}
+                      is your new friend
                     </Typography>
                   </ListItemText>
                 </ListItemButton>
@@ -164,7 +164,10 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                 >
                   <ListItemText>
                     <Typography>
-                      you rejected {friend.username} friends's request
+                      you rejected
+                      {friend.username[0].toUpperCase() +
+                        friend.username.slice(1)}
+                      friends's request
                     </Typography>
                   </ListItemText>
                 </ListItemButton>
@@ -187,7 +190,9 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                     />
                   </ListItemIcon>
                   <ListItemText>
-                    <Typography>{friend.username}</Typography>
+                    <Typography>
+                      {friend.username[0].toUpperCase() + friend.username.slice(1)}
+                    </Typography>
                     {mutualFriends(friend.id)?.length > 1 ? (
                       <Stack>
                         <Typography component="h6" variant="h6">

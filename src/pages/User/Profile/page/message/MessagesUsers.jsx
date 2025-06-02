@@ -123,11 +123,15 @@ export default function MessagesUserss() {
                                   theme === "dark" ? "#1769aa" : "#64b5f6",
                               }}
                             >
-                              {msg.username[0]}
+                              {msg.username[0].toUpperCase()}
                             </Avatar>
                           )}
                         </Box>
-                        <Typography sx={{ mt: 1 }}> {msg.username}</Typography>
+                        <Typography sx={{ mt: 1 }}>
+                          {" "}
+                          {msg.username[0].toUpperCase() +
+                            user.username.slice(1)}
+                        </Typography>
                       </TableCell>
                       <TableCell
                         sx={{

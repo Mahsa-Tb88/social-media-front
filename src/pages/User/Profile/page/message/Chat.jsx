@@ -73,7 +73,7 @@ export default function Chat() {
                 <Avatar
                   sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" }}
                 >
-                  {user.username[0]}
+                  {user.username[0].toUpperCase()}
                 </Avatar>
               )}
               <Typography
@@ -81,7 +81,7 @@ export default function Chat() {
                 component="h6"
                 variant="h6"
               >
-                {user.username}
+                {user.username[0].toUpperCase() + user.username.slice(1)}
               </Typography>
             </Stack>
           </Stack>
@@ -194,9 +194,11 @@ function UserLoginMsgs({ userLogin, theme, c, date }) {
         {userLogin.profileImg ? (
           <Avatar alt="Remy Sharp" src={SERVER_URL + userLogin.profileImg} />
         ) : (
-          <Avatar>{userLogin.username[0]}</Avatar>
+          <Avatar>{userLogin.username[0].toUpperCase()}</Avatar>
         )}
-        <Typography sx={{ ml: 1 }}>{userLogin.username}</Typography>
+        <Typography sx={{ ml: 1 }}>
+          {userLogin.username[0].toUpperCase() + userLogin.username.slice(1)}
+        </Typography>
       </Stack>
       <Stack
         sx={{
@@ -271,12 +273,14 @@ function UserMsgs({ user, theme, c, date }) {
         }}
       >
         <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
-          <Typography sx={{ mr: 1 }}>{user.username}</Typography>
+          <Typography sx={{ mr: 1 }}>
+            {user.username[0].toUpperCase() + user.username.slice(1)}
+          </Typography>
           {user.profileImg ? (
             <Avatar alt="Remy Sharp" src={SERVER_URL + user.profileImg} />
           ) : (
             <Avatar sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" }}>
-              {user.username[0]}
+              {user.username[0].toUpperCase()}
             </Avatar>
           )}
         </Stack>

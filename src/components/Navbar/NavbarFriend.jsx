@@ -97,7 +97,6 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
       userId: user.id,
       id: userLogin.id,
     };
-    console.log("---------", data);
     removeRequestMutation.mutate(data, {
       onSuccess(d) {
         const updatedFriendRequestList =
@@ -148,8 +147,8 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                   <ListItemText>
                     <Typography>
                       {friend.username[0].toUpperCase() +
-                        friend.username.slice(1)}
-                      is your new friend
+                        friend.username.slice(1) +" "} 
+                       is your new friend
                     </Typography>
                   </ListItemText>
                 </ListItemButton>

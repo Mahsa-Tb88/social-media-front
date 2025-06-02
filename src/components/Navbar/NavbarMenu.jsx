@@ -4,6 +4,7 @@ import {
   Logout,
   Message,
   Person,
+  Settings,
 } from "@mui/icons-material";
 import {
   Badge,
@@ -14,7 +15,7 @@ import {
   ListItemText,
   Menu,
 } from "@mui/material";
-import React from "react";
+
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -24,7 +25,6 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
   if (userLogin.notificationList) {
     unSeenMsg = userLogin.messages.filter((n) => n.isRead == false);
   }
-
 
   return (
     <Menu
@@ -56,11 +56,14 @@ export default function NavbarMenu({ open, anchorEl, handleClose }) {
         ) : (
           <>
             <ListItem divider>
-              <ListItemButton LinkComponent={Link} to={`/edit/user/${userLogin.id}`}>
+              <ListItemButton
+                LinkComponent={Link}
+                to={`/edit/user/${userLogin.id}`}
+              >
                 <ListItemIcon>
-                  <EditRounded />
+                  <Settings />
                 </ListItemIcon>
-                <ListItemText>Edit Profile</ListItemText>
+                <ListItemText>Setting</ListItemText>
               </ListItemButton>
             </ListItem>
           </>

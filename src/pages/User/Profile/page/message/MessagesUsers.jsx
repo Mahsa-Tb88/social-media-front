@@ -128,9 +128,8 @@ export default function MessagesUserss() {
                           )}
                         </Box>
                         <Typography sx={{ mt: 1 }}>
-                          {" "}
                           {msg.username[0].toUpperCase() +
-                            user.username.slice(1)}
+                            msg.username.slice(1)}
                         </Typography>
                       </TableCell>
                       <TableCell

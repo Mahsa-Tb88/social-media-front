@@ -1,15 +1,18 @@
 import { LoadingButton } from "@mui/lab";
 import {
   Alert,
+  Button,
   CircularProgress,
   Container,
   FormControl,
   InputLabel,
   MenuItem,
   Paper,
+  Radio,
   Select,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -56,7 +59,7 @@ export default function EditUser() {
           ) : error ? (
             <Alert severity="error">{error.message}</Alert>
           ) : (
-            <Alert severity="info">Edit your information</Alert>
+            <Alert severity="info">Edit information</Alert>
           )}
         </Stack>
         <Stack
@@ -104,6 +107,25 @@ export default function EditUser() {
             error={errors.email}
             helperText={errors.email?.message}
           />
+
+          <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
+            <Typography color="error" variant="text" sx={{ width: "300px" }}>
+              Delete Account
+            </Typography>
+            <Radio
+              // checked={selectedValue === "a"}
+              // onChange={handleChange}
+              value="a"
+              name="radio-buttons"
+              inputProps={{ "aria-label": "A" }}
+              sx={{
+                color: "red",
+                "&.Mui-checked": {
+                  color: "red",
+                },
+              }}
+            />
+          </Stack>
           <TextField
             {...register("password", {
               required: "Please enter a password",
@@ -135,6 +157,7 @@ export default function EditUser() {
             required
             type="password"
           />
+
           <LoadingButton
             loading={isPending}
             loadingIndicator={

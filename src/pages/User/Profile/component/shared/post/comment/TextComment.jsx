@@ -1,5 +1,5 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Button, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 import CommentLike from "../like/CommentLike";
 import InputComment from "./InputComment";
 import Comment from "./Comment";
@@ -11,7 +11,6 @@ export default function TextComment({ c, setPostComments, postComments }) {
   const [reply, setReply] = useState(false);
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
- 
 
   function userLike() {
     let findUser;
@@ -22,7 +21,7 @@ export default function TextComment({ c, setPostComments, postComments }) {
       return false;
     }
   }
-
+  console.log("c is", c);
   return (
     <Stack sx={{}}>
       {c.text.length > 200 ? (
@@ -42,10 +41,10 @@ export default function TextComment({ c, setPostComments, postComments }) {
         >
           {c.mentionUser && (
             <Typography
-              sx={{ color: "#1976d2",mr:1 }}
+              sx={{ color: "#1976d2", mr: 1 }}
               onClick={() => navigate("./profile" + c._id)}
             >
-              {c.mentionUser.username}
+              {c.mentionUser.deleted ? "Deleted User" : c.mentionUser.username}
             </Typography>
           )}
           <Typography>{c.text}</Typography>
@@ -53,7 +52,7 @@ export default function TextComment({ c, setPostComments, postComments }) {
       )}
       <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
         <CommentLike comment={c} userLike={userLike()} />
-        {!c?.replyTo && (
+        {!c?.replyTo && !c?.userId?.deleted && (
           <Button
             variant="text"
             sx={{ maxWidth: "80px" }}

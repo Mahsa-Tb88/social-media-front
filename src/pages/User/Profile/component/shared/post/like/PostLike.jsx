@@ -13,6 +13,7 @@ export default function postLike({ post }) {
   const userLogin = useSelector((state) => state.user.profile);
   const findLike = post?.likes.find((l) => l._id == userLogin.id);
   const [openLoginUser, setOpenLoginUser] = useState(false);
+  console.log("posts is", post);
 
   const [isLike, setIsLike] = useState(findLike ? true : false);
 

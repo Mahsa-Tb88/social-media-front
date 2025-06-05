@@ -57,7 +57,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             }
           />
           <Typography sx={{ fontWeight: "bold" }}>
-            {c.userId.username}
+            {c.userId.deleted ? "Deleted User" : c.userId.username}
           </Typography>
         </Stack>
         <Stack>

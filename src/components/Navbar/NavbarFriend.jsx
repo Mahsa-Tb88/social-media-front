@@ -13,7 +13,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import noImage from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
@@ -147,8 +147,9 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                   <ListItemText>
                     <Typography>
                       {friend.username[0].toUpperCase() +
-                        friend.username.slice(1) +" "} 
-                       is your new friend
+                        friend.username.slice(1) +
+                        " "}
+                      is your new friend
                     </Typography>
                   </ListItemText>
                 </ListItemButton>
@@ -190,7 +191,8 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                   </ListItemIcon>
                   <ListItemText>
                     <Typography>
-                      {friend.username[0].toUpperCase() + friend.username.slice(1)}
+                      {friend.username[0].toUpperCase() +
+                        friend.username.slice(1)}
                     </Typography>
                     {mutualFriends(friend.id)?.length > 1 ? (
                       <Stack>

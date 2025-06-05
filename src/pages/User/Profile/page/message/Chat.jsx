@@ -67,7 +67,11 @@ export default function Chat() {
               Message to:
             </Typography>
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-              {user.profileImg ? (
+              {user.deleted ? (
+                <Avatar
+                  sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" }}
+                ></Avatar>
+              ) : user.profileImg ? (
                 <Avatar alt="Remy Sharp" src={SERVER_URL + user.profileImg} />
               ) : (
                 <Avatar
@@ -81,7 +85,9 @@ export default function Chat() {
                 component="h6"
                 variant="h6"
               >
-                {user.username[0].toUpperCase() + user.username.slice(1)}
+                {user.deleted
+                  ? "Deleted User"
+                  : user.username[0].toUpperCase() + user.username.slice(1)}
               </Typography>
             </Stack>
           </Stack>
@@ -129,7 +135,12 @@ export default function Chat() {
           <Stack sx={{ mt: 5, bgcolor: theme === "dark" ? "balck" : "white" }}>
             <TextField onChange={(e) => setMsg(e.target.value)} value={msg} />
           </Stack>
-          <Button sx={{ mt: 2, px: 6 }} size="large" onClick={sendMsgHandler}>
+          <Button
+            sx={{ mt: 2, px: 6 }}
+            size="large"
+            onClick={sendMsgHandler}
+            disabled={user.deleted}
+          >
             Send
           </Button>
         </Container>
@@ -274,9 +285,15 @@ function UserMsgs({ user, theme, c, date }) {
       >
         <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
           <Typography sx={{ mr: 1 }}>
-            {user.username[0].toUpperCase() + user.username.slice(1)}
+            {user.deleted
+              ? "Deleted User"
+              : user.username[0].toUpperCase() + user.username.slice(1)}
           </Typography>
-          {user.profileImg ? (
+          {user.deleted ? (
+            <Avatar
+              sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" }}
+            ></Avatar>
+          ) : user.profileImg ? (
             <Avatar alt="Remy Sharp" src={SERVER_URL + user.profileImg} />
           ) : (
             <Avatar sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" }}>

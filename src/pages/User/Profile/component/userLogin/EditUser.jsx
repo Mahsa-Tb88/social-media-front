@@ -39,6 +39,7 @@ export default function EditUser() {
   const checkedDeleteAccount = watch("deleteAccount");
 
   function onSubmit(data) {
+    console.log("....");
     data.id = user.id;
     console.log("data... is...", data);
     mutate(data, {
@@ -140,7 +141,7 @@ export default function EditUser() {
                     <MenuItem value="other">Other</MenuItem>
                   </Select>
                   {errors.deleteReason && (
-                    <Typography color="error" fontSize={12} sx={{mt:1}}>
+                    <Typography color="error" fontSize={12} sx={{ mt: 1 }}>
                       {errors.deleteReason.message}
                     </Typography>
                   )}
@@ -191,7 +192,7 @@ export default function EditUser() {
             variant="contained"
             sx={{ alignSelf: "center", width: 120, fontSize: 18 }}
           >
-            Update
+            Update..
           </LoadingButton>
         </Stack>
       </Paper>

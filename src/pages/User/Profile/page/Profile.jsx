@@ -7,6 +7,7 @@ import Loading from "../../../../components/Loading";
 import LoadingError from "../../../../components/LoadingError";
 import UserProfile from "./UserProfile";
 import { useParams } from "react-router-dom";
+import NotFound from "./NotFound";
 
 export default function Profile() {
   const userLogin = useSelector((state) => state.user.profile);
@@ -29,7 +30,9 @@ export default function Profile() {
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
         <Stack>
-          {id == userLogin.id ? (
+          {user.deleted ? (
+            <NotFound />
+          ) : id == userLogin.id ? (
             <UserLoginProfile />
           ) : (
             <UserProfile user={user} />

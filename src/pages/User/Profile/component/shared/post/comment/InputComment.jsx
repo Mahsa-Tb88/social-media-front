@@ -2,7 +2,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import React, { useState, useRef, useEffect } from "react";
 import { useLeaveComment } from "../../../../../../../utils/mutation";
 import { useGetSearchUser } from "../../../../../../../utils/queries";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import noImage from "../../../../../../../../src/assets/images/user.png";
@@ -14,7 +13,6 @@ import EmojiPicker from "emoji-picker-react";
 import Loading from "../../../../../../../components/Loading";
 import LoadingError from "../../../../../../../components/LoadingError";
 import { Close } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 
 export default function InputComment({ postId, replyTo, setReply }) {
   const theme = useSelector((state) => state.app.theme);
@@ -130,7 +128,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
                 />
               </Box>
               <Typography sx={{ color: "blue", whiteSpace: "nowrap" }}>
-                {q}
+                {q[0] + q[1] + q[2].toUpperCase() + q.slice(3)}
               </Typography>
             </Stack>
           )}
@@ -229,7 +227,8 @@ export default function InputComment({ postId, replyTo, setReply }) {
                         }}
                       />
                       <Typography sx={{ fontSize: "12px", fontWeight: "bold" }}>
-                        {user.username}
+                        {user.username[0].toUpperCase() +
+                          user.username.slice(1)}
                       </Typography>
                     </Stack>
                   );

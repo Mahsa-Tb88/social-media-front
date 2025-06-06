@@ -19,6 +19,9 @@ export default function ProfileInfoUserLogin() {
     userLogin.profileImg ? SERVER_URL + userLogin.profileImg : noImage
   );
 
+  console.log("profileImg====", profileImg);
+  console.log("userlogin====", userLogin);
+
   function addStory() {}
 
   return (
@@ -81,10 +84,6 @@ export default function ProfileInfoUserLogin() {
             <Stack>
               <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
                 {userLogin.username}
-              </Typography>
-              <Typography sx={{ fontSize: 17 }}>
-                {/*  {user?.friends.length ? user.friends + "friends" : " "}
-            {user?.mutual ? ", " + user.mutual + "mutual" : ""} */}
               </Typography>
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>

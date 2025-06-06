@@ -44,7 +44,10 @@ export default function TextComment({ c, setPostComments, postComments }) {
               sx={{ color: "#1976d2", mr: 1 }}
               onClick={() => navigate("./profile" + c._id)}
             >
-              {c.mentionUser.deleted ? "Deleted User" : c.mentionUser.username}
+              {c.mentionUser.deleted
+                ? "Deleted User"
+                : c.mentionUser.username[0].toUpperCase() +
+                  c.mentionUser.username.slice(1)}
             </Typography>
           )}
           <Typography>{c.text}</Typography>

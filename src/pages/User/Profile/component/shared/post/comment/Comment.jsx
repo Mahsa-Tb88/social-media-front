@@ -1,5 +1,4 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import TextComment from "./TextComment";
@@ -57,7 +56,9 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             }
           />
           <Typography sx={{ fontWeight: "bold" }}>
-            {c.userId.deleted ? "Deleted User" : c.userId.username}
+            {c.userId.deleted
+              ? "Deleted User"
+              : c.userId.username[0].toUpperCase() + c.userId.username.slice(1)}
           </Typography>
         </Stack>
         <Stack>

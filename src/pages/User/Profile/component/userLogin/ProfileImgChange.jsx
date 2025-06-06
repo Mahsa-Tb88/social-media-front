@@ -53,7 +53,6 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
       });
     }
   }
-
   async function onSubmit(data) {
     if (data.image?.length && isImageChanged) {
       data.image = selectedImage.replace(SERVER_URL, "");
@@ -61,7 +60,6 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     data.id = user.id;
     mutate(data, {
       onSuccess(d) {
-        console.log(d);
         dispatch(
           userActions.setProfile({
             ...user,
@@ -81,6 +79,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     setValue("image", "");
     setProfileImg(noImage);
     setSelectedImage(noImage);
+    setIsIamgeChanged(false);
     data.id = user.id;
     data.image = "";
     mutate(data, {
@@ -88,7 +87,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
         dispatch(
           userActions.setProfile({
             ...user,
-            profileImg: noImage,
+            profileImg: "",
           })
         );
       },
@@ -144,7 +143,12 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
                 style={{ display: "none" }}
                 onChange={handleSelectImage}
               />
-              <Button variant="contained" sx={{ fontSize: 17 }} type="submit">
+              <Button
+                variant="contained"
+                sx={{ fontSize: 17 }}
+                type="submit"
+                disabled={!isImageChanged}
+              >
                 Apply
               </Button>
             </Stack>

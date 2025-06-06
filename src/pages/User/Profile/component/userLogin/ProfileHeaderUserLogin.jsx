@@ -1,5 +1,5 @@
 import { Box, Container, Grid2, Stack } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import BackgroundChange from "./BackgroundChange";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Edit } from "@mui/icons-material";

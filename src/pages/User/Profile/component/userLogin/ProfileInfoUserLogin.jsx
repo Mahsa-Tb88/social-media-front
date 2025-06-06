@@ -1,4 +1,12 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
@@ -9,15 +17,14 @@ import ProfileImgChange from "./ProfileImgChange";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileInfoUserLogin() {
-  const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
+  console.log("userlogin", userLogin);
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
     userLogin.profileImg ? SERVER_URL + userLogin.profileImg : noImage
   );
-
 
   return (
     <Container
@@ -80,13 +87,28 @@ export default function ProfileInfoUserLogin() {
               <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
                 {userLogin.username}
               </Typography>
+              <Typography sx={{}}>
+                {userLogin.friends.listFriend.length + " friends"}
+              </Typography>
+              <AvatarGroup max={4}>
+                {userLogin.friends.listFriend.map((f) => {
+                  return (
+                    <Avatar
+                      key={f._id}
+                      alt={f.username[0].toUpperCase()}
+                      src={SERVER_URL + f.profileImg}
+                      onClick={() => navigate("/profile/" + f.id)}
+                      sx={{ cursor: "pointer", width: 35, height: 35 }}
+                    />
+                  );
+                })}
+              </AvatarGroup>
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>
               <Button
                 size="large"
                 sx={{
                   fontSize: 17,
-                 
                 }}
                 startIcon={<Edit />}
                 disableElevation

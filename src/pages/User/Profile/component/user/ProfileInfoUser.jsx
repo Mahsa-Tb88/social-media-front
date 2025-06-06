@@ -169,7 +169,7 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
               justifyContent: "space-between",
             }}
           >
-            <Stack sx={{ alignItems:"flex-start" }}>
+            <Stack sx={{ alignItems: "flex-start" }}>
               <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
                 {user?.username &&
                   user.username[0].toUpperCase() + user?.username.slice(1)}
@@ -180,17 +180,13 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                   ? ", " + mutualFriend.length + " mutual"
                   : ""}
               </Typography>
-              <AvatarGroup>
+              <AvatarGroup max={4}>
                 {mutualFriend.map((f) => {
                   return (
                     <Avatar
                       key={f._id}
-                      alt={f.username}
-                      src={
-                        f.profileImg
-                          ? SERVER_URL + f.profileImg
-                          : f.username[0].toUpperCase()
-                      }
+                      alt={f.username[0].toUpperCase()}
+                      src={SERVER_URL + f.profileImg}
                       onClick={() => navigate("/profile/" + f.id)}
                       sx={{ cursor: "pointer" }}
                     />

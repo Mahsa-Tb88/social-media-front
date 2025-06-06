@@ -176,7 +176,6 @@ function Info({ profile, post, theme, isOwner }) {
   const [viewer, setViewer] = useState(post.viewer);
   const navigate = useNavigate();
 
-  console.log("profile image...", profile);
   function getDate(dateString) {
     const myDate = new Date(dateString);
     const options = { month: "long", day: "2-digit", year: "numeric" };

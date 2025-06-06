@@ -135,7 +135,7 @@ export default function RandomUserList() {
     });
   }
   return (
-    <Stack sx={{ mt: 1, height: "350px" }}>
+    <Stack sx={{ mt: 1, minHeight: "350px" }}>
       {isPending ? (
         <Box>
           <Loading message="Is Loading" />

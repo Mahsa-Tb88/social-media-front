@@ -1,7 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import {
   Alert,
-  Button,
   Checkbox,
   CircularProgress,
   Container,
@@ -10,19 +9,16 @@ import {
   InputLabel,
   MenuItem,
   Paper,
-  Radio,
   Select,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useEditUser } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
-import { CheckBox } from "@mui/icons-material";
 
 export default function EditUser() {
   const user = useSelector((state) => state.user.profile);
@@ -39,9 +35,7 @@ export default function EditUser() {
   const checkedDeleteAccount = watch("deleteAccount");
 
   function onSubmit(data) {
-    console.log("....");
     data.id = user.id;
-    console.log("data... is...", data);
     mutate(data, {
       onSuccess(d) {
         function goToLogin() {
@@ -192,7 +186,7 @@ export default function EditUser() {
             variant="contained"
             sx={{ alignSelf: "center", width: 120, fontSize: 18 }}
           >
-            Update..
+            Update
           </LoadingButton>
         </Stack>
       </Paper>

@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function MenuUserLike({ likes, open, anchorEl, handleClose }) {
   const navigate = useNavigate();
-  console.log("likees", likes);
   return (
     <Menu
       open={open}

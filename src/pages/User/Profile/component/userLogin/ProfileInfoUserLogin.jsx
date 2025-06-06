@@ -2,7 +2,6 @@ import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import noImage from "../../../../../assets/images/user.png";
 
 import { Edit } from "@mui/icons-material";
@@ -19,10 +18,6 @@ export default function ProfileInfoUserLogin() {
     userLogin.profileImg ? SERVER_URL + userLogin.profileImg : noImage
   );
 
-  console.log("profileImg====", profileImg);
-  console.log("userlogin====", userLogin);
-
-  function addStory() {}
 
   return (
     <Container
@@ -88,24 +83,10 @@ export default function ProfileInfoUserLogin() {
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>
               <Button
-                startIcon={<PersonAddAlt1Icon />}
-                size="large"
-                sx={{ fontSize: 17 }}
-                disableElevation
-                onClick={addStory}
-              >
-                Add story
-              </Button>
-
-              <Button
                 size="large"
                 sx={{
                   fontSize: 17,
-                  bgcolor: theme == "light" ? "grey.200" : "grey.800",
-                  color: theme == "light" ? "grey.800" : "grey.200",
-                  "&:hover": {
-                    bgcolor: theme == "light" ? "grey.300" : "grey.900",
-                  },
+                 
                 }}
                 startIcon={<Edit />}
                 disableElevation

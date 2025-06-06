@@ -112,6 +112,7 @@ export default function ProfileInfoUser({ user }) {
   }
   const chatId =
     userLogin.id > userId ? userLogin.id + userId : userId + userLogin.id;
+
   return (
     <Container
       fixed
@@ -160,7 +161,7 @@ export default function ProfileInfoUser({ user }) {
           >
             <Stack>
               <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
-                {user.username}
+                {user?.username && user.username[0].toUpperCase() + user?.username.slice(1)}
               </Typography>
               <Typography sx={{ fontSize: 17 }}>
                 {/*  {user?.friends.length ? user.friends + "friends" : " "}

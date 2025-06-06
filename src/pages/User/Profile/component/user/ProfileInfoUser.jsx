@@ -194,81 +194,83 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                 })}
               </AvatarGroup>
             </Stack>
-            <Stack sx={{ flexDirection: "row", gap: 2 }}>
-              {findUserInRequestList() ? (
-                <Button
-                  startIcon={<PersonIcon />}
-                  size="large"
-                  sx={{ fontSize: 17 }}
-                  disableElevation
-                  onClick={() => setOpenRequest(true)}
-                  ref={requestAnchor}
-                >
-                  Sent request
-                </Button>
-              ) : !findFriend() ? (
-                <Button
-                  startIcon={<PersonAddAlt1Icon />}
-                  size="large"
-                  sx={{ fontSize: 17 }}
-                  disableElevation
-                  onClick={addFriend}
-                >
-                  Add Friend
-                </Button>
-              ) : findFriend()?.status == "pending" ? (
-                <Button
-                  startIcon={<PersonIcon />}
-                  size="large"
-                  sx={{ fontSize: 17 }}
-                  disableElevation
-                  onClick={cancelRequest}
-                >
-                  Cancel Request
-                </Button>
-              ) : (
-                <Button
-                  startIcon={<CheckCircleOutlineIcon />}
-                  size="large"
-                  sx={{ fontSize: 17 }}
-                  disableElevation
-                  onClick={() => setOpenHandleFriend(true)}
-                  ref={HandleFriendAnchor}
-                >
-                  Your friend
-                </Button>
-              )}
+            <Stack>
+              <Stack sx={{ flexDirection: "row", gap: 2 }}>
+                {findUserInRequestList() ? (
+                  <Button
+                    startIcon={<PersonIcon />}
+                    size="large"
+                    sx={{ fontSize: 17 }}
+                    disableElevation
+                    onClick={() => setOpenRequest(true)}
+                    ref={requestAnchor}
+                  >
+                    Sent request
+                  </Button>
+                ) : !findFriend() ? (
+                  <Button
+                    startIcon={<PersonAddAlt1Icon />}
+                    size="large"
+                    sx={{ fontSize: 17 }}
+                    disableElevation
+                    onClick={addFriend}
+                  >
+                    Add Friend
+                  </Button>
+                ) : findFriend()?.status == "pending" ? (
+                  <Button
+                    startIcon={<PersonIcon />}
+                    size="large"
+                    sx={{ fontSize: 17 }}
+                    disableElevation
+                    onClick={cancelRequest}
+                  >
+                    Cancel Request
+                  </Button>
+                ) : (
+                  <Button
+                    startIcon={<CheckCircleOutlineIcon />}
+                    size="large"
+                    sx={{ fontSize: 17 }}
+                    disableElevation
+                    onClick={() => setOpenHandleFriend(true)}
+                    ref={HandleFriendAnchor}
+                  >
+                    Your friend
+                  </Button>
+                )}
 
-              <Button
-                size="large"
-                sx={{
-                  fontSize: 17,
-                  bgcolor: theme == "light" ? "grey.200" : "grey.800",
-                  color: theme == "light" ? "grey.800" : "grey.200",
-                  "&:hover": {
-                    bgcolor: theme == "light" ? "grey.300" : "grey.900",
-                  },
-                }}
-                startIcon={<MessageIcon />}
-                disableElevation
-                LinkComponent={Link}
-                to={`/chat/` + chatId}
-              >
-                Message
-              </Button>
-              <NavbarFriendRequest
-                open={openRequest}
-                anchorEl={requestAnchor.current}
-                handleClose={() => setOpenRequest(false)}
-                user={user}
-              />
-              <NavbarHandleFriend
-                open={openHandleFriend}
-                anchorEl={HandleFriendAnchor.current}
-                handleClose={() => setOpenHandleFriend(false)}
-                user={user}
-                deleteFriend={cancelRequest}
-              />
+                <Button
+                  size="large"
+                  sx={{
+                    fontSize: 17,
+                    bgcolor: theme == "light" ? "grey.200" : "grey.800",
+                    color: theme == "light" ? "grey.800" : "grey.200",
+                    "&:hover": {
+                      bgcolor: theme == "light" ? "grey.300" : "grey.900",
+                    },
+                  }}
+                  startIcon={<MessageIcon />}
+                  disableElevation
+                  LinkComponent={Link}
+                  to={`/chat/` + chatId}
+                >
+                  Message
+                </Button>
+                <NavbarFriendRequest
+                  open={openRequest}
+                  anchorEl={requestAnchor.current}
+                  handleClose={() => setOpenRequest(false)}
+                  user={user}
+                />
+                <NavbarHandleFriend
+                  open={openHandleFriend}
+                  anchorEl={HandleFriendAnchor.current}
+                  handleClose={() => setOpenHandleFriend(false)}
+                  user={user}
+                  deleteFriend={cancelRequest}
+                />
+              </Stack>
             </Stack>
           </Stack>
         </Stack>

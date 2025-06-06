@@ -104,7 +104,7 @@ export default function ProfileInfoUserLogin() {
                 })}
               </AvatarGroup>
             </Stack>
-            <Stack sx={{ flexDirection: "row", gap: 2 }}>
+            <Stack>
               <Button
                 size="large"
                 sx={{

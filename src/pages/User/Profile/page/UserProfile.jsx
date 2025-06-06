@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import ProfileHeaderUser from "../component/user/ProfileHeaderUser";
 
 export default function UserProfile({ user }) {
-  console.log("user not login", user);
+
 
   return (
     <Stack>

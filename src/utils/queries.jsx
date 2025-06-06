@@ -57,6 +57,13 @@ export function useGetFriends(id) {
   });
 }
 
+export function useGetMutualFriends(id) {
+  return useQuery({
+    queryKey: ["mutualFriends", id],
+    queryFn: () => axios.get("/users/mutual/friend/" + id),
+  });
+}
+
 export function useGetGalley(id) {
   return useQuery({
     queryKey: ["gallery", id],

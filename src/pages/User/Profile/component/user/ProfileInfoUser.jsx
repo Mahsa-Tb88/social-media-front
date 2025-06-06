@@ -15,7 +15,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import NavbarHandleFriend from "./NavbarHandleFriend";
 import { Link, useParams } from "react-router-dom";
 
-export default function ProfileInfoUser({ user }) {
+export default function ProfileInfoUser({ user, mutualFriend }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const userId = useParams().id;
@@ -39,6 +39,11 @@ export default function ProfileInfoUser({ user }) {
     } else {
       return false;
     }
+  }
+  console.log("user", user);
+  console.log("userLogin", userLogin);
+  function findMutalFriend() {
+    findFrinedUser = user;
   }
 
   function findUserInRequestList() {
@@ -110,6 +115,7 @@ export default function ProfileInfoUser({ user }) {
       },
     });
   }
+
   const chatId =
     userLogin.id > userId ? userLogin.id + userId : userId + userLogin.id;
 
@@ -161,7 +167,8 @@ export default function ProfileInfoUser({ user }) {
           >
             <Stack>
               <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
-                {user?.username && user.username[0].toUpperCase() + user?.username.slice(1)}
+                {user?.username &&
+                  user.username[0].toUpperCase() + user?.username.slice(1)}
               </Typography>
               <Typography sx={{ fontSize: 17 }}>
                 {/*  {user?.friends.length ? user.friends + "friends" : " "}

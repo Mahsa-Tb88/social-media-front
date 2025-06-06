@@ -1,4 +1,12 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useRef, useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
@@ -13,12 +21,13 @@ import { userActions } from "../../../../../store/slices/userSlice";
 import NavbarFriendRequest from "./NavbarFriendRequest";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import NavbarHandleFriend from "./NavbarHandleFriend";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-export default function ProfileInfoUser({ user, mutualFriend }) {
+export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
   const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const userId = useParams().id;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [profileImg, setProfileImg] = useState(
     user.profileImg ? SERVER_URL + user.profileImg : noImage
@@ -39,11 +48,6 @@ export default function ProfileInfoUser({ user, mutualFriend }) {
     } else {
       return false;
     }
-  }
-  console.log("user", user);
-  console.log("userLogin", userLogin);
-  function findMutalFriend() {
-    findFrinedUser = user;
   }
 
   function findUserInRequestList() {
@@ -165,15 +169,34 @@ export default function ProfileInfoUser({ user, mutualFriend }) {
               justifyContent: "space-between",
             }}
           >
-            <Stack>
+            <Stack sx={{ alignItems:"flex-start" }}>
               <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
                 {user?.username &&
                   user.username[0].toUpperCase() + user?.username.slice(1)}
               </Typography>
-              <Typography sx={{ fontSize: 17 }}>
-                {/*  {user?.friends.length ? user.friends + "friends" : " "}
-        {user?.mutual ? ", " + user.mutual + "mutual" : ""} */}
+              <Typography>
+                {numOfFriend?.length > 0 ? numOfFriend.length + " friends" : ""}
+                {mutualFriend?.length > 0
+                  ? ", " + mutualFriend.length + " mutual"
+                  : ""}
               </Typography>
+              <AvatarGroup>
+                {mutualFriend.map((f) => {
+                  return (
+                    <Avatar
+                      key={f._id}
+                      alt={f.username}
+                      src={
+                        f.profileImg
+                          ? SERVER_URL + f.profileImg
+                          : f.username[0].toUpperCase()
+                      }
+                      onClick={() => navigate("/profile/" + f.id)}
+                      sx={{ cursor: "pointer" }}
+                    />
+                  );
+                })}
+              </AvatarGroup>
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 2 }}>
               {findUserInRequestList() ? (

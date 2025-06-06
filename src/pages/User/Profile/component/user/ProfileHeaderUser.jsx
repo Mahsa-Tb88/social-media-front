@@ -7,8 +7,7 @@ import Loading from "../../../../../components/Loading";
 import LoadingError from "../../../../../components/LoadingError";
 export default function ProfileHeaderUser({ user }) {
   const { isPending, data, error, refetch } = useGetMutualFriends(user._id);
-  
-
+  console.log("data", data);
   return (
     <Container>
       <Grid2 container>
@@ -39,7 +38,11 @@ export default function ProfileHeaderUser({ user }) {
       ) : error ? (
         <LoadingError handleAction={refetch} message={error.message} />
       ) : (
-        <ProfileInfoUser user={user} mutualFriend={data.data.body} />
+        <ProfileInfoUser
+          user={user}
+          mutualFriend={data.data.body.mutualFriends}
+          numOfFriend={data.data.body.numOfFriends}
+        />
       )}
     </Container>
   );

@@ -83,7 +83,7 @@ export default function ProfileInfoUserLogin() {
               justifyContent: "space-between",
             }}
           >
-            <Stack>
+            <Stack sx={{ alignItems: "flex-start" }}>
               <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
                 {userLogin.username}
               </Typography>

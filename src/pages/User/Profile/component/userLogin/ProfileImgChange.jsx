@@ -23,7 +23,6 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
   const user = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
 
-  const { register, setValue, handleSubmit } = useForm();
   const [isImageChanged, setIsIamgeChanged] = useState(false);
   const [selectedImage, setSelectedImage] = useState(
     user.profileImg ? SERVER_URL + user.profileImg : noImage
@@ -32,7 +31,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
   const uploadImgMutation = useUploadFile();
   const { data, mutate, error } = useProfileImgChange();
 
-  const imageField = { ...register("image") };
+  
 
   function handleSelectImage(e) {
     imageField.onChange(e);
@@ -53,7 +52,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
       });
     }
   }
-  async function onSubmit(data) {
+  async function submitPhoto(data) {
     if (data.image?.length && isImageChanged) {
       data.image = selectedImage.replace(SERVER_URL, "");
     }
@@ -63,10 +62,10 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
         dispatch(
           userActions.setProfile({
             ...user,
-            profileImg: selectedImage.replace(SERVER_URL, ""),
+            profileImg: selectedImage ?selectedImage.replace(SERVER_URL, "") :noImage,
           })
         );
-        setProfileImg(selectedImage);
+        setProfileImg(selectedImage ? selectedImage :noImage);
       },
       onError(error) {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -76,10 +75,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
 
   function handleDeleteImg() {
     const data = {};
-    setValue("image", "");
-    setProfileImg(noImage);
     setSelectedImage(noImage);
-    setIsIamgeChanged(false);
     data.id = user.id;
     data.image = "";
     mutate(data, {
@@ -90,6 +86,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
             profileImg: "",
           })
         );
+        setIsIamgeChanged(true);
       },
       onError(error) {},
     });
@@ -137,7 +134,6 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
               </Button>
               <TextField
                 type="file"
-                {...imageField}
                 id="imageFile"
                 accept="image/*"
                 style={{ display: "none" }}
@@ -146,7 +142,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
               <Button
                 variant="contained"
                 sx={{ fontSize: 17 }}
-                type="submit"
+               onClick={submitPhoto}
                 disabled={!isImageChanged}
               >
                 Apply

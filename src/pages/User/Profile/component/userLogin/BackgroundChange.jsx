@@ -20,36 +20,29 @@ import { userActions } from "../../../../../store/slices/userSlice";
 
 export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
   const user = useSelector((state) => state.user);
-  const [isImageChanged, setIsIamgeChanged] = useState(false);
   const [selectedImage, setSelectedImage] = useState(
     user.profile?.backgroundImg
       ? SERVER_URL + user.profile.backgroundImg
       : background
   );
+  const [isChangedPhoto,setIsChangedPhoto]=useState(false)
   const dispatch = useDispatch();
 
-  const {
-    register,
-    formState: { errors },
-    setValue,
-    handleSubmit,
-  } = useForm();
+
 
   const uploadImgMutation = useUploadFile();
   const { mutate, error, data } = useChangeBackgorund();
 
-  const imageField = { ...register("image") };
 
   function handleSelectImage(e) {
-    imageField.onChange(e);
     const file = e.target.files[0];
-
-    if (file) {
-      setIsIamgeChanged(true);
+    console.log("type",file)
+    if (file && file.type.includes("image")) {
       const form = new FormData();
       form.append("file", file);
       uploadImgMutation.mutate(form, {
         onSuccess(d) {
+          setIsChangedPhoto(true)
           setSelectedImage(SERVER_URL + d.data.body.url);
         },
         onError(error) {
@@ -62,10 +55,8 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
 
   function deleteBackImgHandler() {
     const data = {};
-    setValue("image", "");
-    setBackgroundImg(background);
-    setSelectedImage(background);
-    data.id = user.profile._id;
+    setSelectedImage("");
+    data.id = user.profile.id;
     data.image = "";
     mutate(data, {
       onSuccess(d) {
@@ -75,30 +66,34 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
             backgroundImg: background,
           })
         );
+         setBackgroundImg(background);
       },
       onError(error) {},
     });
   }
 
-  async function onSubmit(data) {
-    if (data.image?.length && isImageChanged) {
-      data.image = selectedImage.replace(SERVER_URL, "");
-    }
-    data.id = user.profile.id;
-    mutate(data, {
-      onSuccess(d) {
+  async function submitPhoto() {
+   const myData={}
+    myData.id = user.profile.id;
+    myData.image=selectedImage
+    console.log("myData backimg",myData)
+ 
+    mutate(myData, {
+      onSuccess(data) {
         dispatch(
           userActions.setProfile({
             ...user.profile,
-            backgroundImg: selectedImage.replace(SERVER_URL, ""),
+            backgroundImg: selectedImage ? selectedImage : background
           })
         );
-        setBackgroundImg(selectedImage);
+        setBackgroundImg(selectedImage ? selectedImage :background);
+        setIsChangedPhoto(false)
       },
       onError(error) {
         console.log("error", error);
       },
     });
+  
   }
 
   return (
@@ -115,7 +110,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
         )}
       </DialogTitle>
       <DialogContent>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Stack >
           <Stack
             sx={{
               flexDirection: "row",
@@ -126,7 +121,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
           >
             <Box
               component="img"
-              src={selectedImage}
+              src={selectedImage ? selectedImage :background}
               sx={{
                 height: "100px",
                 width: "180px",
@@ -137,7 +132,6 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
             <Stack spacing={3}>
               <TextField
                 type="file"
-                {...imageField}
                 id="imageFile"
                 accept="image/*"
                 style={{ display: "none" }}
@@ -152,7 +146,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
               >
                 Change Photo
               </Button>
-              <Button sx={{ fontSize: 17 }} type="submit">
+              <Button sx={{ fontSize: 17 }} onClick={submitPhoto} disabled={!isChangedPhoto}>
                 Apply
               </Button>
             </Stack>
@@ -161,6 +155,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
             sx={{ mt: 3, fontSize: 15, alignSelf: "left", width: "100px" }}
             variant="text"
             onClick={deleteBackImgHandler}
+            disabled={!selectedImage}
           >
             Delete
           </Button>

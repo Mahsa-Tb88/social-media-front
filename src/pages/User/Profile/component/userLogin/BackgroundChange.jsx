@@ -36,7 +36,6 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
 
   function handleSelectImage(e) {
     const file = e.target.files[0];
-    console.log("type",file)
     if (file && file.type.includes("image")) {
       const form = new FormData();
       form.append("file", file);
@@ -55,7 +54,6 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
 
   function deleteBackImgHandler() {
     const data = {};
-    setSelectedImage("");
     data.id = user.profile.id;
     data.image = "";
     mutate(data, {
@@ -66,7 +64,9 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
             backgroundImg: background,
           })
         );
-         setBackgroundImg(background);
+        setBackgroundImg(background);
+        setSelectedImage("");
+
       },
       onError(error) {},
     });
@@ -75,7 +75,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
   async function submitPhoto() {
    const myData={}
     myData.id = user.profile.id;
-    myData.image=selectedImage
+    myData.image=selectedImage 
     console.log("myData backimg",myData)
  
     mutate(myData, {

@@ -34,16 +34,15 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
   
 
   function handleSelectImage(e) {
-    imageField.onChange(e);
     const file = e.target.files[0];
-
-    if (file) {
-      setIsIamgeChanged(true);
+    if (file && file.type.includes("image")) {
       const form = new FormData();
       form.append("file", file);
       uploadImgMutation.mutate(form, {
         onSuccess(d) {
           setSelectedImage(SERVER_URL + d.data.body.url);
+      setIsIamgeChanged(true);
+
         },
         onError(error) {
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -52,20 +51,20 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
       });
     }
   }
-  async function submitPhoto(data) {
-    if (data.image?.length && isImageChanged) {
-      data.image = selectedImage.replace(SERVER_URL, "");
-    }
-    data.id = user.id;
-    mutate(data, {
+  async function submitPhoto() {
+    let myData={}
+    myData.id = user.id;
+    myData.image= selectedImage 
+    mutate(myData, {
       onSuccess(d) {
         dispatch(
           userActions.setProfile({
             ...user,
-            profileImg: selectedImage ?selectedImage.replace(SERVER_URL, "") :noImage,
+            profileImg: selectedImage ?selectedImage :noImage,
           })
         );
         setProfileImg(selectedImage ? selectedImage :noImage);
+        setIsIamgeChanged(false)
       },
       onError(error) {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -75,7 +74,6 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
 
   function handleDeleteImg() {
     const data = {};
-    setSelectedImage(noImage);
     data.id = user.id;
     data.image = "";
     mutate(data, {
@@ -83,10 +81,12 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
         dispatch(
           userActions.setProfile({
             ...user,
-            profileImg: "",
+            profileImg: noImage,
           })
         );
-        setIsIamgeChanged(true);
+           setSelectedImage("");
+           setProfileImg(noImage)
+
       },
       onError(error) {},
     });
@@ -104,7 +104,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
         )}
       </DialogTitle>
       <DialogContent>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Stack >
           <Stack
             sx={{
               flexDirection: "row",
@@ -115,7 +115,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
           >
             <Box
               component="img"
-              src={selectedImage}
+              src={selectedImage ?selectedImage : noImage}
               sx={{
                 height: "120px",
                 width: "120px",

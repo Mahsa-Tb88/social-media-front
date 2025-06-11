@@ -40,7 +40,7 @@ export default function UserLoginFriends() {
                     sx={{ fontSize: "18px", mt: 2, cursor: "pointer" }}
                     onClick={() => navigate("/profile/" + f.id)}
                   >
-                    {f.username}
+                    {f.username[0].toUpperCase()+f.username.slice(1)}
                   </Typography>
                 </Stack>
               </Grid2>

@@ -14,7 +14,7 @@ export default function ProfileHeaderUserLogin() {
   const [backgroundImg, setBackgroundImg] = useState(
     userLogin.backgroundImg ? SERVER_URL + userLogin.backgroundImg : backGround
   );
-
+console.log("profile lofin user",userLogin)
   return (
     <Container>
       <Grid2 container>

@@ -68,7 +68,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
         dispatch(
           userActions.setProfile({
             ...user.profile,
-            backgroundImg: background,
+            backgroundImg: "",
           })
         );
         setBackgroundImg(background);

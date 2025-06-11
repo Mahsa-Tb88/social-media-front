@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useTheme } from "@emotion/react";
 import {
   Button,
@@ -8,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 export default function LoginFirst({ open, onClose }) {
   const navigate = useNavigate();

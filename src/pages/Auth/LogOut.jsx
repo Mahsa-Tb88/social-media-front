@@ -32,7 +32,7 @@ export default function LogOut() {
     >
       <CircularProgress size={25} color="info" />
       <Typography variant="h5" sx={{ pl: 2 }}>
-        Signing out....
+        Signing out...
       </Typography>
     </Stack>
   );

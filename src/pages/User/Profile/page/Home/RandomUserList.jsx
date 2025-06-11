@@ -1,4 +1,7 @@
+/* eslint-disable no-undef */
 import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+
 import { useGetAllUser } from "../../../../../utils/queries";
 import { useEffect, useState } from "react";
 import Loading from "../../../../../components/Loading";
@@ -10,6 +13,7 @@ import {
   useRemoveRequestFriend,
 } from "../../../../../utils/mutation";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import LoginFirst from "./LoginFirst";
 import { userActions } from "../../../../../store/slices/userSlice";
 
@@ -90,8 +94,9 @@ export default function RandomUserList() {
         });
         setUsers(updatedUsers);
       },
-      onError(e) {
-        console.log("eeror is", e);
+      onError(error) {
+        console.log("error is", error.response.data.message);
+        toast.error(error.response.data.message);
       },
     });
   }
@@ -215,6 +220,7 @@ export default function RandomUserList() {
         "There is no user!"
       )}
       <LoginFirst open={openLoginUser} onClose={setOpenLoginUser} />
+      <Button onClick={()=>toast("yeees")}>click here</Button>
     </Stack>
   );
 }

@@ -1,7 +1,7 @@
 import { Container, Stack } from "@mui/material";
 import React from "react";
 import SinglePost from "../component/shared/post/SinglePost";
-import { useGetPost, useGetUserById } from "../../../../utils/queries";
+import { useGetPost } from "../../../../utils/queries";
 import { useParams } from "react-router-dom";
 import Loading from "../../../../components/Loading";
 import LoadingError from "../../../../components/LoadingError";

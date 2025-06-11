@@ -8,6 +8,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import React from "react";
 
 import { useFindUser } from "../../../../../utils/queries";
 import LoginFirst from "./LoginFirst";
@@ -22,7 +23,6 @@ export default function SearchBar() {
   const [search, setSearch] = useState(false);
   const [q, setQ] = useState("");
   const [openLoginUser, setOpenLoginUser] = useState(false);
-
   const theme = useSelector((state) => state.app.theme);
 
   const { isPending, isFetching, data, error, refetch } = useFindUser(q);

@@ -35,7 +35,7 @@ export default function Register() {
 
   function onSubmit(data) {
     mutate(data, {
-      onSuccess() {
+      onSuccess(d) {
         window.scrollTo({ top: 0, behavior: "instant" });
         cleaerSwitch.current = setTimeout(() => {
           navigate("/login");

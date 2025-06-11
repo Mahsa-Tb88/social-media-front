@@ -34,6 +34,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
   
 
   function handleSelectImage(e) {
+    setErrorMsg("")
     const file = e.target.files[0];
     if (file && file.type.includes("image")) {
       const form = new FormData();
@@ -75,6 +76,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
   }
 
   function handleDeleteImg() {
+    setErrorMsg("")
     const data = {};
     data.id = user.id;
     data.image = "";

@@ -159,21 +159,6 @@ export default function Login() {
                 Login
               </LoadingButton>
             </Stack>
-            <Divider sx={{ my: 4 }} />
-            <Stack>
-              <LoadingButton
-                loading={false}
-                loadingIndicator={
-                  <CircularProgress size={30} sx={{ color: "info.500" }} />
-                }
-                variant="outlined"
-                type="submit"
-                size="large"
-                sx={{ fontSize: 18 }}
-              >
-                Continue with Google
-              </LoadingButton>
-            </Stack>
           </Paper>
         </Grid2>
       </Grid2>

@@ -11,7 +11,6 @@ import {
 
 import { useState } from "react";
 import noImage from "../../../../../assets/images/user.png";
-import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useProfileImgChange,
@@ -27,6 +26,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
   const [selectedImage, setSelectedImage] = useState(
     user.profileImg ? SERVER_URL + user.profileImg : noImage
   );
+  const [errorMsg,setErrorMsg]=useState("")
 
   const uploadImgMutation = useUploadFile();
   const { data, mutate, error } = useProfileImgChange();
@@ -49,6 +49,8 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
           return;
         },
       });
+    }else{
+      setErrorMsg("Invalid image type")
     }
   }
   async function submitPhoto() {
@@ -88,14 +90,18 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
            setProfileImg(noImage)
 
       },
-      onError(error) {},
+      onError(error) {
+        setErrorMsg(error.message)
+      },
     });
   }
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        {data ? (
+        {errorMsg ?
+        (<Alert severity="error" >{errorMsg}</Alert>) :
+        data ? (
           <Alert severity="success">{data.data.message}</Alert>
         ) : error ? (
           <Alert severity="error">{error.message}</Alert>

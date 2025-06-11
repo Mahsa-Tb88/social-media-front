@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-undef */
 import {
   Avatar,
   Box,
@@ -7,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useSendChat } from "../../../../../utils/mutation";
@@ -59,7 +61,10 @@ export default function Chat() {
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <Container sx={{ py: 4 }}>
           <Stack sx={{ flexDirection: "row", alignItems: "center", mb: 2 }}>

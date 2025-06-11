@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   Avatar,
   Badge,
@@ -21,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useChangeToRead } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export default function MessagesUserss() {
   const id = useParams().id;
@@ -51,7 +53,6 @@ export default function MessagesUserss() {
     mutation.mutate(data, {
       onSuccess(d) {
         const updatedMsgs = userLogin.messages.filter((m) => m.id != msgId);
-        console.log("updatedddd", updatedMsgs);
         dispatch(
           userActions.setProfile({ ...userLogin, messages: updatedMsgs })
         );
@@ -60,8 +61,8 @@ export default function MessagesUserss() {
         });
         navigate("/chat/" + chatId);
       },
-      onError(e) {
-        console.log("error", e);
+      onError(error) {
+        toast.error(error.response.data.message);
       },
     });
   }
@@ -90,9 +91,9 @@ export default function MessagesUserss() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.data.body.map((msg) => {
+                {data.data.body.map((msg, index) => {
                   return (
-                    <TableRow>
+                    <TableRow key={index}>
                       <TableCell
                         onClick={() => navigate("/profile/" + msg.userId)}
                         sx={{

@@ -17,7 +17,10 @@ export default function SinglePostPage() {
       {isPending ? (
         <Loading message="Is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <Container maxWidth="md">
           <SinglePost

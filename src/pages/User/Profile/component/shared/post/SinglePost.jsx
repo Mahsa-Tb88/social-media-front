@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import FilterViewer from "../../userLogin/FilterViewer";
@@ -6,6 +8,7 @@ import MyIconButton from "../../../../../../components/Customized/MyIconButton";
 import noImage from "../../../../../../assets/images/user.png";
 import { useSelector } from "react-redux";
 import MenuPost from "../../userLogin/MenuPost";
+import React from "react";
 
 import GroupIcon from "@mui/icons-material/Group";
 import ChatIcon from "@mui/icons-material/Chat";

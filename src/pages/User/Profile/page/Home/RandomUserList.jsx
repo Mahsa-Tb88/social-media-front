@@ -134,8 +134,9 @@ export default function RandomUserList() {
         });
         setUsers(updatedUsers);
       },
-      onError(e) {
-        console.log("eeror is", e);
+      onError(error) {
+        console.log("eeror is", error);
+        toast.error(error.response.data.message);
       },
     });
   }
@@ -220,7 +221,6 @@ export default function RandomUserList() {
         "There is no user!"
       )}
       <LoginFirst open={openLoginUser} onClose={setOpenLoginUser} />
-      <Button onClick={()=>toast("yeees")}>click here</Button>
     </Stack>
   );
 }

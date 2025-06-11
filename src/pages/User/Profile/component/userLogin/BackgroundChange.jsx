@@ -25,6 +25,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
       ? SERVER_URL + user.profile.backgroundImg
       : background
   );
+  const [errorMsg,setErrorMsg]=useState("")
   const [isChangedPhoto,setIsChangedPhoto]=useState(false)
   const dispatch = useDispatch();
 
@@ -35,6 +36,7 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
 
 
   function handleSelectImage(e) {
+    setErrorMsg("")
     const file = e.target.files[0];
     if (file && file.type.includes("image")) {
       const form = new FormData();
@@ -45,14 +47,19 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
           setSelectedImage(SERVER_URL + d.data.body.url);
         },
         onError(error) {
+          setErrorMsg(error.message)
           window.scrollTo({ top: 0, behavior: "smooth" });
           return;
         },
       });
+    }else{
+      console.log("msg eroro")
+      setErrorMsg("Invalid file type")
     }
   }
 
   function deleteBackImgHandler() {
+    setErrorMsg("")
     const data = {};
     data.id = user.profile.id;
     data.image = "";
@@ -68,16 +75,17 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
         setSelectedImage("");
 
       },
-      onError(error) {},
+      onError(error) {
+        setErrorMsg(error.message)
+      },
     });
   }
 
   async function submitPhoto() {
    const myData={}
+   setErrorMsg("")
     myData.id = user.profile.id;
-    myData.image=selectedImage 
-    console.log("myData backimg",myData)
- 
+    myData.image=selectedImage  
     mutate(myData, {
       onSuccess(data) {
         dispatch(
@@ -99,13 +107,15 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle sx={{ textAlign: "center", my: 2 }}>
-        {data ? (
+        {errorMsg ? (
+          <Alert severity="error">{error ? error.message : errorMsg}</Alert> ):
+        data ? (
           <Alert severity="success" textAlign="center">
             {data.data.message}
           </Alert>
         ) : error ? (
-          <Alert severity="error">{error.message}</Alert>
-        ) : (
+          <Alert severity="error">{error.message }</Alert>
+        ) :  (
           <Alert severity="info">Update your background</Alert>
         )}
       </DialogTitle>

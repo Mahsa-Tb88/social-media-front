@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Avatar,
   Box,
@@ -43,6 +44,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useSearchPerson } from "../../../utils/queries";
 import noImage from "../../../assets/images/user.png";
+import { toast } from "react-toastify";
+import LoadingError, { LoadingButton } from "../../../components/LoadingError";
 
 export default function EditValueSubject({
   openEdit,
@@ -71,13 +74,15 @@ export default function EditValueSubject({
         id: user.id,
       };
       mutationOverview.mutate(data, {
-        onSuccess() {
+        onSuccess(d) {
           querryClient.invalidateQueries({
             queryKey: ["overview"],
           });
+          toast.success(d.data.message);
         },
         onError(error) {
-          console.log(error);
+          console.log("error", error);
+          toast.error(error.response.data.message);
         },
       });
     }
@@ -90,13 +95,14 @@ export default function EditValueSubject({
         id: user.id,
       };
       mutationContactBaseInfo.mutate(data, {
-        onSuccess() {
+        onSuccess(d) {
           querryClient.invalidateQueries({
             queryKey: ["contactBaseInfo"],
           });
+          toast.success(d.data.message);
         },
         onError(error) {
-          console.log("error is ", error);
+          toast.error(error.response.data.message);
         },
       });
     }
@@ -114,9 +120,10 @@ export default function EditValueSubject({
         mutationAddPlace.mutate(data, {
           onSuccess(d) {
             querryClient.invalidateQueries({ queryKey: ["placeLived"] });
+            toast.success(d.data.message);
           },
           onError(error) {
-            console.log(error);
+            toast.error(error.response.data.message);
           },
         });
       } else {
@@ -124,9 +131,10 @@ export default function EditValueSubject({
         mutationEditPlace.mutate(data, {
           onSuccess(d) {
             querryClient.invalidateQueries({ queryKey: ["placeLived"] });
+            toast.success(d.data.message);
           },
           onError(error) {
-            console.log(error);
+            toast.error(error.response.data.message);
           },
         });
       }
@@ -235,9 +243,10 @@ function WorkEdit({ value, onCloseEdit, type, id }) {
           querryClient.invalidateQueries({
             queryKey: ["work"],
           });
+          toast.success(d.data.message);
         },
         onError(error) {
-          console.log("error isss", error);
+          toast.error(error.response.data.message);
         },
       });
     } else {
@@ -254,9 +263,10 @@ function WorkEdit({ value, onCloseEdit, type, id }) {
       mutationEditWork.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["work"] });
+          toast.success(d.data.message);
         },
         onError(error) {
-          console.log("error is", error);
+          toast.error(error.response.data.message);
         },
       });
     }
@@ -579,7 +589,7 @@ function FamilyMember({ value, type, onCloseEdit }) {
   const [user, setUser] = useState(value ? value : "");
   const userId = useParams().id;
 
-  const { data, error } = useSearchPerson(user);
+  const { data, error, refetch } = useSearchPerson(user);
   const userfounded = data?.data.body || [];
 
   useEffect(() => {
@@ -613,9 +623,10 @@ function FamilyMember({ value, type, onCloseEdit }) {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["familyRel"] });
           onCloseEdit();
+          toast.success(d.data.message);
         },
         onError(error) {
-          console.log("error is", error);
+          toast.error(error.response.data.message);
         },
       });
     } else {
@@ -628,9 +639,10 @@ function FamilyMember({ value, type, onCloseEdit }) {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["familyRel"] });
           onCloseEdit();
+          toast.success(d.data.message);
         },
         onError(error) {
-          console.log("error is", error);
+          toast.error(error.response.data.message);
         },
       });
     }
@@ -647,8 +659,14 @@ function FamilyMember({ value, type, onCloseEdit }) {
       />
       {search && (
         <Stack>
-          {userfounded.map((l) => (
-            <List>
+          {error && (
+            <LoadingError
+              handleAction={refetch}
+              message={error.response.data.message}
+            />
+          )}
+          {userfounded.map((l, index) => (
+            <List key={index}>
               <ListItem
                 sx={{
                   cursor: "pointer",
@@ -738,14 +756,15 @@ function Pronounce({ onCloseEdit }) {
       id: userId,
     };
     mutationOverview.mutate(data, {
-      onSuccess() {
+      onSuccess(d) {
         querryClient.invalidateQueries({
           queryKey: ["overview"],
         });
         onCloseEdit();
+        toast.success(d.data.message);
       },
       onError(error) {
-        console.log(error);
+        toast.error(error.response.data.message);
       },
     });
   }
@@ -772,10 +791,9 @@ function Pronounce({ onCloseEdit }) {
   );
 }
 
-function Intro({ value, onCloseEdit, type, saveChangeHandler }) {
+function Intro({ value, onCloseEdit, type }) {
   const theme = useSelector((state) => state.app.theme);
   const userId = useParams().id;
-  console.log("valueee bio", value);
   const [bio, setBio] = useState(type == "edit" ? value.value : "");
 
   const mutationOverview = useEditOverview();
@@ -787,14 +805,15 @@ function Intro({ value, onCloseEdit, type, saveChangeHandler }) {
       id: userId,
     };
     mutationOverview.mutate(data, {
-      onSuccess() {
+      onSuccess(d) {
         querryClient.invalidateQueries({
           queryKey: ["overview"],
         });
         onCloseEdit();
+        toast.success(d.data.message);
       },
       onError(error) {
-        console.log(error);
+        toast.error(error.response.data.message);
       },
     });
   }
@@ -807,10 +826,11 @@ function Intro({ value, onCloseEdit, type, saveChangeHandler }) {
         querryClient.invalidateQueries({
           queryKey: ["overview"],
         });
+        toast.success(d.data.message);
         onCloseEdit();
       },
-      onError(e) {
-        console.log(e);
+      onError(error) {
+        toast.error(error.response.data.message);
       },
     });
   }

@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
 import { Box, Stack, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
@@ -23,7 +25,10 @@ export default function FamilyAndRel() {
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <Stack>
           <Stack sx={{ mb: 4 }} spacing={1}>

@@ -25,7 +25,10 @@ export default function PlaceLived() {
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <Stack>
           <Typography component="h3" variant="h6" sx={{ mb: 2 }}>

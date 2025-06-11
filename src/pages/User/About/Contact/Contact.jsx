@@ -1,4 +1,5 @@
-import { Box, Button, ListItemAvatar, Stack, Typography } from "@mui/material";
+/* eslint-disable react/prop-types */
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
 import ShowIcon from "../ShowIcon";
@@ -7,7 +8,6 @@ import Loading from "../../../../components/Loading";
 import LoadingError from "../../../../components/LoadingError";
 import { useGetContactBaseInfo } from "../../../../utils/queries";
 import EditValueSubject from "../EditVelueSubject";
-import { useSelector } from "react-redux";
 
 export default function Contact() {
   const id = useParams().id;
@@ -16,13 +16,16 @@ export default function Contact() {
   const myData = data?.data.body[0] || {};
   const isFriend = data?.data.body[1] || false;
   const isOwner = data?.data.body[2] || false;
-
+  
   return (
     <Stack>
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <Stack spacing={5}>
           <ContactInfo data={myData} isFriend={isFriend} isOwner={isOwner} />

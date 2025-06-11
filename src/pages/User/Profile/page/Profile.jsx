@@ -27,7 +27,7 @@ export default function Profile() {
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError handleAction={refetch} message={error.response.data.message} />
       ) : (
         <Stack>
           {user.deleted ? (

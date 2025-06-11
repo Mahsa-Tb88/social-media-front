@@ -49,7 +49,10 @@ export default function Overview() {
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <Stack sx={{ gap: 4 }}>
           {!Object.keys(overview).length && !isFriend && !isOwner ? (

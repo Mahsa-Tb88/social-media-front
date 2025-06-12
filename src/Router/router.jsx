@@ -20,7 +20,7 @@ import SinglePostPage from "../pages/User/Profile/page/SinglePostPage";
 import Post from "../pages/User/Profile/component/shared/post/Post";
 import MessagesUsers from "../pages/User/Profile/page/message/MessagesUsers";
 import Chat from "../pages/User/Profile/page/message/Chat";
-import EmojiChat from "../pages/User/Profile/component/userLogin/EmojiChat";
+// import EmojiChat from "../pages/User/Profile/component/userLogin/EmojiChat";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
           { path: "messages/:id", element: <MessagesUsers /> },
           { path: "chat/:id", element: <Chat /> },
           { path: "edit/user/:id", element: <EditUser /> },
-          { path: "emo", element: <EmojiChat /> },
+          // { path: "emo", element: <EmojiChat /> },
         ],
       },
     ],

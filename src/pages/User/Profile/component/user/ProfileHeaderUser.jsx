@@ -7,9 +7,14 @@ import ProfileInfoUser from "./ProfileInfoUser";
 import { useGetMutualFriends } from "../../../../../utils/queries";
 import Loading from "../../../../../components/Loading";
 import LoadingError from "../../../../../components/LoadingError";
+
 export default function ProfileHeaderUser({ user }) {
   const { isPending, data, error, refetch } = useGetMutualFriends(user._id);
-  console.log("data", data);
+  console.log("user", user);
+  if (error) {
+    console.log("err", error);
+  }
+
   return (
     <Container>
       <Grid2 container>

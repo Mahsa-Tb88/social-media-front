@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   Avatar,
   AvatarGroup,
@@ -7,6 +8,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
@@ -19,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 export default function ProfileInfoUserLogin() {
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
-  console.log("userlogin", userLogin);
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(

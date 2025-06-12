@@ -1,4 +1,6 @@
+/* eslint-disable no-undef */
 import { Box, Container, Grid2, Stack } from "@mui/material";
+import React from "react";
 import { useState } from "react";
 import BackgroundChange from "./BackgroundChange";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
@@ -14,7 +16,7 @@ export default function ProfileHeaderUserLogin() {
   const [backgroundImg, setBackgroundImg] = useState(
     userLogin.backgroundImg ? SERVER_URL + userLogin.backgroundImg : backGround
   );
-console.log("profile lofin user",userLogin)
+
   return (
     <Container>
       <Grid2 container>

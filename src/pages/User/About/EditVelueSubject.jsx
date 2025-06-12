@@ -45,7 +45,7 @@ import { useParams } from "react-router-dom";
 import { useSearchPerson } from "../../../utils/queries";
 import noImage from "../../../assets/images/user.png";
 import { toast } from "react-toastify";
-import LoadingError, { LoadingButton } from "../../../components/LoadingError";
+import LoadingError from "../../../components/LoadingError";
 
 export default function EditValueSubject({
   openEdit,

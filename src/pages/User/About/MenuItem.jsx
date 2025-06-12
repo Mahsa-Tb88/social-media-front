@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Delete, Edit } from "@mui/icons-material";
 import {
   Divider,
@@ -11,7 +12,6 @@ import {
 
 import React, { useState } from "react";
 import EditValueSubject from "./EditVelueSubject";
-import { useSelector } from "react-redux";
 import {
   useDeleteContactBaseInfo,
   useDeleteEducation,
@@ -23,6 +23,7 @@ import {
 } from "../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 export default function MenuItem({
   open,
   anchorEl,
@@ -51,9 +52,12 @@ export default function MenuItem({
           querryClient.invalidateQueries({
             queryKey: ["overview"],
           });
+          console.log("d", d);
+          toast.success(d.data.message);
         },
         onError(e) {
           console.log(e);
+          toast.error(e.response.data.message);
         },
       });
     }
@@ -67,9 +71,11 @@ export default function MenuItem({
           querryClient.invalidateQueries({
             queryKey: ["contactBaseInfo"],
           });
+          toast.success(d.data.message);
         },
         onError(e) {
           console.log(e);
+          toast.error(e.response.data.message);
         },
       });
     }
@@ -79,21 +85,22 @@ export default function MenuItem({
       mutationWork.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["work"] });
+          toast.success(d.data.message);
         },
-        onError(error) {
-          console.log("error is", error);
+        onError(e) {
+          toast.error(e.response.data.message);
         },
       });
     }
     if (title == "Education") {
       const data = { id, userId };
-
       mutationEducation.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["education"] });
+          toast.success(d.data.message);
         },
-        onError(error) {
-          console.log("error is", error);
+        onError(e) {
+          toast.error(e.response.data.message);
         },
       });
     }
@@ -102,21 +109,22 @@ export default function MenuItem({
       mutationRel.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["familyRel"] });
+          toast.success(d.data.message);
         },
-        onError(error) {
-          console.log("error", error);
+        onError(e) {
+          toast.error(e.response.data.message);
         },
       });
     }
     if (title == "Family") {
       const data = { id: userId, userDeleteId: id };
-      console.log("familymembr", data);
       mutationFamily.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["familyRel"] });
+          toast.success(d.data.message);
         },
-        onError(error) {
-          console.log("error", error);
+        onError(e) {
+          toast.error(e.response.data.message);
         },
       });
     }
@@ -129,9 +137,10 @@ export default function MenuItem({
       mutationPlace.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({ queryKey: ["placeLived"] });
+          toast.success(d.data.message);
         },
-        onError(error) {
-          console.log(error);
+        onError(e) {
+          toast.error(e.response.data.message);
         },
       });
     }

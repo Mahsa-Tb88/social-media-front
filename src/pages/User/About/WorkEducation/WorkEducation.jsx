@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ItemAbout from "../ItemAbout";
@@ -8,7 +9,6 @@ import { useParams } from "react-router-dom";
 import LoadingError from "../../../../components/LoadingError";
 import Loading from "../../../../components/Loading";
 import { useGetWork, useGetEducation } from "../../../../utils/queries";
-import { useSelector } from "react-redux";
 
 export default function WorkEducation() {
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Stack, Tooltip } from "@mui/material";
 import React from "react";
 import PublicIcon from "@mui/icons-material/Public";

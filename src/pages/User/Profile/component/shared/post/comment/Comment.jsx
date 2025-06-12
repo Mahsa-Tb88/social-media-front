@@ -1,9 +1,12 @@
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
 import { Box, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import TextComment from "./TextComment";
 import noImage from "../../../../../../../assets/images/user.png";
 import DeleteCommnet from "./DeleteCommnet";
+import React from "react";
 
 export default function Comment({ c, setPostComments, postComments, postId }) {
   const id = useParams().id;
@@ -21,8 +24,8 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
             ? "grey.700"
             : "grey.200"
           : theme === "dark"
-          ? "grey.800"
-          : "grey.300",
+            ? "grey.800"
+            : "grey.300",
         p: 1,
         m: 1,
         borderRadius: "5px",

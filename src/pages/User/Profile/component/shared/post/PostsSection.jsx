@@ -1,14 +1,13 @@
+/* eslint-disable react/prop-types */
 import {
-  Alert,
   Box,
   Button,
   Container,
-  Divider,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import noImage from "../../../../../../assets/images/user.png";
 import PostProfile from "../../userLogin/PostProfile";
@@ -33,7 +32,6 @@ export default function PostsSection({ profile }) {
     }
   }
 
-  
   return (
     <Container>
       {hasPermission() && (
@@ -71,7 +69,10 @@ export default function PostsSection({ profile }) {
             {isPending ? (
               <Loading message="Loading Post..." />
             ) : error ? (
-              <LoadingError message={error.message} handleAction={refetch} />
+              <LoadingError
+                message={error.response.data.message}
+                handleAction={refetch}
+              />
             ) : data?.data.body.sort(
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
               ) ? (

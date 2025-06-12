@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Button,
   Dialog,
@@ -13,6 +14,7 @@ import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
 import { useEditIntro } from "../../../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export default function EditIntro({ overview, open, handleClose }) {
   const [pronounce, setPronounce] = useState("");
@@ -66,12 +68,12 @@ export default function EditIntro({ overview, open, handleClose }) {
           : {},
     };
     introMutation.mutate(data, {
-      onSuccess(d) {
+      onSuccess() {
         querryClient.invalidateQueries({ queryKey: ["overview"] });
         handleClose();
       },
       onError(e) {
-        console.log(e);
+        toast.error(e.response.data.message);
       },
     });
   }

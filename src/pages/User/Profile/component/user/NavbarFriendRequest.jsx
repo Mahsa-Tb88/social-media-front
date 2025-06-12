@@ -1,4 +1,6 @@
-import { Divider, Menu, MenuItem, Stack } from "@mui/material";
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable react/prop-types */
+import { Divider, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,6 +8,7 @@ import {
   useRemoveRequestFriend,
 } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
+import { toast } from "react-toastify";
 
 export default function NavbarFriendRequest({
   open,
@@ -15,7 +18,6 @@ export default function NavbarFriendRequest({
 }) {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.user.profile);
-
 
   const confirmMutation = useConfirmFriend();
   function confirmHandler() {
@@ -27,7 +29,6 @@ export default function NavbarFriendRequest({
     };
     confirmMutation.mutate(data, {
       onSuccess(d) {
-        console.log("success");
         const updatedListFriends = [
           ...userLogin?.friends.listFriend,
           {
@@ -52,6 +53,7 @@ export default function NavbarFriendRequest({
       },
       onError(e) {
         console.log("error is ", e);
+        toast.error(e.response.data.message);
       },
     });
   }
@@ -78,6 +80,7 @@ export default function NavbarFriendRequest({
       },
       onError(e) {
         console.log("eeror is", e);
+        toast.error(e.response.data.message);
       },
     });
   }

@@ -1,4 +1,6 @@
+/* eslint-disable react/prop-types */
 import { Button, Stack, Typography } from "@mui/material";
+import React from "react";
 import { useState } from "react";
 import CommentLike from "../like/CommentLike";
 import InputComment from "./InputComment";
@@ -21,9 +23,9 @@ export default function TextComment({ c, setPostComments, postComments }) {
       return false;
     }
   }
-  console.log("c is", c);
+
   return (
-    <Stack sx={{}}>
+    <Stack>
       {c.text.length > 200 ? (
         <Typography sx={{ textAlign: "justify" }}>
           {!showMore ? c.text.slice(0, 200) + " ..." : c.text}
@@ -71,9 +73,9 @@ export default function TextComment({ c, setPostComments, postComments }) {
 
       {!c?.replyTo &&
         c?.replies.length > 0 &&
-        c.replies.map((r, index) => {
+        c.replies.map((r) => {
           return (
-            <Stack sx={{}} key={c._id}>
+            <Stack key={c._id}>
               <Comment
                 c={r}
                 setPostComments={setPostComments}

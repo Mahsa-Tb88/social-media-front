@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
 import { Box, Stack } from "@mui/material";
+import React from "react";
 import { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { redirectIfNotLoggedIn } from "../../../../../../../utils/customeFunction";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import NumberOfComLike from "./NumberOfComLike";
 import { useLikeComment } from "../../../../../../../utils/mutation";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function CommentLike({ comment, userLike }) {
   const [isLike, setIsLike] = useState(userLike);
@@ -15,7 +16,6 @@ export default function CommentLike({ comment, userLike }) {
   const mutation = useLikeComment();
 
   function likeHandler() {
-    // if (redirectIfNotLoggedIn(userLogin, navigate)) return;
     const data = {
       userId: userLogin.id,
       postId: comment.postId,
@@ -32,7 +32,7 @@ export default function CommentLike({ comment, userLike }) {
         }
       },
       onError(e) {
-        console.log("eeror is ", e);
+        toast.error(e.response.data.message);
       },
     });
   }

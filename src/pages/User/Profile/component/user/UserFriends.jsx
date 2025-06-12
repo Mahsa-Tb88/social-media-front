@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { Box, Grid2, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useGetFriends } from "../../../../../utils/queries";
@@ -5,7 +6,6 @@ import Loading from "../../../../../components/Loading";
 import LoadingError from "../../../../../components/LoadingError";
 import { useNavigate, useParams } from "react-router-dom";
 import noImage from "../../../../../assets/images/user.png";
-import { useSelector } from "react-redux";
 
 export default function UserFriends() {
   const [friends, setFriends] = useState([]);
@@ -44,9 +44,9 @@ export default function UserFriends() {
         </Typography>
       ) : (
         <Grid2 container spacing={3}>
-          {friends.map((f) => {
+          {friends.map((f, index) => {
             return (
-              <Grid2 size={3} sx={{ textAlign: "center" }}>
+              <Grid2 size={3} sx={{ textAlign: "center" }} key={index}>
                 <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
                   <Box
                     component={"img"}

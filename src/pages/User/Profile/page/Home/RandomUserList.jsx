@@ -148,7 +148,10 @@ export default function RandomUserList() {
         </Box>
       ) : error ? (
         <Box>
-          <LoadingError handleAction={refetch} message={error.message} />
+          <LoadingError
+            handleAction={refetch}
+            message={error.response.data.message}
+          />
         </Box>
       ) : users.length ? (
         users.map((user) => {

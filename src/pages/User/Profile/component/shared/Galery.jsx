@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   Box,
   Container,
@@ -26,7 +27,10 @@ export default function Galery() {
       {isPending ? (
         <Loading message="Is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <Container maxWidth="md">
           <Paper sx={{ p: 2 }}>

@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import { useQueryClient } from "@tanstack/react-query";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLeaveComment } from "../../../../../../../utils/mutation";
 import { useGetSearchUser } from "../../../../../../../utils/queries";
 import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
@@ -13,6 +14,7 @@ import EmojiPicker from "emoji-picker-react";
 import Loading from "../../../../../../../components/Loading";
 import LoadingError from "../../../../../../../components/LoadingError";
 import { Close } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 export default function InputComment({ postId, replyTo, setReply }) {
   const theme = useSelector((state) => state.app.theme);
@@ -53,9 +55,11 @@ export default function InputComment({ postId, replyTo, setReply }) {
         setQ("");
         setMentionUserId(false);
         setReply(false);
+        toast.success(d.data.message);
       },
       onError(e) {
         console.log("error", e);
+        toast.error(d.response.data.message);
       },
     });
   }

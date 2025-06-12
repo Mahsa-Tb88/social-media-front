@@ -15,10 +15,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEditUser } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function EditUser() {
   const user = useSelector((state) => state.user.profile);
@@ -37,15 +39,16 @@ export default function EditUser() {
   function onSubmit(data) {
     data.id = user.id;
     mutate(data, {
-      onSuccess(d) {
+      onSuccess() {
         function goToLogin() {
           dispatch(userActions.setLogout());
           navigate("/login");
         }
         setTimeout(() => goToLogin(), 2000);
       },
-      onError(error) {
-        console.log("error", error);
+      onError(e) {
+        console.log("error", e);
+        toast.error(e.response.data.message);
       },
     });
   }

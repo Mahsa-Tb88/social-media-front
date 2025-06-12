@@ -1,4 +1,4 @@
-import { Alert, Box, Stack, Typography } from "@mui/material";
+import { Alert, Box, Stack } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useGetPublicPosts } from "../../../../../utils/queries";
@@ -22,7 +22,10 @@ export default function Feed() {
           <Loading message="Is Loading" />
         </Box>
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : data.data.body.length ? (
         data.data.body.map((post) => {
           return (

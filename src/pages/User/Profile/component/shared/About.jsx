@@ -1,5 +1,4 @@
 import {
-  Button,
   Container,
   Divider,
   Grid2,
@@ -7,16 +6,13 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  MenuItem,
-  MenuList,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
+
 import React from "react";
 import { useSelector } from "react-redux";
-// import Loading from "../../../../../components/Loading";
-// import LoadingError from "../../../../../components/LoadingError";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 
 export default function About() {
@@ -25,9 +21,8 @@ export default function About() {
   return (
     <Stack sx={{ py: 4, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>
       <Container maxWidth="md">
-        {/* isPending ? <Loading message="Is loading..."/> :error ? <LoadingError handleAction={refetch} message={error.message}/> */}
         <Paper sx={{ p: 4 }}>
-          <Typography sx={{ mb: 3}} variant="h5">
+          <Typography sx={{ mb: 3 }} variant="h5">
             About
           </Typography>
           <Grid2 container spacing={5}>

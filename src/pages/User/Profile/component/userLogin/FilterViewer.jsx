@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Dialog,
   DialogTitle,
@@ -8,11 +9,10 @@ import {
   Box,
   Radio,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import MyIconButton from "../../../../../components/Customized/MyIconButton";
 import { Close, Public } from "@mui/icons-material";
 import PeopleIcon from "@mui/icons-material/People";
-import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import LockIcon from "@mui/icons-material/Lock";
 import {
   useFilterEducationViewer,
@@ -26,6 +26,7 @@ import {
 } from "../../../../../utils/mutation";
 import { useLocation, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export default function FilterViewer({
   open,
@@ -62,6 +63,7 @@ export default function FilterViewer({
         },
         onError(e) {
           console.log("error filter viewer", e);
+          toast.error(e.response.data.message);
         },
       });
     } else if (title == "contactBaseInfo") {
@@ -72,6 +74,7 @@ export default function FilterViewer({
         },
         onError(e) {
           console.log("error filter viewer", e);
+          toast.error(e.response.data.message);
         },
       });
     } else if (title == "Work") {
@@ -83,6 +86,7 @@ export default function FilterViewer({
         },
         onError(e) {
           console.log("error filter viewer", e);
+          toast.error(e.response.data.message);
         },
       });
     } else if (title == "Education") {
@@ -94,6 +98,7 @@ export default function FilterViewer({
         },
         onError(e) {
           console.log("error filter viewer", e);
+          toast.error(e.response.data.message);
         },
       });
     } else if (title == "Family") {
@@ -105,6 +110,7 @@ export default function FilterViewer({
         },
         onError(e) {
           console.log("error filter viewer", e);
+          toast.error(e.response.data.message);
         },
       });
     } else if (title == "Relationship") {
@@ -116,6 +122,7 @@ export default function FilterViewer({
         },
         onError(e) {
           console.log("error filter viewer", e);
+          toast.error(e.response.data.message);
         },
       });
     } else if (title == "post") {
@@ -127,6 +134,7 @@ export default function FilterViewer({
         },
         onError(e) {
           console.log("viewer post error is", e);
+          toast.error(e.response.data.message);
         },
       });
     } else {
@@ -137,7 +145,8 @@ export default function FilterViewer({
           queryClient.invalidateQueries({ queryKey: ["placeLived"] });
         },
         onError(e) {
-          console.log("error is", error);
+          console.log("error is", e);
+          toast.error(e.response.data.message);
         },
       });
     }

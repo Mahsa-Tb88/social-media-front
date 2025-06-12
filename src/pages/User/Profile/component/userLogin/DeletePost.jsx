@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import React from "react";
 import { useDeletePost } from "../../../../../utils/mutation";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export default function DeletePost({ open, onClose, id }) {
   const mutateDeletePost = useDeletePost();
@@ -9,12 +11,14 @@ export default function DeletePost({ open, onClose, id }) {
 
   function deletePostHandler(id) {
     mutateDeletePost.mutate(id, {
-      onSuccess(d) {
+      onSuccess() {
         onClose();
         queryClient.invalidateQueries({ queryKey: ["posts"] });
       },
       onError(e) {
         console.log("delete post error is", e);
+        toast.error(e.response.data.message);
+
       },
     });
   }

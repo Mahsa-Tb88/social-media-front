@@ -155,7 +155,10 @@ export default function SinglePost({ post, profile }) {
           {isPending ? (
             <Loading message="Is loading..." />
           ) : error ? (
-            <LoadingError handleAction={refetch} message={error.message} />
+            <LoadingError
+              handleAction={refetch}
+              message={error.response.data.message}
+            />
           ) : (
             <CommentList
               postComments={postComments}

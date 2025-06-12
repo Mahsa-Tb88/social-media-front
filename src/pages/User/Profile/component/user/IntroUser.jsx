@@ -1,7 +1,7 @@
+/* eslint-disable react/prop-types */
 import { Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import ShowIcon from "../../../About/ShowIcon";
-import { useSelector } from "react-redux";
 
 export default function IntroUser({ data }) {
   const intro = ["Pronounce", "School", "Location", "Hometown", "Status"];
@@ -35,9 +35,9 @@ export default function IntroUser({ data }) {
       ) : !keys.length ? (
         "Nothing is added yet!"
       ) : (
-        intro.map((item) => {
+        intro.map((item, index) => {
           return (
-            <Stack>
+            <Stack key={index}>
               {keys.length && data.overview[item]?.value ? (
                 <Stack
                   sx={{ flexDirection: "row", alignItems: "center", mb: 2 }}

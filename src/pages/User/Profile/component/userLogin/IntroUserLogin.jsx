@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import ShowIcon from "../../../About/ShowIcon";

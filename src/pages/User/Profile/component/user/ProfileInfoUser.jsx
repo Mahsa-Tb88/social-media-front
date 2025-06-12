@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
 import {
   Avatar,
   AvatarGroup,
@@ -91,6 +94,7 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
       },
       onError(e) {
         console.log("eeror is", e);
+        toast.error(e.response.data.message);
       },
     });
   }
@@ -115,7 +119,8 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
         );
       },
       onError(e) {
-        console.log("eeror is", e);
+        console.log("error is", e);
+        toast.error(e.response.data.message);
       },
     });
   }

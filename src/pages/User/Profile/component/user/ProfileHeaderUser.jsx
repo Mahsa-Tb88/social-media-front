@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
+import React from "react";
 import backGround from "../../../../../assets/images/back.jpg";
 import { Box, Container, Grid2, Stack } from "@mui/material";
 import ProfileInfoUser from "./ProfileInfoUser";
@@ -34,9 +36,12 @@ export default function ProfileHeaderUser({ user }) {
         </Grid2>
       </Grid2>
       {isPending ? (
-        <Loading message="is loading..." />
+        <Loading message="Is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <ProfileInfoUser
           user={user}

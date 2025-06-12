@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Stack } from "@mui/material";
 import React, { useRef, useState } from "react";
 import MenuUserLike from "../../MenuUserLike";

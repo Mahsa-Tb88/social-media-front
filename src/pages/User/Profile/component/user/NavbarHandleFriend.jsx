@@ -1,8 +1,10 @@
-import { Divider, Menu, MenuItem, Stack } from "@mui/material";
+/* eslint-disable react/prop-types */
+import { Divider, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRemoveFriend } from "../../../../../utils/mutation";
 import { userActions } from "../../../../../store/slices/userSlice";
+import { toast } from "react-toastify";
 
 export default function NavbarHandleFriend({
   open,
@@ -31,9 +33,11 @@ export default function NavbarHandleFriend({
             friends: { ...userLogin.friends, listFriend: updatedListFriends },
           })
         );
+        toast.success(d.data.message);
       },
       onError(e) {
         console.log("eeror is", e);
+        toast.error(e.response.data.message);
       },
     });
   }

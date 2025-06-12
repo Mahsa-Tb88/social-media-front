@@ -47,7 +47,10 @@ export default function Post() {
         {isPending ? (
           <Loading message="Is loading..." />
         ) : error ? (
-          <LoadingError handleAction={refetch} message={error.message} />
+          <LoadingError
+            handleAction={refetch}
+            message={error.response.data.message}
+          />
         ) : (
           <Grid2 container spacing={2}>
             <Grid2 size={{ xs: 12, lg: 4 }}>

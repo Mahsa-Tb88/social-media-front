@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Delete, Edit } from "@mui/icons-material";
 import {
   List,

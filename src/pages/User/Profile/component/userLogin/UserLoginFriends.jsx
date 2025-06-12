@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { Box, Grid2, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -26,7 +27,7 @@ export default function UserLoginFriends() {
         <Grid2 container spacing={3}>
           {listFriend.map((f) => {
             return (
-              <Grid2 size={3} sx={{ textAlign: "center" }}>
+              <Grid2 size={3} sx={{ textAlign: "center" }} key={f.id}>
                 <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
                   <Box
                     component={"img"}
@@ -40,7 +41,7 @@ export default function UserLoginFriends() {
                     sx={{ fontSize: "18px", mt: 2, cursor: "pointer" }}
                     onClick={() => navigate("/profile/" + f.id)}
                   >
-                    {f.username[0].toUpperCase()+f.username.slice(1)}
+                    {f.username[0].toUpperCase() + f.username.slice(1)}
                   </Typography>
                 </Stack>
               </Grid2>

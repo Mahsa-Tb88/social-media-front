@@ -48,7 +48,10 @@ export default function SearchBar() {
           </Box>
         ) : error ? (
           <Box>
-            <LoadingError handleAction={refetch} message={error.message} />
+            <LoadingError
+              handleAction={refetch}
+              message={error.response.data.message}
+            />
           </Box>
         ) : data?.data?.body?.length ? (
           <Stack>

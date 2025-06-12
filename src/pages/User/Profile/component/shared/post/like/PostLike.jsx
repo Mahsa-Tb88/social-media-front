@@ -8,6 +8,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import NumberOfLike from "./NumberOfLike";
 import LoginFirst from "../../../../page/Home/LoginFirst";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function postLike({ post }) {
   const userLogin = useSelector((state) => state.user.profile);
@@ -48,6 +49,7 @@ export default function postLike({ post }) {
       },
       onError(e) {
         console.log("error is", e);
+        toast.error(e.response.data.message)
       },
     });
   }

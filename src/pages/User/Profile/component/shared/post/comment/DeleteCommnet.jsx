@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { useDeleteComment } from "../../../../../../../utils/mutation";
 import { Stack } from "@mui/material";
 import MyIconButton from "../../../../../../../components/Customized/MyIconButton";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function DeleteCommnet({
   setPostComments,
@@ -36,9 +38,11 @@ export default function DeleteCommnet({
           const comments = postComments.filter((c) => c._id != comment._id);
           setPostComments(comments);
         }
+        toast.success(d.data.message);
       },
       onError(e) {
         console.log("error is ", e);
+        toast.error(e.response.data.message);
       },
     });
   }

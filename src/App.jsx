@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
+  createTheme,
   CssBaseline,
-  Stack,
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
@@ -28,6 +28,18 @@ export default function App() {
       dispatch(appActions.setTheme("dark"));
     }
   }, []);
+
+  
+  const lightMode = createTheme({
+    palette: {
+      mode: "light",
+      backgroundColor: {
+        default: "#f5f5f5",
+        paper: "#ffffff",
+        section: "#e3f2fd",
+      },
+    },
+  });
 
   return (
     <ThemeProvider theme={theme == "dark" ? darkTheme : lightTheme}>

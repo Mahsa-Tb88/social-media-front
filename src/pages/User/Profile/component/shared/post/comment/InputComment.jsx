@@ -17,7 +17,6 @@ import { Close } from "@mui/icons-material";
 import { toast } from "react-toastify";
 
 export default function InputComment({ postId, replyTo, setReply }) {
-  const theme = useSelector((state) => state.app.theme);
   const [text, setText] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const [search, setSearch] = useState("");
@@ -101,11 +100,10 @@ export default function InputComment({ postId, replyTo, setReply }) {
           alignItems: "center",
           borderRadius: "6px",
           border: "1px solid",
-          borderColor: theme === "dark" ? "grey.800" : "grey.200",
-          bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+          borderColor: "backgroundColor.dark",
+          bgcolor: "backgroundColor.light",
           "&:focus": {
             outline: "none",
-            borderColor: theme === "dark" ? "grey.200" : "grey.800",
           },
         }}
       >
@@ -210,7 +208,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
                         flexDirection: "row",
                         alignItems: "center",
                         gap: 1,
-                        bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                        bgcolor: "backgroundColor.main",
                         borderRadius: "5px",
                         p: "7px",
                       }}

@@ -11,7 +11,7 @@ import React from "react";
 export default function Comment({ c, setPostComments, postComments, postId }) {
   const id = useParams().id;
   const navigate = useNavigate();
-  const theme = useSelector((state) => state.app.theme);
+
 
   const userLogin = useSelector((state) => state.user.profile);
   const userLoginId = userLogin.id;
@@ -20,12 +20,8 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
     <Stack
       sx={{
         backgroundColor: !c?.replyTo
-          ? theme === "dark"
-            ? "grey.700"
-            : "grey.200"
-          : theme === "dark"
-            ? "grey.800"
-            : "grey.300",
+          ? "backgroundColor.main"
+          : "backgroundColor.dark",
         p: 1,
         m: 1,
         borderRadius: "5px",

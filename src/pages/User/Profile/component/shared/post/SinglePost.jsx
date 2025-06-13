@@ -24,7 +24,6 @@ import LoadingError from "../../../../../../components/LoadingError";
 import LoginFirst from "../../../page/Home/LoginFirst";
 
 export default function SinglePost({ post, profile }) {
-  const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const [postComments, setPostComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
@@ -67,7 +66,7 @@ export default function SinglePost({ post, profile }) {
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>
-        <Info post={post} profile={profile} theme={theme} isOwner={isOwner} />
+        <Info post={post} profile={profile} isOwner={isOwner} />
         <Stack spacing={2}>
           <Stack
             sx={{
@@ -138,7 +137,7 @@ export default function SinglePost({ post, profile }) {
               p: 1,
               borderRadius: "5px",
               "&:hover ": {
-                bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                bgcolor: "backgroundColor.dark",
               },
             }}
             onClick={() => buttonHandler()}
@@ -177,7 +176,7 @@ export default function SinglePost({ post, profile }) {
   );
 }
 
-function Info({ profile, post, theme, isOwner }) {
+function Info({ profile, post, isOwner }) {
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(post.viewer);
   const navigate = useNavigate();
@@ -235,7 +234,7 @@ function Info({ profile, post, theme, isOwner }) {
                 borderRadius: "50%",
 
                 "&:hover": {
-                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                  bgcolor: "backgroundColor.light",
                 },
               }}
               onClick={() => setOpenFilterViewer(true)}
@@ -248,7 +247,7 @@ function Info({ profile, post, theme, isOwner }) {
                 borderRadius: "50%",
 
                 "&:hover": {
-                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                  bgcolor: "backgroundColor.light",
                 },
               }}
               onClick={() => setOpenFilterViewer(true)}
@@ -259,9 +258,8 @@ function Info({ profile, post, theme, isOwner }) {
                 fontSize: 16,
                 cursor: "pointer",
                 borderRadius: "50%",
-
                 "&:hover": {
-                  bgcolor: theme === "dark" ? "grey.800" : "grey.200",
+                  bgcolor: "backgroundColor.light",
                 },
               }}
               onClick={() => setOpenFilterViewer(true)}

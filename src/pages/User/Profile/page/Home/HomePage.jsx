@@ -5,14 +5,11 @@ import Feed from "./Feed";
 import React from "react";
 
 export default function HomePage() {
-  const theme = useSelector((state) => state.app.theme);
-
   return (
     <Stack
       sx={{
         minHeight: "100vh",
         p: 5,
-        bgcolor: theme === "dark" ? "grey.800" : "grey.200",
       }}
     >
       <Container fixed>

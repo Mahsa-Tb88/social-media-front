@@ -6,8 +6,9 @@ const lightTheme = createTheme({
     mode: "light",
     backgroundColor: {
       main: "#f5f5f5",
-      light: "#ffffff",
+      light: "#fafafa",
       dark: "#e0e0e0",
+      text: "#263238",
     },
     text: {
       primary: blueGrey[700],

@@ -8,6 +8,7 @@ const darkTheme = createTheme({
       main: "#121212",
       light: "#1e1e1e",
       dark: "#263238",
+      text: "#fff",
     },
   },
   ...common,

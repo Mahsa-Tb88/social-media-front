@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  createTheme,
-  CssBaseline,
-  ThemeProvider,
-  useMediaQuery,
-} from "@mui/material";
+import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Initializer from "./Layouts/Initializer";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,18 +23,6 @@ export default function App() {
       dispatch(appActions.setTheme("dark"));
     }
   }, []);
-
-  
-  const lightMode = createTheme({
-    palette: {
-      mode: "light",
-      backgroundColor: {
-        default: "#f5f5f5",
-        paper: "#ffffff",
-        section: "#e3f2fd",
-      },
-    },
-  });
 
   return (
     <ThemeProvider theme={theme == "dark" ? darkTheme : lightTheme}>

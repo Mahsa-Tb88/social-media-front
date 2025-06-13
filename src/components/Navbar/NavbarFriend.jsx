@@ -1,4 +1,7 @@
-import { Person } from "@mui/icons-material";
+/* eslint-disable no-undef */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
+
 import {
   Avatar,
   AvatarGroup,
@@ -39,7 +42,6 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
     return userLogin?.friends?.listFriend.filter((f) => f.id == id);
   }
 
-  const theme = useSelector((state) => state.app.theme);
   const navigate = useNavigate();
 
   const confirmMutation = useConfirmFriend();
@@ -228,8 +230,11 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                       <Button
                         size="small"
                         sx={{
-                          bgcolor: theme == "light" ? "grey.300" : "grey.800",
-                          color: theme == "light" ? "grey.800" : "grey.300",
+                          bgcolor: "backgroundColor.main",
+                          color: "backgroundColor.text",
+                          "&:hover": {
+                            bgcolor: "backgroundColor.dark",
+                          },
                         }}
                         disableElevation
                         onClick={(event) => deleteHandler(event, friend)}

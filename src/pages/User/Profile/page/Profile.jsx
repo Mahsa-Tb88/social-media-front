@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useGetUserById } from "../../../../utils/queries";
 import UserLoginProfile from "./userLoginProfile";
@@ -11,30 +11,28 @@ import NotFound from "./NotFound";
 
 export default function Profile() {
   const userLogin = useSelector((state) => state.user.profile);
-  const [user, setUser] = useState({});
   const id = useParams().id;
   const { isPending, data, refetch, error } = useGetUserById(id);
 
-  useEffect(() => {
-    if (data) {
-      setUser(data.data.body);
-    }
-  }, [data]);
+  // const user=data.data.body
 
   return (
     <Stack>
       {isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
-        <LoadingError handleAction={refetch} message={error.response.data.message} />
+        <LoadingError
+          handleAction={refetch}
+          message={error.response.data.message}
+        />
       ) : (
         <Stack>
-          {user.deleted ? (
+          {data.data.body.deleted ? (
             <NotFound />
           ) : id == userLogin.id ? (
             <UserLoginProfile />
           ) : (
-            <UserProfile user={user} />
+            <UserProfile user={data.data.body} />
           )}
         </Stack>
       )}

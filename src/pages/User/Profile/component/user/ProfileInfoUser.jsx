@@ -192,7 +192,7 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                       alt={f.username[0].toUpperCase()}
                       src={SERVER_URL + f.profileImg}
                       onClick={() => navigate("/profile/" + f.id)}
-                      sx={{ cursor: "pointer" }}
+                      sx={{ cursor: "pointer", }}
                     />
                   );
                 })}

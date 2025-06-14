@@ -95,7 +95,7 @@ export default function ProfileInfoUserLogin() {
                 {userLogin.friends.listFriend.map((f) => {
                   return (
                     <Avatar
-                      key={f._id}
+                      key={f.id}
                       alt={f.username[0].toUpperCase()}
                       src={SERVER_URL + f.profileImg}
                       onClick={() => navigate("/profile/" + f.id)}

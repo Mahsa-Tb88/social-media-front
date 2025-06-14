@@ -4,6 +4,7 @@ import { useLogOut } from "../../utils/mutation";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userActions } from "../../store/slices/userSlice";
+import { toast } from "react-toastify";
 
 export default function LogOut() {
   const { mutate } = useLogOut();
@@ -11,10 +12,14 @@ export default function LogOut() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    mutate({
-      onSuccess() {
+    const data = {};
+    mutate(data, {
+      onSuccess(d) {
         dispatch(userActions.setLogout());
         navigate("/login");
+      },
+      onError(e) {
+        toast.error(e.response.data.message);
       },
     });
   }, []);

@@ -137,7 +137,7 @@ export default function SinglePost({ post, profile }) {
               p: 1,
               borderRadius: "5px",
               "&:hover ": {
-                bgcolor: "backgroundColor.dark",
+                bgcolor: "backgroundColor.light",
               },
             }}
             onClick={() => buttonHandler()}

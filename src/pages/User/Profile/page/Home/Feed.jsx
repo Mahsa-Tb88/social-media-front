@@ -7,16 +7,11 @@ import LoadingError from "../../../../../components/LoadingError";
 import SinglePost from "../../component/shared/post/SinglePost";
 
 export default function Feed() {
-  const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const { isPending, error, refetch, data } = useGetPublicPosts(userLogin.id);
 
   return (
-    <Stack
-      sx={{
-        bgcolor: theme === "dark" ? "grey.800" : "grey.200",
-      }}
-    >
+    <Stack>
       {isPending ? (
         <Box>
           <Loading message="Is Loading" />

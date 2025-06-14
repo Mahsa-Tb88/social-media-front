@@ -6,7 +6,7 @@ const darkTheme = createTheme({
     mode: "dark",
     backgroundColor: {
       main: "#121212",
-      light: "#616161",
+      light: "#424242",
       dark: "#212121",
       text: "#eeeeee",
     },

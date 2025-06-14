@@ -6,9 +6,9 @@ const darkTheme = createTheme({
     mode: "dark",
     backgroundColor: {
       main: "#121212",
-      light: "#1e1e1e",
-      dark: "#263238",
-      text: "#fff",
+      light: "#616161",
+      dark: "#212121",
+      text: "#eeeeee",
     },
   },
   ...common,

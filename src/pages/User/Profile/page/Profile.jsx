@@ -13,7 +13,6 @@ export default function Profile() {
   const userLogin = useSelector((state) => state.user.profile);
   const [user, setUser] = useState({});
   const id = useParams().id;
-
   const { isPending, data, refetch, error } = useGetUserById(id);
 
   useEffect(() => {

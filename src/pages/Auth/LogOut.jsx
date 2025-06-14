@@ -11,16 +11,15 @@ export default function LogOut() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    mutate(
-      {},
-      {
-        onSuccess() {
-          dispatch(userActions.setLogout());
-          navigate("/login");
-        },
-      }
-    );
+    mutate({
+      onSuccess() {
+        dispatch(userActions.setLogout());
+        navigate("/login");
+      },
+    });
   }, []);
+
+  
   return (
     <Stack
       sx={{

@@ -1,10 +1,10 @@
-import { NotificationAdd } from "@mui/icons-material";
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
 import {
   Box,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Menu,
   Stack,
@@ -16,6 +16,7 @@ import noImage from "../../assets/images/user.png";
 import { useNavigate } from "react-router-dom";
 import { userActions } from "../../store/slices/userSlice";
 import { useUpdateSeenNotifi } from "../../utils/mutation";
+import { toast } from "react-toastify";
 
 export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
@@ -49,16 +50,17 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
       },
       onError(e) {
         console.log("error", e);
+        toast.error(e.response.data.message);
       },
     });
   }
 
-  function getDate(dateString) {
-    const myDate = new Date(dateString);
-    const options = { day: "2-digit", month: "short", year: "numeric" };
-    const formattedDate = myDate.toLocaleDateString("en-GB", options);
-    return formattedDate;
-  }
+  // function getDate(dateString) {
+  //   const myDate = new Date(dateString);
+  //   const options = { day: "2-digit", month: "short", year: "numeric" };
+  //   const formattedDate = myDate.toLocaleDateString("en-GB", options);
+  //   return formattedDate;
+  // }
   function timeAgo(createdAt) {
     const now = new Date();
     const createdDate = new Date(createdAt);
@@ -117,12 +119,13 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                       }}
                     />
                     <Typography>
-                      {n.userId.username[0].toUpperCase() + n.userId.username.slice(1)}
+                      {n.userId.username[0].toUpperCase() +
+                        n.userId.username.slice(1)}
                       {n.type == "comment"
                         ? " left a message on the post"
                         : n.type == "post"
-                        ? " like the post"
-                        : " liked the comment"}
+                          ? " like the post"
+                          : " liked the comment"}
                     </Typography>
                   </Stack>
                   <Typography
@@ -141,8 +144,8 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                     {n?.text
                       ? n.text.slice(0, 10) + " ..."
                       : n?.desc
-                      ? n.desc.slice(0, 10) + " ..."
-                      : "See post ..."}
+                        ? n.desc.slice(0, 10) + " ..."
+                        : "See post ..."}
                   </Typography>
                   <Typography sx={{ fontSize: "10px", mt: "5px", ml: 1 }}>
                     {timeAgo(n.createdAt)}

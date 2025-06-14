@@ -27,7 +27,6 @@ import NavbarHandleFriend from "./NavbarHandleFriend";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
-  const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const userId = useParams().id;
   const navigate = useNavigate();
@@ -249,10 +248,10 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                   size="large"
                   sx={{
                     fontSize: 17,
-                    bgcolor: theme == "light" ? "grey.200" : "grey.800",
-                    color: theme == "light" ? "grey.800" : "grey.200",
+                    bgcolor: "backgroundColor.dark",
+                    color: "backgroundColor.text",
                     "&:hover": {
-                      bgcolor: theme == "light" ? "grey.300" : "grey.900",
+                      bgcolor: "backgroundColor.light",
                     },
                   }}
                   startIcon={<MessageIcon />}

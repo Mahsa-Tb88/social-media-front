@@ -46,7 +46,10 @@ export default function Initializer() {
       {isPending ? (
         <Loading />
       ) : error ? (
-        <LoadingError message={error.message} handleAction={refetch} />
+        <LoadingError
+          message={error.response.data.message}
+          handleAction={refetch}
+        />
       ) : (
         ""
       )}

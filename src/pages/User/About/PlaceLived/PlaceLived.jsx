@@ -12,14 +12,14 @@ import LoadingError from "../../../../components/LoadingError";
 
 export default function PlaceLived() {
   const id = useParams().id;
-  const theme = useSelector((state) => state.app.theme);
+  
   const { isPending, data, error, refetch } = usePlaceLived(id);
   const hometown = data?.data?.body.places[2];
   const currentCity = data?.data?.body.places[1];
   const usedToLiveCity = data?.data?.body.places[0];
   const isFriend = data?.data?.body.isFriend;
   const isOwner = data?.data?.body.isOwner;
-  console.log("isowner", isOwner);
+ 
   return (
     <Stack>
       {isPending ? (

@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
 import {
   Avatar,
   Badge,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Menu,
   Stack,
@@ -16,7 +17,6 @@ import { useChangeToRead } from "../../utils/mutation";
 import { userActions } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import MailIcon from "@mui/icons-material/Email";
-import DraftsIcon from "@mui/icons-material/Drafts";
 
 export default function NavbarMsg({ open, anchorEl, handleClose }) {
   const userLoging = useSelector((state) => state.user.profile);
@@ -100,10 +100,9 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
                       mt: 1,
                       borderRadius: "7px",
                       width: "200px",
-                      fontSize: "12px",
                     }}
                   >
-                    {msg.msg.slice(0,1).toUpperCase() +
+                    {msg.msg.slice(0, 1).toUpperCase() +
                       msg.msg.slice(1, 20) +
                       " ... "}
                   </Typography>

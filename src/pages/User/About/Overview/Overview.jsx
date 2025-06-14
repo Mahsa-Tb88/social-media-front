@@ -17,7 +17,7 @@ export default function Overview() {
   const overview = data?.data.body.overview;
   const isFriend = data?.data.body.isFriend;
   const isOwner = data?.data.body.isOwner;
-  console.log("overview", overview);
+ 
 
   const overviewKeys = [
     "School",

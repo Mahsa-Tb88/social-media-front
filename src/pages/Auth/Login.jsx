@@ -7,7 +7,6 @@ import {
   Checkbox,
   CircularProgress,
   Container,
-  Divider,
   FormControlLabel,
   Grid2,
   Paper,

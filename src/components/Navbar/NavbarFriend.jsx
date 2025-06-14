@@ -230,7 +230,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                       <Button
                         size="small"
                         sx={{
-                          bgcolor: "backgroundColor.main",
+                          bgcolor: "backgroundColor.light",
                           color: "backgroundColor.text",
                           "&:hover": {
                             bgcolor: "backgroundColor.dark",

@@ -11,7 +11,7 @@ export default function App() {
   const initialized = useSelector((state) => state.app.initialized);
   const theme = useSelector((state) => state.app.theme);
 
-  const isMobile = useMediaQuery("max-width:899px");
+  const isMobile = useMediaQuery("(max-width:899px)");
   const dispatch = useDispatch();
 
   useEffect(() => {

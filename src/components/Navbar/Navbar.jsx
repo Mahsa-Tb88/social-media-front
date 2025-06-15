@@ -30,7 +30,7 @@ import { Link, NavLink } from "react-router-dom";
 export default function Navbar() {
   const userLogin = useSelector((state) => state.user.profile);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const theme = useSelector((state) => state.app.theme);
+  const app = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const [openMenu, setOpenMenu] = useState(false);
   const menuAnchor = useRef(null);
@@ -57,7 +57,7 @@ export default function Navbar() {
   const msgAnchor = useRef(null);
 
   function chageHandlerTheme() {
-    if (theme == "light") {
+    if (app.theme == "light") {
       dispatch(appActions.setTheme("dark"));
     } else {
       dispatch(appActions.setTheme("light"));
@@ -76,7 +76,6 @@ export default function Navbar() {
     );
     return list.length;
   }
-
   return (
     <AppBar
       position="sticky"
@@ -86,23 +85,24 @@ export default function Navbar() {
         <Toolbar>
           <Stack flexGrow={1}>
             <Typography
-              variant="h4"
-              component="h1"
+              variant={app.isMobile ? "h6" : "h4"}
+              component={app.isMobile ? "h5" : "h1"}
               color="info"
               fontWeight={600}
             >
               VibeLink
             </Typography>
           </Stack>
-          <Stack direction="row" spacing={3} alignItems="center">
+          <Stack
+            direction="row"
+            spacing={app.isMobile ? 2 : 3}
+            alignItems="center"
+          >
             <MyIconButton LinkComponent={Link} to="/">
               <Home />
             </MyIconButton>
-            <MyIconButton
-              onClick={chageHandlerTheme}
-              sx={{ width: 40, height: 40 }}
-            >
-              {theme === "light" ? (
+            <MyIconButton onClick={chageHandlerTheme}>
+              {app.theme === "light" ? (
                 <DarkMode />
               ) : (
                 <LightMode sx={{ color: "yellow" }} />
@@ -110,47 +110,52 @@ export default function Navbar() {
             </MyIconButton>
             {isLoggedIn ? (
               <Stack direction="row" spacing={3} alignItems="center">
-                <Badge
-                  badgeContent={unSeenNotification.length}
-                  color="error"
-                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                  overlap="circular"
-                >
-                  <MyIconButton
-                    sx={{ width: 40, height: 40 }}
-                    onClick={() => setopenNotification(!openNotification)}
-                  >
-                    <Notifications ref={notificationAnchor} />
-                  </MyIconButton>
-                </Badge>
-                <Badge
-                  badgeContent={unSeenMsg.length}
-                  color="error"
-                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                  overlap="circular"
-                >
-                  <MyIconButton
-                    sx={{ width: 40, height: 40 }}
-                    onClick={() => setopenMsg(!openMsg)}
-                  >
-                    <Message ref={msgAnchor} />
-                  </MyIconButton>
-                </Badge>
-                <Badge
-                  badgeContent={
-                    userLogin.friends?.friendRequestList && numOfFriendrequest()
-                  }
-                  color="error"
-                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                  overlap="circular"
-                >
-                  <MyIconButton
-                    sx={{ width: 40, height: 40 }}
-                    onClick={handleOpenListRequest}
-                  >
-                    <PersonAdd ref={addFriendAnchor} />
-                  </MyIconButton>
-                </Badge>
+                {!app.isMobile && (
+                  <Stack direction="row" spacing={3} alignItems="center">
+                    <Badge
+                      badgeContent={unSeenNotification.length}
+                      color="error"
+                      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                      overlap="circular"
+                    >
+                      <MyIconButton
+                        sx={{ width: 40, height: 40 }}
+                        onClick={() => setopenNotification(!openNotification)}
+                      >
+                        <Notifications ref={notificationAnchor} />
+                      </MyIconButton>
+                    </Badge>
+                    <Badge
+                      badgeContent={unSeenMsg.length}
+                      color="error"
+                      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                      overlap="circular"
+                    >
+                      <MyIconButton
+                        sx={{ width: 40, height: 40 }}
+                        onClick={() => setopenMsg(!openMsg)}
+                      >
+                        <Message ref={msgAnchor} />
+                      </MyIconButton>
+                    </Badge>
+                    <Badge
+                      badgeContent={
+                        userLogin.friends?.friendRequestList &&
+                        numOfFriendrequest()
+                      }
+                      color="error"
+                      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                      overlap="circular"
+                    >
+                      <MyIconButton
+                        sx={{ width: 40, height: 40 }}
+                        onClick={handleOpenListRequest}
+                      >
+                        <PersonAdd ref={addFriendAnchor} />
+                      </MyIconButton>
+                    </Badge>
+                  </Stack>
+                )}
 
                 <Box
                   onClick={() => {
@@ -160,8 +165,8 @@ export default function Navbar() {
                 >
                   <img
                     src={userLogin?.img ? userLogin.img : noImage}
-                    width={40}
-                    height={40}
+                    width={app.isMobile ? 35 : 45}
+                    height={app.isMobile ? 35 : 45}
                     style={{ border: "var(--border)", borderRadius: "50%" }}
                     ref={menuAnchor}
                   />

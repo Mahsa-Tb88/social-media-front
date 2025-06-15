@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   Box,
   Button,
@@ -24,6 +25,7 @@ export default function SearchBar() {
   const [q, setQ] = useState("");
   const [openLoginUser, setOpenLoginUser] = useState(false);
   const theme = useSelector((state) => state.app.theme);
+  const isMobile = useSelector((state) => state.app.isMobile);
 
   const { isPending, isFetching, data, error, refetch } = useFindUser(q);
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function SearchBar() {
   return (
     <Paper sx={{ p: 2 }}>
       <TextField
-        label="Search"
+        label="Search user"
         variant="outlined"
         sx={{ width: "100%" }}
         onChange={(e) => setSearch(e.target.value)}
@@ -131,11 +133,15 @@ export default function SearchBar() {
         )}
       </Stack>
 
-      <Typography sx={{ mt: 5, fontWeight: "bold", fontSize: 20 }}>
-        Make new friends
-      </Typography>
-      <Divider sx={{ mt: 2 }} />
-      <RandomUserList />
+      {!isMobile && (
+        <Stack>
+          <Typography sx={{ mt: 5, fontWeight: "bold", fontSize: 20 }}>
+            Make new friends
+          </Typography>
+          <Divider sx={{ mt: 2 }} />
+          <RandomUserList />
+        </Stack>
+      )}
       <LoginFirst open={openLoginUser} onClose={setOpenLoginUser} />
     </Paper>
   );

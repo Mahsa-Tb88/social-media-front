@@ -109,53 +109,45 @@ export default function Navbar() {
               )}
             </MyIconButton>
             {isLoggedIn ? (
-              <Stack direction="row" spacing={3} alignItems="center">
-                {!app.isMobile && (
-                  <Stack direction="row" spacing={3} alignItems="center">
-                    <Badge
-                      badgeContent={unSeenNotification.length}
-                      color="error"
-                      anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                      overlap="circular"
-                    >
-                      <MyIconButton
-                        sx={{ width: 40, height: 40 }}
-                        onClick={() => setopenNotification(!openNotification)}
-                      >
-                        <Notifications ref={notificationAnchor} />
-                      </MyIconButton>
-                    </Badge>
-                    <Badge
-                      badgeContent={unSeenMsg.length}
-                      color="error"
-                      anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                      overlap="circular"
-                    >
-                      <MyIconButton
-                        sx={{ width: 40, height: 40 }}
-                        onClick={() => setopenMsg(!openMsg)}
-                      >
-                        <Message ref={msgAnchor} />
-                      </MyIconButton>
-                    </Badge>
-                    <Badge
-                      badgeContent={
-                        userLogin.friends?.friendRequestList &&
-                        numOfFriendrequest()
-                      }
-                      color="error"
-                      anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                      overlap="circular"
-                    >
-                      <MyIconButton
-                        sx={{ width: 40, height: 40 }}
-                        onClick={handleOpenListRequest}
-                      >
-                        <PersonAdd ref={addFriendAnchor} />
-                      </MyIconButton>
-                    </Badge>
-                  </Stack>
-                )}
+              <Stack
+                direction="row"
+                spacing={app.isMobile ? 1 : 3}
+                alignItems="center"
+              >
+                <Badge
+                  badgeContent={unSeenNotification.length}
+                  color="error"
+                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                  overlap="circular"
+                >
+                  <MyIconButton
+                    onClick={() => setopenNotification(!openNotification)}
+                  >
+                    <Notifications ref={notificationAnchor} />
+                  </MyIconButton>
+                </Badge>
+                <Badge
+                  badgeContent={unSeenMsg.length}
+                  color="error"
+                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                  overlap="circular"
+                >
+                  <MyIconButton onClick={() => setopenMsg(!openMsg)}>
+                    <Message ref={msgAnchor} />
+                  </MyIconButton>
+                </Badge>
+                <Badge
+                  badgeContent={
+                    userLogin.friends?.friendRequestList && numOfFriendrequest()
+                  }
+                  color="error"
+                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                  overlap="circular"
+                >
+                  <MyIconButton onClick={handleOpenListRequest}>
+                    <PersonAdd ref={addFriendAnchor} />
+                  </MyIconButton>
+                </Badge>
 
                 <Box
                   onClick={() => {

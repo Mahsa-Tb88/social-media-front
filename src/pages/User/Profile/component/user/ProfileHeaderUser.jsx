@@ -10,10 +10,7 @@ import LoadingError from "../../../../../components/LoadingError";
 
 export default function ProfileHeaderUser({ user }) {
   const { isPending, data, error, refetch } = useGetMutualFriends(user._id);
-  console.log("user", user);
-  if (error) {
-    console.log("err", error);
-  }
+ 
 
   return (
     <Container>

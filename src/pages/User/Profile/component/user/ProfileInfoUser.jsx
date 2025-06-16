@@ -28,6 +28,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
   const userLogin = useSelector((state) => state.user.profile);
+  const isMobile = useSelector((state) => state.app.isMobile);
   const userId = useParams().id;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -159,8 +160,8 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
               sx={{
                 border: "var(--border)",
                 borderRadius: "50%",
-                width: "200px",
-                height: "200px",
+                width: isMobile ? "150px" : "200px",
+                height: isMobile ? "150px" : "200px",
               }}
             />
           </Stack>
@@ -168,23 +169,34 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
           <Stack
             sx={{
               width: "100%",
-              flexDirection: "row",
+              flexDirection: isMobile ? "column" : "row",
               mt: 8,
               justifyContent: "space-between",
             }}
           >
             <Stack sx={{ alignItems: "flex-start" }}>
-              <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
+              <Typography
+                sx={{ fontWeight: "bold", fontSize: isMobile ? 20 : 30 }}
+              >
                 {user?.username &&
                   user.username[0].toUpperCase() + user?.username.slice(1)}
               </Typography>
-              <Typography>
+              <Typography sx={{ fontSize: isMobile ? "12px" : "16px" }}>
                 {numOfFriend?.length > 0 ? numOfFriend.length + " friends" : ""}
                 {mutualFriend?.length > 0
                   ? ", " + mutualFriend.length + " mutual"
                   : ""}
               </Typography>
-              <AvatarGroup max={4}>
+              <AvatarGroup
+                max={4}
+                sx={{
+                  "& .css-wze2on-MuiAvatar-root": {
+                    width: isMobile ? 20 : 35,
+                    height: isMobile ? 20 : 35,
+                    fontSize: isMobile ? "12px" : "18px",
+                  },
+                }}
+              >
                 {mutualFriend.map((f) => {
                   return (
                     <Avatar
@@ -192,19 +204,30 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                       alt={f.username[0].toUpperCase()}
                       src={SERVER_URL + f.profileImg}
                       onClick={() => navigate("/profile/" + f.id)}
-                      sx={{ cursor: "pointer", }}
+                      sx={{
+                        cursor: "pointer",
+                        width: isMobile ? 20 : 35,
+                        height: isMobile ? 20 : 35,
+                        fontSize: isMobile ? "12px" : "18px",
+                      }}
                     />
                   );
                 })}
               </AvatarGroup>
             </Stack>
             <Stack>
-              <Stack sx={{ flexDirection: "row", gap: 2 }}>
+              <Stack
+                sx={{
+                  flexDirection: isMobile ? "column" : "row",
+                  gap: 2,
+                  mt: isMobile ? "10px" : "",
+                }}
+              >
                 {findUserInRequestList() ? (
                   <Button
                     startIcon={<PersonIcon />}
-                    size="large"
-                    sx={{ fontSize: 17 }}
+                    size={isMobile ? "medium" : "large"}
+                    sx={{ fontSize: isMobile ? 12 : 17 }}
                     disableElevation
                     onClick={() => setOpenRequest(true)}
                     ref={requestAnchor}
@@ -214,8 +237,8 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                 ) : !findFriend() ? (
                   <Button
                     startIcon={<PersonAddAlt1Icon />}
-                    size="large"
-                    sx={{ fontSize: 17 }}
+                    size={isMobile ? "medium" : "large"}
+                    sx={{ fontSize: isMobile ? 12 : 17 }}
                     disableElevation
                     onClick={addFriend}
                   >
@@ -224,8 +247,8 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                 ) : findFriend()?.status == "pending" ? (
                   <Button
                     startIcon={<PersonIcon />}
-                    size="large"
-                    sx={{ fontSize: 17 }}
+                    size={isMobile ? "medium" : "large"}
+                    sx={{ fontSize: isMobile ? 12 : 17 }}
                     disableElevation
                     onClick={cancelRequest}
                   >
@@ -234,8 +257,8 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                 ) : (
                   <Button
                     startIcon={<CheckCircleOutlineIcon />}
-                    size="large"
-                    sx={{ fontSize: 17 }}
+                    size={isMobile ? "medium" : "large"}
+                    sx={{ fontSize: isMobile ? 12 : 17 }}
                     disableElevation
                     onClick={() => setOpenHandleFriend(true)}
                     ref={HandleFriendAnchor}
@@ -245,9 +268,9 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                 )}
 
                 <Button
-                  size="large"
+                  size={isMobile ? "medium" : "large"}
                   sx={{
-                    fontSize: 17,
+                    fontSize: isMobile ? 12 : 17,
                     bgcolor: "backgroundColor.dark",
                     color: "backgroundColor.text",
                     "&:hover": {

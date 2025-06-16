@@ -13,7 +13,7 @@ export default function HomePage() {
         bgcolor: "backgroundColor.light",
       }}
     >
-      <Container fixed>
+      <Container fixed sx={{ px: 0 }}>
         <Grid2 container spacing={5}>
           <Grid2 size={{ xs: 12, md: 4 }}>
             <SearchBar />

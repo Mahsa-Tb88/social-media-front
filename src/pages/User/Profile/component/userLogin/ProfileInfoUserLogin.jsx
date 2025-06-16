@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 export default function ProfileInfoUserLogin() {
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
+  const isMobile = useSelector((state) => state.app.isMobile);
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
@@ -59,8 +60,8 @@ export default function ProfileInfoUserLogin() {
               sx={{
                 border: "var(--border)",
                 borderRadius: "50%",
-                width: "200px",
-                height: "200px",
+                width: isMobile ? "150px" : "200px",
+                height: isMobile ? "150px" : "200px",
               }}
             />
 
@@ -79,19 +80,30 @@ export default function ProfileInfoUserLogin() {
           <Stack
             sx={{
               width: "100%",
-              flexDirection: "row",
+              flexDirection: isMobile ? "column" : "row",
               mt: 8,
               justifyContent: "space-between",
             }}
           >
             <Stack sx={{ alignItems: "flex-start" }}>
-              <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
+              <Typography
+                sx={{ fontWeight: "bold", fontSize: isMobile ? 20 : 30 }}
+              >
                 {userLogin.username}
               </Typography>
-              <Typography sx={{}}>
+              <Typography sx={{ fontSize: isMobile ? "12px" : "16px" }}>
                 {userLogin.friends.listFriend.length + " friends"}
               </Typography>
-              <AvatarGroup max={4}>
+              <AvatarGroup
+                max={4}
+                sx={{
+                  "& .css-wze2on-MuiAvatar-root": {
+                    width: isMobile ? 20 : 35,
+                    height: isMobile ? 20 : 35,
+                    fontSize: isMobile ? "12px" : "18px",
+                  },
+                }}
+              >
                 {userLogin.friends.listFriend.map((f) => {
                   return (
                     <Avatar
@@ -99,7 +111,12 @@ export default function ProfileInfoUserLogin() {
                       alt={f.username[0].toUpperCase()}
                       src={SERVER_URL + f.profileImg}
                       onClick={() => navigate("/profile/" + f.id)}
-                      sx={{ cursor: "pointer", width: 35, height: 35 }}
+                      sx={{
+                        cursor: "pointer",
+                        width: isMobile ? 20 : 35,
+                        height: isMobile ? 20 : 35,
+                        fontSize: isMobile ? "12px" : "18px",
+                      }}
                     />
                   );
                 })}
@@ -107,9 +124,10 @@ export default function ProfileInfoUserLogin() {
             </Stack>
             <Stack>
               <Button
-                size="large"
+                size={isMobile ? "small" : "large"}
                 sx={{
-                  fontSize: 17,
+                  fontSize: isMobile ? 12 : 17,
+                  mt: isMobile ? "10px" : "",
                 }}
                 startIcon={<Edit />}
                 disableElevation

@@ -13,8 +13,8 @@ export default function MyIconButton(props) {
       sx={{
         ...sx,
         bgcolor: "backgroundColor.light",
-        width: isMobile ? 30 : 40,
-        height: isMobile ? 30 : 40,
+        width: isMobile ? 25 : 40,
+        height: isMobile ? 25 : 40,
       }}
       {...ps}
     >

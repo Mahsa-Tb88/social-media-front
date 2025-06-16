@@ -81,7 +81,7 @@ export default function Navbar() {
       position="sticky"
       sx={{ bgcolor: "var(--palette-background-paper)" }}
     >
-      <Container fixed>
+      <Container fixed sx={{ px: 0 }}>
         <Toolbar>
           <Stack flexGrow={1}>
             <Typography
@@ -95,17 +95,22 @@ export default function Navbar() {
           </Stack>
           <Stack
             direction="row"
-            spacing={app.isMobile ? 2 : 3}
+            spacing={app.isMobile ? 1 : 3}
             alignItems="center"
           >
             <MyIconButton LinkComponent={Link} to="/">
-              <Home />
+              <Home sx={{ fontSize: app.isMobile ? "large" : "24px" }} />
             </MyIconButton>
             <MyIconButton onClick={chageHandlerTheme}>
               {app.theme === "light" ? (
-                <DarkMode />
+                <DarkMode sx={{ fontSize: app.isMobile ? "large" : "24px" }} />
               ) : (
-                <LightMode sx={{ color: "yellow" }} />
+                <LightMode
+                  sx={{
+                    color: "yellow",
+                    fontSize: app.isMobile ? "large" : "24px",
+                  }}
+                />
               )}
             </MyIconButton>
             {isLoggedIn ? (
@@ -123,7 +128,10 @@ export default function Navbar() {
                   <MyIconButton
                     onClick={() => setopenNotification(!openNotification)}
                   >
-                    <Notifications ref={notificationAnchor} />
+                    <Notifications
+                      ref={notificationAnchor}
+                      sx={{ fontSize: app.isMobile ? "large" : "24px" }}
+                    />
                   </MyIconButton>
                 </Badge>
                 <Badge
@@ -133,7 +141,10 @@ export default function Navbar() {
                   overlap="circular"
                 >
                   <MyIconButton onClick={() => setopenMsg(!openMsg)}>
-                    <Message ref={msgAnchor} />
+                    <Message
+                      ref={msgAnchor}
+                      sx={{ fontSize: app.isMobile ? "large" : "24px" }}
+                    />
                   </MyIconButton>
                 </Badge>
                 <Badge
@@ -145,7 +156,10 @@ export default function Navbar() {
                   overlap="circular"
                 >
                   <MyIconButton onClick={handleOpenListRequest}>
-                    <PersonAdd ref={addFriendAnchor} />
+                    <PersonAdd
+                      ref={addFriendAnchor}
+                      sx={{ fontSize: app.isMobile ? "large" : "24px" }}
+                    />
                   </MyIconButton>
                 </Badge>
 
@@ -166,11 +180,14 @@ export default function Navbar() {
               </Stack>
             ) : (
               <>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={app.isMobile ? 1 : 2}>
                   <Button
                     disableElevation
                     variant="outlined"
-                    sx={{ fontSize: 15, fontWeight: "bold" }}
+                    sx={{
+                      fontSize: app.isMobile ? 12 : 15,
+                      fontWeight: "bold",
+                    }}
                     component={NavLink}
                     to="login"
                   >
@@ -178,7 +195,10 @@ export default function Navbar() {
                   </Button>
                   <Button
                     disableElevation
-                    sx={{ fontSize: 15, fontWeight: "bold" }}
+                    sx={{
+                      fontSize: app.isMobile ? 12 : 15,
+                      fontWeight: "bold",
+                    }}
                     component={NavLink}
                     to="register"
                   >

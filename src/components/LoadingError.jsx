@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Refresh } from "@mui/icons-material";
 import { Alert, AlertTitle, Button, Stack } from "@mui/material";
 import React from "react";

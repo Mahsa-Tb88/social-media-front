@@ -10,6 +10,7 @@ import noImage from "../../../../../assets/images/user.png";
 export default function UserFriends() {
   const [friends, setFriends] = useState([]);
   const [msg, setMsg] = useState("");
+  const isMobile = useSelector((state) => state.app.isMobile);
   const navigate = useNavigate();
   const id = useParams().id;
   const { data, isPending, error, refetch } = useGetFriends(id);
@@ -46,18 +47,26 @@ export default function UserFriends() {
         <Grid2 container spacing={3}>
           {friends.map((f, index) => {
             return (
-              <Grid2 size={3} sx={{ textAlign: "center" }} key={index}>
+              <Grid2
+                size={{ xs: 4, md: 3 }}
+                sx={{ textAlign: "center" }}
+                key={index}
+              >
                 <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
                   <Box
                     component={"img"}
                     src={f.profileImg ? SERVER_URL + f.profileImg : noImage}
-                    height={80}
-                    width={80}
+                    height={isMobile ? 50 : 80}
+                    width={isMobile ? 50 : 80}
                     sx={{ borderRadius: "50%", cursor: "pointer" }}
                     onClick={() => navigate("/profile/" + f.id)}
                   />
                   <Typography
-                    sx={{ fontSize: "18px", mt: 2, cursor: "pointer" }}
+                    sx={{
+                      fontSize: isMobile ? "12px" : "18px",
+                      mt: 2,
+                      cursor: "pointer",
+                    }}
                     onClick={() => navigate("/profile/" + f.id)}
                   >
                     {f.username}

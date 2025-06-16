@@ -113,6 +113,10 @@ export default function ProfileInfoUserLogin() {
                       onClick={() => navigate("/profile/" + f.id)}
                       sx={{
                         cursor: "pointer",
+                        transition: "transform 0.3s ease-in-out",
+                        "&:hover": {
+                          transform: "scale(1.08)",
+                        },
                         width: isMobile ? 20 : 35,
                         height: isMobile ? 20 : 35,
                         fontSize: isMobile ? "12px" : "18px",

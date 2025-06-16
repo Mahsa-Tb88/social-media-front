@@ -18,9 +18,7 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
   return (
     <Stack
       sx={{
-        backgroundColor: !c?.replyTo
-          ? "backgroundColor.main"
-          : "backgroundColor.dark",
+        bgcolor: !c?.replyTo ? "backgroundColor.main" : "backgroundColor.dark",
         p: 1,
         m: 1,
         borderRadius: "5px",

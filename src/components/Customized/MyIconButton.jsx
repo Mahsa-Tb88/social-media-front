@@ -12,7 +12,7 @@ export default function MyIconButton(props) {
     <IconButton
       sx={{
         ...sx,
-        bgcolor: "backgroundColor.light",
+        bgcolor: "backgroundColor.main",
         width: isMobile ? 25 : 40,
         height: isMobile ? 25 : 40,
       }}

@@ -52,7 +52,7 @@ export default function TextComment({ c, setPostComments, postComments }) {
                   c.mentionUser.username.slice(1)}
             </Typography>
           )}
-          <Typography>{c.text}</Typography>
+          <Typography>{c.text[0].toUpperCase() + c.text.slice(1)}</Typography>
         </Stack>
       )}
       <Stack sx={{ flexDirection: "row", alignItems: "center" }}>

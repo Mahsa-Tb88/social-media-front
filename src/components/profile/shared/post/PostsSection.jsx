@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import {
   Box,
@@ -39,7 +40,13 @@ export default function PostsSection({ profile }) {
           <Stack sx={{ flexDirection: "row", gap: 2 }}>
             <Box
               component="img"
-              src={profile.profileImg ? profile.profileImg : noImage}
+              src={
+                userLogin.profileImg
+                  ? userLogin.profileImg.includes(SERVER_URL)
+                    ? userLogin.profileImg
+                    : SERVER_URL + userLogin.profileImg
+                  : noImage
+              }
               sx={{ width: "40px", height: "40px", borderRadius: "50%" }}
             />
             <Button

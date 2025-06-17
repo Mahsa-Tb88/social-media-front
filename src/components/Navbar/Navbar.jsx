@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   DarkMode,
   Home,
@@ -170,7 +171,13 @@ export default function Navbar() {
                   sx={{ cursor: "pointer" }}
                 >
                   <img
-                    src={userLogin?.img ? userLogin.img : noImage}
+                    src={
+                      userLogin.profileImg
+                        ? userLogin.profileImg.includes(SERVER_URL)
+                          ? userLogin.profileImg
+                          : SERVER_URL + userLogin.profileImg
+                        : noImage
+                    }
                     width={app.isMobile ? 35 : 45}
                     height={app.isMobile ? 35 : 45}
                     style={{ border: "var(--border)", borderRadius: "50%" }}

@@ -159,6 +159,8 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                 borderRadius: "50%",
                 width: isMobile ? "150px" : "200px",
                 height: isMobile ? "150px" : "200px",
+                objectFit: "cover",
+                display: "block",
               }}
             />
           </Stack>

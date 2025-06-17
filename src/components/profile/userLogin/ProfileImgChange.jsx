@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import {
@@ -16,6 +17,7 @@ import noImage from "../../../assets/images/user.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useProfileImgChange, useUploadFile } from "../../../utils/mutation";
 import { userActions } from "../../../store/slices/userSlice";
+import { toast } from "react-toastify";
 
 export default function ProfileImgChange({ open, onClose, setProfileImg }) {
   const user = useSelector((state) => state.user.profile);
@@ -43,6 +45,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
         },
         onError(error) {
           window.scrollTo({ top: 0, behavior: "smooth" });
+          toast.error(error.response.data.message);
           return;
         },
       });
@@ -53,7 +56,8 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
   async function submitPhoto() {
     let myData = {};
     myData.id = user.id;
-    myData.image = selectedImage;
+    myData.image = selectedImage.replace(SERVER_URL, "");
+    console.log("mydata uplod imgprofile....", myData);
     mutate(myData, {
       onSuccess(d) {
         dispatch(
@@ -67,6 +71,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
       },
       onError(error) {
         window.scrollTo({ top: 0, behavior: "smooth" });
+        toast.error(error.response.data.message);
       },
     });
   }
@@ -81,7 +86,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
         dispatch(
           userActions.setProfile({
             ...user,
-            profileImg: noImage,
+            profileImg: "",
           })
         );
         setSelectedImage("");

@@ -18,19 +18,15 @@ export default function ProfileHeaderUser({ user }) {
           <Stack sx={{ height: "300px", position: "relative" }}>
             <Stack sx={{ width: "100%", height: "100%" }}>
               <Box
-                src={
-                  user.backgroundImg
-                    ? SERVER_URL + user.backgroundImg
-                    : backGround
-                }
                 sx={{
-                  objectFit: "cover",
-                  objectPosition: "center",
+                  backgroundImage: `url(${user.backgroundImg ? SERVER_URL + user.backgroundImg : backGround})`,
+                  backgroundSize: "cover", // ensures the image covers the entire box
+                  backgroundPosition: "center", // centers the image
+                  backgroundRepeat: "no-repeat",
                   width: "100%",
                   height: "100%",
                   borderRadius: "5px",
                 }}
-                component="img"
               />
             </Stack>
           </Stack>

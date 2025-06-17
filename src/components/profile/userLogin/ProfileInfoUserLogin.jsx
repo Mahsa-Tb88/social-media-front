@@ -25,8 +25,14 @@ export default function ProfileInfoUserLogin() {
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
-    userLogin.profileImg ? SERVER_URL + userLogin.profileImg : noImage
+    userLogin.profileImg
+      ? userLogin.profileImg.includes(SERVER_URL)
+        ? userLogin.profileImg
+        : SERVER_URL + userLogin.profileImg
+      : noImage
   );
+  console.log("profileImg", profileImg);
+  console.log("userLogin", userLogin);
 
   return (
     <Container
@@ -56,12 +62,15 @@ export default function ProfileInfoUserLogin() {
           <Stack sx={{ position: "relative" }}>
             <Box
               component="img"
+              // src={profileImg ? SERVER_URL + profileImg : noImage}
               src={profileImg}
               sx={{
                 border: "var(--border)",
                 borderRadius: "50%",
                 width: isMobile ? "150px" : "200px",
                 height: isMobile ? "150px" : "200px",
+                objectFit: "cover",
+                display: "block",
               }}
             />
 

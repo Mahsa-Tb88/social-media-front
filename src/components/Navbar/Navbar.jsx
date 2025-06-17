@@ -180,7 +180,12 @@ export default function Navbar() {
                     }
                     width={app.isMobile ? 35 : 45}
                     height={app.isMobile ? 35 : 45}
-                    style={{ border: "var(--border)", borderRadius: "50%" }}
+                    style={{
+                      border: "var(--border)",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
                     ref={menuAnchor}
                   />
                 </Box>

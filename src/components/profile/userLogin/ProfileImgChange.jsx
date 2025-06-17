@@ -57,7 +57,6 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     let myData = {};
     myData.id = user.id;
     myData.image = selectedImage.replace(SERVER_URL, "");
-    console.log("mydata uplod imgprofile....", myData);
     mutate(myData, {
       onSuccess(d) {
         dispatch(
@@ -129,6 +128,8 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
                 width: "120px",
                 border: "var(--border)",
                 borderRadius: "50%",
+                objectFit: "cover",
+                display: "block",
               }}
             />
             <Stack spacing={3}>

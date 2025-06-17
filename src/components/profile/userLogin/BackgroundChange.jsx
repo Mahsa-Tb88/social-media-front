@@ -19,15 +19,18 @@ import { userActions } from "../../../store/slices/userSlice";
 import { toast } from "react-toastify";
 
 export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.profile);
   const [selectedImage, setSelectedImage] = useState(
-    user.profile?.backgroundImg
-      ? SERVER_URL + user.profile.backgroundImg
+    user.backgroundImg
+      ? user.backgroundImg.includes(SERVER_URL)
+        ? user.backgroundImg
+        : SERVER_URL + user.backgroundImg
       : background
   );
   const [errorMsg, setErrorMsg] = useState("");
   const [isChangedPhoto, setIsChangedPhoto] = useState(false);
   const dispatch = useDispatch();
+  console.log("backgoriund", selectedImage);
 
   const uploadImgMutation = useUploadFile();
   const { mutate, error, data } = useChangeBackgorund();
@@ -58,13 +61,13 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
   function deleteBackImgHandler() {
     setErrorMsg("");
     const data = {};
-    data.id = user.profile.id;
+    data.id = user.id;
     data.image = "";
     mutate(data, {
       onSuccess(d) {
         dispatch(
           userActions.setProfile({
-            ...user.profile,
+            ...user,
             backgroundImg: "",
           })
         );
@@ -80,13 +83,13 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
   async function submitPhoto() {
     const myData = {};
     setErrorMsg("");
-    myData.id = user.profile.id;
-    myData.image = selectedImage;
+    myData.id = user.id;
+    myData.image = selectedImage.replace(SERVER_URL, "");
     mutate(myData, {
       onSuccess() {
         dispatch(
           userActions.setProfile({
-            ...user.profile,
+            ...user,
             backgroundImg: selectedImage ? selectedImage : background,
           })
         );
@@ -133,6 +136,8 @@ export default function BackgroundChange({ open, onClose, setBackgroundImg }) {
                 width: "180px",
                 border: "var(--border)",
                 borderRadius: "4px",
+                objectFit: "cover",
+                display: "block",
               }}
             />
             <Stack spacing={3}>

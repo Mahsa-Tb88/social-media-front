@@ -14,7 +14,11 @@ export default function ProfileHeaderUserLogin() {
   const userLogin = useSelector((state) => state.user.profile);
   const [backgroundOpen, setBackgroundOpen] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState(
-    userLogin.backgroundImg ? SERVER_URL + userLogin.backgroundImg : backGround
+    userLogin.backgroundImg
+      ? userLogin.backgroundImg.includes(SERVER_URL)
+        ? userLogin.backgroundImg
+        : SERVER_URL + userLogin.backgroundImg
+      : backGround
   );
 
   return (
@@ -24,15 +28,15 @@ export default function ProfileHeaderUserLogin() {
           <Stack sx={{ height: "300px", position: "relative" }}>
             <Stack sx={{ width: "100%", height: "100%" }}>
               <Box
-                src={backgroundImg}
                 sx={{
-                  objectFit: "cover",
-                  objectPosition: "center",
+                  backgroundImage: `url(${backgroundImg})`,
+                  backgroundSize: "cover", // ensures the image covers the entire box
+                  backgroundPosition: "center", // centers the image
+                  backgroundRepeat: "no-repeat",
                   width: "100%",
                   height: "100%",
                   borderRadius: "5px",
                 }}
-                component="img"
               />
 
               <MyIconButton

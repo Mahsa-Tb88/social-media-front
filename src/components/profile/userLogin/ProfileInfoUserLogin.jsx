@@ -22,6 +22,11 @@ export default function ProfileInfoUserLogin() {
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
   const isMobile = useSelector((state) => state.app.isMobile);
+  const listFriends = userLogin.friends.listFriend.filter(
+    (f) => f.status == "accepted"
+  );
+
+  console.log("listFriends", listFriends);
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
@@ -113,7 +118,7 @@ export default function ProfileInfoUserLogin() {
                   },
                 }}
               >
-                {userLogin.friends.listFriend.map((f) => {
+                {listFriends.map((f) => {
                   return (
                     <Avatar
                       key={f.id}

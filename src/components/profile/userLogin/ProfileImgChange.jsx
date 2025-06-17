@@ -25,7 +25,11 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
 
   const [isImageChanged, setIsIamgeChanged] = useState(false);
   const [selectedImage, setSelectedImage] = useState(
-    user.profileImg ? SERVER_URL + user.profileImg : noImage
+    user.profileImg
+      ? user.profileImg.includes(SERVER_URL)
+        ? user.profileImg
+        : SERVER_URL + user.profileImg
+      : noImage
   );
   const [errorMsg, setErrorMsg] = useState("");
 

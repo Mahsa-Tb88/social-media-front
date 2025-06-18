@@ -36,8 +36,7 @@ export default function ProfileInfoUserLogin() {
         : SERVER_URL + userLogin.profileImg
       : noImage
   );
-  console.log("profileImg", profileImg);
-  console.log("userLogin", userLogin);
+
 
   return (
     <Container

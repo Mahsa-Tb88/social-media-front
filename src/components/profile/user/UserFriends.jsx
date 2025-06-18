@@ -6,6 +6,7 @@ import Loading from "../../../components/Loading";
 import LoadingError from "../../../components/LoadingError";
 import { useNavigate, useParams } from "react-router-dom";
 import noImage from "../../../assets/images/user.png";
+import { useSelector } from "react-redux";
 
 export default function UserFriends() {
   const [friends, setFriends] = useState([]);
@@ -14,7 +15,7 @@ export default function UserFriends() {
   const navigate = useNavigate();
   const id = useParams().id;
   const { data, isPending, error, refetch } = useGetFriends(id);
-
+  console.log(".......frinedssss");
   useEffect(() => {
     if (data) {
       const listFriend = data.data.body.listFriend;
@@ -22,11 +23,11 @@ export default function UserFriends() {
       if (!listFriend.length) {
         setMsg(data.data.body.message);
       } else {
-        const friendsList = listFriend.filter((f) => f.status == "accepted");
-        setFriends(friendsList);
+        setFriends(listFriend);
       }
     }
   }, [data]);
+  console.log("friends", friends);
 
   return (
     <Stack>
@@ -58,8 +59,13 @@ export default function UserFriends() {
                     src={f.profileImg ? SERVER_URL + f.profileImg : noImage}
                     height={isMobile ? 50 : 80}
                     width={isMobile ? 50 : 80}
-                    sx={{ borderRadius: "50%", cursor: "pointer" }}
-                    onClick={() => navigate("/profile/" + f.id)}
+                    sx={{
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                    onClick={() => navigate("/profile/" + f._id)}
                   />
                   <Typography
                     sx={{
@@ -67,7 +73,7 @@ export default function UserFriends() {
                       mt: 2,
                       cursor: "pointer",
                     }}
-                    onClick={() => navigate("/profile/" + f.id)}
+                    onClick={() => navigate("/profile/" + f._id)}
                   >
                     {f.username}
                   </Typography>

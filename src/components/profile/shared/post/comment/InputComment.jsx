@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
@@ -58,7 +59,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
       },
       onError(e) {
         console.log("error", e);
-        toast.error(d.response.data.message);
+        toast.error(e.response.data.message);
       },
     });
   }
@@ -221,11 +222,19 @@ export default function InputComment({ postId, replyTo, setReply }) {
                     >
                       <Box
                         component={"img"}
-                        src={user.profileImg ? user.profileImg : noImage}
+                        src={
+                          user.profileImg
+                            ? user.profileImg.includes(SERVER_URL)
+                              ? user.profileImg
+                              : SERVER_URL + user.profileImg
+                            : noImage
+                        }
                         sx={{
                           width: "20px",
                           height: "20px",
                           borderRadius: "50%",
+                          objectFit: "cover",
+                          display: "block",
                         }}
                       />
                       <Typography sx={{ fontSize: "12px", fontWeight: "bold" }}>

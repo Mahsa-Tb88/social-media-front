@@ -67,7 +67,7 @@ export default function ProfileInfoUserLogin() {
           <Stack sx={{ position: "relative" }}>
             <Box
               component="img"
-              // src={profileImg ? SERVER_URL + profileImg : noImage}
+           
               src={profileImg}
               sx={{
                 border: "var(--border)",

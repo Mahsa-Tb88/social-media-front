@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 
 export default function PostsSection({ profile }) {
   const theme = useSelector((state) => state.app.theme);
+  const isMobile = useSelector((state) => state.app.isMobile);
   const [openCreatePost, setOpenCreatePost] = useState(false);
   const userLogin = useSelector((state) => state.user.profile);
   const id = useParams().id;
@@ -47,7 +48,13 @@ export default function PostsSection({ profile }) {
                     : SERVER_URL + userLogin.profileImg
                   : noImage
               }
-              sx={{ width: "40px", height: "40px", borderRadius: "50%" }}
+              sx={{
+                width: isMobile ? "30px" : "40px",
+                height: isMobile ? "30px" : "40px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
             <Button
               sx={{

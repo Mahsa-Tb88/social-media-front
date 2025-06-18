@@ -89,6 +89,8 @@ export default function SearchBar() {
                         height: "50px",
                         width: "50px",
                         borderRadius: "50%",
+                        objectFit: "cover",
+                        display: "block",
                       }}
                       src={
                         user.profileImg ? SERVER_URL + user.profileImg : noImage

@@ -45,7 +45,13 @@ export default function Comment({ c, setPostComments, postComments, postId }) {
           onClick={() => navigate("/profile/" + c.userId._id)}
         >
           <Box
-            sx={{ width: "30px", height: "30px", borderRadius: "50%" }}
+            sx={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              display: "block",
+            }}
             component="img"
             src={
               c.userId.profileImg ? SERVER_URL + c.userId.profileImg : noImage

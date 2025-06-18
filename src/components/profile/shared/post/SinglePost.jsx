@@ -205,6 +205,8 @@ function Info({ profile, post, isOwner }) {
           height: "40px",
           borderRadius: "50%",
           cursor: "pointer",
+          objectFit: "cover",
+          display: "block",
         }}
         onClick={() => navigate("profile/" + post.userId._id)}
       />

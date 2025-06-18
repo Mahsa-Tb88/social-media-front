@@ -199,10 +199,10 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                 {mutualFriend.map((f) => {
                   return (
                     <Avatar
-                      key={f.id}
+                      key={f._id}
                       alt={f.username[0].toUpperCase()}
                       src={SERVER_URL + f.profileImg}
-                      onClick={() => navigate("/profile/" + f.id)}
+                      onClick={() => navigate("/profile/" + f._id)}
                       sx={{
                         cursor: "pointer",
                         transition: "transform 0.3s ease-in-out",

@@ -17,23 +17,98 @@ import noImage from "../../assets/images/user.png";
 import RandomUserList from "./RandomUserList";
 import Loading from "../../components/Loading";
 import LoadingError from "../../components/LoadingError";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useAddFriend, useRemoveRequestFriend } from "../../utils/mutation";
+import { userActions } from "../../store/slices/userSlice";
 
 export default function SearchBar() {
+  const userLogin = useSelector((state) => state.user.profile);
   const [search, setSearch] = useState(false);
   const [q, setQ] = useState("");
+  const dispatch = useDispatch();
   const [openLoginUser, setOpenLoginUser] = useState(false);
   const theme = useSelector((state) => state.app.theme);
   const isMobile = useSelector((state) => state.app.isMobile);
 
   const { isPending, isFetching, data, error, refetch } = useFindUser(q);
+  console.log(data);
+
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setQ(search);
     }, 1000);
     return () => clearTimeout(timeOut);
   }, [search]);
+  console.log("userLogin", userLogin);
+
+  //add friend
+  const addFriendMutation = useAddFriend();
+  function handleAddFriend(user) {
+    if (!userLogin.id) {
+      setOpenLoginUser(true);
+      return;
+    }
+    const data = {
+      userId: userLogin.id,
+      userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",
+      userUsername: userLogin.username,
+      id: user._id,
+      username: user.username,
+      profileImg: user.profileImg,
+      status: "pending",
+    };
+    addFriendMutation.mutate(data, {
+      onSuccess(d) {
+        const updatedListFriends = [
+          ...userLogin.friends.listFriend,
+          {
+            id: user._id,
+            username: user.username,
+            profileImg: user.profileImg,
+            status: "pending",
+          },
+        ];
+
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+          })
+        );
+      },
+      onError(error) {
+        console.log("error is", error.response.data.message);
+        toast.error(error.response.data.message);
+      },
+    });
+  }
+
+  //cancel request friend
+  const removeRequestMutation = useRemoveRequestFriend();
+  function handleCancelRequest(user) {
+    const data = {
+      userId: userLogin.id,
+      id: user._id,
+    };
+    removeRequestMutation.mutate(data, {
+      onSuccess(d) {
+        const updatedListFriends = userLogin?.friends?.listFriend.filter(
+          (f) => f.id != user._id
+        );
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+          })
+        );
+      },
+      onError(error) {
+        console.log("eeror is", error);
+        toast.error(error.response.data.message);
+      },
+    });
+  }
 
   return (
     <Paper sx={{ p: 2 }}>
@@ -118,6 +193,14 @@ export default function SearchBar() {
                       <Button onClick={() => handleCancelRequest(user)}>
                         Cancel Request
                       </Button>
+                    ) : user?.status == "requested" ? (
+                      <Button onClick={() => handleCancelRequest(user)}>
+                        Accept
+                      </Button>
+                    ) : user?.status == "accepted" ? (
+                      <Button onClick={() => handleCancelRequest(user)}>
+                        Your friend
+                      </Button>
                     ) : (
                       <Button onClick={() => handleAddFriend(user)}>
                         Add friend
@@ -141,7 +224,10 @@ export default function SearchBar() {
             Make new friends
           </Typography>
           <Divider sx={{ mt: 2 }} />
-          <RandomUserList />
+          <RandomUserList
+            handleAddFriend={handleAddFriend}
+            handleCancelRequest={handleCancelRequest}
+          />
         </Stack>
       )}
       <LoginFirst open={openLoginUser} onClose={setOpenLoginUser} />

@@ -123,6 +123,16 @@ export default function SearchBar() {
             friends: { ...userLogin.friends, listFriend: updatedListFriends },
           })
         );
+        // update userlist
+        const updatedList = userList.map((u) => {
+          if (u.id == user.id) {
+            return { ...u, status: "" };
+          } else {
+            return u;
+          }
+        });
+
+        setUserList(updatedList);
       },
       onError(error) {
         console.log("eeror is", error);

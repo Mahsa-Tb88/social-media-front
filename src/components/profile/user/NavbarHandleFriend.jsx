@@ -14,9 +14,10 @@ export default function NavbarHandleFriend({
 }) {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.user.profile);
-  const removeFriendMutation = useRemoveFriend();
 
   function blockFriend() {}
+
+  const removeFriendMutation = useRemoveFriend();
   function removeFriend() {
     const data = {
       userId: userLogin.id,

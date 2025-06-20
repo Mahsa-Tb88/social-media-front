@@ -37,8 +37,6 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
   const requestAnchor = useRef();
   const HandleFriendAnchor = useRef();
 
-  const addFriendMutation = useAddFriend();
-
   function findFriend() {
     const findFriend = userLogin?.friends?.listFriend?.find(
       (f) => f.id == user._id
@@ -60,6 +58,7 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
     }
   }
 
+  const addFriendMutation = useAddFriend();
   function addFriend() {
     const data = {
       userId: userLogin.id,
@@ -97,7 +96,6 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
   }
 
   const removeRequestMutation = useRemoveRequestFriend();
-
   function cancelRequest() {
     const data = {
       userId: userLogin.id,

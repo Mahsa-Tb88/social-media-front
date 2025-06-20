@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import {
   useAddFriend,
   useConfirmFriend,
+  useRemoveFriend,
   useRemoveRequestFriend,
 } from "../../utils/mutation";
 import { userActions } from "../../store/slices/userSlice";
@@ -63,7 +64,7 @@ export default function SearchBar() {
       userId: userLogin.id,
       userProfileImg: userLogin.profileImg ? userLogin.profileImg : "",
       userUsername: userLogin.username,
-      id: user._id,
+      id: user.id,
       username: user.username,
       profileImg: user.profileImg,
       status: "pending",
@@ -73,7 +74,7 @@ export default function SearchBar() {
         const updatedListFriends = [
           ...userLogin.friends.listFriend,
           {
-            id: user._id,
+            id: user.id,
             username: user.username,
             profileImg: user.profileImg,
             status: "pending",
@@ -86,6 +87,16 @@ export default function SearchBar() {
             friends: { ...userLogin.friends, listFriend: updatedListFriends },
           })
         );
+        // update userlist
+        const updatedList = userList.map((u) => {
+          if (u.id == user.id) {
+            return { ...u, status: "pending" };
+          } else {
+            return u;
+          }
+        });
+
+        setUserList(updatedList);
       },
       onError(error) {
         console.log("error is", error.response.data.message);
@@ -99,12 +110,12 @@ export default function SearchBar() {
   function handleCancelRequest(user) {
     const data = {
       userId: userLogin.id,
-      id: user._id,
+      id: user.id,
     };
     removeRequestMutation.mutate(data, {
       onSuccess(d) {
         const updatedListFriends = userLogin?.friends?.listFriend.filter(
-          (f) => f.id != user._id
+          (f) => f.id != user.id
         );
         dispatch(
           userActions.setProfile({
@@ -179,7 +190,40 @@ export default function SearchBar() {
   }
 
   //remove friend
-  function handleRemoveFriend(user) {}
+  const removeFriendMutation = useRemoveFriend();
+  function handleRemoveFriend(user) {
+    const data = {
+      userId: userLogin.id,
+      id: user.id,
+    };
+    removeFriendMutation.mutate(data, {
+      onSuccess(d) {
+        const updatedListFriends = userLogin?.friends?.listFriend.filter(
+          (f) => f.id != user.id
+        );
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: { ...userLogin.friends, listFriend: updatedListFriends },
+          })
+        );
+        // update userlist
+        const updatedList = userList.map((u) => {
+          if (u.id == user.id) {
+            return { ...u, status: "" };
+          } else {
+            return u;
+          }
+        });
+
+        setUserList(updatedList);
+      },
+      onError(e) {
+        console.log("eeror is", e);
+        toast.error(e.response.data.message);
+      },
+    });
+  }
 
   return (
     <Paper sx={{ p: 2 }}>
@@ -270,7 +314,7 @@ export default function SearchBar() {
                       </Button>
                     ) : user?.status == "accepted" ? (
                       <Button onClick={() => handleRemoveFriend(user)}>
-                        Your friend
+                        Remove friend
                       </Button>
                     ) : (
                       <Button onClick={() => handleAddFriend(user)}>

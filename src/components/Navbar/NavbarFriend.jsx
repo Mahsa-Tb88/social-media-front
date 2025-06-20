@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useConfirmFriend, useRemoveRequestFriend } from "../../utils/mutation";
 import { userActions } from "../../store/slices/userSlice";
+import { toast } from "react-toastify";
 
 export default function NavbarFriend({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
@@ -87,6 +88,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
       },
       onError(e) {
         console.log("error is ", e);
+        toast.error(e.response.data.message);
       },
     });
   }

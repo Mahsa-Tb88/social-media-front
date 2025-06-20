@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-undef */
 import {
   Box,
@@ -19,12 +20,18 @@ import Loading from "../../components/Loading";
 import LoadingError from "../../components/LoadingError";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useAddFriend, useRemoveRequestFriend } from "../../utils/mutation";
+import {
+  useAddFriend,
+  useConfirmFriend,
+  useRemoveRequestFriend,
+} from "../../utils/mutation";
 import { userActions } from "../../store/slices/userSlice";
+import { toast } from "react-toastify";
 
 export default function SearchBar() {
   const userLogin = useSelector((state) => state.user.profile);
   const [search, setSearch] = useState(false);
+  const [userList, setUserList] = useState([]);
   const [q, setQ] = useState("");
   const dispatch = useDispatch();
   const [openLoginUser, setOpenLoginUser] = useState(false);
@@ -32,7 +39,7 @@ export default function SearchBar() {
   const isMobile = useSelector((state) => state.app.isMobile);
 
   const { isPending, isFetching, data, error, refetch } = useFindUser(q);
-  console.log(data);
+  console.log("dataaa", data);
 
   useEffect(() => {
     const timeOut = setTimeout(() => {
@@ -40,7 +47,12 @@ export default function SearchBar() {
     }, 1000);
     return () => clearTimeout(timeOut);
   }, [search]);
-  console.log("userLogin", userLogin);
+
+  useEffect(() => {
+    if (data) {
+      setUserList(data.data.body || []);
+    }
+  }, [data]);
 
   //add friend
   const addFriendMutation = useAddFriend();
@@ -110,6 +122,67 @@ export default function SearchBar() {
     });
   }
 
+  //accept request friend
+  const confirmMutation = useConfirmFriend();
+  function handleAcceptRequest(user) {
+    const data = {
+      id: user.id,
+      profileImg: user.profileImg,
+      username: user.username,
+      userId: userLogin.id,
+    };
+    confirmMutation.mutate(data, {
+      onSuccess(d) {
+        const updatedListFriends = [
+          ...userLogin?.friends.listFriend,
+          {
+            id: user.id,
+            profileImg: user.profileImg,
+            username: user.username,
+            status: "accepted",
+          },
+        ];
+        const updateRequestList = userLogin.friends.friendRequestList.map(
+          (f) => {
+            if (f.id == user.id) {
+              return { ...f, status: "accept" };
+            } else {
+              return f;
+            }
+          }
+        );
+        dispatch(
+          userActions.setProfile({
+            ...userLogin,
+            friends: {
+              ...userLogin?.friends,
+              listFriend: updatedListFriends,
+              friendRequestList: updateRequestList,
+            },
+          })
+        );
+
+        // update userlist
+        const updatedList = userList.map((u) => {
+          if (u.id == user.id) {
+            return { ...u, status: "accepted" };
+          } else {
+            return u;
+          }
+        });
+
+        setUserList(updatedList);
+      },
+      onError(e) {
+        console.log("error is ", e);
+        toast.error(e.response.data.message);
+      },
+    });
+  }
+
+  //remove friend
+  function handleRemoveFriend(user) {}
+
   return (
     <Paper sx={{ p: 2 }}>
       <TextField
@@ -130,9 +203,9 @@ export default function SearchBar() {
               message={error.response.data.message}
             />
           </Box>
-        ) : data?.data?.body?.length ? (
+        ) : userList.length ? (
           <Stack>
-            {data?.data?.body?.map((user) => {
+            {userList.map((user) => {
               return (
                 <Stack
                   key={user._id}
@@ -194,11 +267,11 @@ export default function SearchBar() {
                         Cancel Request
                       </Button>
                     ) : user?.status == "requested" ? (
-                      <Button onClick={() => handleCancelRequest(user)}>
-                        Accept
+                      <Button onClick={() => handleAcceptRequest(user)}>
+                        Sent request
                       </Button>
                     ) : user?.status == "accepted" ? (
-                      <Button onClick={() => handleCancelRequest(user)}>
+                      <Button onClick={() => handleRemoveFriend(user)}>
                         Your friend
                       </Button>
                     ) : (
@@ -211,7 +284,7 @@ export default function SearchBar() {
               );
             })}
           </Stack>
-        ) : !data?.data?.body?.length && search && !isPending ? (
+        ) : !userList.length && search && !isPending ? (
           <Typography>Nothing found!</Typography>
         ) : (
           ""

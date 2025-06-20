@@ -49,9 +49,7 @@ export default function SearchBar() {
   }, [search]);
 
   useEffect(() => {
-    if (data) {
-      setUserList(data.data.body || []);
-    }
+    setUserList(data?.data?.body || []);
   }, [data]);
 
   //add friend

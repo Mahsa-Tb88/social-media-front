@@ -105,7 +105,7 @@ export default function ProfileInfoUserLogin() {
                 {userLogin.username}
               </Typography>
               <Typography sx={{ fontSize: isMobile ? "12px" : "16px" }}>
-                {userLogin.friends.listFriend.length + " friends"}
+                {listFriends.length + " friends"}
               </Typography>
               <AvatarGroup
                 max={4}

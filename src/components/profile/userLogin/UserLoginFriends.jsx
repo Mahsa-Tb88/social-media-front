@@ -1,37 +1,29 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 import { Box, Grid2, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../../assets/images/user.png";
 
-export default function UserLoginFriends() {
-  const userLogin = useSelector((state) => state.user.profile);
+export default function UserLoginFriends({ friends }) {
   const isMobile = useSelector((state) => state.app.isMobile);
   const navigate = useNavigate();
-  const [listFriend, setListFriend] = useState(userLogin.friends.listFriend);
-
-  useEffect(() => {
-    const filterList = userLogin.friends.listFriend.filter(
-      (f) => f.status == "accepted"
-    );
-    setListFriend(filterList);
-  }, [userLogin?.friends?.listFriend]);
-
+  console.log("friends////", friends);
   return (
     <Stack>
-      {listFriend.length == 0 ? (
+      {friends.listFriend.length == 0 ? (
         <Typography component={"h5"} variant="h5">
-          There is no friend yet!
+          {friends.message}
         </Typography>
       ) : (
         <Grid2 container spacing={3}>
-          {listFriend.map((f) => {
+          {friends.listFriend.map((f) => {
             return (
               <Grid2
                 size={{ xs: 4, md: 3 }}
                 sx={{ textAlign: "center" }}
-                key={f.id}
+                key={f._id}
               >
                 <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
                   <Box
@@ -39,8 +31,13 @@ export default function UserLoginFriends() {
                     src={f.profileImg ? SERVER_URL + f.profileImg : noImage}
                     height={isMobile ? 50 : 80}
                     width={isMobile ? 50 : 80}
-                    sx={{ borderRadius: "50%", cursor: "pointer" }}
-                    onClick={() => navigate("/profile/" + f.id)}
+                    sx={{
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                    onClick={() => navigate("/profile/" + f._id)}
                   />
                   <Typography
                     sx={{
@@ -48,7 +45,7 @@ export default function UserLoginFriends() {
                       mt: 2,
                       cursor: "pointer",
                     }}
-                    onClick={() => navigate("/profile/" + f.id)}
+                    onClick={() => navigate("/profile/" + f._id)}
                   >
                     {f.username[0].toUpperCase() + f.username.slice(1)}
                   </Typography>

@@ -352,6 +352,7 @@ export default function SearchBar() {
           <RandomUserList
             handleAddFriend={handleAddFriend}
             handleCancelRequest={handleCancelRequest}
+            userList={userList}
           />
         </Stack>
       )}

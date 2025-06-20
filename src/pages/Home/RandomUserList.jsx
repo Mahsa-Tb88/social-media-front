@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
@@ -14,7 +15,7 @@ import { toast } from "react-toastify";
 import LoginFirst from "./LoginFirst";
 import { userActions } from "../../store/slices/userSlice";
 
-export default function RandomUserList() {
+export default function RandomUserList({ userList }) {
   const userLogin = useSelector((state) => state.user.profile);
   const theme = useSelector((state) => state.app.theme);
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ export default function RandomUserList() {
       // filter users to show only users that not friends or in friend request
       filterUsers();
     }
-  }, [data]);
+  }, [data, userList]);
 
   function filterUsers() {
     let updatedUserList = data.data.body;
@@ -40,7 +41,15 @@ export default function RandomUserList() {
     userRequestList.forEach((element) => {
       updatedUserList = updatedUserList.filter((f) => f._id != element.id);
     });
-    setUsers(updatedUserList);
+    let newList = [];
+    updatedUserList.forEach((u) => {
+      const findUser = userList.find((f) => f.id == u._id);
+      if (!findUser) {
+        newList.push(u);
+      }
+    });
+
+    setUsers(newList);
   }
   //add friend
   const addFriendMutation = useAddFriend();

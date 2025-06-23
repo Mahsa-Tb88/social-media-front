@@ -37,7 +37,6 @@ export default function ProfileInfoUserLogin() {
       : noImage
   );
 
-
   return (
     <Container
       fixed
@@ -66,7 +65,6 @@ export default function ProfileInfoUserLogin() {
           <Stack sx={{ position: "relative" }}>
             <Box
               component="img"
-           
               src={profileImg}
               sx={{
                 border: "var(--border)",

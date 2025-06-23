@@ -9,12 +9,11 @@ import noImage from "../../../assets/images/user.png";
 export default function UserLoginFriends({ friends }) {
   const isMobile = useSelector((state) => state.app.isMobile);
   const navigate = useNavigate();
-  console.log("friends////", friends);
   return (
     <Stack>
       {friends.listFriend.length == 0 ? (
         <Typography component={"h5"} variant="h5">
-          {friends.message}
+          There is no friend yet!
         </Typography>
       ) : (
         <Grid2 container spacing={3}>

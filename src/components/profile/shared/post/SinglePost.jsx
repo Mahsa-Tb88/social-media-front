@@ -33,7 +33,6 @@ export default function SinglePost({ post, profile }) {
   const location = useLocation();
   let id = useParams().id;
   const { isPending, error, data, refetch } = useGetCommentPost(post._id);
-
   useEffect(() => {
     if (data) {
       setPostComments(data.data.body);
@@ -66,7 +65,12 @@ export default function SinglePost({ post, profile }) {
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>
-        <Info post={post} profile={profile} isOwner={isOwner} />
+        <Info
+          post={post}
+          profile={profile}
+          isOwner={isOwner}
+          userLogin={userLogin}
+        />
         <Stack spacing={2}>
           <Stack
             sx={{
@@ -176,7 +180,7 @@ export default function SinglePost({ post, profile }) {
   );
 }
 
-function Info({ profile, post, isOwner }) {
+function Info({ profile, post, isOwner, userLogin }) {
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const [viewer, setViewer] = useState(post.viewer);
   const navigate = useNavigate();
@@ -199,7 +203,19 @@ function Info({ profile, post, isOwner }) {
     >
       <Box
         component="img"
-        src={profile.profileImg ? SERVER_URL + profile.profileImg : noImage}
+        src={
+          userLogin.id == profile._id
+            ? userLogin.profileImg
+              ? userLogin.profileImg.includes(SERVER_URL)
+                ? userLogin.profileImg
+                : SERVER_URL + userLogin.profileImg
+              : noImage
+            : profile.profileImg
+              ? profile.profileImg.includes(SERVER_URL)
+                ? profile.profileImg
+                : SERVER_URL + profile.profileImg
+              : noImage
+        }
         sx={{
           width: "40px",
           height: "40px",

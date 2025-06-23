@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 export default function UserFriends({ friends }) {
   const isMobile = useSelector((state) => state.app.isMobile);
   const navigate = useNavigate();
-  console.log("user friends....", friends);
   return (
     <Stack>
       {friends.listFriend.length == 0 ? (

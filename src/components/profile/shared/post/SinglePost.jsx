@@ -169,13 +169,11 @@ export default function SinglePost({ post, profile }) {
               setShowComments={setShowComments}
               showComments={showComments}
               setPostComments={setPostComments}
-              postId={post._id}
+              post={post}
             />
           )}
         </Stack>
-        {userLogin.id && (
-          <InputComment postId={post._id} userGetComm={post.userId} />
-        )}
+        {userLogin.id && <InputComment postId={post._id} />}
       </Paper>
     </Stack>
   );

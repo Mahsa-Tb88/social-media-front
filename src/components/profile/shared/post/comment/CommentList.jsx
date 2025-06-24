@@ -8,7 +8,7 @@ export default function CommentList({
   setPostComments,
   setShowComments,
   showComments,
-  postId,
+  post,
 }) {
   return (
     <Stack>
@@ -30,7 +30,7 @@ export default function CommentList({
                   c={c}
                   setPostComments={setPostComments}
                   postComments={postComments}
-                  postId={postId}
+                  post={post}
                 />
               </Stack>
             );

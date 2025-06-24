@@ -39,7 +39,9 @@ export default function MenuUserLike({ likes, open, anchorEl, handleClose }) {
                   sx={{ height: "30px", width: "30px", borderRadius: "50%" }}
                 />
                 <Typography sx={{ ml: 1 }}>
-                  {l.deleted ? "Deleted User" : l.username}
+                  {l.deleted
+                    ? "Deleted User"
+                    : l.username[0].toUpperCase() + l.username.slice(1)}
                 </Typography>
               </ListItemButton>
             </ListItem>

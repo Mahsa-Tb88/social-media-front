@@ -9,9 +9,9 @@ import DeleteCommnet from "./DeleteCommnet";
 import React from "react";
 
 export default function Comment({ c, setPostComments, postComments, post }) {
-  const id = useParams().id;
   const navigate = useNavigate();
   console.log("post", post);
+  console.log("c", c);
 
   const userLogin = useSelector((state) => state.user.profile);
   const userLoginId = userLogin.id;
@@ -68,12 +68,13 @@ export default function Comment({ c, setPostComments, postComments, post }) {
           <Typography sx={{ fontSize: "10px" }}>
             {new Date(c.createdAt).toLocaleDateString()}
           </Typography>
-          {(post.userId._id== userLoginId || c.userId._id == userLoginId) && (
+          {(post?.userId?._id == userLoginId ||
+            c.userId._id == userLoginId) && (
             <DeleteCommnet
               setPostComments={setPostComments}
               postComments={postComments}
               comment={c}
-              postId={post._id}
+              postId={post?._id}
               replyTo={c.replyTo}
             />
           )}

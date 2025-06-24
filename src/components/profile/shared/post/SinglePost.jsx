@@ -32,7 +32,9 @@ export default function SinglePost({ post, profile }) {
   const menuPostAnchor = useRef(null);
   const location = useLocation();
   let id = useParams().id;
+
   const { isPending, error, data, refetch } = useGetCommentPost(post._id);
+  
   useEffect(() => {
     if (data) {
       setPostComments(data.data.body);

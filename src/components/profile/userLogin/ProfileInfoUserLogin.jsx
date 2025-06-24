@@ -25,12 +25,12 @@ export default function ProfileInfoUserLogin() {
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
   const isMobile = useSelector((state) => state.app.isMobile);
+
   const { isPending, data, error, refetch } = useGetFriends(userLogin.id);
+
   const listFriends = userLogin.friends.listFriend.filter(
     (f) => f.status == "accepted"
   );
-
-  console.log("dataaaa", data);
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
@@ -106,9 +106,11 @@ export default function ProfileInfoUserLogin() {
               >
                 {userLogin.username}
               </Typography>
-              <Typography sx={{ fontSize: isMobile ? "12px" : "16px" }}>
-                {listFriends.length + " friends"}
-              </Typography>
+              {listFriends.length > 0 && (
+                <Typography sx={{ fontSize: isMobile ? "12px" : "16px" }}>
+                  {listFriends.length + " friends"}
+                </Typography>
+              )}
               <AvatarGroup
                 max={4}
                 sx={{

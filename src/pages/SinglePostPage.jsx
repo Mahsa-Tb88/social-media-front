@@ -9,9 +9,16 @@ import LoadingError from "../components/LoadingError";
 export default function SinglePostPage() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetPost(id);
-  // bgcolor: theme === "dark" ? "grey.800" : "grey.200"
+
   return (
-    <Stack sx={{ py: 5 }}>
+    <Stack
+      sx={{
+        py: 5,
+        bgcolor: "backgroundColor.main",
+        minHeight: "100vh",
+        overflow: "hidden",
+      }}
+    >
       {isPending ? (
         <Loading message="Is loading..." />
       ) : error ? (

@@ -71,6 +71,7 @@ export default function SinglePost({ post, profile }) {
           isOwner={isOwner}
           userLogin={userLogin}
         />
+
         <Stack spacing={2}>
           <Stack
             sx={{

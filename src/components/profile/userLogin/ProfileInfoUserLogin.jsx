@@ -17,16 +17,20 @@ import noImage from "../../../assets/images/user.png";
 import { Edit } from "@mui/icons-material";
 import ProfileImgChange from "./ProfileImgChange";
 import { useNavigate } from "react-router-dom";
+import { useGetFriends } from "../../../utils/queries";
+import Loading from "../../Loading";
+import LoadingError from "../../LoadingError";
 
 export default function ProfileInfoUserLogin() {
   const userLogin = useSelector((state) => state.user.profile);
   const navigate = useNavigate();
   const isMobile = useSelector((state) => state.app.isMobile);
+  const { isPending, data, error, refetch } = useGetFriends(userLogin.id);
   const listFriends = userLogin.friends.listFriend.filter(
     (f) => f.status == "accepted"
   );
 
-  console.log("listFriends", listFriends);
+  console.log("dataaaa", data);
 
   const [profileImgOpen, setProfileImgOpen] = useState(false);
   const [profileImg, setProfileImg] = useState(
@@ -115,26 +119,37 @@ export default function ProfileInfoUserLogin() {
                   },
                 }}
               >
-                {listFriends.map((f) => {
-                  return (
-                    <Avatar
-                      key={f.id}
-                      alt={f.username[0].toUpperCase()}
-                      src={SERVER_URL + f.profileImg}
-                      onClick={() => navigate("/profile/" + f.id)}
-                      sx={{
-                        cursor: "pointer",
-                        transition: "transform 0.3s ease-in-out",
-                        "&:hover": {
-                          transform: "scale(1.08)",
-                        },
-                        width: isMobile ? 20 : 35,
-                        height: isMobile ? 20 : 35,
-                        fontSize: isMobile ? "12px" : "18px",
-                      }}
-                    />
-                  );
-                })}
+                {isPending ? (
+                  <Loading message="is loading..." />
+                ) : error ? (
+                  <LoadingError
+                    handleAction={refetch}
+                    message={error.response.data.message}
+                  />
+                ) : !data.data.body.listFriend.length ? (
+                  <Typography>No friends yet!</Typography>
+                ) : (
+                  data.data.body.listFriend.map((f) => {
+                    return (
+                      <Avatar
+                        key={f.id}
+                        alt={f.username[0].toUpperCase()}
+                        src={SERVER_URL + f.profileImg}
+                        onClick={() => navigate("/profile/" + f.id)}
+                        sx={{
+                          cursor: "pointer",
+                          transition: "transform 0.3s ease-in-out",
+                          "&:hover": {
+                            transform: "scale(1.08)",
+                          },
+                          width: isMobile ? 20 : 35,
+                          height: isMobile ? 20 : 35,
+                          fontSize: isMobile ? "12px" : "18px",
+                        }}
+                      />
+                    );
+                  })
+                )}
               </AvatarGroup>
             </Stack>
             <Stack>

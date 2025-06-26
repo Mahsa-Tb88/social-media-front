@@ -40,7 +40,6 @@ export default function SearchBar() {
   const isMobile = useSelector((state) => state.app.isMobile);
 
   const { isPending, isFetching, data, error, refetch } = useFindUser(q);
-  console.log("dataaa", data);
 
   useEffect(() => {
     const timeOut = setTimeout(() => {
@@ -260,7 +259,7 @@ export default function SearchBar() {
             {userList.map((user) => {
               return (
                 <Stack
-                  key={user._id}
+                  key={user.id}
                   sx={{
                     my: 1,
                     flexDirection: "row",
@@ -281,7 +280,7 @@ export default function SearchBar() {
                       textDecoration: "none",
                     }}
                     component={Link}
-                    to={`profile/${user._id}`}
+                    to={`profile/${user.id}`}
                   >
                     <Box
                       component="img"

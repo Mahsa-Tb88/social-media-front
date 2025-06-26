@@ -40,8 +40,7 @@ export default function Post() {
     <Stack
       sx={{
         py: 4,
-        bgcolor:
-          theme == "dark" ? "backgroundColor.dark" : "backgroundColor.light",
+       
       }}
     >
       <Container maxWidth="lg">

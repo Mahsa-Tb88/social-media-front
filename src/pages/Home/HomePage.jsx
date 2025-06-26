@@ -9,7 +9,6 @@ export default function HomePage() {
       sx={{
         minHeight: "100vh",
         p: 5,
-        bgcolor: "backgroundColor.light",
       }}
     >
       <Container fixed sx={{ px: 0 }}>

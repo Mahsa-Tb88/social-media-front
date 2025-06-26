@@ -4,6 +4,9 @@ import { blueGrey } from "@mui/material/colors";
 const lightTheme = createTheme({
   palette: {
     mode: "light",
+    background: {
+      default: "#f5f5f5",
+    },
     backgroundColor: {
       main: "#eeeeee",
       light: "#f5f5f5",

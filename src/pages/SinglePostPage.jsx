@@ -14,7 +14,6 @@ export default function SinglePostPage() {
     <Stack
       sx={{
         py: 5,
-        bgcolor: "backgroundColor.main",
         minHeight: "100vh",
       }}
     >

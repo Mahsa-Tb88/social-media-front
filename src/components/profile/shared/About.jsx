@@ -19,7 +19,7 @@ export default function About() {
   const theme = useSelector((state) => state.app.theme);
   const id = useParams().id;
   return (
-    <Stack sx={{ py: 4, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>
+    <Stack sx={{ py: 4 }}>
       <Container maxWidth="md">
         <Paper sx={{ p: 4 }}>
           <Typography sx={{ mb: 3 }} variant="h5">

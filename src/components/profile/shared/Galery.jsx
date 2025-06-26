@@ -21,7 +21,7 @@ export default function Galery() {
   const navigate = useNavigate();
 
   return (
-    <Stack sx={{ py: 4, bgcolor: "backgroundColor.main" }}>
+    <Stack sx={{ py: 4 }}>
       {isPending ? (
         <Loading message="Is loading..." />
       ) : error ? (

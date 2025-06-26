@@ -14,7 +14,7 @@ export default function Friends() {
   const { data, isPending, error, refetch } = useGetFriends(id);
 
   return (
-    <Stack sx={{ py: 4, bgcolor: "backgroundColor.light" }}>
+    <Stack sx={{ py: 4}}>
       <Container maxWidth="md">
         {isPending ? (
           <Loading message="is loading..." />

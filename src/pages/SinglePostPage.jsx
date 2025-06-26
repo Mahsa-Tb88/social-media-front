@@ -16,7 +16,6 @@ export default function SinglePostPage() {
         py: 5,
         bgcolor: "backgroundColor.main",
         minHeight: "100vh",
-        overflow: "hidden",
       }}
     >
       {isPending ? (

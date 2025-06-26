@@ -13,16 +13,15 @@ import { useGetGalley } from "../../../utils/queries";
 import Loading from "../../../components/Loading";
 import LoadingError from "../../../components/LoadingError";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 export default function Galery() {
-  const theme = useSelector((state) => state.app.theme);
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetGalley(id);
+  console.log("galery", data);
   const navigate = useNavigate();
 
   return (
-    <Stack sx={{ py: 4, bgcolor: theme === "dark" ? "grey.800" : "grey.200" }}>
+    <Stack sx={{ py: 4, bgcolor: "backgroundColor.main" }}>
       {isPending ? (
         <Loading message="Is loading..." />
       ) : error ? (

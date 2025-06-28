@@ -9,7 +9,6 @@ import { useGetUserById } from "../../../../utils/queries";
 import PostsSection from "./PostsSection";
 
 export default function Post() {
-  const theme = useSelector((state) => state.app.theme);
   const userLogin = useSelector((state) => state.user.profile);
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetUserById(id);
@@ -24,7 +23,7 @@ export default function Post() {
           sx={{
             justifyContent: "center",
             alignItems: "center",
-            bgcolor: theme == "dark" ? "grey.800" : "grey.200",
+
             borderRadius: "5px",
           }}
         >
@@ -40,7 +39,6 @@ export default function Post() {
     <Stack
       sx={{
         py: 4,
-       
       }}
     >
       <Container maxWidth="lg">

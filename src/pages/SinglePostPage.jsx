@@ -13,9 +13,7 @@ export default function SinglePostPage() {
   return (
     <Stack
       sx={{
-        py: 5,
-        minHeight: "100vh",
-      }}
+        pt:5}}
     >
       {isPending ? (
         <Loading message="Is loading..." />

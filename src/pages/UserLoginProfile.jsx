@@ -7,7 +7,9 @@ import { Outlet } from "react-router-dom";
 export default function userLoginProfile() {
   return (
     <Stack>
-      <ProfileHeaderUserLogin />
+      <Stack sx={{ bgcolor: "background.paper" }}>
+        <ProfileHeaderUserLogin />
+      </Stack>
       <Stack>
         <Navbar />
         <Outlet />

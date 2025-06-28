@@ -7,11 +7,13 @@ import { Outlet } from "react-router-dom";
 export default function userLoginProfile() {
   return (
     <Stack>
-      <Stack sx={{ bgcolor: "background.paper" }}>
+      <Stack sx={{ bgcolor: "backgroundColor.default" }}>
         <ProfileHeaderUserLogin />
       </Stack>
       <Stack>
-        <Navbar />
+        <Stack sx={{ bgcolor: "backgroundColor.default" }}>
+          <Navbar />
+        </Stack>
         <Outlet />
       </Stack>
     </Stack>

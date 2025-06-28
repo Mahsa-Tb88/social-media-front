@@ -9,6 +9,7 @@ const lightTheme = createTheme({
     },
     backgroundColor: {
       main: "#eeeeee",
+      default: "#fff",
       light: "#f5f5f5",
       dark: "#e0e0e0",
       text: "#424242",

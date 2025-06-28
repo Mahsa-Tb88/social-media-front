@@ -10,6 +10,8 @@ export default function Navbar() {
       <Stack
         sx={{
           flexDirection: "row",
+          borderBottom: "none",
+          width: "100%",
           gap: 2,
 
           "& .active": { borderBottom: "2px solid #1976d2", borderRadius: 0 },

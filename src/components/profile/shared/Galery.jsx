@@ -82,22 +82,30 @@ export default function Galery() {
               <Divider sx={{ mt: 1, mb: 2 }} />
               <Stack>
                 {data.data.body.videos.length ? (
-                  data.data.body.videos.map((i, index) => {
-                    return (
-                      <Stack key={index} sx={{ my: 2, mx: 1 }}>
-                        <Box
-                          component="img"
-                          sx={{
-                            width: "300px",
-                            height: "300px",
-                            borderRadius: "5px",
-                          }}
-                          src={SERVER_URL + i.videos}
-                        />
-                        ;
-                      </Stack>
-                    );
-                  })
+                  <Grid2 container spacing={3}>
+                    {data.data.body.videos.map((i, index) => {
+                      return (
+                        <Stack key={index}>
+                          <Box
+                            component="video"
+                            sx={{
+                              maxWidth: "300px",
+                              height: "auto",
+                              borderRadius: "5px",
+                              textAlign: "center",
+                              cursor: "pointer",
+                              transition: "transform 0.3s ease-in-out",
+                              "&:hover": {
+                                transform: "scale(1.08)",
+                              },
+                            }}
+                            src={SERVER_URL + i.video}
+                            onClick={() => navigate("/post/" + i.id)}
+                          />
+                        </Stack>
+                      );
+                    })}
+                  </Grid2>
                 ) : (
                   <Typography component="h5" variant="h5">
                     No Videos to show!

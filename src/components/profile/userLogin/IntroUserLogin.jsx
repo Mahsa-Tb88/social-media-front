@@ -9,7 +9,6 @@ import { Button, Stack, Typography } from "@mui/material";
 export default function IntroUserLogin({ overview }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);
   const [openEditIntro, setOpenEditIntro] = useState(false);
-  const theme = useSelector((state) => state.app.theme);
   const intro = ["Pronounce", "School", "Location", "Hometown", "Status"];
 
   return (
@@ -23,8 +22,8 @@ export default function IntroUserLogin({ overview }) {
             <Button
               disableElevation
               sx={{
-                bgcolor: theme == "light" ? "grey.200" : "grey.800",
-                color: theme == "light" ? "grey.800" : "grey.200",
+                bgcolor: "backgroundColor.light",
+                color: "backgroundColor.text",
                 mb: 3,
                 mt: 2,
                 fontSize: 15,
@@ -59,7 +58,7 @@ export default function IntroUserLogin({ overview }) {
             sx={{ flexDirection: "row", alignItems: "center", mb: 2 }}
             key={item}
           >
-            <Item item={item} overview={overview} theme={theme} />
+            <Item item={item} overview={overview} />
           </Stack>
         );
       })}
@@ -72,8 +71,8 @@ export default function IntroUserLogin({ overview }) {
         <Button
           disableElevation
           sx={{
-            bgcolor: theme == "light" ? "grey.200" : "grey.800",
-            color: theme == "light" ? "grey.800" : "grey.200",
+            bgcolor: "backgroundColor.light",
+            color: "backgroundColor.text",
             mt: 2,
             fontSize: 15,
             fontWeight: "bold",

@@ -10,7 +10,6 @@ import LoadingError from "../components/LoadingError";
 export default function Initializer() {
   const { isPending, error, data, refetch } = useInitialize();
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (data) {
       const { body } = data.data;

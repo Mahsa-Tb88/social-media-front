@@ -16,7 +16,7 @@ export default function IntroUserLogin({ overview }) {
       <Stack>
         {overview && overview?.Intro?.value ? (
           <Stack>
-            <Typography sx={{ fontWeight: "bold" }}>
+            <Typography sx={{ fontWeight: "bold",textAlign:"justify" }}>
               {overview.Intro.value}
             </Typography>
             <Button

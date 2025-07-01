@@ -848,6 +848,7 @@ function Intro({ value, onCloseEdit, type }) {
           rows={4}
           value={bio}
           onChange={(e) => setBio(e.target.value)}
+          inputProps={{ maxLength: 400 }}
         />
       </Stack>
 

@@ -41,6 +41,8 @@ export default function ProfileInfoUserLogin() {
       : noImage
   );
 
+  console.log("data.data.body.listFriend", data.data.body.listFriend);
+
   return (
     <Container
       fixed
@@ -137,7 +139,7 @@ export default function ProfileInfoUserLogin() {
                         key={f.id}
                         alt={f.username[0].toUpperCase()}
                         src={SERVER_URL + f.profileImg}
-                        onClick={() => navigate("/profile/" + f.id)}
+                        onClick={() => navigate("/profile/" + f._id)}
                         sx={{
                           cursor: "pointer",
                           transition: "transform 0.3s ease-in-out",

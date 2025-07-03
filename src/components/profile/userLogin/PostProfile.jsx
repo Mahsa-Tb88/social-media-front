@@ -58,7 +58,7 @@ export default function PostProfile({ open, onClose, type, post }) {
   function onSubmit(data) {
     if (type == "edit") {
       data.id = post._id;
-      data.userId = post.userId;
+      data.userId = post.userId._id;
       const img = imagePost.replace(SERVER_URL, "");
       data.image = img;
       const video = videoPost ? videoPost.replace(SERVER_URL, "") : "";

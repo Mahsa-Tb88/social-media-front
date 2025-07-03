@@ -10,8 +10,6 @@ import React from "react";
 
 export default function Comment({ c, setPostComments, postComments, post }) {
   const navigate = useNavigate();
-  console.log("post", post);
-  console.log("c", c);
 
   const userLogin = useSelector((state) => state.user.profile);
   const userLoginId = userLogin.id;

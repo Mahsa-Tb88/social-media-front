@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { Box, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TextComment from "./TextComment";
 import noImage from "../../../../../assets/images/user.png";
 import DeleteCommnet from "./DeleteCommnet";
@@ -69,6 +69,7 @@ export default function Comment({ c, setPostComments, postComments, post }) {
             {new Date(c.createdAt).toLocaleDateString()}
           </Typography>
           {(post?.userId?._id == userLoginId ||
+            post?.userId == userLoginId ||
             c.userId._id == userLoginId) && (
             <DeleteCommnet
               setPostComments={setPostComments}
@@ -85,6 +86,7 @@ export default function Comment({ c, setPostComments, postComments, post }) {
         c={c}
         setPostComments={setPostComments}
         postComments={postComments}
+        post={post}
       />
     </Stack>
   );

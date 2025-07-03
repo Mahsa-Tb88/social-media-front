@@ -8,7 +8,12 @@ import Comment from "./Comment";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function TextComment({ c, setPostComments, postComments }) {
+export default function TextComment({
+  c,
+  setPostComments,
+  postComments,
+  post,
+}) {
   const [showMore, setShowMore] = useState(false);
   const [reply, setReply] = useState(false);
   const userLogin = useSelector((state) => state.user.profile);
@@ -81,6 +86,7 @@ export default function TextComment({ c, setPostComments, postComments }) {
                 setPostComments={setPostComments}
                 postComments={postComments}
                 postId={r.postId}
+                post={post}
               />
             </Stack>
           );

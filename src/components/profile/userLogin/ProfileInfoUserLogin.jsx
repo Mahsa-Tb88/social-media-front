@@ -41,8 +41,6 @@ export default function ProfileInfoUserLogin() {
       : noImage
   );
 
-  console.log("data.data.body.listFriend", data.data.body.listFriend);
-
   return (
     <Container
       fixed

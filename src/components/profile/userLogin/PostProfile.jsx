@@ -30,6 +30,7 @@ import { LoadingButton } from "@mui/lab";
 import { useQueryClient } from "@tanstack/react-query";
 import EmojiPicker from "emoji-picker-react";
 import UploadVideo from "./UploadVideo";
+import { toast } from "react-toastify";
 
 export default function PostProfile({ open, onClose, type, post }) {
   const profile = useSelector((state) => state.user.profile);
@@ -63,7 +64,6 @@ export default function PostProfile({ open, onClose, type, post }) {
       data.image = img;
       const video = videoPost ? videoPost.replace(SERVER_URL, "") : "";
       data.video = video;
-      console.log("data", data);
 
       editMutation.mutate(data, {
         onSuccess(d) {
@@ -74,9 +74,11 @@ export default function PostProfile({ open, onClose, type, post }) {
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
           queryClient.invalidateQueries({ queryKey: ["singlePost"] });
+          toast.success("Post was edited succefully!");
         },
         onError(e) {
           console.log("Postprofile error is ..", e);
+          toast.error(e.response.data.message);
         },
       });
     } else {
@@ -92,9 +94,11 @@ export default function PostProfile({ open, onClose, type, post }) {
           setVideoPost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
+          toast.success("Post was created succefully!");
         },
         onError(error) {
           console.log("PostProfile error", error);
+          toast.error(error.response.data.message);
         },
       });
     }

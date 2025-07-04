@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { useQueryClient } from "@tanstack/react-query";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLeaveComment } from "../../../../../utils/mutation";
 import { useGetSearchUser } from "../../../../../utils/queries";
 import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
@@ -28,6 +28,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
 
   const mutationLeaveComm = useLeaveComment();
   const { isPending, data, error, refetch } = useGetSearchUser(search, postId);
+  const pickerRef = useRef(null);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -37,6 +38,19 @@ export default function InputComment({ postId, replyTo, setReply }) {
       return () => clearTimeout(timeOut);
     }
   }, [q]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        setShowEmoji(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   function sendText() {
     const data = {};
@@ -179,6 +193,7 @@ export default function InputComment({ postId, replyTo, setReply }) {
             right: 0,
             zIndex: 10,
           }}
+          ref={pickerRef}
         >
           <EmojiPicker onEmojiClick={handleEmoji} />
         </Stack>

@@ -202,6 +202,7 @@ export default function EditValueSubject({
               sx={{ mt: 4, fontWeight: "bold" }}
               size="large"
               onClick={saveChangeHandler}
+              disabled={newValue ? false : true}
             >
               Save
             </Button>
@@ -707,7 +708,7 @@ function FamilyMember({ value, type, onCloseEdit }) {
         </Select>
       </FormControl>
 
-      <Button size="large" sx={{}} onClick={saveHandler}>
+      <Button size="large" onClick={saveHandler}>
         Save
       </Button>
     </Stack>
@@ -735,6 +736,7 @@ function Status({ newValue, setNewValue, saveChangeHandler }) {
         sx={{ mt: 4, fontWeight: "bold" }}
         size="large"
         onClick={saveChangeHandler}
+        disabled={newValue ? false : true}
       >
         Save
       </Button>
@@ -784,7 +786,12 @@ function Pronounce({ onCloseEdit }) {
         </Select>
       </FormControl>
 
-      <Button size="large" sx={{}} onClick={saveHandler}>
+      <Button
+        size="large"
+        sx={{}}
+        onClick={saveHandler}
+        disabled={pronounce ? false : true}
+      >
         Save
       </Button>
     </Stack>
@@ -817,6 +824,7 @@ function Intro({ value, onCloseEdit, type }) {
       },
     });
   }
+
   const deleteMutation = useDeleteOverview();
   function deleteBio() {
     const data = { id: userId, subject: "Intro" };
@@ -852,7 +860,11 @@ function Intro({ value, onCloseEdit, type }) {
         />
       </Stack>
 
-      <Button size="large" onClick={saveChangeHandler}>
+      <Button
+        size="large"
+        onClick={saveChangeHandler}
+        disabled={bio ? false : true}
+      >
         Save
       </Button>
       <Button

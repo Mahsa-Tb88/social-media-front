@@ -41,9 +41,12 @@ export default function MenuItem({
   const mutationRel = useDeleteRelationship();
   const mutationFamily = useDeleteFamilyMember();
   const mutationPlace = useDeletePlace();
+  const mutationContactInfo = useDeleteContactBaseInfo();
   const querryClient = useQueryClient();
   const userId = useParams().id;
   function deleteItem() {
+    console.log(";;;;", title);
+
     if (title == "overview") {
       const data = { id: userId, subject };
 
@@ -63,10 +66,10 @@ export default function MenuItem({
     }
 
     if (title == "contactBaseInfo") {
-      const mutation = useDeleteContactBaseInfo();
-
       const data = { id: userId, subject };
-      mutation.mutate(data, {
+      console.log("data", data);
+
+      mutationContactInfo.mutate(data, {
         onSuccess(d) {
           querryClient.invalidateQueries({
             queryKey: ["contactBaseInfo"],

@@ -503,8 +503,9 @@ function Relationship({ value, type, onCloseEdit }) {
 
   const mutationRel = useUpdatedRelationship();
   const querryClient = useQueryClient();
+  console.log("user====", user);
+
   function saveHandler() {
-    console.log("user====", user);
     const data = {
       id: userId,
       relationship: {
@@ -537,8 +538,8 @@ function Relationship({ value, type, onCloseEdit }) {
 
       {search && (
         <Stack>
-          {userList.map((l) => (
-            <List>
+          {userList.map((l, index) => (
+            <List key={index}>
               <ListItem
                 sx={{
                   cursor: "pointer",
@@ -575,7 +576,12 @@ function Relationship({ value, type, onCloseEdit }) {
         </Select>
       </FormControl>
 
-      <Button size="large" sx={{}} onClick={saveHandler}>
+      <Button
+        size="large"
+        sx={{}}
+        onClick={saveHandler}
+        disabled={user.username ? false : true}
+      >
         Save
       </Button>
     </Stack>

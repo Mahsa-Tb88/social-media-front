@@ -1,15 +1,13 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
-
-import ItemAbout from "../ItemAbout";
-
-import ShowIcon from "../ShowIcon";
+import { Stack, Typography } from "@mui/material";
+import React from "react";
 import { useGetOverview } from "../../../utils/queries";
 import { useParams } from "react-router-dom";
-import EditValueSubject from "../EditVelueSubject";
+
 import LoadingError from "../../../components/LoadingError";
 import Loading from "../../../components/Loading";
+import Item from "./Item";
+import AddSubject from "./AddSubject";
 
 export default function Overview() {
   const id = useParams().id;
@@ -80,72 +78,6 @@ export default function Overview() {
             })
           )}
         </Stack>
-      )}
-    </Stack>
-  );
-}
-
-function Item({ subject, text, value, viewer, isOwner }) {
-  return isOwner ? (
-    <ItemAbout
-      subject={subject}
-      text={text}
-      value={value}
-      myViewer={viewer}
-      title="overview"
-    >
-      <Content subject={subject} value={value} text={text} />
-    </ItemAbout>
-  ) : (
-    <Content subject={subject} value={value} text={text} />
-  );
-}
-
-function Content({ subject, value, text }) {
-  return (
-    <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-      {subject == "Status" && value == "Married" ? (
-        <ShowIcon subject={value} sx={{ mr: 1 }} />
-      ) : subject == "Status" && value == "In relationship" ? (
-        <ShowIcon subject={value} sx={{ mr: 1 }} />
-      ) : subject == "Status" && value == "Single" ? (
-        <ShowIcon subject={value} sx={{ mr: 1 }} />
-      ) : (
-        <ShowIcon subject={subject} sx={{ mr: 1 }} />
-      )}
-      <Typography>{text}</Typography>
-      <Typography>{value}</Typography>
-    </Stack>
-  );
-}
-
-function AddSubject({ subject, isOwner }) {
-  const [openAddSubject, setOpenAddSubject] = useState(false);
-  return (
-    <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
-      <Box>
-        <ShowIcon subject={subject} />
-      </Box>
-      {isOwner ? (
-        <Stack>
-          <Button
-            variant="text"
-            sx={{ fontSize: 18 }}
-            onClick={() => setOpenAddSubject(true)}
-          >
-            Add {subject}
-          </Button>
-          <Box></Box>
-          <EditValueSubject
-            openEdit={openAddSubject}
-            onCloseEdit={() => setOpenAddSubject(false)}
-            subject={subject}
-            type="new"
-            title="overview"
-          />
-        </Stack>
-      ) : (
-        "It is not added yet!"
       )}
     </Stack>
   );

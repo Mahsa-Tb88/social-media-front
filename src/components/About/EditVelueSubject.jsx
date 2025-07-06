@@ -503,7 +503,6 @@ function Relationship({ value, type, onCloseEdit }) {
 
   const mutationRel = useUpdatedRelationship();
   const querryClient = useQueryClient();
-  console.log("user====", user);
 
   function saveHandler() {
     const data = {
@@ -520,9 +519,11 @@ function Relationship({ value, type, onCloseEdit }) {
       onSuccess(d) {
         querryClient.invalidateQueries({ queryKey: ["familyRel"] });
         onCloseEdit();
+        toast.success(d.data.message);
       },
       onError(error) {
         console.log("error is", error);
+        toast.error(error.response.data.message);
       },
     });
   }

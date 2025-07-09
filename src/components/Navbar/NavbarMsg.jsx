@@ -28,7 +28,7 @@ export default function NavbarMsg({ open, anchorEl, handleClose }) {
     const data = { id, chatId };
 
     mutation.mutate(data, {
-      onSuccess(d) {
+      onSuccess() {
         const updatedMsgs = userLoging.messages.map((msg) => {
           if (msg.id == id) {
             return { ...msg, isRead: true };

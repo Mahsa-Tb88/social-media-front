@@ -62,7 +62,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     myData.id = user.id;
     myData.image = selectedImage.replace(SERVER_URL, "");
     mutate(myData, {
-      onSuccess(d) {
+      onSuccess() {
         dispatch(
           userActions.setProfile({
             ...user,
@@ -85,7 +85,7 @@ export default function ProfileImgChange({ open, onClose, setProfileImg }) {
     data.id = user.id;
     data.image = "";
     mutate(data, {
-      onSuccess(d) {
+      onSuccess() {
         dispatch(
           userActions.setProfile({
             ...user,

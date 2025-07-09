@@ -56,8 +56,9 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
       userId: userLogin.id,
     };
     confirmMutation.mutate(data, {
-      onSuccess(d) {
+      onSuccess() {
         const updatedListFriends = [
+          // eslint-disable-next-line no-unsafe-optional-chaining
           ...userLogin?.friends.listFriend,
           {
             id: friend.id,
@@ -102,7 +103,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
       id: userLogin.id,
     };
     removeRequestMutation.mutate(data, {
-      onSuccess(d) {
+      onSuccess() {
         const updatedFriendRequestList =
           userLogin.friends.friendRequestList.map((f) => {
             if (f.id == user.id) {

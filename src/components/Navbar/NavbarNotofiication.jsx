@@ -116,6 +116,8 @@ export default function NavbarNotofiication({ open, anchorEl, handleClose }) {
                         width: "30px",
                         height: "30px",
                         borderRadius: "50%",
+                        objectFit: "cover",
+                        display: "block",
                       }}
                     />
                     <Typography>

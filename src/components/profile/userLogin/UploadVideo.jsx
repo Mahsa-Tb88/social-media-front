@@ -44,7 +44,6 @@ export default function UploadVideo({
     }
   }
   function removeVideoHandler() {
-    setSelectedVideo("");
     setVideoPost("");
     onclose();
   }

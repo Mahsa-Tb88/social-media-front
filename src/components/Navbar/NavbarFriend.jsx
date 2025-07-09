@@ -190,7 +190,11 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                       }
                       height={50}
                       width={50}
-                      sx={{ borderRadius: 50 }}
+                      sx={{
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
                     />
                   </ListItemIcon>
                   <ListItemText>

@@ -52,7 +52,7 @@ export default function PostProfile({ open, onClose, type, post }) {
     },
   });
 
-  const { isPending, error, mutate } = useCreateNewPost();
+  const { isPending, mutate } = useCreateNewPost();
   const editMutation = useEditPost();
   const queryClient = useQueryClient();
 

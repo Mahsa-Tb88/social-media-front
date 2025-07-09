@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import ShowIcon from "../../About/ShowIcon";
 import EditIntro from "./EditIntro";
-import EditValueSubject from "../../About/EditVelueSubject";
 import { Button, Stack, Typography } from "@mui/material";
+import EditValueSubject from "../../About/Edit/EditVelueSubject";
 
 export default function IntroUserLogin({ overview }) {
   const [openAddSubject, setOpenAddSubject] = useState(false);

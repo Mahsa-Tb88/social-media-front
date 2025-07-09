@@ -1,7 +1,7 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ShowIcon from "../ShowIcon";
-import EditValueSubject from "../EditVelueSubject";
+import EditValueSubject from "../Edit/EditVelueSubject";
 
 export default function AddUsedToLived({ isOwner }) {
   const [openAddPlace, setOpenAddPlace] = useState(false);

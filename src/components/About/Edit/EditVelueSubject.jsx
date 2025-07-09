@@ -3,13 +3,11 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   Dialog,
   DialogContent,
   DialogTitle,
   Divider,
   FormControl,
-  FormControlLabel,
   InputLabel,
   List,
   ListItem,
@@ -24,15 +22,10 @@ import {
 import React, { useEffect, useState } from "react";
 import MyIconButton from "../../Customized/MyIconButton";
 import { Close } from "@mui/icons-material";
-import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import {
   useEditContactBaseInfo,
   useEditOverview,
-  useAddWork,
-  useEditWork,
-  useAddEducation,
-  useEditEducation,
   useUpdatedRelationship,
   useUpdatedFamily,
   useAddFamily,
@@ -43,9 +36,11 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useSearchPerson } from "../../../utils/queries";
-import noImage from "../../assets/images/user.png";
+import noImage from "../../../assets/images/user.png";
 import { toast } from "react-toastify";
 import LoadingError from "../../LoadingError";
+import EducationEdit from "./EducationEdit";
+import WorkEdit from "./WorkEdit";
 
 export default function EditValueSubject({
   openEdit,
@@ -143,6 +138,7 @@ export default function EditValueSubject({
     onCloseEdit();
   }
 
+  console.log("title", title);
   return (
     <Dialog open={openEdit} onClose={onCloseEdit} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -212,132 +208,6 @@ export default function EditValueSubject({
       </DialogContent>
       <Divider />
     </Dialog>
-  );
-}
-
-function WorkEdit() {}
-
-function EducationEdit({ value, onCloseEdit, type, id }) {
-  const userId = useParams().id;
-  const [currentPosition, setCurrentPosition] = useState(
-    value ? value.isCurrently : false
-  );
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      field: value.field,
-      degree: value.degree,
-      university: value.university,
-      startYear: value.startYear,
-      endYear: value.endYear,
-      isCurrently: value.isCurrently,
-    },
-  });
-  const mutationNewEducation = useAddEducation();
-  const querryClient = useQueryClient();
-  const mutationEditEducation = useEditEducation();
-
-  function onSubmit(data) {
-    onCloseEdit();
-    if (type == "new") {
-      data.id = userId;
-      data.isCurrently = currentPosition;
-      mutationNewEducation.mutate(data, {
-        onSuccess(d) {
-          querryClient.invalidateQueries({
-            queryKey: ["education"],
-          });
-        },
-        onError(error) {
-          console.log("error isss", error);
-        },
-      });
-    } else {
-      data.userId = userId;
-      data.id = id;
-      data.isCurrently = currentPosition;
-
-      mutationEditEducation.mutate(data, {
-        onSuccess(d) {
-          querryClient.invalidateQueries({ queryKey: ["education"] });
-        },
-        onError(error) {
-          console.log("error is", error);
-        },
-      });
-    }
-  }
-  return (
-    <Stack spacing={3} component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Stack>
-        <Typography sx={{ fontSize: 12, fontWeight: "bold", mb: 1 }}>
-          Field of study
-        </Typography>
-        <TextField
-          size="small"
-          defaultValue={value.position}
-          label="New value"
-          {...register("field")}
-        />
-      </Stack>
-      <Stack>
-        <Typography sx={{ fontSize: 12, fontWeight: "bold", mb: 1 }}>
-          Degree
-        </Typography>
-        <TextField
-          size="small"
-          defaultValue={value.place}
-          label="New value"
-          {...register("degree")}
-        />
-      </Stack>
-      <Stack>
-        <Typography sx={{ fontSize: 12, fontWeight: "bold", mb: 1 }}>
-          University
-        </Typography>
-        <TextField
-          size="small"
-          defaultValue={value.city}
-          label="New value"
-          {...register("university")}
-        />
-      </Stack>
-      <Stack>
-        <Typography sx={{ fontSize: 12, fontWeight: "bold" }}>Year</Typography>
-        <Stack>
-          {
-            <FormControlLabel
-              control={<Checkbox />}
-              checked={currentPosition}
-              label="I am currently studing"
-              onChange={() => setCurrentPosition(!currentPosition)}
-              sx={{ mb: 1 }}
-            />
-          }
-          <Stack sx={{ flexDirection: "row", gap: 2 }}>
-            <TextField
-              label="From"
-              type="number"
-              defaultValue={value.startYear}
-              fullWidth
-              {...register("startYear")}
-            />
-
-            {!currentPosition && (
-              <TextField
-                label="To"
-                type="number"
-                value={value.endYear}
-                fullWidth
-                {...register("endYear")}
-              />
-            )}
-          </Stack>
-        </Stack>
-      </Stack>
-      <Button type="submit" size="large">
-        Save
-      </Button>
-    </Stack>
   );
 }
 

@@ -1,7 +1,7 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ShowIcon from "../ShowIcon";
-import EditValueSubject from "../EditVelueSubject";
+import EditValueSubject from "../Edit/EditVelueSubject";
 
 // eslint-disable-next-line react/prop-types
 export default function AddHometown({ isOwner }) {

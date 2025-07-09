@@ -1,7 +1,7 @@
 import { Box, Button, Stack } from "@mui/material";
 import React, { useState } from "react";
-import EditValueSubject from "../EditVelueSubject";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
+import EditValueSubject from "../Edit/EditVelueSubject";
 
 // eslint-disable-next-line react/prop-types
 export default function AddSubjectWork({ isOwner, length }) {

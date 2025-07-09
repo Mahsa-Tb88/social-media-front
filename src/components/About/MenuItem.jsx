@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 
 import React, { useState } from "react";
-import EditValueSubject from "./EditVelueSubject";
 import {
   useDeleteContactBaseInfo,
   useDeleteEducation,
@@ -24,6 +23,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import EditValueSubject from "./Edit/EditVelueSubject";
 export default function MenuItem({
   open,
   anchorEl,

@@ -16,13 +16,13 @@ export default function DeletePost({ open, onClose, id }) {
 
   function deletePostHandler(id) {
     mutateDeletePost.mutate(id, {
-      onSuccess() {
+      onSuccess(d) {
         onClose();
         queryClient.invalidateQueries({ queryKey: ["posts"] });
         if (url.includes("/post/")) {
           navigate("/profile/" + userLogin.id);
         }
-        toast.success("Your post was deleted successfully!");
+        toast.success(d.data.message);
       },
       onError(e) {
         console.log("delete post error is", e);

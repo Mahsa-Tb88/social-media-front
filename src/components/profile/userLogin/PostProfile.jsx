@@ -74,7 +74,7 @@ export default function PostProfile({ open, onClose, type, post }) {
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
           queryClient.invalidateQueries({ queryKey: ["singlePost"] });
-          toast.success("Post was edited succefully!");
+          toast.success(d.data.message);
         },
         onError(e) {
           console.log("Postprofile error is ..", e);
@@ -94,7 +94,7 @@ export default function PostProfile({ open, onClose, type, post }) {
           setVideoPost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
-          toast.success("Post was created succefully!");
+          toast.success(d.data.message);
         },
         onError(error) {
           console.log("PostProfile error", error);

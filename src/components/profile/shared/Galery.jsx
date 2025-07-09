@@ -17,7 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function Galery() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetGalley(id);
-  console.log("galery", data);
+ 
   const navigate = useNavigate();
 
   return (

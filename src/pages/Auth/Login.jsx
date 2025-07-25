@@ -138,11 +138,6 @@ export default function Login() {
                     Sign Up
                   </Button>
                 </Box>
-                <Box display="flex">
-                  <Typography variant="text" component={Link}>
-                    Forgot Password?
-                  </Typography>
-                </Box>
               </Stack>
 
               <LoadingButton

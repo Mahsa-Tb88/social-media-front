@@ -8,6 +8,7 @@ import LoadingError from "../components/LoadingError";
 import UserProfile from "./UserProfile";
 import { useParams } from "react-router-dom";
 import NotFound from "./NotFound";
+import Login from "./Auth/Login";
 
 export default function Profile() {
   const userLogin = useSelector((state) => state.user.profile);
@@ -18,7 +19,9 @@ export default function Profile() {
 
   return (
     <Stack>
-      {isPending ? (
+      {!userLogin.id ? (
+        <Login />
+      ) : isPending ? (
         <Loading message="is loading..." />
       ) : error ? (
         <LoadingError

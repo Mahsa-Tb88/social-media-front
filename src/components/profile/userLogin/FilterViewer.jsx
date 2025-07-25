@@ -53,22 +53,23 @@ export default function FilterViewer({
   const mutationPlaceViewer = useFilterPlaceViewer();
   const mutationPostViewer = useEditPost();
   const queryClient = useQueryClient();
+
   function saveHandler(e) {
     const data = { subject, viewer: e.target.value, id };
+    
     if (title == "overview") {
       mutationOverviewViewer.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setViewer(e.target.value);
           queryClient.invalidateQueries({ queryKey: ["overview"] });
         },
         onError(e) {
-          console.log("error filter viewer", e);
           toast.error(e.response.data.message);
         },
       });
     } else if (title == "contactBaseInfo") {
       mutationInfosViewer.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setViewer(e.target.value);
           queryClient.invalidateQueries({ queryKey: ["contactBaseInfo"] });
         },
@@ -80,7 +81,7 @@ export default function FilterViewer({
     } else if (title == "Work") {
       const data = { viewer: e.target.value, id, itemId };
       mutationWorkViewer.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setViewer(e.target.value);
           queryClient.invalidateQueries({ queryKey: ["work"] });
         },
@@ -92,19 +93,18 @@ export default function FilterViewer({
     } else if (title == "Education") {
       const data = { viewer: e.target.value, id, itemId };
       mutationEducationViewer.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setViewer(e.target.value);
           queryClient.invalidateQueries({ queryKey: ["education"] });
         },
         onError(e) {
-          console.log("error filter viewer", e);
           toast.error(e.response.data.message);
         },
       });
     } else if (title == "Family") {
       const data = { viewer: e.target.value, id, itemId };
       mutationFamilyViewer.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setViewer(e.target.value);
           queryClient.invalidateQueries({ queryKey: ["familyRel"] });
         },
@@ -116,7 +116,7 @@ export default function FilterViewer({
     } else if (title == "Relationship") {
       const data = { viewer: e.target.value, id };
       mutationRelViewer.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setViewer(e.target.value);
           queryClient.invalidateQueries({ queryKey: ["familyRel"] });
         },
@@ -128,9 +128,9 @@ export default function FilterViewer({
     } else if (title == "post") {
       const data = { id: itemId, viewer: e.target.value, userId: id };
       mutationPostViewer.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setViewer(e.target.value);
-          queryClient.invalidateQueries({ queryKey: ["post"] });
+          queryClient.invalidateQueries({ queryKey: ["singlePost", itemId] });
         },
         onError(e) {
           console.log("viewer post error is", e);
@@ -140,12 +140,11 @@ export default function FilterViewer({
     } else {
       const data = { itemId, id, title, viewer: e.target.value };
       mutationPlaceViewer.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setViewer(e.target.value);
           queryClient.invalidateQueries({ queryKey: ["placeLived"] });
         },
         onError(e) {
-          console.log("error is", e);
           toast.error(e.response.data.message);
         },
       });

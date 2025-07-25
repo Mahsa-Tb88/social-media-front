@@ -2,21 +2,19 @@
 /* eslint-disable react/prop-types */
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import FilterViewer from "../../userLogin/FilterViewer";
+
 import { Edit } from "@mui/icons-material";
 import MyIconButton from "../../../../components/Customized/MyIconButton";
-import noImage from "../../../../assets/images/user.png";
 import { useSelector } from "react-redux";
 import MenuPost from "../../userLogin/MenuPost";
 import React from "react";
 
-import GroupIcon from "@mui/icons-material/Group";
 import ChatIcon from "@mui/icons-material/Chat";
-import PublicIcon from "@mui/icons-material/Public";
-import LockIcon from "@mui/icons-material/Lock";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+
+import { useLocation, useParams } from "react-router-dom";
 import CommentList from "./comment/CommentList";
 import InputComment from "./comment/InputComment";
+import Info from "./Info";
 import PostLike from "./like/PostLike";
 import { useGetCommentPost } from "../../../../utils/queries";
 import Loading from "../../../../components/Loading";
@@ -29,6 +27,8 @@ export default function SinglePost({ post, profile }) {
   const [showComments, setShowComments] = useState(false);
   const [openLoginUser, setOpenLoginUser] = useState(false);
   const [openMenuPost, setOpenMenuPost] = useState(false);
+  const [viewer, setViewer] = useState(post.viewer);
+
   const menuPostAnchor = useRef(null);
   const location = useLocation();
   let id = useParams().id;
@@ -63,6 +63,7 @@ export default function SinglePost({ post, profile }) {
       setOpenLoginUser(true);
     }
   }
+  console.log("rerender again...");
 
   return (
     <Stack>
@@ -72,6 +73,8 @@ export default function SinglePost({ post, profile }) {
           profile={profile}
           isOwner={isOwner}
           userLogin={userLogin}
+          viewer={viewer}
+          setViewer={setViewer}
         />
 
         <Stack spacing={2}>
@@ -112,7 +115,7 @@ export default function SinglePost({ post, profile }) {
                     width: "100%",
                     height: "auto",
                     display: "block",
-                    borderRadius: "8px", 
+                    borderRadius: "8px",
                   }}
                   controls
                   key={post.video}
@@ -133,6 +136,8 @@ export default function SinglePost({ post, profile }) {
             anchorEl={menuPostAnchor.current}
             handleClose={() => setOpenMenuPost(false)}
             post={post}
+            viewer={viewer}
+            setViewer={setViewer}
           />
         </Stack>
         <Divider sx={{ my: 1 }} />
@@ -186,127 +191,6 @@ export default function SinglePost({ post, profile }) {
         </Stack>
         {userLogin.id && <InputComment postId={post._id} />}
       </Paper>
-    </Stack>
-  );
-}
-
-function Info({ profile, post, isOwner, userLogin }) {
-  const [openFilterViewer, setOpenFilterViewer] = useState(false);
-  const [viewer, setViewer] = useState(post.viewer);
-  const navigate = useNavigate();
-
-  function getDate(dateString) {
-    const myDate = new Date(dateString);
-    const options = { month: "long", day: "2-digit", year: "numeric" };
-    const formattedDate = myDate.toLocaleDateString("en-GB", options);
-    return formattedDate;
-  }
-
-  return (
-    <Stack
-      sx={{
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 2,
-        mb: 3,
-      }}
-    >
-      <Box
-        component="img"
-        src={
-          userLogin.id == profile._id
-            ? userLogin.profileImg
-              ? userLogin.profileImg.includes(SERVER_URL)
-                ? userLogin.profileImg
-                : SERVER_URL + userLogin.profileImg
-              : noImage
-            : profile.profileImg
-              ? profile.profileImg.includes(SERVER_URL)
-                ? profile.profileImg
-                : SERVER_URL + profile.profileImg
-              : noImage
-        }
-        sx={{
-          width: "40px",
-          height: "40px",
-          borderRadius: "50%",
-          cursor: "pointer",
-          objectFit: "cover",
-          display: "block",
-        }}
-        onClick={() => navigate("profile/" + post.userId._id)}
-      />
-      <Stack>
-        <Typography
-          sx={{ fontSize: 18, cursor: "pointer" }}
-          onClick={() => navigate("profile/" + post.userId._id)}
-        >
-          {profile.username[0].toUpperCase() + profile.username.slice(1)}
-        </Typography>
-        <Stack
-          sx={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <Typography sx={{ fontSize: 13 }}>
-            {getDate(post.createdAt)}
-          </Typography>
-
-          {viewer == "friends" ? (
-            <GroupIcon
-              sx={{
-                fontSize: 16,
-                cursor: "pointer",
-                borderRadius: "50%",
-
-                "&:hover": {
-                  bgcolor: "backgroundColor.light",
-                },
-              }}
-              onClick={() => setOpenFilterViewer(true)}
-            />
-          ) : viewer == "public" ? (
-            <PublicIcon
-              sx={{
-                fontSize: 16,
-                cursor: "pointer",
-                borderRadius: "50%",
-
-                "&:hover": {
-                  bgcolor: "backgroundColor.light",
-                },
-              }}
-              onClick={() => setOpenFilterViewer(true)}
-            />
-          ) : (
-            <LockIcon
-              sx={{
-                fontSize: 16,
-                cursor: "pointer",
-                borderRadius: "50%",
-                "&:hover": {
-                  bgcolor: "backgroundColor.light",
-                },
-              }}
-              onClick={() => setOpenFilterViewer(true)}
-            />
-          )}
-        </Stack>
-
-        {isOwner && (
-          <FilterViewer
-            open={openFilterViewer}
-            onClose={() => setOpenFilterViewer(false)}
-            setViewer={setViewer}
-            viewer={viewer}
-            title="post"
-            itemId={post._id}
-            userId={post.userId._id}
-          />
-        )}
-      </Stack>
     </Stack>
   );
 }

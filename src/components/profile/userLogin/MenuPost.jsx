@@ -13,7 +13,14 @@ import React, { useState } from "react";
 import PostProfile from "./PostProfile";
 import DeletePost from "./DeletePost";
 
-export default function MenuPost({ open, anchorEl, handleClose, post }) {
+export default function MenuPost({
+  open,
+  anchorEl,
+  handleClose,
+  post,
+  viewer,
+  setViewer,
+}) {
   const [openEditPost, setOpenEditPost] = useState(false);
   const [openDeletePost, setOpenDeletePost] = useState(false);
 
@@ -66,6 +73,8 @@ export default function MenuPost({ open, anchorEl, handleClose, post }) {
         onClose={editCloseHandler}
         type="edit"
         post={post}
+        viewer={viewer}
+        setViewer={setViewer}
       />
       <DeletePost
         open={openDeletePost}

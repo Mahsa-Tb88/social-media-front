@@ -32,9 +32,15 @@ import EmojiPicker from "emoji-picker-react";
 import UploadVideo from "./UploadVideo";
 import { toast } from "react-toastify";
 
-export default function PostProfile({ open, onClose, type, post }) {
+export default function PostProfile({
+  open,
+  onClose,
+  type,
+  post,
+  viewer,
+  setViewer,
+}) {
   const profile = useSelector((state) => state.user.profile);
-  const [viewer, setViewer] = useState("friends");
   const [imagePost, setImagePost] = useState(
     post?.image ? SERVER_URL + post.image : ""
   );
@@ -57,9 +63,11 @@ export default function PostProfile({ open, onClose, type, post }) {
   const queryClient = useQueryClient();
 
   function onSubmit(data) {
+    console.log("data", data);
     if (type == "edit") {
       data.id = post._id;
-      data.userId = post.userId._id;
+      data.viewer = viewer;
+      data.userId = profile.id == post.userId ? post.userId : post.userId._id;
       const img = imagePost.replace(SERVER_URL, "");
       data.image = img;
       const video = videoPost ? videoPost.replace(SERVER_URL, "") : "";
@@ -73,7 +81,7 @@ export default function PostProfile({ open, onClose, type, post }) {
           setVideoPost("");
           onClose();
           queryClient.invalidateQueries({ queryKey: ["posts"] });
-          queryClient.invalidateQueries({ queryKey: ["singlePost"] });
+          queryClient.invalidateQueries({ queryKey: ["singlePost", post._id] });
           toast.success(d.data.message);
         },
         onError(e) {
@@ -182,6 +190,7 @@ export default function PostProfile({ open, onClose, type, post }) {
             >
               <MenuItem value="friends">Friends</MenuItem>
               <MenuItem value="public">Public</MenuItem>
+              <MenuItem value="private">Only me</MenuItem>
             </Select>
           </Stack>
         </Stack>

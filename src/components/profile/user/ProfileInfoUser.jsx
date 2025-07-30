@@ -182,7 +182,9 @@ export default function ProfileInfoUser({ user, mutualFriend, numOfFriend }) {
                 {numOfFriend?.length > 0 ? numOfFriend.length + " friends" : ""}
                 {mutualFriend?.length > 0
                   ? ", " + mutualFriend.length + " mutual"
-                  : " | No mutual friend"}
+                  : numOfFriend?.length > 0
+                    ? " | No mutual friend"
+                    : ""}
               </Typography>
               <AvatarGroup
                 max={4}

@@ -48,6 +48,8 @@ export default function PostProfile({
     post?.video ? SERVER_URL + post.video : ""
   );
 
+  const [postViewer, setPostViewer] = useState(viewer ? viewer : "friends");
+
   const [openUploadImage, setOpenUploadImage] = useState(false);
   const [openUplodViedo, setOpenUploadVideo] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
@@ -89,7 +91,7 @@ export default function PostProfile({
         },
       });
     } else {
-      data.viewer = viewer;
+      data.viewer = postViewer;
       data.image = imagePost;
       data.video = videoPost;
       data.id = profile.id;
@@ -148,6 +150,14 @@ export default function PostProfile({
     setImagePost("");
     setVideoPost("");
   }
+
+  function changeViewer(value) {
+    if (type == "new") {
+      setPostViewer(value);
+    } else {
+      setViewer(value);
+    }
+  }
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <Stack
@@ -182,8 +192,8 @@ export default function PostProfile({
             <Typography sx={{ fontSize: 17 }}>{profile.username}</Typography>
 
             <Select
-              value={viewer}
-              onChange={(e) => setViewer(e.target.value)}
+              value={postViewer}
+              onChange={(e) => changeViewer(e.target.value)}
               size="small"
               sx={{ fontSize: 13 }}
             >

@@ -9,11 +9,12 @@ import LoadingError from "../components/LoadingError";
 export default function SinglePostPage() {
   const id = useParams().id;
   const { isPending, data, error, refetch } = useGetPost(id);
-
+  console.log("error", error);
   return (
     <Stack
       sx={{
-        pt:5}}
+        pt: 5,
+      }}
     >
       {isPending ? (
         <Loading message="Is loading..." />

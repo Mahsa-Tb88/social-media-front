@@ -63,7 +63,7 @@ export default function SinglePost({ post, profile }) {
       setOpenLoginUser(true);
     }
   }
-  console.log("rerender again...");
+
 
   return (
     <Stack>

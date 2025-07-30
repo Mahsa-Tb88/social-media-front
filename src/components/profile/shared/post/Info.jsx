@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
+
 import React, { useState } from "react";
 import FilterViewer from "../../userLogin/FilterViewer";
 import noImage from "../../../../assets/images/user.png";
@@ -17,12 +18,15 @@ export default function Info({
   viewer,
   setViewer,
 }) {
+
+  
   const [openFilterViewer, setOpenFilterViewer] = useState(false);
   const location = useLocation();
 
-  let userId = post.userId;
-  if (location.pathname.includes("post")) {
-    userId = post.userId._id;
+  let userId = post.userId._id;
+
+  if (location.pathname.includes("profile")) {
+    userId = post.userId;
   }
 
   const navigate = useNavigate();
@@ -66,12 +70,12 @@ export default function Info({
           objectFit: "cover",
           display: "block",
         }}
-        onClick={() => navigate("/profile/" + post.userId)}
+        onClick={() => navigate("/profile/" + userId)}
       />
       <Stack>
         <Typography
           sx={{ fontSize: 18, cursor: "pointer" }}
-          onClick={() => navigate("/profile/" + post.userId)}
+          onClick={() => navigate("/profile/" + userId)}
         >
           {profile.username[0].toUpperCase() + profile.username.slice(1)}
         </Typography>

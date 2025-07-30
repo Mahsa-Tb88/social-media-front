@@ -63,7 +63,6 @@ export default function PostProfile({
   const queryClient = useQueryClient();
 
   function onSubmit(data) {
-    console.log("data", data);
     if (type == "edit") {
       data.id = post._id;
       data.viewer = viewer;
@@ -325,7 +324,7 @@ export default function PostProfile({
           type="submit"
           variant="contained"
         >
-          Post
+          {type == "edit" ? "Save change" : "Post"}
         </LoadingButton>
       </Stack>
     </Dialog>

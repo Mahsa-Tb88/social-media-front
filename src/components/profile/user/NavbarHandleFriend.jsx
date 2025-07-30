@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRemoveFriend } from "../../../utils/mutation";
 import { userActions } from "../../../store/slices/userSlice";
 import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function NavbarHandleFriend({
   open,
@@ -16,6 +17,7 @@ export default function NavbarHandleFriend({
   const userLogin = useSelector((state) => state.user.profile);
 
   function blockFriend() {}
+  const queryClient = useQueryClient();
 
   const removeFriendMutation = useRemoveFriend();
   function removeFriend() {
@@ -28,6 +30,13 @@ export default function NavbarHandleFriend({
         const updatedListFriends = userLogin?.friends?.listFriend.filter(
           (f) => f.id != user._id
         );
+        queryClient.invalidateQueries({
+          queryKey: ["mutualFriends", user._id],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["friends", user._id],
+        });
+
         dispatch(
           userActions.setProfile({
             ...userLogin,

@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useConfirmFriend, useRemoveRequestFriend } from "../../utils/mutation";
 import { userActions } from "../../store/slices/userSlice";
 import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function NavbarFriend({ open, anchorEl, handleClose }) {
   const userLogin = useSelector((state) => state.user.profile);
@@ -44,6 +45,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
   }
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const confirmMutation = useConfirmFriend();
   function confirmHandler(event, friend) {
@@ -76,6 +78,8 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
             }
           }
         );
+        queryClient.invalidateQueries({ queryKey: ["friends", userLogin.id] });
+
         dispatch(
           userActions.setProfile({
             ...userLogin,

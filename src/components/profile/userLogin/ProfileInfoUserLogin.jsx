@@ -26,6 +26,7 @@ export default function ProfileInfoUserLogin() {
   const navigate = useNavigate();
   const isMobile = useSelector((state) => state.app.isMobile);
   console.log("userLogin", userLogin);
+  
   const { isPending, data, error, refetch } = useGetFriends(userLogin.id);
 
   const listFriends = userLogin.friends.listFriend.filter(

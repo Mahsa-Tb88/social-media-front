@@ -155,6 +155,7 @@ export default function PostProfile({
     if (type == "new") {
       setPostViewer(value);
     } else {
+      setPostViewer(value);
       setViewer(value);
     }
   }
@@ -185,8 +186,20 @@ export default function PostProfile({
         <Stack sx={{ flexDirection: "row", gap: 2 }}>
           <Box
             component="img"
-            src={profile.profileImg ? SERVER_URL + profile.profileImg : noImage}
-            sx={{ height: "60px", width: "60px", borderRadius: "50%" }}
+            src={
+              !profile.profileImg
+                ? noImage
+                : profile.profileImg && profile.profileImg.includes(SERVER_URL)
+                  ? profile.profileImg
+                  : SERVER_URL + profile.profileImg
+            }
+            sx={{
+              height: "60px",
+              width: "60px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              display: "block",
+            }}
           />
           <Stack sx={{ alignItems: "center", gap: 1 }}>
             <Typography sx={{ fontSize: 17 }}>{profile.username}</Typography>

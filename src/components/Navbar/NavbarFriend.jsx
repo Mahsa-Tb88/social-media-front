@@ -43,7 +43,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
   function mutualFriends(id) {
     return userLogin?.friends?.listFriend.filter((f) => f.id == id);
   }
-
+  console.log("requestList", requestList);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -147,7 +147,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
       <List disablePadding>
         {requestList.map((friend) => {
           return (
-            <ListItem key={friend.id} disablePadding sx={{ p: 1 }} divider>
+            <ListItem key={friend.id} disablePadding sx={{ p: 0 }} divider>
               {friend.status == "accept" ? (
                 <ListItemButton
                   onClick={() => gotoProfile(friend.id)}
@@ -189,9 +189,12 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                     <Box
                       component="img"
                       src={
-                        friend.profileImg
-                          ? SERVER_URL + friend.profileImg
-                          : noImage
+                        !friend.profileImg
+                          ? noImage
+                          : friend.profileImg &&
+                              friend.profileImg.includes(SERVER_URL)
+                            ? friend.profileImg
+                            : SERVER_URL + friend.profileImg
                       }
                       height={50}
                       width={50}
@@ -205,7 +208,8 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                   <ListItemText>
                     <Typography>
                       {friend.username[0].toUpperCase() +
-                        friend.username.slice(1)}
+                        friend.username.slice(1)}{" "}
+                      sent you a friend request
                     </Typography>
                     {mutualFriends(friend.id)?.length > 1 ? (
                       <Stack>
@@ -219,9 +223,12 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                           {mutualFriends.map((f) => {
                             <Avatar
                               src={
-                                f.profileImg
-                                  ? SERVER_URL + f.profileImg
-                                  : noImage
+                                !f.profileImg
+                                  ? noImage
+                                  : f.profileImg &&
+                                      f.profileImg.includes(SERVER_URL)
+                                    ? f.profileImg
+                                    : SERVER_URL + f.profileImg
                               }
                             />;
                           })}
@@ -250,7 +257,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                         disableElevation
                         onClick={(event) => deleteHandler(event, friend)}
                       >
-                        Delete
+                        Ignore
                       </Button>
                     </Stack>
                   </ListItemText>

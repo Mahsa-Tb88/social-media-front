@@ -33,12 +33,14 @@ export default function Chat() {
     if (msg) {
       const data = { id, msg };
       mutation.mutate(data, {
-        onSuccess(d) {
+        onSuccess() {
           setMsg("");
           queryClient.invalidateQueries({ queryKey: ["chats", id] });
           window.scrollTo({ top: 0, behavior: "smooth" });
         },
-        onError(e) {},
+        onError(e) {
+          console.log(e);
+        },
       });
     }
   }
@@ -68,7 +70,11 @@ export default function Chat() {
       ) : (
         <Container sx={{ py: 4 }}>
           <Stack sx={{ flexDirection: "row", alignItems: "center", mb: 2 }}>
-            <Typography component="h5" variant="h5" sx={{ mr: 2 }}>
+            <Typography
+              component="h5"
+              variant="h5"
+              sx={{ mr: 2, fontSize: "14px" }}
+            >
               Message to:
             </Typography>
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
@@ -80,13 +86,16 @@ export default function Chat() {
                 <Avatar alt="Remy Sharp" src={SERVER_URL + user.profileImg} />
               ) : (
                 <Avatar
-                  sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" }}
+                  sx={{ bgcolor: theme === "dark" ? "#1769aa" : "#64b5f6" ,}}
                 >
                   {user.username[0].toUpperCase()}
                 </Avatar>
               )}
               <Typography
-                sx={{ color: theme === "dark" ? "#64b5f6 " : "#1769aa" }}
+                sx={{
+                  color: theme === "dark" ? "#64b5f6 " : "#1769aa",
+                  fontSize: { xs: "12px" },
+                }}
                 component="h6"
                 variant="h6"
               >
@@ -184,7 +193,8 @@ function UserLoginMsgs({ userLogin, theme, c, date }) {
           ></Box>
           <Box
             sx={{
-              width: "20%",
+              width: { xs: "40%", md: "20%" },
+              fontSize: { xs: "10px", md: "14px" },
               textAlign: "center",
               color: theme === "dark" ? "grey.500" : "grey.400",
             }}
@@ -266,7 +276,8 @@ function UserMsgs({ user, theme, c, date }) {
           ></Box>
           <Box
             sx={{
-              width: "20%",
+              width: { xs: "40%", md: "20%" },
+              fontSize: { xs: "10px", md: "14px" },
               textAlign: "center",
               color: theme === "dark" ? "grey.500" : "grey.400",
             }}

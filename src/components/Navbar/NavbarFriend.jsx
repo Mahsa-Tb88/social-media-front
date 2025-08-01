@@ -176,7 +176,7 @@ export default function NavbarFriend({ open, anchorEl, handleClose }) {
                       you rejected
                       {friend.username[0].toUpperCase() +
                         friend.username.slice(1)}
-                      friends's request
+                      ' friend's request
                     </Typography>
                   </ListItemText>
                 </ListItemButton>

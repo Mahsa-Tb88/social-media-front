@@ -18,7 +18,7 @@ export default function LoginFirst({ open, onClose }) {
     <Dialog open={open} onClose={() => onClose(false)}>
       <DialogTitle>Login Required</DialogTitle>
       <DialogContent>
-        <Typography>You need to log in to view comments.</Typography>
+        <Typography>You need to log in first</Typography>
       </DialogContent>
       <DialogActions
         sx={{ alignItems: "center", justifyContent: "center", mb: 2 }}
@@ -29,7 +29,7 @@ export default function LoginFirst({ open, onClose }) {
           sx={{
             bgcolor: theme === "dark" ? "grey.600" : "grey.300",
             color: theme === "dark" ? "grey.300" : "grey.800",
-            "&:hover": {bgcolor:theme === "dark" ? "grey.700" : "grey.400"},
+            "&:hover": { bgcolor: theme === "dark" ? "grey.700" : "grey.400" },
           }}
           disableElevation
         >

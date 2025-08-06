@@ -8,7 +8,8 @@ export default function HomePage() {
     <Stack
       sx={{
         minHeight: "100vh",
-        p: 5,
+        py: 5,
+        px:3
       }}
     >
       <Container fixed sx={{ px: 0 }}>

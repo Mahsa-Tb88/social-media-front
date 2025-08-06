@@ -10,7 +10,7 @@ import NavbarMenu from "./NavbarMenu";
 import NavbarFriend from "./NavbarFriend";
 import NavbarNotofiication from "./NavbarNotofiication";
 import NavbarMsg from "./NavbarMsg";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const userLogin = useSelector((state) => state.user.profile);
@@ -20,6 +20,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const [openMenu, setOpenMenu] = useState(false);
   const menuAnchor = useRef(null);
+  const navigate = useNavigate();
 
   let unSeenNotification = [];
   if (userLogin.notificationList) {
@@ -65,14 +66,13 @@ export default function Navbar() {
           <Stack flexGrow={1}>
             <Box
               sx={{
-                width: isMobile ? 70 : 150,
+                width: isMobile ? 90 : 140,
                 height: "auto",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                p: 0,
-                m: 0,
               }}
+              onClick={() => navigate("/")}
             >
               <img
                 src="../../../public/logo.png"

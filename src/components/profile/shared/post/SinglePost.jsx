@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
-import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
 import { Edit } from "@mui/icons-material";
@@ -25,6 +25,7 @@ export default function SinglePost({ post, profile }) {
   const userLogin = useSelector((state) => state.user.profile);
   const [postComments, setPostComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [openLoginUser, setOpenLoginUser] = useState(false);
   const [openMenuPost, setOpenMenuPost] = useState(false);
   const [viewer, setViewer] = useState(post.viewer);
@@ -64,7 +65,11 @@ export default function SinglePost({ post, profile }) {
     }
   }
 
+  const handleToggle = () => {
+    setExpanded(!expanded);
+  };
 
+  console.log("post", post.desc.length);
   return (
     <Stack>
       <Paper key={post.createdAt} sx={{ mb: 4, p: 2 }}>
@@ -106,7 +111,7 @@ export default function SinglePost({ post, profile }) {
               <Box
                 component="img"
                 src={SERVER_URL + post.image}
-                sx={{ maxWidth: "300px", maxHeight: "300px" }}
+                sx={{ maxWidth: "100%", maxHeight: 500, borderRadius: "5px" }}
               />
             ) : post.video ? (
               <Box sx={{ maxWidth: "100%", margin: "auto" }}>
@@ -129,7 +134,28 @@ export default function SinglePost({ post, profile }) {
             )}
           </Stack>
 
-          <Typography>{post.desc}</Typography>
+          {
+            <Typography sx={{ whiteSpace: "pre-line", textAlign: "justify" }}>
+              {post.desc.length > 300 && !expanded
+                ? `${post.desc.slice(0, 250)}... `
+                : post.desc.length
+                  ? post.desc
+                  : ""}
+              {post.desc.length > 300 && (
+                <Typography
+                  component="span"
+                  onClick={handleToggle}
+                  sx={{
+                    color: "primary.main",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                  }}
+                >
+                  {expanded ? "Show less" : "Show more"}
+                </Typography>
+              )}
+            </Typography>
+          }
 
           <MenuPost
             open={openMenuPost}
@@ -175,10 +201,7 @@ export default function SinglePost({ post, profile }) {
           {isPending ? (
             <Loading message="Is loading..." />
           ) : error ? (
-            <LoadingError
-              handleAction={refetch}
-              message={error.response.data.message}
-            />
+            <LoadingError handleAction={refetch} message={error.response.data.message} />
           ) : (
             <CommentList
               postComments={postComments}

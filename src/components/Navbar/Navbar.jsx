@@ -1,22 +1,6 @@
 /* eslint-disable no-undef */
-import {
-  DarkMode,
-  Home,
-  LightMode,
-  Message,
-  Notifications,
-  PersonAdd,
-} from "@mui/icons-material";
-import {
-  AppBar,
-  Badge,
-  Box,
-  Button,
-  Container,
-  Stack,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { DarkMode, Home, LightMode, Message, Notifications, PersonAdd } from "@mui/icons-material";
+import { AppBar, Badge, Box, Button, Container, Stack, Toolbar, Typography } from "@mui/material";
 import noImage from "../../assets/images/user.png";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +15,7 @@ import { Link, NavLink } from "react-router-dom";
 export default function Navbar() {
   const userLogin = useSelector((state) => state.user.profile);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const isMobile = useSelector((state) => state.app.isMobile);
   const app = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const [openMenu, setOpenMenu] = useState(false);
@@ -38,9 +23,7 @@ export default function Navbar() {
 
   let unSeenNotification = [];
   if (userLogin.notificationList) {
-    unSeenNotification = userLogin.notificationList.filter(
-      (n) => n.isSeen == false
-    );
+    unSeenNotification = userLogin.notificationList.filter((n) => n.isSeen == false);
   }
 
   let unSeenMsg = [];
@@ -72,33 +55,33 @@ export default function Navbar() {
   }
 
   function numOfFriendrequest() {
-    const list = userLogin?.friends?.friendRequestList?.filter(
-      (f) => f.status == undefined
-    );
+    const list = userLogin?.friends?.friendRequestList?.filter((f) => f.status == undefined);
     return list.length;
   }
   return (
-    <AppBar
-      position="sticky"
-      sx={{ bgcolor: "var(--palette-background-paper)" }}
-    >
+    <AppBar position="sticky" sx={{ bgcolor: "var(--palette-background-paper)" }}>
       <Container fixed sx={{ px: 0 }}>
         <Toolbar>
           <Stack flexGrow={1}>
-            <Typography
-              variant={app.isMobile ? "h6" : "h4"}
-              component={app.isMobile ? "h5" : "h1"}
-              color="info"
-              fontWeight={600}
+            <Box
+              sx={{
+                width: isMobile ? 70 : 150,
+                height: "auto",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                p: 0,
+                m: 0,
+              }}
             >
-              VibeLink
-            </Typography>
+              <img
+                src="../../../public/logo.png"
+                alt="Logo"
+                style={{ maxWidth: "100%", maxHeight: "100%" }}
+              />
+            </Box>
           </Stack>
-          <Stack
-            direction="row"
-            spacing={app.isMobile ? 1 : 3}
-            alignItems="center"
-          >
+          <Stack direction="row" spacing={app.isMobile ? 1 : 3} alignItems="center">
             <MyIconButton LinkComponent={Link} to="/">
               <Home sx={{ fontSize: app.isMobile ? "large" : "24px" }} />
             </MyIconButton>
@@ -115,20 +98,14 @@ export default function Navbar() {
               )}
             </MyIconButton>
             {isLoggedIn ? (
-              <Stack
-                direction="row"
-                spacing={app.isMobile ? 1 : 3}
-                alignItems="center"
-              >
+              <Stack direction="row" spacing={app.isMobile ? 1 : 3} alignItems="center">
                 <Badge
                   badgeContent={unSeenNotification.length}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"
                 >
-                  <MyIconButton
-                    onClick={() => setopenNotification(!openNotification)}
-                  >
+                  <MyIconButton onClick={() => setopenNotification(!openNotification)}>
                     <Notifications
                       ref={notificationAnchor}
                       sx={{ fontSize: app.isMobile ? "large" : "24px" }}
@@ -142,16 +119,11 @@ export default function Navbar() {
                   overlap="circular"
                 >
                   <MyIconButton onClick={() => setopenMsg(!openMsg)}>
-                    <Message
-                      ref={msgAnchor}
-                      sx={{ fontSize: app.isMobile ? "large" : "24px" }}
-                    />
+                    <Message ref={msgAnchor} sx={{ fontSize: app.isMobile ? "large" : "24px" }} />
                   </MyIconButton>
                 </Badge>
                 <Badge
-                  badgeContent={
-                    userLogin.friends?.friendRequestList && numOfFriendrequest()
-                  }
+                  badgeContent={userLogin.friends?.friendRequestList && numOfFriendrequest()}
                   color="error"
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   overlap="circular"

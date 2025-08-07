@@ -101,11 +101,7 @@ export default function EditValueSubject({
         },
       });
     }
-    if (
-      title == "hometown" ||
-      title == "currentCity" ||
-      title == "usedToLiveCity"
-    ) {
+    if (title == "hometown" || title == "currentCity" || title == "usedToLiveCity") {
       if (type == "new") {
         const data = {
           id: userId,
@@ -171,12 +167,7 @@ export default function EditValueSubject({
             setNewValue={setNewValue}
           />
         ) : subject == "Education" ? (
-          <EducationEdit
-            value={value}
-            onCloseEdit={onCloseEdit}
-            type={type}
-            id={id}
-          />
+          <EducationEdit value={value} onCloseEdit={onCloseEdit} type={type} id={id} />
         ) : subject == "Status" ? (
           <Status
             newValue={newValue}
@@ -264,6 +255,7 @@ function Relationship({ value, type, onCloseEdit }) {
       },
     });
   }
+  console.log("....", userList);
   return (
     <Stack spacing={3}>
       <TextField
@@ -291,7 +283,7 @@ function Relationship({ value, type, onCloseEdit }) {
                 <ListItemAvatar>
                   <Avatar
                     alt="User Image"
-                    src={l.profileImg ? l.profileImg : noImage}
+                    src={l.profileImg ? SERVER_URL + l.profileImg : noImage}
                   />
                 </ListItemAvatar>
                 <ListItemText>{l.username}</ListItemText>
@@ -314,12 +306,7 @@ function Relationship({ value, type, onCloseEdit }) {
         </Select>
       </FormControl>
 
-      <Button
-        size="large"
-        sx={{}}
-        onClick={saveHandler}
-        disabled={user.username ? false : true}
-      >
+      <Button size="large" sx={{}} onClick={saveHandler} disabled={user.username ? false : true}>
         Save
       </Button>
     </Stack>
@@ -404,12 +391,7 @@ function FamilyMember({ value, type, onCloseEdit }) {
       />
       {search && (
         <Stack>
-          {error && (
-            <LoadingError
-              handleAction={refetch}
-              message={error.response.data.message}
-            />
-          )}
+          {error && <LoadingError handleAction={refetch} message={error.response.data.message} />}
           {userfounded.map((l, index) => (
             <List key={index}>
               <ListItem
@@ -423,10 +405,7 @@ function FamilyMember({ value, type, onCloseEdit }) {
                 onClick={() => selectUser(l)}
               >
                 <ListItemAvatar>
-                  <Avatar
-                    alt="User Image"
-                    src={l.profileImg ? l.profileImg : noImage}
-                  />
+                  <Avatar alt="User Image" src={l.profileImg ? l.profileImg : noImage} />
                 </ListItemAvatar>
                 <ListItemText>{l.username}</ListItemText>
               </ListItem>
@@ -530,12 +509,7 @@ function Pronounce({ onCloseEdit }) {
         </Select>
       </FormControl>
 
-      <Button
-        size="large"
-        sx={{}}
-        onClick={saveHandler}
-        disabled={pronounce ? false : true}
-      >
+      <Button size="large" sx={{}} onClick={saveHandler} disabled={pronounce ? false : true}>
         Save
       </Button>
     </Stack>
@@ -604,11 +578,7 @@ function Intro({ value, onCloseEdit, type }) {
         />
       </Stack>
 
-      <Button
-        size="large"
-        onClick={saveChangeHandler}
-        disabled={bio ? false : true}
-      >
+      <Button size="large" onClick={saveChangeHandler} disabled={bio ? false : true}>
         Save
       </Button>
       <Button

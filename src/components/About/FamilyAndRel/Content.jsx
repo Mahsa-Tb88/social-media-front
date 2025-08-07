@@ -26,6 +26,9 @@ export default function Content({ item }) {
           style={{
             border: "var(--border)",
             borderRadius: "50%",
+
+            objectFit: "cover",
+            display: "block",
           }}
         />
         <Stack>

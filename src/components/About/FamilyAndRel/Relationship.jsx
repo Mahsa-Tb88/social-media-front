@@ -4,6 +4,7 @@ import ItemAbout from "../ItemAbout";
 import Content from "./Content";
 import AddSubRel from "./AddSubRel";
 
+// eslint-disable-next-line react/prop-types
 export default function Relationship({ relationship, isOwner, isFriend }) {
   return (
     <Stack sx={{ mb: 4 }} spacing={1}>

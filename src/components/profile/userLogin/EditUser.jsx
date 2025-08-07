@@ -85,6 +85,8 @@ export default function EditUser() {
                 message: "username should be at least 13 characters.",
               },
             })}
+            error={errors.username}
+            helperText={errors.username?.message}
           />
 
           <FormControl fullWidth>
@@ -111,9 +113,7 @@ export default function EditUser() {
           />
           <Stack spacing={1}>
             <FormControlLabel
-              control={
-                <Checkbox {...register("deleteAccount")} color="error" />
-              }
+              control={<Checkbox {...register("deleteAccount")} color="error" />}
               label={
                 <Typography color="error" fontWeight="bold">
                   Delete Account
@@ -129,8 +129,7 @@ export default function EditUser() {
                     label="Reason"
                     defaultValue=""
                     {...register("deleteReason", {
-                      required:
-                        "Please select a reason for deleting your account",
+                      required: "Please select a reason for deleting your account",
                     })}
                   >
                     <MenuItem value="privacy">Privacy concerns</MenuItem>
@@ -181,9 +180,7 @@ export default function EditUser() {
 
           <LoadingButton
             loading={isPending}
-            loadingIndicator={
-              <CircularProgress size={30} sx={{ color: "info.500" }} />
-            }
+            loadingIndicator={<CircularProgress size={30} sx={{ color: "info.500" }} />}
             type="submit"
             size="large"
             variant="contained"

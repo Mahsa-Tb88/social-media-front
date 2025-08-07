@@ -68,7 +68,7 @@ export default function RandomUserList({ userList }) {
       status: "pending",
     };
     addFriendMutation.mutate(data, {
-      onSuccess(d) {
+      onSuccess() {
         const updatedListFriends = [
           ...userLogin.friends.listFriend,
           {
@@ -116,9 +116,7 @@ export default function RandomUserList({ userList }) {
     };
     removeRequestMutation.mutate(data, {
       onSuccess(d) {
-        const updatedListFriends = userLogin?.friends?.listFriend.filter(
-          (f) => f.id != user._id
-        );
+        const updatedListFriends = userLogin?.friends?.listFriend.filter((f) => f.id != user._id);
         dispatch(
           userActions.setProfile({
             ...userLogin,
@@ -147,17 +145,25 @@ export default function RandomUserList({ userList }) {
     });
   }
   return (
-    <Stack sx={{ mt: 1, minHeight: "350px" }}>
+    <Stack
+      sx={{
+        mt: 1,
+        minHeight: "350px",
+        maxHeight: "500px",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        "&::-webkit-scrollbar": {
+          display: "none", // برای Chrome, Safari
+        },
+      }}
+    >
       {isPending ? (
         <Box>
           <Loading message="Is Loading" />
         </Box>
       ) : error ? (
         <Box>
-          <LoadingError
-            handleAction={refetch}
-            message={error.response.data.message}
-          />
+          <LoadingError handleAction={refetch} message={error.response.data.message} />
         </Box>
       ) : users.length ? (
         users.map((user) => {
@@ -216,13 +222,9 @@ export default function RandomUserList({ userList }) {
                 }}
               >
                 {user?.status == "pending" ? (
-                  <Button onClick={() => handleCancelRequest(user)}>
-                    Cancel Request
-                  </Button>
+                  <Button onClick={() => handleCancelRequest(user)}>Cancel Request</Button>
                 ) : (
-                  <Button onClick={() => handleAddFriend(user)}>
-                    Add friend
-                  </Button>
+                  <Button onClick={() => handleAddFriend(user)}>Add friend</Button>
                 )}
               </Box>
             </Stack>
